@@ -1,0 +1,529 @@
+################################################################################################
+##
+## Build file for a QNX Neutrino system
+##
+################################################################################################
+
+[-optional]
+[+keeplinked]
+[image=0x80080000]
+[virtual=aarch64le,raw +compress] boot = {
+#if VARIANT == EINSTEIN_4_0_A1
+    startup-am62p-e4_a1_recovery -v
+#elif VARIANT == EINSTEIN_4_0_A0
+    startup-am62p-e4_a0_recovery -v
+#endif
+    PATH=/proc/boot:/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll:/lib/dll/pci procnto-smp-instr -v
+}
+
+[+script] startup-script = {
+    SYSNAME=nto
+    TERM=qansi
+    ENV=/etc/profile
+
+    procmgr_symlink ../../proc/boot/ldqnx-64.so.2 /usr/lib/ldqnx-64.so.2
+
+    ## Needed for ksh to run the echo command below
+    pipe
+
+    display_msg " "
+    ksh -c "echo Welcome to QNX Neutrino $(uname -r) on $(uname -m) !"
+    display_msg " "
+
+    slogger2
+    dumper
+    mqueue
+    random -p -t
+
+    #######################################################################
+    ## TI SCI / IPC Resource Managers
+    #######################################################################
+    #tisci-mgr
+    #waitfor /dev/tisci 4
+    #shmemallocator
+    #waitfor /dev/shmemallocator 4
+    #tiipc-mgr
+    #waitfor /dev/tiipc 4
+    #tiudma-mgr
+    #waitfor /dev/tiudma 4
+
+    ############################################################################################
+    ## I2C driver
+    ############################################################################################
+    display_msg "Starting I2C driver ..."
+    i2c-omap35xx -p0x20000000 -i193 -d
+    i2c-omap35xx -p0x20010000 -i194 -d --u1
+    i2c-omap35xx -p0x20020000 -i195 -d --u2
+
+    waitfor /dev/i2c0
+    waitfor /dev/i2c1
+    waitfor /dev/i2c2
+
+    #######################################################################
+    ## UART drivers
+    #######################################################################
+    display_msg "start serial driver"
+    devc-seromap -e -R -F 0x02800000,210
+    reopen /dev/ser1
+
+    ############################################################################################
+    ## SD memory card / eMMC driver
+    ############################################################################################
+    display_msg Starting MMC/SD memory card driver... eMMC
+    devb-sdmmc-am65x qnx6 trim=enable cam cache,ra=128k:4096k,memory=/memory/below4G/ram/sysram,maxio=256,disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@  disk name=emmc sdmmc partitions=on,pwroff_notify=short sdio addr=0x0fa10000,irq=165,emmc,bs=sscfg=0x8000 disk name=emmc,naming=0#@
+
+    #display_msg Starting MMC/SD memory card driver... SD
+    #devb-sdmmc-am65x sdio addr=0x0fa00000,irq=115,bs=sscfg=0x8000:ldo=0x600000^31:trm-icp=2 cam pnp disk name=sd
+
+    #######################################################################
+    ## OSPI NOR flash driver without DMSS support
+    #######################################################################
+    #display_msg "Starting Flash driver..."
+    #devf-j7-ospi base=0xfc40000,rclk=200000000,clk=25000000,rdelay=4
+    #######################################################################
+    ## OSPI NOR flash driver with DMSS support
+    ## need tisci-mgr and tiudma-mgr to access TI DMSS library
+    ## need "-I" option to access DMSS registers
+    ## need direct and PHY mode for DMA transfer
+    #######################################################################
+    # display_msg "Starting Flash driver..."
+    # devf-j7-ospi -I base=0xfc40000,rclk=200000000,clk=25000000,rdelay=4,poffset=0x3fc0000,dac=1,phy=1,dma=1
+
+    #######################################################################
+    ## XHCI on both USB-C and A ports
+    #######################################################################
+    display_msg Starting XHCI driver on USB3SS0 and USB3SS1
+    io-usb-otg -d dwc3-xhci ioport=0x31000000,irq=220
+    waitfor /dev/usb/io-usb-otg 4
+
+    ############################################################################################
+    ## CPSW3G Configuration
+    ############################################################################################
+    ## De-assert GPIO_CPSW1_RST(P22) and GPIO_CPSW2_RST(P23) to set as outputs
+    sh -c "isend -n/dev/i2c1 -a0x23 0x0e > /dev/null 2>&1"
+    sh -c "isendrecv -n /dev/i2c1 -a0x23 -l1 > /dev/null 2>&1"
+    ## Returns ffh
+    sh -c "isend -n/dev/i2c1 -a0x23 0x0e 0xf3 > /dev/null 2>&1"
+    sh -c "isend -n/dev/i2c1 -a0x23 0x0e > /dev/null 2>&1"
+    sh -c "isendrecv -n /dev/i2c1 -a0x23 -l1 > /dev/null 2>&1"
+    ## Read to confirm f3h was written
+    ## Set P22 and P23 to 1
+    sh -c "isend -n/dev/i2c1 -a0x23 0x06 > /dev/null 2>&1"
+    sh -c "isendrecv -n /dev/i2c1 -a0x23 -l1 > /dev/null 2>&1"
+    # Returns ffh
+    sh -c "isend -n/dev/i2c1 -a0x23 0x06 0xff > /dev/null 2>&1"
+    sh -c "isend -n/dev/i2c1 -a0x23 0x06 > /dev/null 2>&1"
+    sh -c "isendrecv -n /dev/i2c1 -a0x23 -l1 > /dev/null 2>&1"
+    #  Read to confirm ffh was written
+
+    ############################################################################################
+    ## Network driver
+    ############################################################################################
+    display_msg "Starting networking ..."
+    io-sock    -d axe -d axge -d cdce -d smsc
+
+    ifwatchd -A /etc/newif.sh -D /etc/down.sh -c /etc/up.sh -n /etc/down.sh   axe0 axge0 cdce0 smsc0
+
+    ############################################################################################
+    ## REMOTE_DEBUG: gdb or Momentics
+    ##  - refer to the help documentation for the gdb, qconn and the IDE
+    ##    for more information on remote debugging
+    ##  - the commands shown require that NETWORK is enabled too
+    ############################################################################################
+    devc-pty
+    qconn
+    inetd
+
+    ############################################################################################
+    ## Start the main shell
+    ############################################################################################
+    reopen /dev/ser1
+    display_msg "Starting shell ..."
+    [+session] ksh &
+}
+
+[search=../install/${PROCESSOR}:../install/${PROCESSOR}/io-sock:../install:${QNX_TARGET}/${PROCESSOR}/io-sock:${QNX_TARGET}/io-sock:${QNX_TARGET}/${PROCESSOR}:${QNX_TARGET}:${BSP_INSTALL_DIR}/${PLATFORM}]
+
+[uid=0 gid=0]
+
+[type=link] /bin/sh=/bin/ksh
+[type=link] /tmp=/dev/shmem
+[type=link] /dev/console=/dev/ser1
+[type=link] /var/log=/tmp
+[type=link] /usr/tmp=/tmp
+
+################################################################################################
+## Serial drivers
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/devc-seromap=sbin/devc-seromap
+[uid=0 gid=0 perms=0755] /bin/stty=bin/stty
+
+################################################################################################
+## NOR flash driver files
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/devf-j7-ospi=sbin/devf-j7-ospi
+[uid=0 gid=0 perms=0755] /usr/bin/flashctl=usr/bin/flashctl
+
+################################################################################################
+## Block drivers
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/devb-ram=sbin/devb-ram
+[uid=0 gid=0 perms=0755] /sbin/devb-sdmmc-am65x=sbin/devb-sdmmc-am65x
+
+################################################################################################
+## Block driver support libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] /lib/libcam.so=lib/libcam.so
+[uid=0 gid=0 perms=0755] /lib/dll/io-blk.so=lib/dll/io-blk.so
+[uid=0 gid=0 perms=0755] /lib/dll/cam-disk.so=lib/dll/cam-disk.so
+[uid=0 gid=0 perms=0755] /lib/dll/cam-cdrom.so=lib/dll/cam-cdrom.so
+[uid=0 gid=0 perms=0755] /lib/dll/fs-qnx6.so=lib/dll/fs-qnx6.so
+[uid=0 gid=0 perms=0755] /lib/dll/fs-dos.so=lib/dll/fs-dos.so
+
+################################################################################################
+## Filesystems support
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/fdisk=sbin/fdisk
+[uid=0 gid=0 perms=0755] /sbin/mkdosfs=sbin/mkdosfs
+[uid=0 gid=0 perms=0755] /sbin/mkqnx6fs=sbin/mkqnx6fs
+[uid=0 gid=0 perms=0755] /sbin/chkdosfs=sbin/chkdosfs
+[uid=0 gid=0 perms=0755] /sbin/chkqnx6fs=sbin/chkqnx6fs
+
+################################################################################################
+## Network driver files
+################################################################################################
+[uid=0 gid=0 perms=0755] /lib/dll/devs-axe.so=lib/dll/devs-axe.so
+[uid=0 gid=0 perms=0755] /lib/dll/devs-axge.so=lib/dll/devs-axge.so
+[uid=0 gid=0 perms=0755] /lib/dll/devs-cdce.so=lib/dll/devs-cdce.so
+[uid=0 gid=0 perms=0755] /lib/dll/devs-smsc.so=lib/dll/devs-smsc.so
+
+################################################################################################
+## Network driver shared libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] /usr/lib/libedit.so=usr/lib/libedit.so
+[uid=0 gid=0 perms=0755] /usr/lib/libexpat.so=usr/lib/libexpat.so
+[uid=0 gid=0 perms=0755] /usr/lib/libfdt.so=usr/lib/libfdt.so
+[uid=0 gid=0 perms=0755] /usr/lib/libxo.so.0=usr/lib/libxo.so.0
+[uid=0 gid=0 perms=0755] /lib/libsocket.so=lib/libsocket.so
+[uid=0 gid=0 perms=0755] /lib/libsocket.so.4=lib/libsocket.so.4
+#[uid=0 gid=0 perms=0755] /lib/dll/devs-libfdt.so=lib/dll/devs-libfdt.so
+#[uid=0 gid=0 perms=0755] /lib/dll/devs-libpci.so=lib/dll/devs-libpci.so
+#[uid=0 gid=0 perms=0755] /lib/dll/devs-libusbdci.so=lib/dll/devs-libusbdci.so
+#[uid=0 gid=0 perms=0755] /lib/dll/devs-phy.so=lib/dll/devs-phy.so
+[uid=0 gid=0 perms=0755] /usr/lib/librpc.so=usr/lib/librpc.so.2
+
+################################################################################################
+## Network driver and support
+################################################################################################
+#[uid=0 gid=0 perms=0755] /sbin/dhclient=sbin/dhclient
+#[uid=0 gid=0 perms=0755] /sbin/dhclient-script=sbin/dhclient-script
+[uid=0 gid=0 perms=0755] /sbin/ifconfig=sbin/ifconfig
+[uid=0 gid=0 perms=0755] /sbin/io-sock=sbin/io-sock
+[uid=0 gid=0 perms=0755] /sbin/pfctl=sbin/pfctl
+[uid=0 gid=0 perms=4755] /sbin/ping=sbin/ping
+[uid=0 gid=0 perms=0755] /sbin/route=sbin/route
+[uid=0 gid=0 perms=0755] /sbin/sysctl=sbin/sysctl
+#[uid=0 gid=0 perms=0755] /usr/bin/ftp=usr/bin/ftp
+[uid=0 gid=0 perms=0755] /usr/bin/netstat=usr/bin/netstat
+[uid=0 gid=0 perms=0755] /usr/bin/sockstat=usr/bin/sockstat
+[uid=0 gid=0 perms=0755] /usr/bin/vmstat=usr/bin/vmstat
+[uid=0 gid=0 perms=0755] /usr/sbin/arp=usr/sbin/arp
+[uid=0 gid=0 perms=0755] /usr/sbin/devctl=usr/sbin/devctl
+[uid=0 gid=0 perms=0755] /usr/sbin/devinfo=usr/sbin/devinfo
+[uid=0 gid=0 perms=0755] /usr/sbin/fs-nfs3=usr/sbin/fs-nfs3
+[uid=0 gid=0 perms=0755] /usr/sbin/if_up=usr/sbin/if_up
+[uid=0 gid=0 perms=0755] /usr/sbin/ifmcstat=usr/sbin/ifmcstat
+[uid=0 gid=0 perms=0755] /usr/sbin/ifwatchd=usr/sbin/ifwatchd
+[uid=0 gid=0 perms=0755] /usr/sbin/ip6addrctl=usr/sbin/ip6addrctl
+[uid=0 gid=0 perms=0755] /usr/sbin/ndp=usr/sbin/ndp
+#[uid=0 gid=0 perms=0755] /usr/sbin/rtsold=usr/sbin/rtsold
+[uid=0 gid=0 perms=0755] /usr/sbin/tcpdump=usr/sbin/tcpdump
+[uid=0 gid=0 perms=4755] /usr/sbin/traceroute=usr/sbin/traceroute
+[uid=0 gid=0 perms=4755] /usr/sbin/traceroute6=usr/sbin/traceroute6
+#[uid=0 gid=0 perms=0755] /etc/dhclient.conf=etc/dhclient.conf
+#[uid=0 gid=0 perms=0755] /etc/ftpusers=etc/ftpusers
+[uid=0 gid=0 perms=0755] /etc/hosts=etc/hosts
+[uid=0 gid=0 perms=0755] /etc/netconfig=etc/netconfig
+[uid=0 gid=0 perms=0755] /etc/protocols=etc/protocols
+[uid=0 gid=0 perms=0755] /etc/services=etc/services
+
+################################################################################################
+## Remote_debug
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/devc-pty=sbin/devc-pty
+[uid=0 gid=0 perms=0755] /usr/bin/pdebug=usr/bin/pdebug
+[uid=0 gid=0 perms=0755] /usr/sbin/qconn=usr/sbin/qconn
+
+################################################################################################
+## Network services (ssh) support
+################################################################################################
+[uid=0 gid=0 perms=0755] /usr/sbin/sshd=usr/sbin/sshd
+[uid=0 gid=0 perms=0755] /usr/libexec/sftp-server=usr/libexec/sftp-server
+[uid=0 gid=0 perms=0755] /usr/bin/scp=usr/bin/scp
+[uid=0 gid=0 perms=0755] /usr/bin/ssh=usr/bin/ssh
+[uid=0 gid=0 perms=0755] /usr/bin/ssh-keygen=usr/bin/ssh-keygen
+
+################################################################################################
+## Network services (telnet) support
+################################################################################################
+#[uid=0 gid=0 perms=0755] /usr/sbin/inetd=usr/sbin/inetd
+#[uid=0 gid=0 perms=0755] /usr/libexec/ftpd=usr/libexec/ftpd
+#[uid=0 gid=0 perms=0755] /usr/libexec/telnetd=usr/libexec/telnetd
+
+[uid=0 gid=0 perms=0755]/etc/newif.sh = {
+#!/bin/sh
+ifconfig $1 up
+}
+
+[uid=0 gid=0 perms=0755]/etc/up.sh = {
+#!/bin/sh
+dhclient -m -lf /dev/shmem/dhclient.leases.$1 -pf /dev/shmem/dhclient.pid.$1 -nw $1
+}
+
+[uid=0 gid=0 perms=0755]/etc/down.sh = {
+#!/bin/sh
+dhclient -m -lf /dev/shmem/dhclient.leases.$1 -pf /dev/shmem/dhclient.pid.$1 -x $1
+}
+
+## NOTE: The following is very insecure and must not be used in a production
+##       environment.  This allows telnet access to root without a password!
+##       Even with a password this is not secure as telnet passes the password
+##       unencrypted over the network.  NO NOT USE THIS IN AN UNSECURED ENVIRONMENT!
+##       This configuration is only meant for initial setup and testing of a new board.
+##       If you need network access use a secure protocol like ssh (e.g. OpenSSH or Drop Bear).
+##
+[uid=0 gid=0 perms=0755]/etc/inetd.conf = {
+telnet stream tcp nowait root /usr/libexec/telnetd in.telnetd
+ftp stream tcp nowait root /usr/libexec/ftpd in.ftpd -l
+}
+
+[uid=0 gid=0 perms=0755]/etc/ftpd.conf = {
+/* Make things a+rw by default */
+umask all 0000
+}
+
+[uid=0 gid=0 perms=0755]/etc/esh = {
+}
+
+################################################################################################
+## USB HOST drivers
+################################################################################################
+#[uid=0 gid=0 perms=0755] /lib/dll/devu-hcd-dwc3-xhci.so=lib/dll/devu-hcd-dwc3-xhci.so
+
+################################################################################################
+## USB host shared libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] /lib/libhiddi.so=lib/libhiddi.so
+[uid=0 gid=0 perms=0755] /lib/libusbdi.so=lib/libusbdi.so
+
+################################################################################################
+## USB host driver and support
+################################################################################################
+[uid=0 gid=0 perms=0755] /sbin/io-usb-otg=sbin/io-usb-otg
+[uid=0 gid=0 perms=0755] /sbin/usb=sbin/usb
+[uid=0 gid=0 perms=0755] /sbin/devb-umass=sbin/devb-umass
+
+################################################################################################
+## USB device shared libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] /lib/libusbdci.so=lib/libusbdci.so
+
+################################################################################################
+## I2C drivers
+################################################################################################
+#[uid=0 gid=0 perms=0755] /sbin/i2c-omap35xx=sbin/i2c-omap35xx
+
+################################################################################################
+## I2C support
+################################################################################################
+[uid=0 gid=0 perms=0755] /bin/isendrecv=bin/isendrecv
+[uid=0 gid=0 perms=0755] /bin/isend=bin/isend
+
+################################################################################################
+## Shared libraries for security
+################################################################################################
+[uid=0 gid=0 perms=0755] /lib/libqh.so=lib/libqh.so
+[uid=0 gid=0 perms=0755] /lib/libregex.so=lib/libregex.so
+[uid=0 gid=0 perms=0755] /lib/libsecpol.so=lib/libsecpol.so
+[uid=0 gid=0 perms=0755] /lib/libslog2parse.so=lib/libslog2parse.so
+[uid=0 gid=0 perms=0755] /lib/libslog2shim.so=lib/libslog2shim.so
+[uid=0 gid=0 perms=0755] /lib/libslog2.so=lib/libslog2.so
+[uid=0 gid=0 perms=0755] /lib/libtracelog.so=lib/libtracelog.so
+[uid=0 gid=0 perms=0755] /lib/dll/qcrypto-openssl-3.so=lib/dll/qcrypto-openssl-3.so
+[uid=0 gid=0 perms=0755] /usr/lib/libcrypto.so=usr/lib/libcrypto.so
+[uid=0 gid=0 perms=0755] /usr/lib/libncursesw.so=usr/lib/libncursesw.so
+[uid=0 gid=0 perms=0755] /usr/lib/libqcrypto.so=usr/lib/libqcrypto.so
+[uid=0 gid=0 perms=0755] /usr/lib/libssl.so=usr/lib/libssl.so
+
+################################################################################################
+## libqcrypto support
+################################################################################################
+[uid=0 gid=0 perms=0644] /etc/qcrypto.conf = {
+openssl     tags=*
+}
+
+################################################################################################
+## Security files
+################################################################################################
+[uid=0 gid=0 perms=4755] /bin/login=bin/login
+[uid=0 gid=0 perms=4755] /bin/su=bin/su
+[uid=0 gid=0 perms=4755] /usr/bin/passwd=usr/bin/passwd
+
+[uid=0 gid=0 perms=0644] /etc/passwd = {
+root:x:0:0:Superuser:/root:/bin/sh
+sshd:x:15:6:sshd:/var/chroot/sshd:/bin/false
+qnxuser:x:1000:1000:QNX User:/home/qnxuser:/bin/sh
+}
+
+## Enabled Username/Password: root/root, qnxuser/qnxuser
+[uid=0 gid=0 perms=0644] /etc/shadow = {
+root:@S@NKlWES1quMp1wmqugkUSnFEpPGn58kIs4wQOgDDNs06vimR+bbGPUKM+9P6jbFUzo3Rm+Qe5MS+17xKhwaeJEg==@Mjg5ZTJiMTM0YTRjYTE2ZGFjMDdhZTFlY2NlMDVmNmE=:1468494669:0:0
+sshd:*:1231323780:0:0
+qnxuser:@S@HZERXjgixvb3157FFeraShhvTVw+10ccUtVUVZbi0fUwpzlzBZFw5gHiFd1XHKit8D39Whe749XAY8fV4P5ANQ==@Y2ZlOTg3M2RhNTM4Y2M2ODY0OWZhODdiNDRkMmU5Nzg=:1468488235:0:0
+}
+
+[uid=0 gid=0 perms=0644] /etc/group = {
+root:x:0:root
+sshd:x:6:
+qnxuser:x:1000
+}
+
+################################################################################################
+## PAM configurations addon build file
+################################################################################################
+[uid=0 gid=0 type=dir dperms=0755] /
+[uid=0 gid=0 type=dir dperms=0755] /etc
+[uid=0 gid=0 type=dir dperms=0755] /etc/pam.d
+[uid=0 gid=0 type=dir dperms=0755] /home
+[uid=1000 gid=1000 type=dir dperms=0755] /home/qnxuser
+[uid=0 gid=0 type=dir dperms=0755] /lib
+[uid=0 gid=0 type=dir dperms=0700] /root
+[uid=0 gid=0 type=dir dperms=0755] /usr
+[uid=0 gid=0 type=dir dperms=0755] /usr/lib
+[uid=0 gid=0 type=dir dperms=0755] /var
+[uid=0 gid=0 type=dir dperms=0755] /var/chroot
+[uid=0 gid=0 type=dir dperms=0755] /var/chroot/sshd
+[uid=0 gid=0 type=dir dperms=0755] /var/db
+[uid=0 gid=0 type=dir dperms=0755] /var/run
+#[uid=0 gid=0 perms=0644] /etc/pam.d/ftpd=etc/pam.d/ftpd
+[uid=0 gid=0 perms=0644] /etc/pam.d/login=etc/pam.d/login
+[uid=0 gid=0 perms=0644] /etc/pam.d/passwd=etc/pam.d/passwd
+[uid=0 gid=0 perms=0644] /etc/pam.d/su=etc/pam.d/su
+[uid=0 gid=0 perms=0755] /usr/lib/libpam.so=usr/lib/libpam.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_deny.so=usr/lib/pam_deny.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_echo.so=usr/lib/pam_echo.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_exec.so=usr/lib/pam_exec.so
+#[uid=0 gid=0 perms=0755] /usr/lib/pam_ftpusers.so=usr/lib/pam_ftpusers.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_group.so=usr/lib/pam_group.so
+#[uid=0 gid=0 perms=0755] /usr/lib/pam_mac.so=usr/lib/pam_mac.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_permit.so=usr/lib/pam_permit.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_qnx.so=usr/lib/pam_qnx.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_rootok.so=usr/lib/pam_rootok.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_secpol.so=usr/lib/pam_secpol.so
+[uid=0 gid=0 perms=0755] /usr/lib/pam_self.so=usr/lib/pam_self.so
+
+################################################################################################
+## General shared libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] ldqnx-64.so.2=usr/lib/ldqnx-64.so.2
+[uid=0 gid=0 perms=0755] /lib/libc.so=lib/libc.so.6
+[uid=0 gid=0 perms=0755] /lib/libcatalog.so=lib/libcatalog.so.1
+[uid=0 gid=0 perms=0755] /lib/libdevice-publisher.so=lib/libdevice-publisher.so.1
+[uid=0 gid=0 perms=0755] /lib/libgcc_s.so=lib/libgcc_s.so.1
+[uid=0 gid=0 perms=0755] /lib/libm.so=lib/libm.so.3
+#[uid=0 gid=0 perms=0755] /lib/libpps.so=lib/libpps.so.1
+#[uid=0 gid=0 perms=0755] /usr/lib/libbacktrace.so=usr/lib/libbacktrace.so.1
+[uid=0 gid=0 perms=0755] /usr/lib/libc++.so=usr/lib/libc++.so.2.0
+[uid=0 gid=0 perms=0755] /usr/lib/libiconv.so=usr/lib/libiconv.so.1
+[uid=0 gid=0 perms=0755] /usr/lib/libintl.so=usr/lib/libintl.so.1
+[uid=0 gid=0 perms=0755] /usr/lib/libpanelw.so=usr/lib/libpanelw.so.6.4
+[uid=0 gid=0 perms=0755] /usr/lib/libz.so=usr/lib/libz.so.2
+
+################################################################################################
+## General commands
+################################################################################################
+#In QNX8, some utilities are replaced by toybox
+#toybox: cat, cp, rm, ls, chmod, dd, echo, ln, mv, sed, uname, which, date, env, find, grep, more, sleep, pwd and mkdir
+[uid=0 gid=0 perms=0755]  /usr/bin/toybox=usr/bin/toybox
+#[uid=0 gid=0 perms=0755] /bin/cat=bin/cat
+#[uid=0 gid=0 perms=0755] /bin/chmod=bin/chmod
+[uid=0 gid=0 perms=0755] /bin/confstr=bin/confstr
+#[uid=0 gid=0 perms=0755] /bin/cp=bin/cp
+#[uid=0 gid=0 perms=0755] /bin/dd=bin/dd
+[uid=0 gid=0 perms=0755] /bin/df=bin/df
+#[uid=0 gid=0 perms=0755] /bin/echo=bin/echo
+[uid=0 gid=0 perms=0755] /bin/hostname=bin/hostname
+[uid=0 gid=0 perms=0755] /bin/kill=bin/kill
+[uid=0 gid=0 perms=0755] /bin/ksh=bin/ksh
+#[uid=0 gid=0 perms=0755] /bin/ln=bin/ln
+#[uid=0 gid=0 perms=0755] /bin/ls=bin/ls
+#[uid=0 gid=0 perms=0755] /bin/mkdir=bin/mkdir
+[uid=0 gid=0 perms=0755] /bin/mount=bin/mount
+#[uid=0 gid=0 perms=0755] /bin/mv=bin/mv
+[uid=0 gid=0 perms=0755] /bin/on=bin/on
+[uid=0 gid=0 perms=0755] /bin/pidin=bin/pidin
+#[uid=0 gid=0 perms=0755] /bin/pwd=bin/pwd
+#[uid=0 gid=0 perms=0755] /bin/rm=bin/rm
+#[uid=0 gid=0 perms=0755] /bin/sed=bin/sed
+[uid=0 gid=0 perms=0755] /bin/slay=bin/slay
+[uid=0 gid=0 perms=0755] /bin/slog2info=bin/slog2info
+[uid=0 gid=0 perms=0755] /bin/slogger2=bin/slogger2
+[uid=0 gid=0 perms=0755] /bin/sync=bin/sync
+[uid=0 gid=0 perms=0755] /bin/umount=bin/umount
+#[uid=0 gid=0 perms=0755] /bin/uname=bin/uname
+[uid=0 gid=0 perms=0755] /bin/waitfor=bin/waitfor
+[uid=0 gid=0 perms=0755] /sbin/mqueue=sbin/mqueue
+[uid=0 gid=0 perms=0755] /sbin/pipe=sbin/pipe
+[uid=0 gid=0 perms=0755] /sbin/shutdown=sbin/shutdown
+#[uid=0 gid=0 perms=0755] /usr/bin/date=usr/bin/date
+#[uid=0 gid=0 perms=0755] /usr/bin/env=usr/bin/env
+#[uid=0 gid=0 perms=0755] /usr/bin/find=usr/bin/find
+#[uid=0 gid=0 perms=0755] /usr/bin/grep=usr/bin/grep
+[uid=0 gid=0 perms=0755] /usr/bin/getconf=usr/bin/getconf
+[uid=0 gid=0 perms=0755] /usr/bin/hd=usr/bin/hd
+[uid=0 gid=0 perms=0755] /usr/bin/ldd=usr/bin/ldd
+#[uid=0 gid=0 perms=0755] /usr/bin/more=usr/bin/more
+[uid=0 gid=0 perms=0755] /usr/bin/setconf=usr/bin/setconf
+#[uid=0 gid=0 perms=0755] /usr/bin/sleep=usr/bin/sleep
+#[uid=0 gid=0 perms=0755] /usr/bin/tty=usr/bin/tty
+[uid=0 gid=0 perms=0755] /usr/bin/top=usr/bin/top
+[uid=0 gid=0 perms=0755] /usr/bin/use=usr/bin/use
+#[uid=0 gid=0 perms=0755] /usr/bin/which=usr/bin/which
+[uid=0 gid=0 perms=0755] /usr/sbin/dumper=usr/sbin/dumper
+[uid=0 gid=0 perms=0755] /usr/sbin/random=usr/sbin/random
+[uid=0 gid=0 perms=0755] /usr/sbin/tracelogger=usr/sbin/tracelogger
+
+################################################################################################
+## ENV profile
+################################################################################################
+/etc/profile = {
+export HOME=/
+export SYSNAME=nto
+export TERM=qansi
+export PATH=/proc/boot:/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec
+export LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll:/lib/dll/pci
+export PCI_DEBUG_MODULE=/lib/dll/pci/pci_debug2.so
+export PCI_SLOG_MODULE=/lib/dll/pci/pci_slog2.so
+export PCI_BKWD_COMPAT_MODULE=/lib/dll/pci/pci_bkwd_compat.so
+}
+
+###########################################################################
+## Binaries from TI PSDK
+## These binaries should NOT be distributed outside of QNX.
+## These binaries are developed by TI and any customers or outside
+## partners should be contacting TI to get their latest PSDK.
+###########################################################################
+#[search=../install/aarch64le/sbin:${PSDK_QNX_PATH}/qnx/resmgr/sciclient_qnx_rsmgr/aarch64/o.le/ perms=a+x] tisci-mgr
+#[search=../install/aarch64le/sbin:${PSDK_QNX_PATH}/qnx/resmgr/ipc_qnx_rsmgr/resmgr/aarch64/o.le/ perms=a+x] tiipc-mgr
+#[search=../install/aarch64le/sbin:${PSDK_QNX_PATH}/qnx/resmgr/udma_qnx_rsmgr/resmgr/aarch64/o.le/ perms=a+x] tiudma-mgr
+#[search=../install/aarch64le/sbin:${PSDK_QNX_PATH}/qnx/sharedmemallocator/resmgr/aarch64/o.le/ perms=a+x] shmemallocator
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/pdk_libs/pdk/aarch64/so.le] libti-pdk.so
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/pdk_libs/sciclient/aarch64/so.le] libti-sciclient.so
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/pdk_libs/ipclld/aarch64/so.le] libti-ipclld.so
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/resmgr/ipc_qnx_rsmgr/usr/aarch64/so.le] libtiipc-usr.so
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/pdk_libs/udmalld/aarch64/so.le] libti-udmalld.so
+#[search=../install/aarch64le/lib/dll:${PSDK_QNX_PATH}/qnx/resmgr/udma_qnx_rsmgr/usr/aarch64/so.le] libtiudma-usr.so
+
+################################################################################################
+## END OF BUILD SCRIPT
+################################################################################################

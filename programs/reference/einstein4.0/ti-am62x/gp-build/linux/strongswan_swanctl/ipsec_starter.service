@@ -1,0 +1,17 @@
+[Unit]
+Description=IPSEC START
+After=tee-supplicant.service vlan.service
+
+[Service]
+Type=idle
+EnvironmentFile=-/etc/default/ipsec_start
+ExecStartPre=/bin/cp /etc/swanctl/swanctl_org.conf /persist/swanctl_tmp.conf
+ExecStart=/usr/bin/ipsec_start/ipsec_start
+Restart=once
+StartLimitInterval=5min
+StartLimitBurst=4
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

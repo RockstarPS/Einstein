@@ -1,0 +1,34 @@
+#ifndef STUB_THREAD
+#define STUB_THREAD
+
+#include <chrono>
+
+namespace std
+{
+	class thread
+	{
+		public:
+			thread(void (*task)());
+			template <typename Callable, typename... Args>
+			thread(Callable&&, Args&&...)
+			{
+				// Stub: simulate thread creation
+			}
+			~thread();
+            int native_handle();
+			void join() 
+			{
+				// Stub: simulate joining thread (do nothing)
+			}
+	};
+    
+    namespace this_thread
+    {
+		void sleep_until(const std::chrono::system_clock::time_point& __atime);
+        
+        template<typename _Rep, typename _Period>
+        inline void sleep_for(const chrono::duration<_Rep, _Period>& __rtime) {}
+	}
+}
+
+#endif

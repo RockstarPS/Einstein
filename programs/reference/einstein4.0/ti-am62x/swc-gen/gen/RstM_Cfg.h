@@ -1,0 +1,129 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+ * @endverbatim
+ * @file        RstM_Cfg.h
+ * @details     <b> Fault Manager to handle TI SDL - ESM </b>
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2024
+ *
+ */
+#ifndef  RSTM_CFG_H_
+#define  RSTM_CFG_H_
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "FltM.h"
+#include "Rte_Dlt_Type.h"
+#include "FltM_Cfg.h"
+#include "PmicCdd.h"
+#include "Dlt.h"
+
+#define RSTM_SEC_CODE_START
+#define RSTM_CORE_CONST_SEC_START
+#define RSTM_CORE_DATA_SEC_START
+#define RSTM_CORE_BSS_SEC_START
+
+#include "MemMap.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+#define RSTM_LAST_RESET_HISTORY_NUM                DLTEXT_TOTAL_NUM_OF_RESET_HISTORY
+#define RSTM_MAX_RESETCODE_SIZE                   DLTEXT_ADDITIONAL_RESET_INFO_SIZE
+#define RSTM_MAX_DUMP_SIZE                        128U
+#define RSTM_NVM_READALL_COMPLETE                 EcuMExt_GetNvmReadAllStatus()
+
+/*
+ * User Configuration:
+ *  - RSTM_MAX_NUM_FAULTS: Number of fault entries (sample value)
+ *  - RSTM_NUMBER_OF_DLT_LOGINFO: Number of DLT log info entries (sample value)
+ */
+#if (FLTM_SAME_FAULT_RESET_LOOP_HW_TEST_ENABLE == STD_ON)
+#define RSTM_MAX_NUM_FAULTS         64U
+#else
+#define RSTM_MAX_NUM_FAULTS         63U
+#endif
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+typedef struct {
+    Dlt_SessionIDType SessionId; /**< DLT session identifier */
+    Dlt_MessageLogLevelType logLevel; /**< Log level for the message */
+    Dlt_MessageArgumentCount argCount;  /**< Number of arguments in the log message */
+    Dlt_MessageOptionsType   options;   /**< Log message options */
+    Dlt_ApplicationIDType    appId;     /**< Application identifier for the message */
+    Dlt_ContextIDType        contextId; /**< Context identifier for the message */
+} RstM_Dlt_MessageLogInfoType;
+
+/**
+ * @brief Reset Manager configuration entry
+ *
+ * Defines handling and reporting policy for a specific fault ID.
+ */
+typedef struct {
+    FltM_FaultIdType          FaultId;        /**< Unique fault identifier */
+    RstM_ResetType            ResetType;      /**< Reset type  */
+} RstM_FaultConfigType;
+
+/*****************************************************************************
+*                                 Extern Declarations                        *
+******************************************************************************/
+/* Extern declarations: user must define these in FltM_Cfg.c */
+extern const RstM_FaultConfigType  RstM_FaultConfig[RSTM_MAX_NUM_FAULTS];
+extern const RstM_Dlt_MessageLogInfoType  RstM_Dlt_MessageLogInfo;
+
+void RstM_Det_ReportError(uint8 ApiId, uint8 ErrorId);
+void RstM_Callout_FltMExt_BuildAndReportOsArmDump(eFltM_FaultIdType fid);
+
+#define RSTM_SEC_CODE_STOP
+#define RSTM_CORE_CONST_SEC_END
+#define RSTM_CORE_DATA_SEC_END
+#define RSTM_CORE_BSS_SEC_END
+
+#include "MemMap.h"
+
+#endif
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*----------------------------------------------------------------------------
+REVISION HISTORY
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :  
+By                :  
+Traceability      : 
+Change Description: 
+-----------------------------------------------------------------------------*/

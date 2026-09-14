@@ -1,0 +1,39 @@
+
+###########################################################################
+## QNX Filesystems Build File
+###########################################################################
+
+###########################################################################
+## General Commands
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]    /bin/mount=mount
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]    /bin/umount=umount
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]    /bin/df=df
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]    /bin/sync=sync
+#if IFS_TYPE == IFS_TYPE_REFLASH
+#dd replaced by toybox
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]    /bin/dd=dd
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]   /sbin/mkqnx6fs=mkqnx6fs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]   /sbin/chkqnx6fs=chkqnx6fs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]   /sbin/mkdosfs=mkdosfs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]   /sbin/chkdosfs=chkdosfs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]  /usr/bin/mount_ifs=mount_ifs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]  /usr/bin/pted=pted
+#endif
+
+###########################################################################
+## QNX Libraries
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/io-blk.so=io-blk.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/cam-disk.so=cam-disk.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/fs-qnx6.so=fs-qnx6.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/fs-qtd.so=fs-qtd.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/fs-udf.so=fs-udf.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/fs-dos.so=fs-dos.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/dll/cam-cdrom.so=cam-cdrom.so
+#Redefinition in qnx.bsp.build
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]     /lib/libcam.so.2=libcam.so.2
+#[type=link] /lib/libcam.so=/lib/libcam.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libtracelog.so.1=libtracelog.so.1
+[type=link] /lib/libtracelog.so=/lib/libtracelog.so.1
+

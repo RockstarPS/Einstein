@@ -1,0 +1,106 @@
+/*
+ * $QNXLicenseC:
+ * Copyright 2019-2023 BlackBerry Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
+ */
+
+/* This file can contain board specific preprocessor macros and function declarations */
+
+#ifndef __BOARD_H
+#define __BOARD_H
+
+
+//AM62P includes two DDR data regions: 2GB at 0x8000_0000 and 2GB at 0x8_8000_0000
+#define IDK_DDR0_BASE   0x80000000ul
+#define IDK_DDR0_SIZE   (MEG(2048))       /* 2GB */
+
+#define IDK_DDR1_BASE   0x880000000ul
+#define IDK_DDR1_SIZE (MEG(2048)) /* 2GB */
+
+#define AM62P_CTRLMMR_PADCONFIG 0xF4000
+#define AM62P_WKUP_CTRLMMR_PADCONFIG    (0x43000000 + 0x1C000)
+
+#define AM62P_GPIO0_BASE        0x600000
+#define AM62P_GPIO1_BASE        0x601000
+#define AM62P_GPIO_DIR          (0x10)
+#define AM62P_GPIO_OUT          (0x14)
+#define AM62P_GPIO_SET_DATA     (0x18)
+#define AM62P_GPIO_CLR_DATA     (0x1C)
+#define AM62P_GPIO_IN           (0x20)
+#define AM62P_GPIO_BIT(x)       (1 << ((x) % 32))
+
+#define CTRL_MMR0_CFG0_BASE         (0x0100000UL)
+
+/* WKUP_MMR0_USB0_PHY_CTRL Register, TRM 6.1.1.3.1.960&961 */
+#define WKUP_CTRL_MMR0_BASE         (0x43000000UL)
+
+#define CTRLMMR_LOCK1_KICK0         (0x5008U)
+#define CTRLMMR_LOCK1_KICK1         (0x500CU)
+#define CTRLMMR_LOCK2_KICK0         (0x9008U)
+#define CTRLMMR_LOCK2_KICK1         (0x900CU)
+
+#define CTRLMMR_KICK0_UNLOCK_VAL    (0x68EF3490U)
+#define CTRLMMR_KICK1_UNLOCK_VAL    (0xD172BC5AU)
+#define CTRLMMR_KICK0_LOCK_VAL      (0x0U)
+#define CTRLMMR_KICK1_LOCK_VAL      (0x0U)
+#define CTRLMMR_WAS_UNLOCKED        (0x0U)
+#define CTRLMMR_WAS_LOCKED          (0x1U)
+
+/* USB PHY Control Registers, set Voltage and Pll*/
+#define CTRLMMR_USB0_PHY_CTRL   (WKUP_CTRL_MMR0_BASE + 0x4008)
+#define CTRLMMR_USB1_PHY_CTRL   (WKUP_CTRL_MMR0_BASE + 0x4018)
+#define CORE_VOLTAGE            (1 << 31)  //BIT(31), Core Voltage select: 0 - 0.85v, 1 - 0.75/0.80v
+
+#define ARRAY_SIZE(x)       (sizeof(x) / sizeof((x)[0]))
+//Referenced to Table 6-1923&6-1925 in TRM with Field USBx_PHY_CTRL_PLL_REF_SEL / USBx_PHY_CTRL[3:0]
+#define USBSS_CLKCTL_MASK   0x0F  //BIT(3,0)
+
+#define PULLUDEN_SHIFT      (16)
+#define PULLTYPESEL_SHIFT   (17)
+#define RXACTIVE_SHIFT      (18)
+
+#define PULL_DISABLE        (1 << PULLUDEN_SHIFT)
+#define PULL_ENABLE         (0 << PULLUDEN_SHIFT)
+
+#define PULL_UP             (1 << PULLTYPESEL_SHIFT | PULL_ENABLE)
+#define PULL_DOWN           (0 << PULLTYPESEL_SHIFT | PULL_ENABLE)
+
+#define INPUT_EN            (1 << RXACTIVE_SHIFT)
+#define INPUT_DISABLE       (0 << RXACTIVE_SHIFT)
+
+/* Only these macros are expected be used directly in device tree files */
+#define PIN_OUTPUT          (INPUT_DISABLE | PULL_DISABLE)
+#define PIN_OUTPUT_PULLUP   (INPUT_DISABLE | PULL_UP)
+#define PIN_OUTPUT_PULLDOWN (INPUT_DISABLE | PULL_DOWN)
+#define PIN_INPUT           (INPUT_EN | PULL_DISABLE)
+#define PIN_INPUT_PULLUP    (INPUT_EN | PULL_UP)
+
+/* Macro for board specific configurations */
+#define TI_AM62P_E4_ENABLED   1
+
+extern struct callout_rtn   reboot_ti_sci;
+extern int r5_display;
+
+void hw_init(void);
+
+#endif    /* __BOARD_H */
+
+#if defined(__QNXNTO__) && defined(__USESRCVERSION)
+#include <sys/srcversion.h>
+__SRCVERSION("$URL: http://svn.ott.qnx.com/product/branches/7.1.0/trunk/hardware/startup/boards/am62p/evm/board.h $ $Rev: 988992 $")
+#endif

@@ -1,0 +1,13 @@
+diff --git a/source/drivers/bootloader/bootloader_rprc.c b/source/drivers/bootloader/bootloader_rprc.c
+index 3d43c322..8d72286a 100644
+--- a/source/drivers/bootloader/bootloader_rprc.c
++++ b/source/drivers/bootloader/bootloader_rprc.c
+@@ -316,7 +367,7 @@ int32_t Bootloader_verifyMulticoreImage(Bootloader_Handle handle)
+             if(config->bootMedia == BOOTLOADER_MEDIA_FLASH)
+             {
+                 Bootloader_FlashArgs *flashArgs = (Bootloader_FlashArgs *)(config->args);
+-
++				flashArgs->flashType = CONFIG_FLASH_TYPE_INVALID;
+                 if((flashArgs->flashType == CONFIG_FLASH_TYPE_SERIAL_NOR) && (flashAuthStatus == SystemP_SUCCESS))
+                 {
+                     ddrCopy = 0;

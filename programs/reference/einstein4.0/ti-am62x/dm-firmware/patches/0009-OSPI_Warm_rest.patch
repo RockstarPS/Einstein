@@ -1,0 +1,80 @@
+diff --git a/source/drivers/makefile.am62px.wkup-r5f.ti-arm-clang b/source/drivers/makefile.am62px.wkup-r5f.ti-arm-clang
+index 6e900f632..6fe669019 100644
+--- a/source/drivers/makefile.am62px.wkup-r5f.ti-arm-clang
++++ b/source/drivers/makefile.am62px.wkup-r5f.ti-arm-clang
+@@ -148,6 +148,7 @@ FILES_PATH_common = \
+     mcasp/v1/soc/am62px \
+     ospi \
+     ospi/v0 \
++    ospi/v0/ospi_nor_flash.c \
+     ospi/v0/dma \
+     ospi/v0/dma/udma \
+     ospi/v0/ospi_tuning/ospi_tuning_algo/algo_v1 \
+diff --git a/source/drivers/ospi/v0/ospi.h b/source/drivers/ospi/v0/ospi.h
+index 16cfc25d8..ff11f34c1 100644
+--- a/source/drivers/ospi/v0/ospi.h
++++ b/source/drivers/ospi/v0/ospi.h
+@@ -1422,6 +1422,15 @@ int32_t OSPI_disableDdrRdCmds(OSPI_Handle handle);
+  */
+ void OSPI_set1sProtocol(OSPI_Handle handle);
+ 
++/**
++ *  \brief  This function will do OSPI warm reset
++ *
++ *  \param  handle    An #OSPI_Handle returned from an #OSPI_open()
++ *
++ *  \return #SystemP_SUCCESS on success, #SystemP_FAILURE otherwise
++ */
++int32_t OSPI_norFlashSWReset(OSPI_Handle handle);
++
+ /** @} */
+ 
+ #ifdef __cplusplus
+diff --git a/source/drivers/ospi/v0/ospi_nor_flash.c b/source/drivers/ospi/v0/ospi_nor_flash.c
+index dee8dca3d..f39851b8c 100644
+--- a/source/drivers/ospi/v0/ospi_nor_flash.c
++++ b/source/drivers/ospi/v0/ospi_nor_flash.c
+@@ -119,6 +119,43 @@ void OSPI_norFlashSetCmds(uint8_t rdCmd, uint8_t wrCmd, uint8_t eraseCmd)
+     }
+ }
+ 
++int32_t OSPI_norFlashSWReset(OSPI_Handle handle)
++{
++    int32_t status = SystemP_SUCCESS;
++	if(handle != NULL)
++    {
++	    uint8_t cmd;
++
++	    DebugP_log("OSPI_norFlashSWReset \r\n");
++	    /* Reset the Flash */
++	    cmd = OSPI_NOR_CMD_RSTEN;
++	    status = OSPI_norFlashCmdWrite(handle, cmd, 0xFFFFFFFF, NULL, 0);
++	    if(status != SystemP_SUCCESS)
++	    {
++	        DebugP_logError("OSPI_norFlashSWReset OSPI_NOR_CMD_RSTEN status=0x%x \r\n", status);
++	        return status;
++	    }
++	    else
++	    {
++	        cmd = OSPI_NOR_CMD_RST;
++	        status = OSPI_norFlashCmdWrite(handle, cmd, 0xFFFFFFFF, NULL, 0);
++	        if(status != SystemP_SUCCESS)
++	        {
++	            DebugP_logError("OSPI_norFlashSWReset OSPI_NOR_CMD_RST status=0x%x \r\n", status);
++	            return status;
++	        }
++	    }
++	    /* Wait for a while */
++	    uint32_t waitMicro = 500U * 1000U;
++	    ClockP_usleep(waitMicro);
++	}
++	else
++    {
++        status = SystemP_FAILURE;
++    }
++    return status;
++}
++
+ int32_t OSPI_norFlashInit1s1s1s(OSPI_Handle handle)
+ {
+     int32_t status = SystemP_SUCCESS;

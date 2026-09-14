@@ -1,0 +1,98 @@
+################################################################################################
+##
+##  Build file for Neutrino 7.1 on TI AM62x E4_EVK/E4_RUN0 -  Added & Updated by Visteon
+##
+################################################################################################
+
+[-optional]
+[+keeplinked]
+[image=0x80080000]
+[virtual=aarch64le,raw +compress] boot = {
+
+#if VARIANT == EINSTEIN_4_0_A1
+    startup-am62p-e4_a1_reflash -v
+#elif VARIANT == EINSTEIN_4_0_A0
+        startup-am62p-e4_a0_reflash -v
+#endif
+
+    PATH=/proc/boot:/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec
+    LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll:/lib/dll/pci procnto-smp-instr -v
+}
+
+[+script] startup-script = {
+    SYSNAME=nto
+    TERM=qansi
+    ENV=/etc/profile
+
+    procmgr_symlink ../../proc/boot/ldqnx-64.so.2 /usr/lib/ldqnx-64.so.2
+
+    display_msg Welcome to QNX Neutrino 8.0 Reflash OS on TI_AM62P E4.0 RUN0 Platform Board (ARM Cortex-A53)
+
+    slogger2
+
+    /usr/sbin/slm -r none /etc/slm.xml -vvvvvvv
+
+    waitfor /dev/ser1 4
+
+    reopen /dev/ser1
+
+    /bin/reflash.sh
+
+    display_msg "Starting shell ..."
+    [+session] ksh &
+}
+
+
+[search=../install/${PROCESSOR}:../install/${PROCESSOR}/io-sock:../install:${QNX_TARGET}/${PROCESSOR}/io-sock:${QNX_TARGET}/io-sock:${QNX_TARGET}/${PROCESSOR}:${QNX_TARGET}:${BSP_INSTALL_DIR}/${PLATFORM}]
+
+[uid=0 gid=0]
+
+[type=link] /bin/sh=/bin/ksh
+[type=link] /tmp=/dev/shmem
+[type=link] /dev/console=/dev/ser1
+[type=link] /var/log=/tmp
+[type=link] /usr/tmp=/tmp
+
+#include "qnx.bsp.build"
+#include "qnx.core.build"
+#include "qnx.debug.build"
+#include "qnx.filesystem.build"
+#include "qnx.usb.build"
+#include "vc.bsp.build"
+#include "vc.dijkstra.build"
+#include "vc.infra.build"
+#include "vc.reflash.build"
+#include "vc.scripts.build"
+
+################################################################################################
+## General shared libraries
+################################################################################################
+[uid=0 gid=0 perms=0755] ldqnx-64.so.2=usr/lib/ldqnx-64.so.2
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libbz2.so.1=libbz2.so.1
+[type=link] /usr/lib/libbz2.so = /usr/lib/libbz2.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libz.so.2=libz.so.2
+[type=link] /usr/lib/libz.so=/usr/lib/libz.so.2
+[uid=0 gid=0 perms=0755 perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libcrypto.so.3=libcrypto.so.3
+[type=link] /usr/lib/libcrypto.so = /usr/lib/libcrypto.so.3
+
+################################################################################################
+## Reflash Image - QNX Executables
+################################################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin] /usr/bin/flashctl=flashctl
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/tar=tar
+
+################################################################################################
+## ENV profile
+################################################################################################
+/etc/profile = {
+export HOME=/
+export SYSNAME=nto
+export TERM=qansi
+export PATH=/proc/boot:/sbin:/bin:/usr/bin:/usr/sbin:/usr/libexec
+export
+LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll:/lib/dll/pci
+}
+
+################################################################################################
+## END OF BUILD SCRIPT
+################################################################################################

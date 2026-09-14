@@ -1,0 +1,27 @@
+[Unit]
+Description=SAFE HMI APPLICATION
+DefaultDependencies=no
+Before=shutdown.target
+Conflicts=shutdown.target
+After=hostname.service mount_primary.service
+Before=sysinit.target
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+DefaultDependencies=no
+
+
+[Service]
+Type=simple
+ExecStartPre=/sbin/modprobe pvrsrvkm
+ExecStartPre=/usr/bin/boot_kpi_logger safehmi_start
+ExecStart=/app/usr/bin/safeHmi/safeHmi
+WorkingDirectory=/app/usr/bin/safeHmi
+ExecStartPost=/usr/bin/boot_kpi_logger safehmi_end
+Restart=always
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+
+[Install]
+WantedBy=sysinit.target

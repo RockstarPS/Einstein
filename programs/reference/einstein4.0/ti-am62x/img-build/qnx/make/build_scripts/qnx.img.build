@@ -1,0 +1,28 @@
+
+###########################################################################
+## QNX Images Build File
+###########################################################################
+
+###########################################################################
+## QNX Image Configuration Files
+###########################################################################
+#Not available under QNX8 SDP
+#[perms=0777 search=${QNX_TARGET}/etc/system/config]   /etc/system/config/img.conf=img.conf
+
+###########################################################################
+## QNX Image Binaries
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]    /usr/bin/screenshot=screenshot
+
+###########################################################################
+## QNX Image Libraries
+###########################################################################
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]     /lib/libimg.so.1 =libimg.so.1
+#[type=link] /usr/lib/libimg.so = ./libimg.so.1
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libpng.so=libpng.so
+#[type=link] /usr/lib/libpng16.so = ./libpng.so
+#[type=link] /lib/libjpeg.so = ./libjpeg.so.9
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]   /usr/lib/img_codec_bmp.so=img_codec_bmp.so
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]   /usr/lib/img_codec_jpg.so=img_codec_jpg.so
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]   /usr/lib/img_codec_png.so=img_codec_png.so
+

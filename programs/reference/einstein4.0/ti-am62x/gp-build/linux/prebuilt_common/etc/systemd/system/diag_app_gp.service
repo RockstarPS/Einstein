@@ -1,0 +1,18 @@
+[Unit]
+Description=diag_app
+After=vmf.service ucl_proxy_vmf.service network_mgr.service health_mgr.service
+Requires=vmf.service ucl_proxy_vmf.service
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/diag_app_gp
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

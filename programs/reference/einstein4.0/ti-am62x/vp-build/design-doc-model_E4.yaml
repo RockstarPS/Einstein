@@ -1,0 +1,36 @@
+# Design Document Generator model for Toyota PlatformTVII.
+#
+# Run from the repository root after building/extracting the WSL package:
+#   wsl -e bash -lc "cd /mnt/d/DocGen/ecuplatformconfigurator && release/tools/design-doc-wsl-generator/design-doc-generate --config docs/design-doc-model.toyota.yaml"
+
+schema_version: 1
+project:
+  name: EINSTIEN4.0_VP
+  variant: EINSTEIN_4_0_A1
+  target: einstein4.0
+
+inputs:
+  elf: /home/sgopal1/am62p/platform_am62p/programs/reference/einstein4.0/ti-am62x/out/VP_Platform/EINSTEIN_4_0_A1/release/EINSTIEN4.0_VP/EINSTIEN4.0_VP.out
+  map: /home/sgopal1/am62p/platform_am62p/programs/reference/einstein4.0/ti-am62x/out/VP_Platform/EINSTEIN_4_0_A1/release/EINSTIEN4.0_VP/EINSTIEN4.0_VP.map
+  build_ninja: /home/sgopal1/am62p/platform_am62p/programs/reference/einstein4.0/ti-am62x/out/VP_Platform/EINSTEIN_4_0_A1/release/build.ninja
+  source_root: /home/sgopal1/am62p/platform_am62p
+  build_root: /home/sgopal1/am62p/platform_am62p/programs/reference/einstein4.0/ti-am62x/out/VP_Platform/EINSTEIN_4_0_A1/release
+  hardware_target: R5F
+
+wsl:
+  distro: Ubuntu-24.04
+  workspace_root: /home/sgopal1/am62p/platform_am62p
+
+output:
+  directory: /mnt/c/design_doc_output
+  formats:
+    - html
+    - docx
+  overwrite: true
+
+generation:
+  strict_source: false
+  best_effort: false
+
+objects:
+  - FltM.c.obj

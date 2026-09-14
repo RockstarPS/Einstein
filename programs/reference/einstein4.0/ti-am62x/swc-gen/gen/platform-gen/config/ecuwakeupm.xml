@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<name>vPlatform</name>
+	<modules>
+		<module>
+			<name>EcuWakeupM</name>
+    		<periodicity>10</periodicity>
+			<validation>enable</validation>
+    		<gen-path>..\gen-files</gen-path>
+			<dev-error>STD_ON</dev-error>
+			<verbose>1</verbose>
+			<general-config>
+				<ecum-power-source  	  type="uint32">ECUM_WKSOURCE_POWER</ecum-power-source>
+				<ecuappm-notify-api 	  type="EcuWakeupM_FuncPtrType_t">EcuAppM_SetWakeupSources</ecuappm-notify-api>
+				<service-layer-notify-api type="EcuWakeupM_FuncPtrType1_t">EcuM_SetWakeupEvent</service-layer-notify-api>
+				<service-layer-read-api   type="EcuWakeupM_FuncPtrType2_t">EcuM_GetValidatedWakeupEvents</service-layer-read-api>
+			</general-config>
+			<wakeup-channels>
+				<wakeup-channel name="IGN">
+					<wakeup-type				type="EcuWakeupM_WakeupType">EXTERNAL</wakeup-type>
+					<driver-channel-id     		type="EcuWakeupM_LowlevelDrvChannelType">IcuConf_IcuChannel_DI_AH_IGNITION</driver-channel-id>
+					<ecum-wakeup-source			type="EcuWakeupM_EcuMWakeupSourceType">ECUM_WKSOURCE_RESET</ecum-wakeup-source>
+					<wakeup-port-id				type="EcuWakeupM_WakeupPortIdType">PortConf_PortPin_DI_AH_IGNITION</wakeup-port-id>
+					<wakeup-port-alternate-mode	type="EcuWakeupM_WakeupPortModeType">ECUWAKEUPM_PORT_MODE_INVALID</wakeup-port-alternate-mode>
+					<low-level-driver     		type="EcuWakeupM_GetDrvTblType">ICU</low-level-driver>
+					<user-notify-api			type="EcuWakeupM_FuncPtrVoidType_t">NULL_PTR</user-notify-api>
+				</wakeup-channel>
+			</wakeup-channels>
+		 </module>
+	 </modules>
+</project>

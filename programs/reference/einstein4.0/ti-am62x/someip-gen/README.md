@@ -1,0 +1,1 @@
+SOMEIP-GEN for E4.0 (BMW MIC-NEXT)

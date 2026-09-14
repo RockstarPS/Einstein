@@ -1,0 +1,64 @@
+
+###########################################################################
+## Visteon Infrastructure Build File
+###########################################################################
+
+###########################################################################
+## Infrastructure Executables
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/secure_qtd_mount=secure_qtd_mount
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/vmf = vmf
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/bl_app_gp = bl_app_gp
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/bl_ucl_proxy_vmf = bl_ucl_proxy_vmf
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/vmf_listener = vmf_listener
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/vmf_sender = vmf_sender
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/wdg_proxy = wdg_proxy
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/ucl_proxy_vmf = ucl_proxy_vmf
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/bspatch = bspatch
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/boot_kpi = boot_kpi
+
+###########################################################################
+## Infrastructure Libraries
+###########################################################################
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libcrc.so.0.11.0 = libcrc.so.0.11.0
+#[type=link] /usr/lib/libcrc.so = /usr/lib/libcrc.so.0.11.0
+#[type=link] /usr/lib/libcrc.so.0 = /usr/lib/libcrc.so.0.11.0
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]         /usr/lib/libxml2.so.2=libxml2.so.2
+[type=link] /usr/lib/libxml2.so = /system/usr/lib/libxml2.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]         /usr/lib/liblzma.so.5=liblzma.so.5
+[type=link] /usr/lib/liblzma.so = /system/usr/lib/liblzma.so.5
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]         /usr/lib/libiconv.so.1=libiconv.so.1
+[type=link] /usr/lib/libiconv.so= /system/usr/lib/libiconv.so.1
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libe2e.so.0.11.0 = libe2e.so.0.11.0
+#[type=link] /usr/lib/libe2e.so = /usr/lib/libe2e.so.0.11.0
+#[type=link] /usr/lib/libe2e.so.0 = /usr/lib/libe2e.so.0.11.0
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/lib/libvmf_client.so = libvmf_client.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libvmf_trace.so = libvmf_trace.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_wdg_client.so = libdk_wdg_client.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libucl_vmf.so = libucl_vmf.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libUclCommon.so = libUclCommon.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libUclDL.so = libUclDL.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libmetadata.so = libmetadata.so
+
+
+###########################################################################
+## Infrastructure Configurations
+###########################################################################
+#ifdef SECURE_FS
+[search=${BSP_INSTALL_DIR}/etc] /etc/qtd.conf = secure-qtd.conf
+#else
+[search=${BSP_INSTALL_DIR}/etc] /etc/qtd.conf = qtd.conf
+#endif
+
+#if IFS_TYPE == IFS_TYPE_PRIMARY
+#ifdef SECURE_MAC
+[search=${BSP_INSTALL_DIR}/etc] /etc/slm.xml = slm-primary-secure.xml
+#else
+[search=${BSP_INSTALL_DIR}/etc] /etc/slm.xml = slm-primary.xml
+#endif
+#elif IFS_TYPE == IFS_TYPE_REFLASH
+[search=${BSP_INSTALL_DIR}/etc] /etc/slm.xml = slm-reflash.xml
+#elif IFS_TYPE == IFS_TYPE_RECOVERY
+[search=${BSP_INSTALL_DIR}/etc] /etc/slm.xml = slm-recovery.xml
+#endif
+

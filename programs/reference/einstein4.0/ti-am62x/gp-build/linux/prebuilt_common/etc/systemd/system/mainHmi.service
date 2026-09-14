@@ -1,0 +1,24 @@
+[Unit]
+Description=HMI Sample Application mainHmi
+DefaultDependencies=no
+Before=shutdown.target
+Conflicts=shutdown.target
+After=hostname.service mount_primary.service
+Before=sysinit.target
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+
+[Service]
+Type=simple
+ExecStartPre=/sbin/modprobe pvrsrvkm
+ExecStart=/app/usr/bin/mainHmi/mainHmi
+WorkingDirectory=/app/usr/bin/mainHmi
+Restart=always
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+
+[Install]
+WantedBy=sysinit.target

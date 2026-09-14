@@ -1,0 +1,17 @@
+[Unit]
+Description=VMF Server Application
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vmf
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

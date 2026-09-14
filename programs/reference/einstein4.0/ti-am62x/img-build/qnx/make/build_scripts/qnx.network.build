@@ -1,0 +1,76 @@
+
+###########################################################################
+## QNX Networking Build File
+###########################################################################
+
+###########################################################################
+## QNX Executables - General Commands
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]        /sbin/pfctl = pfctl
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin] 		/sbin/io-pkt-v4-hc = io-pkt-v4-hc
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin] 		/sbin/ifconfig=ifconfig
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]	/usr/sbin/if_up=if_up
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]        /sbin/devc-pty=devc-pty
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]    /usr/sbin/qconn=qconn
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]    /usr/sbin/inetd=inetd
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]    /usr/sbin/fs-nfs3=fs-nfs3
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]     /usr/bin/hogs=hogs
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin] /sbin/io-sock=io-sock
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin] /sbin/random=random
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin] /sbin/ping=ping
+
+
+###########################################################################
+## QNX Libraries
+###########################################################################
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]         /lib/dll/lsm-pf-v4.so = lsm-pf-v4.so
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libsocket.so.3 = libsocket.so.3
+#[type=link] /lib/libsocket.so = /lib/libsocket.so.3
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /lib/libqcrypto.so.1.0 = libqcrypto.so.1.0
+[type=link] /lib/libqcrypto.so=/system/lib/libqcrypto.so.1.0
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /lib/libcrypto.so.3 = libcrypto.so.3
+[type=link] /lib/libcrypto.so=/system/lib/libcrypto.so.3
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /lib/libfdt.so.1 = libfdt.so.1
+[type=link] /lib/libfdt.so=/system/lib/libfdt.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/qcrypto-openssl-3.so = qcrypto-openssl-3.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devs-cpsw-am62p.so = devs-cpsw-am62p.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devs-axe.so = devs-axe.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devs-axge.so = devs-axge.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devs-smsc.so = devs-smsc.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devs-cdce.so = devs-cdce.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/mods-phy_fdt.so = mods-phy_fdt.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/mods-fdt.so = mods-fdt.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/mods-phy.so = mods-phy.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/mods-usb.so = mods-usb.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib/dll] /lib/devu-hcd-xhci.so = devu-hcd-xhci.so
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libjail.so.1 = libjail.so.1
+[type=link] /lib/libjail.so=/system/lib/libjail.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libti-pdk.so.1 = libti-pdk.so.1
+[type=link] /lib/libti-pdk.so /system/lib/libti-pdk.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libti-sciclient.so = libti-sciclient.so
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libti-sciclient.so.1 = libti-sciclient.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libtiudma-usr.so = libtiudma-usr.so
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libtiudma-usr.so.1 = libtiudma-usr.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libti-udmalld.so = libti-udmalld.so
+[uid=0 gid=0 perms=0755 search=${QNX_BASE}/../../../../../cluster-platform/dijkstra/bsp/ti/am62x/qnx8-psdk/psdkqa/qnxfs/tilib] /lib/libti-udmalld.so.1 = libti-udmalld.so.1
+
+
+[uid=0 gid=0 perms=0755]/usr/sbin/start_usb_ethernet.sh = {
+#!/bin/sh
+random
+waitfor /dev/random 4
+io-usb-otg -d dwc3-xhci ioport=0x31000000,irq=220
+waitfor /dev/usb/io-usb-otg 4
+io-sock -m phy -m usb -d axe
+if_up -p axe0
+ifconfig axe0 192.168.1.10 netmask 255.255.255.0
+qconn port=8000
+}
+
+
+[uid=0 gid=0 perms=0755]/usr/sbin/start_automotive_ethernet.sh = {
+#!/bin/sh
+random
+waitfor /dev/random 4
+io-sock -m fdt -m phy -m phy_fdt -d cpsw-am62p
+}

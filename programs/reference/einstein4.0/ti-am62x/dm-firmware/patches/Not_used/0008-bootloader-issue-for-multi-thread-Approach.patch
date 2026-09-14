@@ -1,0 +1,95 @@
+diff --git a/source/drivers/bootloader/bootloader_rprc.c b/source/drivers/bootloader/bootloader_rprc.c
+index 3d43c322c..e8842d2c1 100644
+--- a/source/drivers/bootloader/bootloader_rprc.c
++++ b/source/drivers/bootloader/bootloader_rprc.c
+@@ -68,6 +68,57 @@ extern Bootloader_Config gBootloaderConfig[];
+ extern Bootloader_Config gMemBootloaderConfig;
+ extern uint32_t gBootloaderConfigNum;
+ 
++extern BootloaderDma_UdmaArgs gBootloaderUdmaArgs;
++extern void* operatingMode;
++
++/*
++ * Since HSM and MCU images are loaded sequentially
++ * in the NOR bootloader thread, it's okay to have
++ * a common memory bootloader instance
++ */
++Bootloader_MemArgs gNorMemBootloaderArgs =
++{
++    .curOffset = 0,
++    .appImageBaseAddr = 0,
++    .enableDmaTransfer = true,
++    .bootloaderDmaUdmaArgs = &gBootloaderUdmaArgs,
++    .isDmaOpen = FALSE,
++};
++
++Bootloader_Config gNorMemBootloaderConfig =
++{
++    &gBootloaderMemFxns,
++    &gNorMemBootloaderArgs,
++    BOOTLOADER_MEDIA_MEM,
++    0,
++    0,
++    NULL,
++    .socCoreOpMode= (void *)&operatingMode,
++    TRUE,
++};
++
++/* Memory bootloader instance for the images loaded from the eMMC */
++Bootloader_MemArgs geMMCMemBootloaderArgs =
++{
++    .curOffset = 0,
++    .appImageBaseAddr = 0,
++    .enableDmaTransfer = true,
++    .bootloaderDmaUdmaArgs = &gBootloaderUdmaArgs,
++    .isDmaOpen = FALSE,
++};
++
++Bootloader_Config geMMCMemBootloaderConfig =
++{
++    &gBootloaderMemFxns,
++    &geMMCMemBootloaderArgs,
++    BOOTLOADER_MEDIA_MEM,
++    0,
++    0,
++    NULL,
++    .socCoreOpMode= (void *)&operatingMode,
++    TRUE,
++};
++
+ /* ========================================================================== */
+ /*                          Function Declarations                             */
+ /* ========================================================================== */
+@@ -632,12 +683,23 @@ void Bootloader_BootImageInfo_init(Bootloader_BootImageInfo *bootImageInfo)
+ 
+ static Bootloader_Config* Bootloader_getMemBootloaderConfig(Bootloader_Handle handle)
+ {
++    Bootloader_Config* localMemConfig = NULL;
++
+     if(handle && ((Bootloader_Config *)handle)->scratchMemPtr)
+     {
+-        ((Bootloader_MemArgs*)gMemBootloaderConfig.args)->appImageBaseAddr = (uint32_t)((Bootloader_Config *)handle)->scratchMemPtr;
++        if(((Bootloader_Config *)handle)->bootMedia == BOOTLOADER_MEDIA_FLASH)
++        {
++            ((Bootloader_MemArgs*)gNorMemBootloaderConfig.args)->appImageBaseAddr = (uint32_t)((Bootloader_Config *)handle)->scratchMemPtr;
++            localMemConfig = &gNorMemBootloaderConfig;
++        }
++        else
++        {
++            ((Bootloader_MemArgs*)geMMCMemBootloaderConfig.args)->appImageBaseAddr = (uint32_t)((Bootloader_Config *)handle)->scratchMemPtr;
++            localMemConfig = &geMMCMemBootloaderConfig;
++        }
+     }
+ 
+-    return &gMemBootloaderConfig;
++    return localMemConfig;
+ }
+ 
+ int32_t Bootloader_parseAppImage(Bootloader_Handle handle, Bootloader_BootImageInfo *bootImageInfo)
+@@ -704,4 +766,4 @@ int32_t Bootloader_parseAppImage(Bootloader_Handle handle, Bootloader_BootImageI
+     }
+ 
+     return status;
+-}
+\ No newline at end of file
++}

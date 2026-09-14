@@ -1,0 +1,44 @@
+
+###########################################################################
+## QNX SSH Configuration Build File
+###########################################################################
+
+###########################################################################
+## QNX Executables - General Commands
+###########################################################################
+[uid=0 gid=0 perms=0755] /usr/sbin/ssh-keygen=ssh-keygen
+[uid=0 gid=0 perms=0755] /usr/sbin/sshd=sshd
+[uid=0 gid=0 perms=0755] /usr/bin/ssh=ssh
+[uid=0 gid=0 perms=0755] /usr/bin/scp=scp
+
+###########################################################################
+## QNX Libraries
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]   /usr/lib/libpam.so.2 = libpam.so.2
+[uid=0 gid=0 perms=0755] /usr/lib/libpam.so.2=libpam.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]   /usr/lib/libz.so.2 = libz.so.2
+[type=link] /usr/lib/libz.so = /usr/lib/libz.so.2
+
+[uid=0 gid=0 type=dir dperms=0700] /var/chroot
+[uid=0 gid=0 type=dir dperms=0700] /var/chroot/sshd
+
+###########################################################################
+## SSH Configuration Files and Keys
+###########################################################################
+[search=${BSP_INSTALL_DIR}/etc/ssh perms=0600]/etc/ssh/ssh_host_rsa_key=ssh_host_rsa_key
+[search=${BSP_INSTALL_DIR}/etc/ssh perms=0644]/etc/ssh/ssh_host_rsa_key.pub=ssh_host_rsa_key.pub
+[search=${BSP_INSTALL_DIR}/etc/ssh perms=0600]/etc/ssh/ssh_host_ecdsa_key=ssh_host_ecdsa_key
+[search=${BSP_INSTALL_DIR}/etc/ssh perms=0644]/etc/ssh/ssh_host_ecdsa_key.pub=ssh_host_ecdsa_key.pub
+
+[type=dir] /usr/libexec
+/usr/libexec/sftp-server = ${QNX_TARGET}/${PROCESSOR}/usr/libexec/sftp-server
+
+[search=${BSP_INSTALL_DIR}/etc/ssh uid=0 gid=0 perms=0777]/etc/ssh/sshd_config=sshd_config
+[search=${BSP_INSTALL_DIR}/etc/ssh]/etc/services=services
+[search=${BSP_INSTALL_DIR}/etc/ssh]/etc/inetd.conf=inetd.conf
+[search=${BSP_INSTALL_DIR}/etc/ssh uid=0 gid=0 perms=0644]/etc/passwd=passwd
+
+## Enabled Username/Password: root/root, qnxuser/qnxuser
+[search=${BSP_INSTALL_DIR}/etc/ssh uid=0 gid=0 perms=0600]/etc/shadow=shadow
+[search=${BSP_INSTALL_DIR}/etc/ssh uid=0 gid=0 perms=0644]/etc/group=group
+

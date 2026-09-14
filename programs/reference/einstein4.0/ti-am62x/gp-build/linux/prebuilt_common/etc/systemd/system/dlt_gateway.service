@@ -1,0 +1,18 @@
+[Unit]
+Description=DLT Gateway
+After=vmf.service dlt-daemon.service
+Wants=vmf.service dlt-daemon.service
+Before=shutdown.target
+Conflicts=shutdown.target
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/dlt_gateway
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=5
+
+[Install]
+WantedBy=sysinit.target

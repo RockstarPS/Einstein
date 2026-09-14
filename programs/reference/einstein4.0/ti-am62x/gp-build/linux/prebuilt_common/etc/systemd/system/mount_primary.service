@@ -1,0 +1,21 @@
+[Unit]
+Description=Secure QTD Mount Service - Primary
+DefaultDependencies=no
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+Before=shutdown.target
+Conflicts=shutdown.target
+#ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/secure_qtd_mount -c /etc/primary-qtd.conf
+Restart=on-failure
+StartLimitInterval=5min
+StartLimitBurst=4
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

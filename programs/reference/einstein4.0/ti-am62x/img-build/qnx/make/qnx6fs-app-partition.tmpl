@@ -1,0 +1,39 @@
+
+### App Partition Build File
+###
+### [2022] Visteon Corporation
+### All Rights Reserved.
+
+#ifdef SECURE_FS
+[num_sectors=1032192]
+#else
+[num_sectors=524288]
+#endif
+
+[uid=0 gid=0 perms=0777 dperms=0777]
+
+###########################################################################
+## Create Required Directories
+###########################################################################
+[type=dir] /bin
+[type=dir] /etc
+[type=dir] /lib
+[type=dir] /lib/dll
+[type=dir] /usr
+[type=dir] /usr/bin
+[type=dir] /usr/lib
+[type=dir] /usr/sbin
+[type=dir] /sbin
+
+#include "vc.hmi.build"
+
+#if (VARIANT == EINSTEIN_4_0_A1 ||  VARIANT == EINSTEIN_4_0_A0)
+#include "qnx.graphics.build"
+#endif
+
+## REVISION HISTORY
+# Version: 1.0
+# Description: Initial Version
+# Author: Karthik Shanmugam
+# Date: 20220629
+

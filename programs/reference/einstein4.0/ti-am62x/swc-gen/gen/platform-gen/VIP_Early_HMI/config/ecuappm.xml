@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<name>vPlatform</name>
+	<modules>
+		<module>
+			<name>EcuAppM</name>
+    		<periodicity>10</periodicity>
+			<validation>enable</validation>
+    		<gen-path>..\gen-files</gen-path>
+			<verbose>1</verbose>
+			<wakeup-sources>
+				<wakeup-source name="BATTERY">
+					<wakeup-mask     type="uint32">ECUM_WKSOURCE_POWER</wakeup-mask>
+					<validation-time type="uint16">0</validation-time>
+					<wakeup-reaction type="uint8">FULL</wakeup-reaction>
+				</wakeup-source>
+				<wakeup-source name="CAN">
+					<wakeup-mask     type="uint32">ECUM_WKSOURCE_CAN</wakeup-mask>
+					<validation-time type="uint16">20</validation-time>
+					<wakeup-reaction type="uint8">FULL</wakeup-reaction>
+				</wakeup-source>
+				<wakeup-source name="RTC">
+					<wakeup-mask     type="uint32">ECUM_WKSOURCE_RTC</wakeup-mask>
+					<validation-time type="uint16">10</validation-time>
+					<wakeup-reaction type="uint8">PARTIAL</wakeup-reaction>
+				</wakeup-source>
+				<wakeup-source name="MEET">
+					<wakeup-mask     type="uint32">ECUM_WKSOURCE_MEET</wakeup-mask>
+					<validation-time type="uint16">10</validation-time>
+					<wakeup-reaction type="uint8">PARTIAL</wakeup-reaction>
+				</wakeup-source>
+			</wakeup-sources>
+			<groups-config>
+				<group-general-config>
+					<activation-type    type="uint8" >ASYNCHRONUS</activation-type>
+					<min-active-time    type="uint16" >100</min-active-time>
+				</group-general-config>
+				<group name="Power">
+					<wakeup-source-mask type="uint32">0x100FF</wakeup-source-mask>
+					<activation-phase   type="uint8" >PRE_GROUP0</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="EcuPowerM" api="standard-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CCDD_EcuPowerM_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="PmicCdd" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CPmicCdd_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+   		 			</components>
+				</group>
+				<group name="SystemControl">
+					<wakeup-source-mask type="uint32">0x100FF</wakeup-source-mask>
+					<activation-phase   type="uint8" >PRE_GROUP1</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="FltM" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CFltM_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+	 			</component>
+				<component name="RstMgr" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CRstM_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="EcuBatteryM" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CCDD_EcuBatteryM_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="SafeNvm" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CSafeNvM_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="MemAbstractMdl" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_MemAbstractMdl_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+					</components>
+				</group>
+				<group name="Group2">
+					<wakeup-source-mask type="uint32">0x100FF</wakeup-source-mask>
+					<activation-phase   type="uint8" >GENERIC_GROUP</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="ComAbsMdl" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CComAbsMdl_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="ComAbsMdlSafe" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CComAbsMdlSafe_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+					<component name="ComAbsCtrl" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CComAbsCtrl_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="DisplayCdd" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CDisplayCdd_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="BacklightCdd" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CBacklightCdd_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+   		 			</components>
+				</group>
+				<group name="Group3">
+					<wakeup-source-mask type="uint32">0x000FF</wakeup-source-mask>
+					<activation-phase   type="uint8" >GENERIC_GROUP</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="CRTCCdd" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CRTCCdd_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="GdtCdd" api="autosar-api">
+					<rport>rp_CmpLibCmd</rport>
+					<life-cycle-api>rp_CmpLibCmd_CGdtCdd_Impl_OnCommand</life-cycle-api>
+					<status-notify-api>NULL_PTR</status-notify-api>
+				</component>
+				<component name="SigCdd" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CSigCdd_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+                <component name="SwcDispMon" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CSwcDispMonSf_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+	 	 			</components>
+			</group>
+			<group name="Group4">
+					<wakeup-source-mask type="uint32">0x000FF</wakeup-source-mask>
+					<activation-phase   type="uint8" >GENERIC_GROUP</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="DmnMgr" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CDmnMgr_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="Ctrl_WSS" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_Ctrl_WSS_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="Ctrl_Telltale" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CCtrl_Telltale_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="View_Telltale" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CView_Telltale_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="WarnMsg_Core_Observer" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CWarnMsg_Core_Observer_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="Ctrl_Illumination" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CCtrl_Illumination_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="View_Illumination" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CView_Illumination_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+				<component name="DcmApp_" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_CDcmArp_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+					</components>
+				</group>
+				<group name="Group5">
+					<wakeup-source-mask type="uint32">0x10000</wakeup-source-mask>
+					<activation-phase   type="uint8" >GENERIC_GROUP</activation-phase>
+					<safety-level       type="uint8" >QM</safety-level>
+					<deactivation-type  type="uint8" >SHUTDOWN</deactivation-type>
+					<fail-safe-timeout  type="uint16">1000</fail-safe-timeout>
+					<attributes         type="uint8" >0x00</attributes>
+   		 			<components>
+				<component name="CMeetCdd" api="autosar-api">
+                    <rport>rp_CmpLibCmd</rport>
+                    <life-cycle-api>rp_CmpLibCmd_MeetCdd_Impl_OnCommand</life-cycle-api>
+                    <status-notify-api>NULL_PTR</status-notify-api>
+                </component>
+					</components>
+			</group>
+			</groups-config>
+		 </module>
+	 </modules>
+</project>

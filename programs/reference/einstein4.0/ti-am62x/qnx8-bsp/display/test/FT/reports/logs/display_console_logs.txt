@@ -1,0 +1,534 @@
+
+# +IPL
++Load
+Load primary IFS A
+Error: SECO Events increased -> Authentication of Image failed
+Authentication Failed.
+Lifecycle:00000020 Will boot
+-Load
+Authenticate QNX-IFS image...
+Error: SECO Events increased -> Authentication of Image failed
+Authenticate of QNX-IFS image failed!
+Current lifecycle is:00000020 hence will boot
+QNX-IFS image authenticated.
+Found image               @ 0x88002000
+Jumping to startup        @ 0x83000800
+
++Startup
+board_smp_num_cpu: 2 cores
+-Startup
+MMFLAGS=201
+Welcome to QNX700 on the NXP i.MX8DX Renault RSA1025PH2 RUN1 Board (ARM Cortex-A35)
+setting env variables.
+No security policy configured, type IDs will be ignored
+# Path=0 - imx
+ target=0 lun=0     Direct-Access(0) - SDMMC: 8GUF4R Rev: 3.9
+
+VMF build time: 2020-10-14 13:02:35 by undefined
+Unknown option: Daemonize=1
+[    1.149056]~DLT~98330~NOTICE   ~Starting DLT Daemon; DLT Package Version: 2.18.5 STABLE, Package Revision: , build on Sep 14 2021 08:05:18
+-SYSTEMD -SYSTEMD_WATCHDOG -TEST -SHM
+
+[    1.160056]~DLT~98330~INFO     ~Activate connection type: 4
+[    1.161056]~DLT~98330~INFO     ~dlt_daemon_socket_open: Socket created
+[    1.168056]~DLT~98330~INFO     ~dlt_daemon_socket_open: Listening on ip 0.0.0.0 and port: 3490
+[    1.176056]~DLT~98330~INFO     ~dlt_daemon_socket_open: Socket send queue size: 22528
+[    1.184056]~DLT~98330~INFO     ~Activate connection type: 1
+[    1.187056]~DLT~98330~INFO     ~Activate connection type: 9
+[    1.194056]~DLT~98330~WARNING  ~dlt_daemon_applications_load: cannot open file /tmp/dlt-runtime-application.cfg: No such file or directory
+nw_vmf_router_msg_send - Client queue overflow! cid=17, name==hmi_app,HmiAp, send error = -32, msg_size=85!
+[    1.211056]~DLT~98330~INFO     ~Cannot open configuration file: /tmp/dlt-runtime.cfg
+ time=1202 pid=98325 --> group=0x4d,event=0x20,data-len=0x3b data=00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[    1.223056]~DLT~98330~INFO     ~Ringbuffer configuration: 500000/10000000/500000
+[    1.252056]~DLT~98330~NOTICE   ~Failed to open ECU Software version file.
+[    1.259056]~DLT~98330~ERROR    ~Handle error
+[    1.261056]~DLT~98330~ERROR    ~dlt_daemon_logstorage_setup_internal_storage: Device connect failed
+[    1.270056]~DLT~98330~INFO     ~Setting up internal offline log storage failed!
+[    1.278056]~DLT~98330~INFO     ~Switched to buffer state for socket connections.
+[    1.286056]~DLT~98330~INFO     ~Activate connection type: 5
+[    1.288056]~DLT~98330~INFO     ~Activate connection type: 5
+[    1.295056]~DLT~98330~NOTICE   ~Send log-level to context: RESM:RESC [-1 -> 4] [-1 -> 0]
+[    1.302056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:QSYC [-1 -> 4] [-1 -> 0]
+[    1.303056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:QSLA [-1 -> 4] [-1 -> 0]
+[    1.311056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:SRCN [-1 -> 4] [-1 -> 0]
+[    1.312056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:SLM  [-1 -> 4] [-1 -> 0]
+[    1.313056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:UCL  [-1 -> 4] [-1 -> 0]
+[    1.321056]~DLT~98330~NOTICE   ~Send log-level to context: QSYM:RESM [-1 -> 4] [-1 -> 0]
+
+#
+#
+# pidin a
+     pid Arguments
+       1 procnto-smp-instr -ae -m~x -mr
+       2 ksh /proc/boot/.console.sh
+       3 slm -r none /etc/slm.xml -vvvvvvv
+    8197 /usr/sbin/ham
+    8198 /bin/slogger2
+    8199 /sbin/pipe
+   12297 /sbin/sc-imx8
+   20488 /usr/sbin/ham -g
+   20491 /usr/sbin/dumper -d /data/core_dumps -s 10M -I -N 10 -w -z 9
+   24586 /sbin/devc-sermx8 -e -F -S -u 1 0x5A060000,257
+   24589 /bin/wdtkick-sc-imx8 -t 5000
+   32780 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+   36878 /sbin/screen -c /usr/lib/graphics/iMX8QXP/graphics.conf
+   45060 ksh ksh
+   49167 /usr/sbin/vpu-decoder-mx8
+   53264 /sbin/io-pkt-v4-hc -ptcpip pkt_typed_mem=below4G,mclbytes=4096
+   53266 /sbin/mq
+   61457 /sbin/devb-sdmmc-mx8x qnx6 trim=enable cam cache,user=35:101,ra=128k:4096k,memory=sysram&below4G:sysram,maxio=256,cache=16m disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@ sdmmc poweroff_notify=short,bkops=auto sdio idx=0,bs=emmc:bw=8:tuning=standard
+   69651 /usr/bin/vmf
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+   81942 /usr/bin/power_mgr
+   81943 /usr/bin/ucl_proxy_vmf
+   86040 /usr/bin/display_mgr
+   98325 /app/usr/bin/hmi_app
+   98329 /system/usr/sbin/random -p
+   98330 /system/bin/dlt-daemon -c /system/etc/dlt.conf
+   98333 /system/usr/sbin/fs-nfs2 192.168.1.5:X: /share
+  106523 /system/bin/res_mon -p -u
+  110622 /system/usr/bin/meet_app
+  131103 /system/bin/dlt-qnx-system -c /system/etc/dlt-qnx-system.conf
+  143388 /usr/bin/wdg_proxy
+  155680 pidin a
+  
+  
+# gles3-gears &
+[1] 188448
+# 301 frames in  5.010 seconds = 60.080 FPS
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.016 seconds = 60.008 FPS
+----------------------------------------------------------
+#
+# ls /dev/display/display0
+power    state
+# 301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+ls /dev/thermal/thermal0/temperature301 
+frames in  5.015 seconds = 60.020 FPS
+type     value
+-------------------------------------------------------
+# display_rm_test -p1 -w1
+executing set display power  test case
+display_test::errno=0:"No error"
+devctl_ret=0:"No error"
+
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.016 seconds = 60.008 FPS
+--------------------------------------------------------
+# display_rm_test -p1 -w0
+executing set display power  test case
+display_test::errno=0:"No error"
+devctl_ret=0:"No error"
+301 frames in  5.015 seconds = 60.020 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+---------------------------------------------------------
+#  echo 0 > /dev/display/display0/power
+301 frames in  5.016 seconds = 60.008 FPS
+#
+cat /dev/display/display0/state
+OFF
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+.---------------------------------------------------------
+#  echo 1 > /dev/display/display0/power
+301 frames in  5.015 seconds = 60.020 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+# cat /dev/display/display0/state
+ON
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.016 seconds = 60.008 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+------------------------------------------------------------
+#
+# 301 frames in  5.008 seconds = 60.104 FPS
+
+# cat /dev/thermal/thermal0/temperature/value
+0
+# 301 frames in  5.016 seconds = 60.008 FPS
+----------------------------------------------------------
+# display_rm_test -t2
+display_thermaltest::errno=0:"No error"
+display_thermaltest::temp read type = LCD
+301 frames in  5.015 seconds = 60.020 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+-----------------------------------------------------------
+# 301 frames in  5.016 seconds = 60.008 FPS
+cat /dev/thermal/thermal0/temperature/type
+LCD
+# 301 frames in  5.015 seconds = 60.020 FPS
+
+----------------------------------------------------------
+# 301 frames in  5.016 seconds = 60.008 FPS
+#
+# display_rm_test -t1
+display_thermaltest::errno=0:"No error"
+display_thermaltest::temp read value = 0
+# 301 frames in  5.016 seconds = 60.008 FPS
+
+-------------------------------------------------------------
+# 301 frames in  5.015 seconds = 60.020 FPS
+cat /dev/display/display0/state
+OFF
+# 301 frames in  5.015 seconds = 60.020 FPS
+301 frames in  5.015 seconds = 60.020 FPS
+
+---------------------------------------------------------------
+
+
+# pidin a | grep resmgr
+   28685 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  155681 grep resmgr
+#
+# kill 28685
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  176141 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  180257 grep resmgr
+# kill 176141
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  200717 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  204833 grep resmgr
+#
+#
+# kill 200717
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  225293 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  229409 grep resmgr
+# kill 25293
+ksh: kill: 25293: No such process
+# kill 225293
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  249869 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  253985 grep resmgr
+#
+# kill 249869
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  274445 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  278561 grep resmgr
+# kill 274445
+#
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  299021 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  303137 grep resmgr
+# kill 299021
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  323597 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  327713 grep resmgr
+# kill 323597
+#
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  348173 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  352289 grep resmgr
+# kill 348173
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  372749 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  376865 grep resmgr
+#
+# kill 372749
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  397325 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  401441 grep resmgr
+#
+# kill 397325
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  421901 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  426017 grep resmgr
+# kill 421901
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  446477 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  450593 grep resmgr
+#
+# kill 446477
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  471053 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  475169 grep resmgr
+#
+# kill 471053
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  495629 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  499745 grep resmgr
+# kill 495629
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  520205 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  524321 grep resmgr
+#
+#
+# kill 520205
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  544781 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  548897 grep resmgr
+#
+# kill 544781
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  569357 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  573473 grep resmgr
+# kill 569357
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  593933 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  598049 grep resmgr
+#
+# kill 593933
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  618509 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  622625 grep resmgr
+# kill 618509
+#
+#
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  643085 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  647201 grep resmgr
+# kill 643085
+# pidin a | grep resmgr
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  667680 grep resmgr
+#
+# echo 1 > /dev/display/display0/power
+[  433.500037]~DLT~98331~INFO     ~Activate connection type: 5
+Application doesn't call Logger::createInstance!!!
+[  433.502037]~DLT~98331~NOTICE   ~Send log-level to context: DkAp:DEFA [-1 -> 4] [-1 -> 0]
+-> Logger::getInstance registers DLT application [ DkApp | PID=69652 _=/usr/sbin/slm ]
+#
+# slog2info -b resmgr_display
+Jan 01 00:00:00.957           resmgr_display.69652                 slog*     0  Init_Display:96 Init Success
+Jan 01 00:00:01.092           resmgr_display.69652                 slog      0  Set_Display_State:361 display [0] powermode is set as expected [0x7683]
+Jan 01 00:00:01.093           resmgr_display.69652                 slog      0  Enable_Display:135 Display power set to 1 success
+
+Jan 01 00:00:01.164           resmgr_display.69652                 slog      0  JDI_SPI_Send_Command:110 Power on.
+Jan 01 00:07:13.504           resmgr_display.69652                 slog      0  Enable_Display:146 Display Reset Pin 1 set Fail
+#
+#
+#
+#
+# echo 1 > /dev/display/display0/power
+#
+# slog2info -b resmgr_display
+Jan 01 00:00:00.957           resmgr_display.69652                 slog*     0  Init_Display:96 Init Success
+Jan 01 00:00:01.092           resmgr_display.69652                 slog      0  Set_Display_State:361 display [0] powermode is set as expected [0x7683]
+Jan 01 00:00:01.093           resmgr_display.69652                 slog      0  Enable_Display:135 Display power set to 1 success
+
+Jan 01 00:00:01.164           resmgr_display.69652                 slog      0  JDI_SPI_Send_Command:110 Power on.
+Jan 01 00:07:13.504           resmgr_display.69652                 slog      0  Enable_Display:146 Display Reset Pin 1 set Fail
+Jan 01 00:07:56.211           resmgr_display.69652                 slog      0  Enable_Display:146 Display Reset Pin 1 set Fail
+#
+#
+---------------------------------------------------------------------------------------------------------------------------------------
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+   69652 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  155681 grep resmgr
+# kill 69652
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  176148 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  180257 grep resmgr
+#
+# kill 176148
+#
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  200724 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  204833 grep resmgr
+#  kill 200724
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  225300 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  229409 grep resmgr
+#
+# kill 225300
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  249876 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  253985 grep resmgr
+#
+# kill 249876
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  274452 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  278561 grep resmgr
+# kil 274452
+ksh: kil: cannot execute - No such file or directory
+#
+#
+# kill 274452
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  299028 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  303137 grep resmgr
+#
+#
+# kill 299028
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  323604 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  327713 grep resmgr
+#
+# kill 323604
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  348180 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  352289 grep resmgr
+#
+# kill 348180
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  372756 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  376865 grep resmgr
+#
+# kill  372756
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  397332 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  401441 grep resmgr
+# kill 397332
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  421908 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  426017 grep resmgr
+# kill  421908
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  446484 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  450593 grep resmgr
+# kill 446484
+#
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  471060 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  475169 grep resmgr
+#
+# kill 471060
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  495636 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  499745 grep resmgr
+#
+# kill 495636
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  520212 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  524321 grep resmgr
+# kill 520212
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  544788 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  548897 grep resmgr
+#
+# kill 544788
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  569364 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  573473 grep resmgr
+#
+# kill 569364
+#
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  593940 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  598049 grep resmgr
+# kill 593940
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  618516 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  622625 grep resmgr
+#
+# kill 618516
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  643092 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  647201 grep resmgr
+# kill 643092
+#
+#
+# pidin a | grep resmgr
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0x00000000 -b0x5D090000 -m0x04000000 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000002 -b0x5D0D0000 -m0x00000200
+  667680 grep resmgr
+#
+# ls /dev/display/display0
+ls: No such file or directory (/dev/display/display0)
+#
+# ls /dev/thermal/thermal0/temperatur
+ls: No such file or directory (/dev/thermal/thermal0/temperatur)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------

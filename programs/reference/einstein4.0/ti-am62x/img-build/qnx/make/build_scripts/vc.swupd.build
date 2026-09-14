@@ -1,0 +1,42 @@
+
+###########################################################################
+## Software Update Build File
+###########################################################################
+
+###############################################################################
+# General Commands
+###############################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/cp=cp
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/dd=dd
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/mount=mount
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/umount=umount
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/tar=tar
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin]             /bin/slay=slay
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]            /sbin/shutdown=shutdown
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]         /usr/bin/gzip=gzip
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]         /usr/bin/unzip=unzip
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]         /usr/bin/shasum=shasum
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]        /usr/sbin/random=random
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]       /usr/bin/mount_ifs = mount_ifs
+
+###########################################################################
+## Executables
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/pdx-installer = pdx-installer
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/bspatch = bspatch
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/wdg_proxy = wdg_proxy_recovery
+
+###########################################################################
+## Libraries
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] 	    /usr/lib/libiconv.so.1=libiconv.so.1
+[type=link] /usr/lib/libiconv.so = /usr/lib/libiconv.so.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] 	    /usr/lib/libz.so.2=libz.so.2
+[type=link] /usr/lib/libz.so = /usr/lib/libz.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] 	    /usr/lib/libbz2.so.1=libbz2.so.1
+[type=link] /usr/lib/libbz2.so = /usr/lib/libbz2.so.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] 	    /usr/lib/liblzma.so.5=liblzma.so.5
+[type=link] /usr/lib/liblzma.so = /usr/lib/liblzma.so.5
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] 	    /usr/lib/libxml2.so.2=libxml2.so.2
+[type=link] /usr/lib/libxml2.so = /usr/lib/libxml2.so.2
+

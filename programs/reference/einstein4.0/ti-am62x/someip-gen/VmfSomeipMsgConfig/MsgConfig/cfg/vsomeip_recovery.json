@@ -1,0 +1,90 @@
+{
+	"unicast" : "192.168.1.1",
+	"logging" : {
+		"level" : "trace",
+		"console" : "true",
+		"file" : {
+			"enable" : "false"
+		},
+		"dlt" : "false",
+		"statistics" : "true"
+	},
+	"performance-measurement": {
+		"enable":"true",
+		"client":"false",
+		"server":"true",
+		"interval":60
+	}
+	,
+	"applications" : [
+		{
+			"name" : "reflashHmi",
+			"id" : "0x4445"
+		},
+		{
+			"name" : "PersistencyService",
+			"id" : "0x4446"
+		},
+		{
+			"name" : "TimeSyncService",
+			"id" : "0x4447"
+		},
+		{
+			"name" : "HealthManager",
+			"id" : "0x4448"
+		},
+		{	
+			"name" : "failsafe-updater",
+			"id" : "0x4449"
+		}
+	],
+	"services" : [
+		{
+			"service" : "0xeb",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30516",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xec",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30517",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+						"8000"
+					]
+				}
+			]
+
+		}
+	],
+	"routing" : "vsomeipd",
+	"service-discovery" : {
+		"enable" : "true",
+		"multicast" : "224.224.224.245",
+		"port" : "30490",
+		"protocol" : "udp",
+		"initial_delay_min" : "10",
+		"initial_delay_max" : "100",
+		"cyclic_offer_delay" : "60000",
+		"request_response_delay" : "1500",
+		"mode" : "unicast",
+		"unicast" : [
+			"192.168.1.3"
+		]
+	}
+}

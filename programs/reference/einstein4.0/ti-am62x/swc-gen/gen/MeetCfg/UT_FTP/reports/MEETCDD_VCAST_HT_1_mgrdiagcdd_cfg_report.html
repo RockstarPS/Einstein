@@ -1,0 +1,1802 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><body bgcolor="#FFFFFF"><div><span style="font-family:Arial;font-size:16pt;color:#000000;"><strong>Aggregate Coverage Report</strong></span></div><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Configuration&nbsp;Data</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#EEEEEE"><td><strong>Environment&nbsp;Name:</strong></td><td>MEETCDD_VCAST_HT_1</td></tr><tr bgcolor="#EEEEEE"><td><strong>Date&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>4&nbsp;NOV&nbsp;2024</td></tr><tr bgcolor="#EEEEEE"><td><strong>Time&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>11:51:01&nbsp;AM</td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Aggregate&nbsp;Coverage</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><strong>Code&nbsp;Coverage&nbsp;for&nbsp;Unit:&nbsp;Mgrdiagcdd_cfg</strong></td></tr><tr><td align="left"><strong>No&nbsp;Coverage&nbsp;Data&nbsp;Exists.</strong></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Basis&nbsp;Path</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre>  
+  Subprogram Read_Diag_FD3B
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FD3B(uint8 *Data, uint8 *Length)
+                 {
+  1 0     ( )    Read_Diag_FD3B
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  //   Ret = TouchCdd_GetCoordinates();  //call to get the touch coordinates from touch cdd - to be implemented
+  1 1     ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  else
+                  {
+                  /* Do nothing */
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Read_Diag_FE3A
+  
+    Test Path Listing
+    Test Path 1
+        No conditional statements
+  
+      Complexity: 1
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FE3A(uint8 *Data, uint8 *Length)
+                 {
+  2 0     ( )    Read_Diag_FE3A
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // (void) MDIO_BridgePHYReadRequest(1, 1, 0x01, 0x0003);  //to be implemented once the required API is available
+                  // Data[0U] =  (fl_RespData_u16&gt;&gt;8) &amp; 0xFF;
+                  // Data[1U] =  (fl_RespData_u16 &amp; 0xFF); 
+                  // (void) MDIO_BridgePHYReadRequest(2, 0, 0x01, 0x0003);
+                  // Data[2U] =  (fl_RespData_u16&gt;&gt;8) &amp; 0xFF;
+                  // Data[3U] =  (fl_RespData_u16 &amp; 0xFF);
+                  Ret = 0x00;
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Read_Diag_FE3E
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FE3E(uint8 *Data, uint8 *Length)
+                 {
+  3 0     ( )    Read_Diag_FE3E
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  //   Ret = CPUload_values();  //call to get the cpu load values - to be implemented once the required API is available
+  3 1     ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  else
+                  {
+                  /* Do nothing */
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_STA_Diag_FE3E
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_STA_Diag_FE3E(uint8 *Data, uint8 *Length)
+                 {
+  4 0     ( )    IOCTL_STA_Diag_FE3E
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = Ioctrlrd_CPULOAD_STA(Data,ErrorCode); to be implemented once the required API is available
+  4 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_RCTE_Diag_FE3E
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_RCTE_Diag_FE3E(uint8 *Data, uint8 *Length)
+                 {
+  5 0     ( )    IOCTL_RCTE_Diag_FE3E
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = Ioctrlrd_CPULOAD_RCTE(ErrorCode); to be implemented once the required API is available
+  5 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_STA_Diag_FE3F
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_STA_Diag_FE3F(uint8 *Data, uint8 *Length)
+                 {
+  6 0     ( )    IOCTL_STA_Diag_FE3F
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = Ioctrlrd_serial_commnuication_STA(Data,ErrorCode); to be implemented once the required API is available
+  6 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_RCTE_Diag_FE3F
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_RCTE_Diag_FE3F(uint8 *Data, uint8 *Length)
+                 {
+  7 0     ( )    IOCTL_RCTE_Diag_FE3F
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = Ioctrlrd_serial_commnuication_RCTE(ErrorCode); to be implemented once the required API is available
+  7 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_STA_Diag_FD14
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_STA_Diag_FD14(uint8 *Data, uint8 *Length)
+                 {
+  8 0     ( )    IOCTL_STA_Diag_FD14
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ioctrlrd_dio_diag_DOUT_STA(Data,ErrorCode);
+  8 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_RCTE_Diag_FD14
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_RCTE_Diag_FD14(uint8 *Data, uint8 *Length)
+                 {
+  9 0     ( )    IOCTL_RCTE_Diag_FD14
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ioctrlrd_dio_diag_DOUT_RCTE(ErrorCode);
+  9 1     ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_STA_Diag_FD36
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_STA_Diag_FD36(uint8 *Data, uint8 *Length)
+                 {
+  10 0    ( )    IOCTL_STA_Diag_FD36
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ethdiag_EthTestModeControl_STA(Data,ErrorCode);
+  10 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_RCTE_Diag_FD36
+  
+    Test Path Listing
+    Test Path 1
+        No conditional statements
+  
+      Complexity: 1
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_RCTE_Diag_FD36(uint8 *Data,uint8 *Length)
+                 {
+  11 0    ( )    IOCTL_RCTE_Diag_FD36
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ethdiag_EthTestModeControl_RCTE(ErrorCode);
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Read_Diag_FD02
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FD02(uint8 *Data, uint8 *Length)
+                 {
+  12 0    ( )    Read_Diag_FD02
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ioctrlrd_analog_diag_read_ADC_Group_00(Data ,ErrorCode);
+  12 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram App_spec_One_Sec_Timer
+  
+    Test Path Listing
+    Test Path 1
+           (1) if ((uint8)0U != l_One_Sec_Timer_Status_U8) ==&gt; FALSE
+    Test Path 2
+           (1) if ((uint8)0U != l_One_Sec_Timer_Status_U8) ==&gt; TRUE
+           (2) if (l_10ms_timer_U16 &gt;= 100U) ==&gt; FALSE
+    Test Path 3
+           (1) if ((uint8)0U != l_One_Sec_Timer_Status_U8) ==&gt; TRUE
+           (2) if (l_10ms_timer_U16 &gt;= 100U) ==&gt; TRUE
+  
+      Complexity: 3
+  
+    Source Code Listing
+  
+                 void App_spec_One_Sec_Timer(void)
+                 {
+  13 0    ( )    App_spec_One_Sec_Timer
+  13 1    ( )( ) if(((uint8)(0U)) != l_One_Sec_Timer_Status_U8)
+                  {
+                  l_10ms_timer_U16++;
+  13 2    ( )( )   if(l_10ms_timer_U16 &gt;= 100U)
+                  {
+                  l_One_Sec_Timer_Status_U8 = (uint8)(0U);
+                  }
+                  }
+                 }
+  
+  
+  
+  Subprogram App_Timer_Set_Status
+  
+    Test Path Listing
+    Test Path 1
+        No conditional statements
+  
+      Complexity: 1
+  
+    Source Code Listing
+  
+                 void App_Timer_Set_Status(uint8 p_timer_status_U8)
+                 {
+  14 0    ( )    App_Timer_Set_Status
+                  l_One_Sec_Timer_Status_U8 = p_timer_status_U8;
+                 }
+  
+  
+  
+  Subprogram App_Timer_Get_Status
+  
+    Test Path Listing
+    Test Path 1
+        No conditional statements
+  
+      Complexity: 1
+  
+    Source Code Listing
+  
+                 uint8 App_Timer_Get_Status(void)
+                 {
+  15 0    ( )    App_Timer_Get_Status
+                  return l_One_Sec_Timer_Status_U8;
+                 }
+  
+  
+  
+  Subprogram Manuf_SessionCheck
+  
+    Test Path Listing
+    Test Path 1
+        No conditional statements
+  
+      Complexity: 1
+  
+    Source Code Listing
+  
+                 void Manuf_SessionCheck(uint8 *SessionValue)
+                 {
+                  //Session check Not required - allow functionality always; Hence by default MEETSESSION assigned
+  16 0    ( )    Manuf_SessionCheck
+                  *SessionValue = (uint8)0x01U;
+                 }
+  
+  
+  
+  Subprogram Mgrdiagcdd_MapDID_DcmExtAction
+  
+    Test Path Listing
+    Test Path 1
+           (6) case (eOperation) ==&gt; default
+    Test Path 2
+           (1) case (eOperation) ==&gt; 0U
+    Test Path 3
+           (2) case (eOperation) ==&gt; 1U
+    Test Path 4
+           (3) case (eOperation) ==&gt; 2U
+    Test Path 5
+           (4) case (eOperation) ==&gt; 3U
+    Test Path 6
+           (5) case (eOperation) ==&gt; 4U
+  
+      Complexity: 6
+  
+    Source Code Listing
+  
+                 Std_ReturnType Mgrdiagcdd_MapDID_DcmExtAction(EDcmExtAction *Action, teDIDOperation eOperation)
+                 {
+  17 0    ( )    Mgrdiagcdd_MapDID_DcmExtAction
+                  Std_ReturnType Ret = 0x00;
+                  switch(eOperation)
+                  {
+                  //To Do: below case enums need to cross verified with Rte_DcmExt_Type.h once standardized
+  17 1    ( )      case (0U):
+                  Action[0] = (0U);
+                  break;
+  17 2    ( )      case (1U):
+                  Action[0] = (1U);
+                  break;
+  17 3    ( )      case (2U):
+                  Action[0] = (2U);
+                  break;
+  17 4    ( )      case (3U):
+                  Action[0] = (3U);
+                  break;
+  17 5    ( )      case (4U):
+                  Action[0] = (7U);
+                  break;
+  17 6    ( )      default:
+                  Ret = 0x01;
+                  break;
+                  }
+                  return Ret;
+                 }
+  
+  
+  
+  Subprogram Mgrdiagcdd_MapRID_DcmExtAction
+  
+    Test Path Listing
+    Test Path 1
+           (4) case (eOperation) ==&gt; default
+    Test Path 2
+           (1) case (eOperation) ==&gt; 0U
+    Test Path 3
+           (2) case (eOperation) ==&gt; 1U
+    Test Path 4
+           (3) case (eOperation) ==&gt; 2U
+  
+      Complexity: 4
+  
+    Source Code Listing
+  
+                 Std_ReturnType Mgrdiagcdd_MapRID_DcmExtAction(EDcmExtAction *Action, teDIDOperation eOperation)
+                 {
+  18 0    ( )    Mgrdiagcdd_MapRID_DcmExtAction
+                  Std_ReturnType Ret = 0x00;
+                  switch(eOperation)
+                  {
+                  //To Do: below case enums need to cross verified with Rte_DcmExt_Type.h once standardized
+  18 1    ( )      case (0U):
+                  Action[0] = (4U);
+                  break;
+  18 2    ( )      case (1U):
+                  Action[0] = (5U);
+                  break;
+  18 3    ( )      case (2U):
+                  Action[0] = (6U);
+                  break;
+  18 4    ( )      default:
+                  Ret = 0x01;
+                  break;
+                  }
+                  return Ret;
+                 }
+  
+  
+  
+  Subprogram Read_Diag_FA16
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FA16(uint8 *Data, uint8 *Length)
+                 {
+  19 0    ( )    Read_Diag_FA16
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0] = ((Std_ReturnType)0x00);
+                  Ret = Ioctrlrd_dio_diag_ButtonCheck_Read(Data, ErrorCode);
+  19 1    ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_F11F
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Numberofsamples == 0U || Numberofsamples &gt; 10U) ==&gt; FALSE
+           (2) if (Ret == (uint8)1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Numberofsamples == 0U || Numberofsamples &gt; 10U) ==&gt; FALSE
+           (2) if (Ret == (uint8)1U) ==&gt; TRUE
+    Test Path 3
+           (1) if (Numberofsamples == 0U || Numberofsamples &gt; 10U) ==&gt; TRUE
+  
+      Complexity: 3
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_F11F(uint8 *Data, uint8 *Length)
+                 {
+  20 0    ( )    RC_START_Diag_F11F
+                  Std_ReturnType Ret = 0x01;
+                  uint8 Numberofsamples = 0U;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 2U;
+                  Channel_ID = Data[0U];
+                  Numberofsamples = Data[1U];
+  20 1    ( )( ) if(Numberofsamples == 0U || Numberofsamples &gt; (10U))
+                  {
+                  ErrorCode[0U] = (49U);
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  else
+                  {
+                  Ret = Ioctrlrd_analog_diag_AdcInputReading_RCStart((uint8)Channel_ID, Numberofsamples, Data, ErrorCode);
+                  Data[1U] = Channel_ID;
+  20 2    ( )( )   if(Ret == (uint8)(1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_STOP_Diag_F11F
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == 1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == 1U) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_STOP_Diag_F11F(uint8 *Data, uint8 *Length)
+                 {
+  21 0    ( )    RC_STOP_Diag_F11F
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Ioctrlrd_analog_diag_AdcInputReading_RCStop(Channel_ID, Data, ErrorCode);
+  21 1    ( )( ) if(Ret == (1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_RESULTS_Diag_F11F
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Channel_ID == 0xffU) ==&gt; FALSE
+           (2) if (Ret == 1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Channel_ID == 0xffU) ==&gt; FALSE
+           (2) if (Ret == 1U) ==&gt; TRUE
+    Test Path 3
+           (1) if (Channel_ID == 0xffU) ==&gt; TRUE
+           (2) if (Ret == 1U) ==&gt; FALSE
+  
+      Complexity: 3
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_RESULTS_Diag_F11F(uint8 *Data, uint8 *Length)
+                 {
+  22 0    ( )    RC_RESULTS_Diag_F11F
+                  Std_ReturnType Ret = 0x01;
+                  //uint8 Channel_ID;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+  22 1    ( )( ) if(Channel_ID == 0xFFU)
+                  {
+                  Length[0U] = 0U;
+                  Length[1U] = (((uint8)(6U)) * 2U) + 2U;
+                  }
+                  else
+                  {
+                  Length[0U] = 0U;
+                  Length[1U] = 0x04U;
+                  }
+                  Ret = Ioctrlrd_analog_diag_AdcInputReading_RCStatus(Channel_ID, Data, ErrorCode);
+  22 2    ( )( ) if(Ret == (1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_STA_Diag_FD0D
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_STA_Diag_FD0D(uint8 *Data, uint8 *Length)
+                 {
+  23 0    ( )    IOCTL_STA_Diag_FD0D
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  Ret = Displaycontroldiag_TFTPatternControl_Duty_STA(Data,ErrorCode);
+  23 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  Data[0U] = (uint8)0x03U;
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram IOCTL_RCTE_Diag_FD0D
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType IOCTL_RCTE_Diag_FD0D(uint8 *Data, uint8 *Length)
+                 {
+  24 0    ( )    IOCTL_RCTE_Diag_FD0D
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  Ret = Displaycontroldiag_TFTPatternControl_Duty_RCTE(ErrorCode);
+  24 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  Data[0U] = (uint8)0x00U;
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Read_Diag_FA4C
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Read_Diag_FA4C(uint8 *Data, uint8 *Length)
+                 {
+  25 0    ( )    Read_Diag_FA4C
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Memdiag_ManufacturingModeRequested_Read(Data,ErrorCode);
+  25 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Write_Diag_FA4C
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Write_Diag_FA4C(uint8 *Data, uint8 *Length)
+                 {
+  26 0    ( )    Write_Diag_FA4C
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Memdiag_ManufacturingModeRequested_Write(Data,ErrorCode);
+  26 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Write_Diag_FE45
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Write_Diag_FE45(uint8 *Data, uint8 *Length)
+                 {
+  27 0    ( )    Write_Diag_FE45
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = pwm_dutyCycle_TCON(Data,ErrorCode); to be implemented once the API is available
+  27 1    ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  else
+                  {
+                  /* Do nothing */
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram Write_Diag_FE46
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType Write_Diag_FE46(uint8 *Data, uint8 *Length)
+                 {
+  28 0    ( )    Write_Diag_FE46
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = OctalFLash_config(Data,ErrorCode); to be implemented once the API is available
+  28 1    ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  else
+                  {
+                  /* Do nothing */
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_F000
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_F000(uint8 *Data, uint8 *Length)
+                 {
+  29 0    ( )    RC_START_Diag_F000
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Resetsleepdiag_WDReset_RCStart(Data,ErrorCode);
+  29 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_STOP_Diag_F000
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_STOP_Diag_F000(uint8 *Data, uint8 *Length)
+                 {
+  30 0    ( )    RC_STOP_Diag_F000
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Resetsleepdiag_WDReset_RCStop(Data,ErrorCode);
+  30 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_RESULTS_Diag_F000
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_RESULTS_Diag_F000(uint8 *Data, uint8 *Length)
+                 {
+  31 0    ( )    RC_RESULTS_Diag_F000
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Ret = Resetsleepdiag_WDReset_RCStatus(Data,ErrorCode);
+  31 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_FE42
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_FE42(uint8 *Data, uint8 *Length)
+                 {
+  32 0    ( )    RC_START_Diag_FE42
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0] = ((Std_ReturnType)0x00);
+                  Length[0] = 0U;
+                  Length[1] = 1U;
+                  Ret = Displaycontroldiag_I2CTest_RCStart(Data, ErrorCode);
+  32 1    ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_RESULTS_Diag_FE42
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_RESULTS_Diag_FE42(uint8 *Data, uint8 *Length)
+                 {
+  33 0    ( )    RC_RESULTS_Diag_FE42
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0] = ((Std_ReturnType)0x00);
+                  Length[0] = 0U;
+                  Length[1] = 3U;
+                  Ret = Displaycontroldiag_I2CTest_RCStatus(Data, ErrorCode);
+  33 1    ( )( ) if (Ret == (uint8)0x01)
+                  {
+                  Data[0] = ErrorCode[0];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_FE3B
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_FE3B(uint8 * Data,uint8* Length)
+                 {
+  34 0    ( )    RC_START_Diag_FE3B
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  // Ret = TDMInterface_RCStart(Data, ErrorCode);
+  34 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_STOP_Diag_FE3B
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == 1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == 1U) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_STOP_Diag_FE3B(uint8 *Data, uint8 *Length)
+                 {
+  35 0    ( )    RC_STOP_Diag_FE3B
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = TDMInterface_RCStop(Channel_ID, Data, ErrorCode);
+  35 1    ( )( ) if(Ret == (1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_FE43
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_FE43(uint8 * Data,uint8* Length)
+                 {
+  36 0    ( )    RC_START_Diag_FE43
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  // Ret = SPIINTERFACE_VALIDATION_RCStart(Channel_ID, Data, ErrorCode);
+  36 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_RESULTS_Diag_FE43
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == 1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == 1U) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_RESULTS_Diag_FE43(uint8 *Data, uint8 *Length)
+                 {
+  37 0    ( )    RC_RESULTS_Diag_FE43
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = SPIINTERFACE_VALIDATION_RCStop(Channel_ID, Data, ErrorCode);
+  37 1    ( )( ) if(Ret == (1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_F049
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_F049(uint8 * Data,uint8* Length)
+                 {
+  38 0    ( )    RC_START_Diag_F049
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  // Ret = Comm_LoadTest_RCStart(Data, ErrorCode); to be implemented once the required API is available
+  38 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_STOP_Diag_F049
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_STOP_Diag_F049(uint8 * Data,uint8* Length)
+                 {
+  39 0    ( )    RC_STOP_Diag_F049
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  // Ret = Comm_LoadTest_RCStop(Data, ErrorCode); to be implemented once the required API is available
+  39 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_RESULTS_Diag_F049
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_RESULTS_Diag_F049(uint8 * Data,uint8* Length)
+                 {
+  40 0    ( )    RC_RESULTS_Diag_F049
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 32U;
+                  // Ret = Comm_LoadTest_RCStatus(Data, ErrorCode); to be implemented once the required API is available
+  40 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_START_Diag_F04D
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == (uint8)0x1) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == (uint8)0x1) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_START_Diag_F04D(uint8 * Data,uint8* Length)
+                 {
+  41 0    ( )    RC_START_Diag_F04D
+                  Std_ReturnType Ret = 0x01;
+                  Dcm_NegativeResponseCodeType ErrorCode[2];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  Length[0U] = 0U;
+                  Length[1U] = 1U;
+                  // Ret = Ethernet_display_RCStart(Data, ErrorCode);
+  41 1    ( )( ) if(Ret == (uint8)0x01)
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+  Subprogram RC_STOP_Diag_F04D
+  
+    Test Path Listing
+    Test Path 1
+           (1) if (Ret == 1U) ==&gt; FALSE
+    Test Path 2
+           (1) if (Ret == 1U) ==&gt; TRUE
+  
+      Complexity: 2
+  
+    Source Code Listing
+  
+                 Std_ReturnType RC_STOP_Diag_F04D(uint8 *Data, uint8 *Length)
+                 {
+  42 0    ( )    RC_STOP_Diag_F04D
+                  (void)(Length);
+                  Std_ReturnType Ret = 0x00;
+                  Dcm_NegativeResponseCodeType ErrorCode[2U];
+                  ErrorCode[0U] = ((Std_ReturnType)0x00);
+                  // Ret = Ethernet_display_RCStop(Channel_ID, Data, ErrorCode);
+  42 1    ( )( ) if(Ret == (1U))
+                  {
+                  Data[0U] = ErrorCode[0U];
+                  }
+                  return (Ret);
+                 }
+  
+  
+  
+</pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>MC/DC&nbsp;Condition&nbsp;Tables</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Read_Diag_FD3B</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 74
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Read_Diag_FE3E</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 126
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_STA_Diag_FE3E</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 153
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_RCTE_Diag_FE3E</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 176
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_STA_Diag_FE3F</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 199
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_RCTE_Diag_FE3F</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 222
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_STA_Diag_FD14</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 268
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_RCTE_Diag_FD14</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 291
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_STA_Diag_FD36</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 323
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Read_Diag_FD02</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 382
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;App_spec_One_Sec_Timer</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 394
+Actual Expression is: (uint8)0U != l_One_Sec_Timer_Status_U8
+Condition "a" (Ca) is: (uint8)0U != l_One_Sec_Timer_Status_U8
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;App_spec_One_Sec_Timer</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 398
+Actual Expression is: l_10ms_timer_U16 &gt;= 100U
+Condition "a" (Ca) is: l_10ms_timer_U16 &gt;= 100U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Read_Diag_FA16</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 488
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_F11F</strong><br><strong>Condition:&nbsp;#&nbsp;8</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 515
+Actual Expression is: Numberofsamples == 0U || Numberofsamples &gt; 10U
+Condition "a" (Ca) is: Numberofsamples == 0U
+Condition "b" (Cb) is: Numberofsamples &gt; 10U
+Simplified Expression is: (a || b)
+|----+----+----+------+----+----|
+|Row |Ca  |Cb  |Rslt  |Pa  |Pb  |
+|----+----+----+------+----+----|
+| 2  |T   |F   |T     |4   |    |
+|----+----+----+------+----+----|
+| 3  |F   |T   |T     |    |4   |
+|----+----+----+------+----+----|
+| 4  |F   |F   |F     |2   |3   |
+|----+----+----+------+----+----|
+Pa =&gt; no pair was satisfied
+      2/4
+Pb =&gt; no pair was satisfied
+      3/4
+Pairs satisfied: 0 of 2 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_F11F</strong><br><strong>Condition:&nbsp;#&nbsp;13</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 526
+Actual Expression is: Ret == (uint8)1U
+Condition "a" (Ca) is: Ret == (uint8)1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_STOP_Diag_F11F</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 551
+Actual Expression is: Ret == 1U
+Condition "a" (Ca) is: Ret == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_F11F</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 574
+Actual Expression is: Channel_ID == 0xffU
+Condition "a" (Ca) is: Channel_ID == 0xffU
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_F11F</strong><br><strong>Condition:&nbsp;#&nbsp;9</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 586
+Actual Expression is: Ret == 1U
+Condition "a" (Ca) is: Ret == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_STA_Diag_FD0D</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 612
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;IOCTL_RCTE_Diag_FD0D</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 638
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Read_Diag_FA4C</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 663
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Write_Diag_FA4C</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 687
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Write_Diag_FE45</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 720
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;Write_Diag_FE46</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 757
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_F000</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 785
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_STOP_Diag_F000</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 808
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_F000</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 831
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_FE42</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 856
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_FE42</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 881
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_FE3B</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 906
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_STOP_Diag_FE3B</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 930
+Actual Expression is: Ret == 1U
+Condition "a" (Ca) is: Ret == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_FE43</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 955
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_FE43</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 979
+Actual Expression is: Ret == 1U
+Condition "a" (Ca) is: Ret == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_F049</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 1004
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_STOP_Diag_F049</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 1029
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_RESULTS_Diag_F049</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 1054
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_START_Diag_F04D</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 1079
+Actual Expression is: Ret == (uint8)0x1
+Condition "a" (Ca) is: Ret == (uint8)0x1
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Mgrdiagcdd_cfg</strong><br><strong>Subprogram:&nbsp;RC_STOP_Diag_F04D</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 1103
+Actual Expression is: Ret == 1U
+Condition "a" (Ca) is: Ret == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+| 1  |T   |T     |2   |
+|----+----+------+----|
+| 2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; no pair was satisfied
+      1/2
+Pairs satisfied: 0 of 1 ( 0% )
+</pre></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Metrics</strong></span></td></tr><tr bgcolor="#94A5C6"><td align="left">ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D</td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td bgcolor="#CCD8EE"><strong>Unit</strong></td><td bgcolor="#CCD8EE"><strong>Subprogram</strong></td><td bgcolor="#CCD8EE"><strong>Complexity</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Coverage</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Calls</strong></td><td bgcolor="#CCD8EE"><strong>Statements</strong></td><td bgcolor="#CCD8EE"><strong>Branches</strong></td><td bgcolor="#CCD8EE"><strong>Pairs</strong></td></tr><tr bgcolor="#EEEEEE"><td>Mgrdiagcdd_cfg</td><td>Read_Diag_FD3B</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FE3A</td><td align="right">1</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;4&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FE3E</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FE3E</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FE3E</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FE3F</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FE3F</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD14</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD14</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD36</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD36</td><td align="right">1</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;4&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FD02</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_spec_One_Sec_Timer</td><td align="right">3</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;4&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;9&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;2&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_Timer_Set_Status</td><td align="right">1</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_Timer_Get_Status</td><td align="right">1</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Manuf_SessionCheck</td><td align="right">1</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Mgrdiagcdd_MapDID_DcmExtAction</td><td align="right">6</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;21&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Mgrdiagcdd_MapRID_DcmExtAction</td><td align="right">4</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;15&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FA16</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F11F</td><td align="right">3</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;15&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;11&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;3&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F11F</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F11F</td><td align="right">3</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;11&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;9&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;2&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD0D</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;9&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD0D</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;9&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FA4C</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FA4C</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FE45</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FE46</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F000</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F000</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F000</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE42</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;8&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_FE42</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;8&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE3B</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_FE3B</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE43</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_FE43</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F049</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F049</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F049</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F04D</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;7&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F04D</td><td align="right">2</td><td bgcolor="#FFCCCC">0%</td><td>&nbsp;</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;6&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;5&nbsp;(0%)</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td></tr><tr bgcolor="#EEEEEE"><td><strong>TOTALS</strong></td><td><strong>42</strong></td><td align="right"><strong>88</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;42&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;18&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;285&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;206&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;39&nbsp;(0%)</strong></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>GRAND&nbsp;TOTALS</strong></td><td><strong>42</strong></td><td align="right"><strong>88</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;42&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;18&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;285&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;206&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;39&nbsp;(0%)</strong></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Covered&nbsp;By&nbsp;Analysis</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><strong>Covered&nbsp;By&nbsp;Analysis,&nbsp;Per&nbsp;Line</strong></td></tr><tr><td align="left"><strong>No&nbsp;coverage&nbsp;data&nbsp;exists.</strong></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Function&nbsp;Call&nbsp;Coverage</strong></span></td></tr><tr bgcolor="#94A5C6"><td align="left">ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D</td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td bgcolor="#CCD8EE"><strong>Unit</strong></td><td bgcolor="#CCD8EE"><strong>Functions</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Coverage</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Calls</strong></td><td bgcolor="#CCD8EE"><strong>Uncovered&nbsp;Calls</strong></td></tr><tr bgcolor="#EEEEEE"><td>Mgrdiagcdd_cfg</td><td>Read_Diag_FD3B</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FE3A</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FE3E</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FE3E</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FE3E</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FE3F</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FE3F</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD14</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_dio_diag_DOUT_STA(8&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD14</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_dio_diag_DOUT_RCTE(9&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD36</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ethdiag_EthTestModeControl_STA(10&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD36</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ethdiag_EthTestModeControl_RCTE(11&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FD02</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_analog_diag_read_ADC_Group_00(12&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_spec_One_Sec_Timer</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_Timer_Set_Status</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>App_Timer_Get_Status</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Manuf_SessionCheck</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Mgrdiagcdd_MapDID_DcmExtAction</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Mgrdiagcdd_MapRID_DcmExtAction</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FA16</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_dio_diag_ButtonCheck_Read(19&nbsp;4)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F11F</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_analog_diag_AdcInputReading_RCStart(20&nbsp;11)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F11F</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_analog_diag_AdcInputReading_RCStop(21&nbsp;4)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F11F</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Ioctrlrd_analog_diag_AdcInputReading_RCStatus(22&nbsp;8)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_STA_Diag_FD0D</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Displaycontroldiag_TFTPatternControl_Duty_STA(23&nbsp;5)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>IOCTL_RCTE_Diag_FD0D</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Displaycontroldiag_TFTPatternControl_Duty_RCTE(24&nbsp;5)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Read_Diag_FA4C</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Memdiag_ManufacturingModeRequested_Read(25&nbsp;4)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FA4C</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Memdiag_ManufacturingModeRequested_Write(26&nbsp;4)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FE45</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Write_Diag_FE46</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F000</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Resetsleepdiag_WDReset_RCStart(29&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F000</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Resetsleepdiag_WDReset_RCStop(30&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F000</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Resetsleepdiag_WDReset_RCStatus(31&nbsp;3)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE42</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Displaycontroldiag_I2CTest_RCStart(32&nbsp;5)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_FE42</td><td bgcolor="#FFCCCC">N</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td>Displaycontroldiag_I2CTest_RCStatus(33&nbsp;5)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE3B</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_FE3B</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_FE43</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_FE43</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F049</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F049</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_RESULTS_Diag_F049</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_START_Diag_F04D</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>RC_STOP_Diag_F04D</td><td bgcolor="#FFCCCC">N</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>TOTALS</strong></td><td>&nbsp;</td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;42&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;18&nbsp;(0%)</strong></td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>GRAND&nbsp;TOTALS</strong></td><td>&nbsp;</td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;42&nbsp;(0%)</strong></td><td bgcolor="#FFCCCC"><strong>0&nbsp;/&nbsp;18&nbsp;(0%)</strong></td><td>&nbsp;</td></tr></table></td></tr></table></body></html>

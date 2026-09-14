@@ -1,0 +1,19 @@
+[Unit]
+Description=Network Manager
+ConditionKernelCommandLine=BOOT_MODE=PRI
+DefaultDependencies=no
+After=ucl_proxy_vmf.service
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStartPre=/usr/sbin/start_eth0.sh
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/usr/bin/network_mgr
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=5
+
+
+[Install]
+WantedBy=multi-user.target

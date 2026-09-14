@@ -1,0 +1,43 @@
+
+###########################################################################
+## Visteon Security Build File
+###########################################################################
+
+###########################################################################
+## Executables
+###########################################################################
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] 			  /bin/secpol = secpol
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] 			  /bin/secpolmonitor = secpolmonitor
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] 			  /bin/secpolgenerate = secpolgenerate
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]         /usr/bin/openssl=openssl
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/security_manager = security_manager
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/bin/trng = trng
+
+###########################################################################
+## Libraries
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]         /usr/lib/libssl.so.2=libssl.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]         /usr/lib/libssl1_1.so.2.1=libssl1_1.so.2.1
+[type=link] /usr/lib/libcrypto1_1.so = /usr/lib/libcrypto1_1.so.2.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll] 		  /lib/secpol-preload.so=secpol-preload.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] 			  /lib/libsecpol-gen.so.1 = libsecpol-gen.so.1
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libseco.so.0.1.0 = libseco.so.0.1.0
+[type=link] /usr/lib/libseco.so = libseco.so.0.1.0
+[type=link] /usr/lib/libseco.so.0 = libseco.so.0.1.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libsecuritymanager.so.0.1.0 = libsecuritymanager.so.0.1.0
+[type=link] /usr/lib/libsecuritymanager.so = libsecuritymanager.so.0.1.0
+[type=link] /usr/lib/libsecuritymanager.so.0 = libsecuritymanager.so.0.1.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libbspal_trng.so.0.1.0 = libbspal_trng.so.0.1.0
+[type=link] /usr/lib/libbspal_trng.so = libbspal_trng.so.0.1.0
+[type=link] /usr/lib/libbspal_trng.so.0 = libbspal_trng.so.0.1.0
+
+###########################################################################
+## Visteon Key files
+###########################################################################
+## Public Keys
+#ifdef SECURE_FS
+[search=${SECURITY_KEYS_DIR}/qtd_keys] /proc/boot/app_public_key.pem = app_public_key.pem
+[search=${SECURITY_KEYS_DIR}/qtd_keys] /proc/boot/assets_public_key.pem = assets_public_key.pem
+[search=${SECURITY_KEYS_DIR}/qtd_keys] /proc/boot/system_public_key.pem = system_public_key.pem
+#endif
+

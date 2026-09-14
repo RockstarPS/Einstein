@@ -1,0 +1,14 @@
+[Unit]
+Description=Fix /home/visteon permissions
+ConditionPathExists=/home/visteon
+Before=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/chown root:root /var/volatile/log/messages
+ExecStartPre=/bin/chmod 600 /var/volatile/log/messages
+ExecStart=/bin/chown -R visteon:visteon /home/visteon
+
+[Install]
+WantedBy=multi-user.target
+

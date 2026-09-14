@@ -1,0 +1,26 @@
+[Unit]
+Description=HMI Demo Application
+DefaultDependencies=no
+Before=shutdown.target
+Conflicts=shutdown.target
+After=hostname.service mount_primary.service safeHmi.service
+Before=sysinit.target
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+
+[Service]
+Type=simple
+ExecStartPre=/sbin/modprobe pvrsrvkm
+ExecStartPre=/usr/bin/boot_kpi_logger MainHmi_start
+ExecStart=/app/usr/bin/mainHmi/mainHmi
+WorkingDirectory=/app/usr/bin/mainHmi
+ExecStartPost=/usr/bin/boot_kpi_logger MainHmi_end
+Restart=always
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+
+[Install]
+WantedBy=sysinit.target

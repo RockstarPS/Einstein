@@ -1,0 +1,20 @@
+[Unit]
+Description=Bl Application
+ConditionKernelCommandLine=BOOT_MODE=REC
+After=vmf.service bl_ucl_proxy_vmf.service
+Wants=vmf.service bl_ucl_proxy_vmf.service
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/usr/bin/bl_app_gp
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+

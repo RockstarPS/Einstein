@@ -1,0 +1,21 @@
+[Unit]
+Description=DLT System
+After=dlt-daemon.service
+Wants=dlt-daemon.service
+Before=shutdown.target
+Conflicts=shutdown.target
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStart=/bin/dlt-system -c /etc/dlt_system.conf
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

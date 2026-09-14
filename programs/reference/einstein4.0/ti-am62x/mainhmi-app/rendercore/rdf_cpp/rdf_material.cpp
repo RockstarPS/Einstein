@@ -1,0 +1,1327 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+//                     CONFIDENTIAL VISTEON CORPORATION
+//
+// This is an unpublished work of authorship, which contains trade secrets,
+// created in 2018. Visteon Corporation owns all rights to this work and
+// intends to maintain it in confidence to preserve its trade secret status.
+// Visteon Corporation reserves the right, under the copyright laws of the
+// United States or those of any other country that may have jurisdiction,
+// to protect this work as an unpublished work, in the event of an
+// inadvertent or deliberate unauthorized publication. Visteon Corporation
+// also reserves its rights under all copyright laws to protect this work as
+// a published work, when appropriate. Those having access to this work may
+// not copy it, use it, modify it or disclose the information contained in
+// it without the written authorization of Visteon Corporation.
+//
+//  Description : classes to describe the graphics project.
+//  Created on  : 02-Jan-2019 by emanoj1@visteon.com
+///////////////////////////////////////////////////////////////////////////////
+
+//Include Files ...
+#include "rdf_material.h"
+//Macro Definitions ...
+
+namespace rendercore_engine
+{
+
+//Variable declarations ...
+  rdf_shaderDefData const mdl_material_gltfplus_mat_frame_47_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,0},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_bguniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_rectangle_394uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,2},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Textuniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_42uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,3},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_43uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,4},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_44uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,5},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_45uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,6},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_rectangle_394_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,7},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_layer_1_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,8},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vectoruniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,9},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,10},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,11},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_2uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,12},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_3uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,13},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_4uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,14},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_rectangle_395uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,15},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_rectangle_396uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,16},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst2uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst3uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst4uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst5uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst6uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst7uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_line_17uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,17},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_line_18uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,18},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_56uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,19},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_57uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,20},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_52uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,21},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_47uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,22},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_59uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,23},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_60uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,24},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_61uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,25},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_55uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,26},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_58uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,27},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_49uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,28},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_53uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,29},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_51uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,30},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_58uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,31},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_59uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,32},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_56uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,33},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_61uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,34},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_57uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,35},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_60uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,36},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst8uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst9uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst10uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst11uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst12uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst13uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst14uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_fuel_icon_5_1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,37},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_polygon_27uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,38},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_56_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,39},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_57_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,40},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_52_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,41},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_47_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,42},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_59_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,43},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_60_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,44},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_61_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,45},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_55_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,46},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_62uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,47},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_49_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,48},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_53_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,49},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_ellipse_51_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,50},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_58_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,51},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_59_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,52},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_56_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,53},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_57_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,54},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_60_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,55},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst15uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst16uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst17uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst18uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst19uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst20uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst21uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_default_0uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,56},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,57},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_0_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,58},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_1_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,59},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_gltfplus_mat_vector_2_inst1uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,60},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst22uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst23uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst24uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst25uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst26uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst27uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst28uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst29uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst30uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst31uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst32uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst33uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+  rdf_shaderDefData const mdl_material_RenderCore_RC_Text_inst34uniform_defData[] =
+  {
+    {"baseColorTexture",rdf_glslDataType::MDATT_S2D,-1},
+    {"baseColorFactor",rdf_glslDataType::MDATT_VEC4,0},
+    {"u_Opacity",rdf_glslDataType::MDATT_FLOAT,0}
+  };
+
+//Class data declarations ...
+rdf_material_base const mdl_material_base_gltfplus_mat_frame_47_0Base =
+{
+  true,
+  0U,
+  0U,
+  0U,
+  "Assets/All_Export/shaders/pbr-vert.glsl",
+  "Assets/All_Export/shaders/texmap-frag.glsl",
+  39U,
+  42U,
+  nullptr,
+  0U,
+  mdl_cullMode::cmUnset,
+  0x00000000U,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendEquation::beUnset,
+  MdlBlendEquation::beUnset
+};
+rdf_material_base const mdl_material_base_RenderCore_RC_TextBase =
+{
+  true,
+  1U,
+  1U,
+  1U,
+  "addons/Resources/Shaders/atexmap.vert.glsl",
+  "addons/Resources/Shaders/atexmap.frag.glsl",
+  42U,
+  42U,
+  nullptr,
+  0U,
+  mdl_cullMode::cmUnset,
+  0x00000000U,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendFactor::bfUnset,
+  MdlBlendEquation::beUnset,
+  MdlBlendEquation::beUnset
+};
+rdf_material const mdl_material_materials_disp0[96] =
+{
+  {
+    25U,
+    3U,
+    mdl_material_gltfplus_mat_frame_47_0uniform_defData,
+    "gltfplus_mat_frame_47_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    27U,
+    3U,
+    mdl_material_gltfplus_mat_bguniform_defData,
+    "gltfplus_mat_bg",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    28U,
+    3U,
+    mdl_material_gltfplus_mat_rectangle_394uniform_defData,
+    "gltfplus_mat_rectangle_394",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    29U,
+    3U,
+    mdl_material_RenderCore_RC_Textuniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    31U,
+    3U,
+    mdl_material_gltfplus_mat_vector_42uniform_defData,
+    "gltfplus_mat_vector_42",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    32U,
+    3U,
+    mdl_material_gltfplus_mat_vector_43uniform_defData,
+    "gltfplus_mat_vector_43",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    33U,
+    3U,
+    mdl_material_gltfplus_mat_vector_44uniform_defData,
+    "gltfplus_mat_vector_44",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    34U,
+    3U,
+    mdl_material_gltfplus_mat_vector_45uniform_defData,
+    "gltfplus_mat_vector_45",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    35U,
+    3U,
+    mdl_material_gltfplus_mat_rectangle_394_inst1uniform_defData,
+    "gltfplus_mat_rectangle_394",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    36U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst1uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    37U,
+    3U,
+    mdl_material_gltfplus_mat_layer_1_0uniform_defData,
+    "gltfplus_mat_layer_1_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    38U,
+    3U,
+    mdl_material_gltfplus_mat_vectoruniform_defData,
+    "gltfplus_mat_vector",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    39U,
+    3U,
+    mdl_material_gltfplus_mat_vector_0uniform_defData,
+    "gltfplus_mat_vector_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    40U,
+    3U,
+    mdl_material_gltfplus_mat_vector_1uniform_defData,
+    "gltfplus_mat_vector_1",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    41U,
+    3U,
+    mdl_material_gltfplus_mat_vector_2uniform_defData,
+    "gltfplus_mat_vector_2",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    42U,
+    3U,
+    mdl_material_gltfplus_mat_vector_3uniform_defData,
+    "gltfplus_mat_vector_3",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    43U,
+    3U,
+    mdl_material_gltfplus_mat_vector_4uniform_defData,
+    "gltfplus_mat_vector_4",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    44U,
+    3U,
+    mdl_material_gltfplus_mat_rectangle_395uniform_defData,
+    "gltfplus_mat_rectangle_395",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    45U,
+    3U,
+    mdl_material_gltfplus_mat_rectangle_396uniform_defData,
+    "gltfplus_mat_rectangle_396",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    46U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst2uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    47U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst3uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    48U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst4uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    49U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst5uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    50U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst6uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    51U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst7uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    52U,
+    3U,
+    mdl_material_gltfplus_mat_line_17uniform_defData,
+    "gltfplus_mat_line_17",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    53U,
+    3U,
+    mdl_material_gltfplus_mat_line_18uniform_defData,
+    "gltfplus_mat_line_18",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    54U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_56uniform_defData,
+    "gltfplus_mat_ellipse_56",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    55U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_57uniform_defData,
+    "gltfplus_mat_ellipse_57",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    56U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_52uniform_defData,
+    "gltfplus_mat_ellipse_52",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    57U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_47uniform_defData,
+    "gltfplus_mat_ellipse_47",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    58U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_59uniform_defData,
+    "gltfplus_mat_ellipse_59",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    59U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_60uniform_defData,
+    "gltfplus_mat_ellipse_60",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    60U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_61uniform_defData,
+    "gltfplus_mat_ellipse_61",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    61U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_55uniform_defData,
+    "gltfplus_mat_ellipse_55",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    62U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_58uniform_defData,
+    "gltfplus_mat_ellipse_58",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    63U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_49uniform_defData,
+    "gltfplus_mat_ellipse_49",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    64U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_53uniform_defData,
+    "gltfplus_mat_ellipse_53",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    65U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_51uniform_defData,
+    "gltfplus_mat_ellipse_51",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    66U,
+    3U,
+    mdl_material_gltfplus_mat_vector_58uniform_defData,
+    "gltfplus_mat_vector_58",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    67U,
+    3U,
+    mdl_material_gltfplus_mat_vector_59uniform_defData,
+    "gltfplus_mat_vector_59",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    68U,
+    3U,
+    mdl_material_gltfplus_mat_vector_56uniform_defData,
+    "gltfplus_mat_vector_56",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    69U,
+    3U,
+    mdl_material_gltfplus_mat_vector_61uniform_defData,
+    "gltfplus_mat_vector_61",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    70U,
+    3U,
+    mdl_material_gltfplus_mat_vector_57uniform_defData,
+    "gltfplus_mat_vector_57",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    71U,
+    3U,
+    mdl_material_gltfplus_mat_vector_60uniform_defData,
+    "gltfplus_mat_vector_60",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    72U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst8uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    73U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst9uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    74U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst10uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    75U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst11uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    76U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst12uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    77U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst13uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    78U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst14uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    79U,
+    3U,
+    mdl_material_gltfplus_mat_fuel_icon_5_1uniform_defData,
+    "gltfplus_mat_fuel_icon_5_1",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    80U,
+    3U,
+    mdl_material_gltfplus_mat_polygon_27uniform_defData,
+    "gltfplus_mat_polygon_27",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    81U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_56_0uniform_defData,
+    "gltfplus_mat_ellipse_56_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    82U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_57_0uniform_defData,
+    "gltfplus_mat_ellipse_57_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    83U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_52_0uniform_defData,
+    "gltfplus_mat_ellipse_52_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    84U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_47_0uniform_defData,
+    "gltfplus_mat_ellipse_47_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    85U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_59_0uniform_defData,
+    "gltfplus_mat_ellipse_59_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    86U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_60_0uniform_defData,
+    "gltfplus_mat_ellipse_60_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    87U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_61_0uniform_defData,
+    "gltfplus_mat_ellipse_61_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    88U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_55_0uniform_defData,
+    "gltfplus_mat_ellipse_55_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    89U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_62uniform_defData,
+    "gltfplus_mat_ellipse_62",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    90U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_49_0uniform_defData,
+    "gltfplus_mat_ellipse_49_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    91U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_53_0uniform_defData,
+    "gltfplus_mat_ellipse_53_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    92U,
+    3U,
+    mdl_material_gltfplus_mat_ellipse_51_0uniform_defData,
+    "gltfplus_mat_ellipse_51_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    93U,
+    3U,
+    mdl_material_gltfplus_mat_vector_58_0uniform_defData,
+    "gltfplus_mat_vector_58_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    94U,
+    3U,
+    mdl_material_gltfplus_mat_vector_59_0uniform_defData,
+    "gltfplus_mat_vector_59_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    95U,
+    3U,
+    mdl_material_gltfplus_mat_vector_56_0uniform_defData,
+    "gltfplus_mat_vector_56_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    96U,
+    3U,
+    mdl_material_gltfplus_mat_vector_57_0uniform_defData,
+    "gltfplus_mat_vector_57_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    97U,
+    3U,
+    mdl_material_gltfplus_mat_vector_60_0uniform_defData,
+    "gltfplus_mat_vector_60_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    98U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst15uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    99U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst16uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    100U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst17uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    101U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst18uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    102U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst19uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    103U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst20uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    104U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst21uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    105U,
+    3U,
+    mdl_material_gltfplus_mat_default_0uniform_defData,
+    "gltfplus_mat_default_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    106U,
+    3U,
+    mdl_material_gltfplus_mat_vector_inst1uniform_defData,
+    "gltfplus_mat_vector",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    107U,
+    3U,
+    mdl_material_gltfplus_mat_vector_0_inst1uniform_defData,
+    "gltfplus_mat_vector_0",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    108U,
+    3U,
+    mdl_material_gltfplus_mat_vector_1_inst1uniform_defData,
+    "gltfplus_mat_vector_1",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    109U,
+    3U,
+    mdl_material_gltfplus_mat_vector_2_inst1uniform_defData,
+    "gltfplus_mat_vector_2",
+    &mdl_material_base_gltfplus_mat_frame_47_0Base
+  },
+  {
+    110U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst22uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    111U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst23uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    112U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst24uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    113U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst25uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    114U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst26uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    115U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst27uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    116U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst28uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    117U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst29uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    118U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst30uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    119U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst31uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    120U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst32uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    121U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst33uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  },
+  {
+    122U,
+    3U,
+    mdl_material_RenderCore_RC_Text_inst34uniform_defData,
+    "RenderCore_RC_Text",
+    &mdl_material_base_RenderCore_RC_TextBase
+  }
+};
+
+//Methods ...
+
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Display manager
+After=vmf.service ucl_proxy_vmf.service
+Wants=vmf.service
+DefaultDependencies=no
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/usr/bin/display_mgr
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

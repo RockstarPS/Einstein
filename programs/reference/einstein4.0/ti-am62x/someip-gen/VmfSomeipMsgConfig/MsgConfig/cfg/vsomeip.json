@@ -1,0 +1,903 @@
+{
+	"unicast" : "10.221.10.1",
+	"logging" : {
+		"level" : "trace",
+		"console" : "true",
+		"file" : {
+			"enable" : "false"
+		},
+		"dlt" : "false",
+		"statistics" : "true"
+	},
+	"performance-measurement": {
+		"enable":"true",
+		"client":"true",
+		"server":"false",
+		"interval":60
+	}
+	,
+	"applications" : [
+		{
+			"name" : "srvgw_vsomeip",
+			"id" : "0x4445"
+		},
+		{
+			"name" : "PersistencyService",
+			"id" : "0x4446"
+		},
+		{
+			"name" : "TimeSyncService",
+			"id" : "0x4447"
+		},
+		{
+			"name" : "HealthManager",
+			"id" : "0x4448"
+		},
+		{
+			"name" : "SomeipPerfTestService",
+			"id" : "0x4449"
+		},
+		{
+			"name" : "GyroAccelServices",
+			"id" : "0x4450"
+		},
+		{
+			"name" : "DiagServices",
+			"id" : "0x4451"
+		},
+		{
+			"name" : "ThermalService",
+			"id" : "0x4452"
+		},
+		{
+			"name" : "DisplayCtrlServiceFailsafe",
+			"id" : "0x4453"
+		},
+		{
+			"name" : "qnxUpdateClient",
+			"id" : "0x4454"
+		},
+		{
+			"name" : "VersionManager",
+			"id" : "0x4455"
+		}
+	],
+	"services" : [
+		{
+			"service" : "0xb7",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30509",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xb8",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30510",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8002"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xc0",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30511",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xc1",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30512",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xc5",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30513",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8001"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xc6",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30514",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8001",
+					"8002",
+					"8003"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xc7",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30515",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "800d",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"800d"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xde",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30516",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8001"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xe6",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30517",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xe7",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30518",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xe8",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30519",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8004",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000",
+					"8001",
+					"8002",
+					"8003",
+					"8004"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xe9",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30520",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xea",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30521",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8003"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xeb",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30522",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000",
+					"8001",
+					"8002"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xec",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30523",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8004",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8005",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8009",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8008",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8007",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8006",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "800c",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "800d",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8004",
+					"8005",
+					"8009",
+					"8008",
+					"8007",
+					"8006",
+					"800c",
+					"800d",
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xed",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30524",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xee",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30525",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8001"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0xf0",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30526",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0xf1",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30527",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x32",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30528",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x35",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30529",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x36",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30530",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8009",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8008",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8004",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8009",
+					"8008",
+					"8003",
+					"8001",
+					"8000",
+					"8004"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x37",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30531",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8004",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8003",
+					"8004",
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x38",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30532",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x39",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30533",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8003",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000",
+					"8001",
+					"8002",
+					"8003"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x3a",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30534",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x40",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30535",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x4a",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30536",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x55",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30537",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x56",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30538",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x57",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30539",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x58",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30540",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000",
+					"8001",
+					"8002"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x59",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30541",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x5a",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30542",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x5b",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30543",
+				"enable-magic-cookies" : "true"
+			}
+		},
+		{
+			"service" : "0x5c",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30544",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "8000",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "8002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x4444",
+					"events" : [
+					"8000",
+					"8001",
+					"8002"
+					]
+				}
+			]
+		},
+		{
+			"service" : "0x5d",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30545",
+				"enable-magic-cookies" : "true"
+			}
+		}
+	],
+	"routing" : "vsomeipd",
+	"service-discovery" : {
+		"enable" : "true",
+		"multicast" : "224.224.224.245",
+		"port" : "30490",
+		"protocol" : "udp",
+		"initial_delay_min" : "10",
+		"initial_delay_max" : "100",
+		"cyclic_offer_delay" : "60000",
+		"request_response_delay" : "1500",
+		"mode" : "unicast",
+		"unicast" : [
+			"10.221.10.3"
+		]
+	}
+}

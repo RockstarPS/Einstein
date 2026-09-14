@@ -1,0 +1,132 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file ComAbsNm.c
+*    @ingroup ComAbsMdl
+*    @brief This file implements the Abstraction for Com Rx and Tx signals between SWC's and the Com stack
+*    Auto generated code in VTAMILAR at 2024-11-20 16:37:10.938021
+********************************************************************************************************************/
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+
+#include "ComAbsNm.h"
+//#include "CmpLib.h"
+
+/********************************************************************************************************************
+*  PRIVATE MACRO DEFINITIONS                                                                                        *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+*  PRIVATE TYPE DEFINITIONS                                                                                         *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+*  PRIVATE FUNCTION PROTOTYPES                                                                                      *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+*  PRIVATE VARIABLE AND CONSTANT DECLARATION                                                                        *
+********************************************************************************************************************/
+
+/* @brief  Instance of life-cycle state-machine */
+//CMPLIB_INSTANCE(ComAbsNm)
+
+static Std_ReturnType CmpInit( void );
+static Std_ReturnType CmpDeInit( void );
+static Std_ReturnType CmpActivation( void );
+static Std_ReturnType CmpDeActivation( void );
+static Std_ReturnType CmpActive(void);
+static Std_ReturnType CmpDiag(void);
+static Std_ReturnType CmpDiagReturn( void );
+
+/* Public Function Implementation */
+/* Tx Implementation */
+/* Local Functions */
+/********************************************************************************************************************
+*   @brief     Transitional initialization state
+*   @return E_OK:           Succeed
+********************************************************************************************************************/
+static Std_ReturnType CmpInit( void )
+{
+	return E_OK;
+}
+
+/********************************************************************************************************************
+*   @brief     Transitional de-initialization state
+*   @return E_OK:           Succeed
+********************************************************************************************************************/
+static Std_ReturnType CmpDeInit( void )
+{
+     return E_OK;
+}
+
+/********************************************************************************************************************
+*   @brief     Transitional activation state
+*   @return E_OK:           Succeed
+*   <br>     E_NOT_READY:    In progress. Keeps the component in this state.
+*   <br>     E_NOT_OK:       Failed
+********************************************************************************************************************/
+static Std_ReturnType CmpActivation( void )
+{
+    return E_OK;
+}
+
+/********************************************************************************************************************
+*   @brief     Transitional de-activation  state
+*   @return E_OK:           Succeed
+*   <br>     E_NOT_READY:    In progress. Keeps the component in this state.
+*   <br>     E_NOT_OK:       Failed
+********************************************************************************************************************/
+static Std_ReturnType CmpDeActivation( void )
+{
+     return  E_OK;
+}
+
+/********************************************************************************************************************
+*   @brief     State for normal operations
+*   @return The return value is disregarded. Say E_OK
+********************************************************************************************************************/
+static Std_ReturnType CmpActive(void)
+{
+	return (E_OK);
+}
+
+/********************************************************************************************************************
+*   @brief     Diagnostic state
+*   @return E_OK:           Diagnostic has completed. Go to DiagReturn state.
+*   br>     E_NOT_READY:    Keeps the component in this state.
+********************************************************************************************************************/
+static Std_ReturnType CmpDiag( void )
+{
+     return E_OK;
+}
+
+
+/********************************************************************************************************************
+*   @brief     Transitional state to clean up after diagnostic state. Component behavior to be restored.
+*   @return E_OK:           Diagnostic clean-up has completed. Return to the previous state (Active or Inactive).
+*   <br>     E_NOT_READY:    Keeps the component in this state.
+********************************************************************************************************************/
+static Std_ReturnType CmpDiagReturn( void )
+{
+     return E_OK;
+}
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/
+
+    

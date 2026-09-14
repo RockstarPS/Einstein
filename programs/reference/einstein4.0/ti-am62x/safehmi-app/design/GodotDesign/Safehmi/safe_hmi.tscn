@@ -1,0 +1,69 @@
+[gd_scene load_steps=12 format=3 uid="uid://dojar46cyxmke"]
+
+[ext_resource type="Script" path="res://addons/rendercore/RcSafeHmiCanvas.cs" id="1_5bbfa"]
+[ext_resource type="Script" path="res://addons/rendercore/RcSafeHmiImage.cs" id="3_f3trb"]
+[ext_resource type="Texture2D" uid="uid://cn24ksky83v8f" path="res://safe_hmi_E4.0/Images/tt_ico_a16_l.png" id="3_l2al2"]
+[ext_resource type="Texture2D" uid="uid://bgv3v1p8j13u7" path="res://safe_hmi_E4.0/Images/tt_ico_a16_r.png" id="4_1k0ly"]
+[ext_resource type="Texture2D" uid="uid://djymm6jswl0dv" path="res://safe_hmi_E4.0/Images/tt_ico_m01.png" id="5_fxu4x"]
+[ext_resource type="Texture2D" uid="uid://08p4l1gme7dj" path="res://safe_hmi_E4.0/Images/tt_ico_k01_p.png" id="6_u14i3"]
+[ext_resource type="Texture2D" uid="uid://q4q2gf1d1xwv" path="res://safe_hmi_E4.0/Images/tt_ico_b05.png" id="7_jnoiq"]
+[ext_resource type="Texture2D" uid="uid://6ahkpxm1woif" path="res://safe_hmi_E4.0/Images/tt_ico_a01.png" id="8_63phj"]
+[ext_resource type="Texture2D" uid="uid://b5dcseuu8dyrd" path="res://safe_hmi_E4.0/Images/tt_ico_pm_acc.png" id="9_dn6ha"]
+[ext_resource type="Texture2D" uid="uid://c43bhyliomd3g" path="res://safe_hmi_E4.0/Images/tt_ico_k02.png" id="10_rfb74"]
+[ext_resource type="Texture2D" uid="uid://bfvmbqcpek2vo" path="res://safe_hmi_E4.0/Images/tt_ico_l19.png" id="11_npf3i"]
+
+[node name="root" type="Node2D"]
+renderorder = 0
+script = ExtResource("1_5bbfa")
+Size = 1
+Panic_Color_1 = Color(1, 1, 0, 1)
+Error_Threshold_Value_1 = 3
+Error_Reset_Threshold_Value_1 = 4
+Width = 1920
+Height = 720
+Background_Images = []
+
+[node name="tt_left" type="Node2D" parent="."]
+position = Vector2(571, 46)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("3_l2al2")
+
+[node name="tt_right" type="Node2D" parent="."]
+position = Vector2(1307, 46)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("4_1k0ly")
+
+[node name="tt_batt" type="Node2D" parent="."]
+position = Vector2(678, 46)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("5_fxu4x")
+
+[node name="tt_p_sbr" type="Node2D" parent="."]
+position = Vector2(765, 46)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("6_u14i3")
+
+[node name="tt_abs" type="Node2D" parent="."]
+position = Vector2(852, 45)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("7_jnoiq")
+
+[node name="tt_h_beam" type="Node2D" parent="."]
+position = Vector2(939, 46)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("8_63phj")
+
+[node name="tt_acc" type="Node2D" parent="."]
+position = Vector2(1026, 45)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("9_dn6ha")
+
+[node name="tt_airbag" type="Node2D" parent="."]
+position = Vector2(1113, 45)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("10_rfb74")
+
+[node name="tt_key" type="Node2D" parent="."]
+position = Vector2(1200, 45)
+script = ExtResource("3_f3trb")
+Texture = ExtResource("11_npf3i")

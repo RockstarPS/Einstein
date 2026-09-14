@@ -1,0 +1,19 @@
+[Unit]
+Description=Secure QTD Mount Service - Recovery
+DefaultDependencies=no
+ConditionKernelCommandLine=BOOT_MODE=REC
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/secure_qtd_mount -c /etc/recovery-qtd.conf
+Restart=on-failure
+StartLimitInterval=5min
+StartLimitBurst=4
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target
+

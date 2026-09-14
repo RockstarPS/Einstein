@@ -1,0 +1,59 @@
+
+###########################################################################
+## QNX Core Services Build File
+###########################################################################
+
+###########################################################################
+## General Commands
+###########################################################################
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /proc/boot/ksh=ksh
+[type=link] /bin/ksh=/proc/boot/ksh
+##Why in the original build this error is not reported???
+#[type=link] /bin/sh=/proc/boot/ksh
+#[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /proc/boot/ls=ls
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /proc/boot/pidin=pidin
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /proc/boot/slog2info=slog2info
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /proc/boot/waitfor=waitfor
+#cat, cp, rm, ls and mkdir are replaced by toybox
+#[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/cat=cat
+#[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/cp=cp
+#[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/mkdir=mkdir
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/on=on
+#[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/rm=rm
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/sbin] /usr/sbin/dumper=dumper
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/bin]  /usr/bin/toybox=toybox
+
+###########################################################################
+## QNX Executables
+###########################################################################
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/slmctl=slmctl
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/bin] /bin/slogger2=slogger2
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]                 /sbin/mq=mq
+#Installed as separate packet
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]             /usr/sbin/ham=ham
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin] /sbin/pipe=pipe
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin] /usr/sbin/slm=slm
+
+
+###########################################################################
+## QNX Libraries
+###########################################################################
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libqh.so.1=libqh.so.1
+[type=link] /lib/libqh.so=/lib/libqh.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libregex.so.1=libregex.so.1
+[type=link] /lib/libregex.so=/lib/libregex.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libexpat.so.2=libexpat.so.2
+[type=link] /usr/lib/libexpat.so=/usr/lib/libexpat.so.2
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libsecpol.so.1=libsecpol.so.1
+[type=link] /lib/libsecpol.so=/lib/libsecpol.so.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libslog2parse.so.1=libslog2parse.so.1
+[type=link] /lib/libslog2parse.so=/lib/libslog2parse.so.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libslog2shim.so.1=libslog2shim.so.1
+[type=link] /lib/libslog2shim.so=/lib/libslog2shim.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libslog2.so.1=libslog2.so.1
+[type=link] /lib/libslog2.so=/lib/libslog2.so.1
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libmq.so.1 = libmq.so.1
+#[type=link] /usr/lib/libmq.so=/usr/lib/libmq.so.1
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libham.so.2 = libham.so.2
+[type=link] /usr/lib/libham.so = /usr/lib/libham.so.2
+

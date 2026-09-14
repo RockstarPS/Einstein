@@ -1,0 +1,18 @@
+[Unit]
+Description=FOTA Application
+After=mainHmi.service,ucl_proxy_vmf.service,vmf.service
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/fota_app
+Restart=always
+StartLimitInterval=5min
+StartLimitBurst=4
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+#---------------------------------------------------------------------------------------------------------------------
+#
+# VISTEON CORPORATION CONFIDENTIAL
+# ________________________________
+#
+# [2021] Visteon Corporation
+# All Rights Reserved.
+#
+# NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+# Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+# its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+# or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+# in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+# under all copyright laws to protect this work as a published work, when appropriate.
+# Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+# without the written authorization of Visteon Corporation.
+#
+#---------------------------------------------------------------------------------------------------------------------
+
+SRAM_CODE_HSM: ORIGIN = 0x00000000, LENGTH = 128K
+SRAM_DATA_HSM: ORIGIN = 0x00020000, LENGTH = 96K
+SRAM_SHARED_HSM: ORIGIN = 0x00038000, LENGTH = 29K
+
+#-------------------------------------------------------------------------------------------------------------------
+#    Date     |   User   |   Task   |                                     Description
+#-------------------------------------------------------------------------------------------------------------------
+#  08/08/2023 | MDELAFU1 |   MR-41   | Added support for TI compilers
+#-------------------------------------------------------------------------------------------------------------------
+
+
+  UMEM                  00000000   00010000  00008457  00007ba9  RWIX
+  DMEM0                 00010000   00005000  00000000  00005000  RWIX
+  DMEM1                 00015000   0000ffe0  00001200  0000ede0  RWIX

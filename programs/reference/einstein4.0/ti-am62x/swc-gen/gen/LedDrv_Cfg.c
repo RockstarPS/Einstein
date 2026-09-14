@@ -1,0 +1,235 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2024. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  LedDrv_Cfg.c                                             *
+*  Module Short Name :  leddrv-tlc6c5724                                     *
+*  VOBName           :                                                       *
+*  Author            : sdv                                                   *
+*  Description       : This file contains external configuration             *
+                       for LedDrv Module                                     *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  Clang                                                  *
+* Target Hardware  :  Independent                                            *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "LedDrv_Cfg.h"
+
+#define LED_DRIVER_CODE_SEC_START
+#include "MemMap.h"
+
+#define LED_DRIVER_CODE_DATA_START
+#include "MemMap.h"
+
+
+const LedDrv_FCConfigType LedDrv_FCConfig[LEDDRV_NUM_OF_CHIPS] = 
+{
+  {
+    0, /*Chip Index - 0 to LEDDRV_NUM_OF_CHIPS - 1*/
+    Led_Err_Mask_Enable,
+    LedDrv_SlewwRate_200ns,
+    LedDrv_LODThresold_0_5V,
+    LedDrv_LSDThresold_0_3V,
+    LedDrv_APSCurrent_400uA,
+    LedDrv_APSTime_20us,
+    LedDrv_GSMode_10bit,
+    LedDrv_TimingReset_Disable,
+    LedDrv_AutoRepeat_Enable,
+    LedDrv_LowDcRange_Blue,
+    LedDrv_LowDcRange_Green,
+    LedDrv_LowDcRange_Red
+  }
+};
+
+
+const LedDrv_LedConfigType LedDrv_LedConfig[LEDDRV_NUM_OF_LEDS] = 
+    {
+        {
+            0,
+            0,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            1,
+			LEFT_EU_BRAKE_LED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            2,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            3,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            4,
+			LEFT_DRV_AIR_BAG_LED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            5,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            6,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            7,
+			LEFT_SEATBELT_LED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            8,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            9,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            10,
+			LEFT_US_BRAKE_LED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            11,
+            RIGHT_ESC_OFF_LED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            12,
+            LEFT_ESC_OFF_LED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            13,
+			LEFT_ANTILOCK_BRAKE_LED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            14,
+            RIGHT_ESC_SERVICE_LED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            15,
+            LEFT_ESC_SERVICE_LED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            16,
+			LED_NOT_CONNECTED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            17,
+            RIGHT_TIRE_PRESSURE_LED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            18,
+            LEFT_TIRE_PRESSURE_LED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            19,
+			LED_NOT_CONNECTED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            20,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPB
+        },
+        {
+            0,
+            21,
+            LED_NOT_CONNECTED,
+            LEDDRV_GROUPR
+        },
+        {
+            0,
+            22,
+			LED_NOT_CONNECTED,
+            LEDDRV_GROUPG
+        },
+        {
+            0,
+            23,
+            RIGHT_EU_BRAKE_LED,
+            LEDDRV_GROUPB
+        }
+    };
+
+
+const LedDrv_FaultType LedDrv_LedFault[LEDDRV_NUM_OF_FAULT_DETECTION_LED] =
+{
+    {
+        LEFT_TIRE_PRESSURE_LED,
+        LedDrv_FaultIndication_Cb
+    }
+};
+
+void LedDrv_FaultIndication_Cb(uint16 FaultStatus)
+{
+    (void) FaultStatus;
+}
+
+#define LED_DRIVER_DATA_SEC_END
+#include "MemMap.h"
+
+#define LED_DRIVER_SEC_END
+#include "MemMap.h"

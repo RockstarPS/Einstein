@@ -1,0 +1,47 @@
+
+###########################################################################
+## QNX BSP Build File
+###########################################################################
+
+###########################################################################
+## BSP Executables
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/devc-seromap=devc-seromap
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/devb-sdmmc-am65x=devb-sdmmc-am65x
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/tisci-mgr=tisci-mgr
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/tiudma-mgr=tiudma-mgr
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/devf-j7-ospi=devf-j7-ospi
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/sbin] /sbin/i2c-omap35xx=i2c-omap35xx
+
+
+###########################################################################
+## BSP libraries
+###########################################################################
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libgcc_s.so.1=libgcc_s.so.1
+[type=link] /lib/libgcc_s.so=/lib/libgcc_s.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libc.so.6=libc.so.6
+[type=link] /lib/libc.so=/lib/libc.so.6
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libcam.so.2=libcam.so.2
+[type=link] /lib/libcam.so=/lib/libcam.so.2
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libfsnotify.so.1=libfsnotify.so.1
+[type=link] /lib/libfsnotify.so=/lib/libfsnotify.so.1
+
+# configuration for the qcrypto library
+/etc/qcrypto.conf = {
+  openssl-3 tags=*
+}
+
+[uid=0 gid=0 perms=0755]/etc/newif.sh = {
+#!/bin/sh
+ifconfig $1 up
+}
+
+[uid=0 gid=0 perms=0755]/etc/up.sh = {
+#!/bin/sh
+dhclient -m -lf /dev/shmem/dhclient.leases.$1 -pf /dev/shmem/dhclient.pid.$1 -nw $1
+}
+
+[uid=0 gid=0 perms=0755]/etc/down.sh = {
+#!/bin/sh
+dhclient -m -lf /dev/shmem/dhclient.leases.$1 -pf /dev/shmem/dhclient.pid.$1 -x $1
+}

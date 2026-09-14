@@ -1,0 +1,143 @@
+<SLM:system>
+	<!-- Basic Services -->
+	<SLM:component name="ham">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/sbin/ham</SLM:args>
+		<SLM:waitfor wait="pathname">/proc/ham</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="slogger2">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /bin/slogger2</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/slog2</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="pipe">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /sbin/pipe</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/pipe</SLM:waitfor>
+	</SLM:component>
+	<!-- Basic Drivers -->
+	<SLM:component name="devc-seromap">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /sbin/devc-seromap -e -F 0x02800000,210</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/ser1</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="resmgr_dio">
+		<SLM:command>on</SLM:command>
+            <SLM:args>-R 0x0F /usr/sbin/resmgr_dio -b0x00600000 -m0x00000000 -b0x00600000 -m0x00100741 -b0x00600000 -m0x000000FC -b0x00601000 -m0x000FBA00 -b0x00601000 -m0x000B2000 </SLM:args>
+		<SLM:waitfor wait="pathname">/dev/gpio/unexport</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="resmgr_display">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/display/display0/power</SLM:waitfor>
+		<SLM:depend>resmgr_dio</SLM:depend>
+        <SLM:depend>fs_mount</SLM:depend>
+	</SLM:component>
+	
+	<SLM:component name="screen">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /app/sbin/screen -c /app/usr/lib/graphics/am62p/graphics-einstein4.conf</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/screen</SLM:waitfor>
+        <SLM:depend>fs_mount</SLM:depend>
+		<SLM:depend>resmgr_display</SLM:depend>
+	</SLM:component>
+	<SLM:component name="display_power_on">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/sbin/display_power_on</SLM:args>
+		<SLM:depend>screen</SLM:depend>
+        <SLM:waitfor wait="exits">0</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="gles2-gears">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /app/usr/bin/gles2-gears</SLM:args>
+		<SLM:depend>display_power_on</SLM:depend>
+	</SLM:component>
+	<SLM:component name="devb-sdmmc-am65x">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /sbin/devb-sdmmc-am65x qnx6 trim=enable cam cache,ra=128k:4096k,memory=/memory/below4G/ram/sysram,maxio=256,disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@  disk name=emmc sdmmc partitions=on,pwroff_notify=short sdio addr=0x0fa10000,irq=165,emmc,bs=sscfg=0x8000 disk name=emmc,naming=0#@</SLM:args>
+        <SLM:waitfor wait="pathname">/dev/emmc0</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/dev/emmc0.qnx6.system_a</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/dev/emmc0.qnx6.app_a</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/dev/emmc0.qnx6.asset_a</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/dev/emmc0.qnx6.data</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/dev/emmc0.qnx6.persist</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="fs_mount">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/bin/secure_qtd_mount -c /etc/qtd.conf</SLM:args>
+		<SLM:depend>devb-sdmmc-am65x</SLM:depend>
+		<SLM:waitfor wait="pathname">/system</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/app</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/asset</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/data</SLM:waitfor>
+		<SLM:waitfor wait="pathname">/persist</SLM:waitfor>
+        <SLM:waitfor wait="exits">0</SLM:waitfor>
+	</SLM:component>
+	
+	<SLM:component name="resmgr_sigunit">
+        <SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /usr/sbin/resmgr_sigunit -u0 </SLM:args>
+        <SLM:waitfor wait="pathname">/dev/sig0</SLM:waitfor>
+    </SLM:component>
+	<SLM:component name="boot_kpi">
+        <SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /usr/bin/boot_kpi </SLM:args>
+    </SLM:component>
+	
+	<!-- Commented - intial release
+	<SLM:component name="mq">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /sbin/mq</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/mq</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="io-pkt-v4-hc">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /system/sbin/io-pkt-v4-hc -D -ptcpip pkt_typed_mem=below4G,mclbytes=4096</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/socket</SLM:waitfor>
+		<SLM:depend>fs_mount</SLM:depend>
+	</SLM:component>
+	-->
+	<SLM:component name="dumper">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/sbin/dumper -d /data/core_dumps -s 10M -I -N 10 -w -z 9</SLM:args>
+		<SLM:depend>fs_mount</SLM:depend>
+	</SLM:component>
+	<!-- Commented - intial release
+	<SLM:component name="vmf">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/bin/vmf</SLM:args>
+		<SLM:waitfor wait="pathname">/tmp/vmf_trace_shm</SLM:waitfor>
+		<SLM:depend>mq</SLM:depend>
+		<SLM:depend>io-pkt-v4-hc</SLM:depend>
+	</SLM:component>
+	<SLM:component name="ucl_proxy_vmf">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/bin/ucl_proxy_vmf</SLM:args>
+		<SLM:depend>vmf</SLM:depend>
+	</SLM:component>
+	<SLM:component name="power_mgr">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/bin/power_mgr</SLM:args>
+		<SLM:depend>vmf</SLM:depend>
+	</SLM:component>
+	<SLM:component name="dlt-daemon">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /system/bin/dlt-daemon -c /system/etc/dlt.conf</SLM:args>
+		<SLM:depend>fs_mount</SLM:depend>
+		<SLM:depend>io-pkt-v4-hc</SLM:depend>
+		<SLM:waitfor wait="pathname">/tmp/dlt</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="dlt-qnx-system">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /system/bin/dlt-qnx-system -c /system/etc/dlt-qnx-system.conf</SLM:args>
+		<SLM:depend>dlt-daemon</SLM:depend>
+		<SLM:waitfor wait="pathname">/tmp/dlt</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="wdg_proxy">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /usr/bin/wdg_proxy</SLM:args>
+		<SLM:depend>fs_mount</SLM:depend>
+		<SLM:depend>ham</SLM:depend>
+	</SLM:component>
+	-->
+</SLM:system>

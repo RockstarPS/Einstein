@@ -1,0 +1,13549 @@
+/*=================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==================================================================================================================
+**
+** Name:           Mgrdiagcdd_Cfg.c
+**
+** Description:    
+**                 
+**
+**===================================================================================================================*/
+
+#ifndef MGRDIAGCDD_CFG_C
+#define MGRDIAGCDD_CFG_C
+/*====================================================================================================================
+**                 I N C L U D E   F I L E S
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+#include "Tracediagcdd.h"
+#include "Tracediagcdd_cfg.h"
+#include "Ioctrlrd_dio_diagcdd.h"
+#include "Ioctrlrd_analog_diagcdd.h"
+#include "Ioctrlrd_pwm_diagcdd.h"
+#include "Memdiagcdd_cfg.h"
+#include "Memdiagcdd.h"
+#include "Cybersecdiagcdd.h"
+#include "Displaycontroldiagcdd.h"
+
+#ifdef ETHERNET_TEST_MODE_IOCTRL
+#include "Ethdiagcdd.h"
+#include "Ethernetdiagcdd_cfg.h"
+#endif
+
+#ifdef SERIAL_COMM_PARAMETER
+#include "Commdiagcdd.h"
+#endif
+
+#ifdef MOTORDIAG_SERVICE
+#include "Motordiagcdd.h"
+#endif
+
+#ifdef IOCALIB_MODULE_ENABLE	
+#include "Iocalibdiagcdd.h"
+#endif
+
+#ifdef RESETDIAG_MODULE_ENABLE
+#include "Resetsleepdiagcdd.h"
+#endif
+
+#ifdef SECUREDIAG_MODULE_ENABLE
+#include "Securediagcdd.h"
+#endif
+
+#ifdef OSCDIAG_MODULE_ENABLE
+#include "Oscdiagcdd.h"
+#endif
+
+#ifdef SHAREDIAG_MODULE_ENABLE
+#include "SharedBootDiagcdd_cfg.h"
+#include "SharedBootDiagcdd.h"
+#endif
+
+#ifdef COMM_BUS_VERIFICATION_TEST
+#include "Commdiagcdd.h"
+#endif
+/*====================================================================================================================
+**   I N T E R N A L   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+/*=====================================================================================================================
+**  T Y P E    D E C L A R A T I O N S 
+**====================================================================================================================*/
+#ifdef READ_INTERFACE_FOR_APPL_COMPONENTS
+typedef struct
+{
+	UInt32 l_did_number;
+	uint8 DID_Status;
+	uint8 Data_size;
+	uint8* DID_Data;
+}MGRDIAGCDD_NonDCM_bundle_t;
+#endif
+
+/*=====================================================================================================================
+**  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**====================================================================================================================*/
+#ifdef IOCTRLRD_ANALOG_DIAG_BY_UNIT
+static uint8 Channel_ID;
+#endif
+static uint8 l_One_Sec_Timer_Status_U8;
+
+#define cIOCBI_ResponseTimeoutIn10ms        250
+#ifdef SFD_ROC_ROUTINE
+static boolean F122_start_check_bool = FALSE;
+#endif
+#ifdef READ_INTERFACE_FOR_APPL_COMPONENTS
+
+static uint8 DID_F120_Data[ECU_SW2_PART_NUM_LENGTH] = {0u};
+static uint8 DID_F125_Data[ECU_CALIB2_NUM_LENGTH] = {0u};
+static uint8 DID_F126_Data[ECU_CALIB3_NUM_LENGTH] = {0u};
+static uint8 DID_F127_Data[ECU_CALIB4_NUM_LENGTH] = {0u};
+static uint8 DID_F128_Data[ECU_CALIB5_NUM_LENGTH] = {0u};
+
+static MGRDIAGCDD_NonDCM_bundle_t Meet_Cdd_NonDcm_Read_GIP_DID_Table[NO_OF_NON_DCM_DIDS] = \
+{\
+{0xF120, E_NOT_OK, ECU_SW2_PART_NUM_LENGTH, (uint8*)&DID_F120_Data},\
+{0xF125, E_NOT_OK, ECU_CALIB2_NUM_LENGTH, (uint8*)&DID_F125_Data},\
+{0xF126, E_NOT_OK, ECU_CALIB3_NUM_LENGTH, (uint8*)&DID_F126_Data},\
+{0xF127, E_NOT_OK, ECU_CALIB4_NUM_LENGTH, (uint8*)&DID_F127_Data},\
+{0xF128, E_NOT_OK, ECU_CALIB5_NUM_LENGTH, (uint8*)&DID_F128_Data},\
+};
+
+/* Comparison Counter to provide delay of 1s before reading the NON DCM DIDs */
+#define READ_NONDCM_COMP_COUNTER        100
+
+/* Comparison Counter to retry reading the NON DCM DID */
+#define READ_NONDCM_READBACK_COMP_COUNTER        50
+
+/* For retrying the NON DCM DID Read 2 times */
+#define READ_NONDCM_READBACK_DID_COUNTER        2
+
+/* Counter to Provide Delay of 1s for reading NON DCM DIDs */
+static uint8 Delay_Counter;
+
+/* counter to provide Delay of 500ms added for retrying reading NON DCM DID */
+static uint8 Readback_Delay_Counter = READ_NONDCM_READBACK_COMP_COUNTER;
+
+/* counter to retry reading of NON DCM DID */
+static uint8 Readback_DID_Counter;
+
+static SDmnStatus oDmnStatus = {0, 0, 0, 0, 0, DMN_NOT_READY};
+
+/*flag to notify startup GIP read completed or not*/
+static uint8 IsStartUpGipReadCompleted = E_NOT_OK;
+#endif
+#ifdef IOCTRLRD_ANALOG_DIAG
+static eRoutineStatus AnalogDiag_RoutineStatus = eROUTINE_INACTIVE;
+static uint8 ADC_Channel_ID;
+#endif
+/*=====================================================================================================================
+**  PRIVATE
+**====================================================================================================================*/
+#ifdef RSTCNTRREADINGENABLE
+static Std_ReturnType ResetDiag_Reset_Counter_Validity(uint8 *Data);
+#endif
+
+#ifdef NVMACCESSBYBLOCKIDRCENABLE
+static uint16 l_nvm_DataLength = 0U;
+#endif
+
+#ifdef MEET_GIP_ENABLED
+#ifdef MEET_GIP_SEPERATE_REQ_FOR_DID_DR_IO
+static GIPDataRquestState Mgrdiagcdd_CurrentGIPState = eGIP_InitiateRequest;
+#endif
+	static DiagResponse_t DiagResponse;
+
+	static void memcpy ( void * const pDest, const void * const pSrc, const uint16 BytesCount );
+
+//=====================================================================================================================
+// EXPORTED FUNCTIONS
+//=====================================================================================================================
+//======================================================================================================================
+// DESCRIPTION:         Send request to GIP and wait for response
+//
+// PARAMETERS:          DCM operation status, Diag request buffer
+//
+// RETURN VALUE:        Standard DCM return code
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+Std_ReturnType Meet_Process_Gip_Diag_Request(GIPDataRquestState DcmStatus,P2VAR(DiagReqType, AUTOMATIC, DCM_VAR_NOINIT) pDiagReq,uint8 *pErrorCode)
+{
+    Std_ReturnType ResL;
+
+    switch (DcmStatus) {
+    case eGIP_InitiateRequest:
+        Diag_TIGIP_SendDiagRequest(pDiagReq);
+        ResL = (Std_ReturnType)DCM_E_PENDING;
+        break;
+
+    case eGIP_WaitForResponse:
+        if (Diag_TIGIP_IsResponseReceived() != FALSE)
+        {
+            ResL = (Std_ReturnType)Diag_TIGIP_GetDiagResult();
+            if (ResL > (Std_ReturnType)DCM_E_PENDING)
+            {
+                *pErrorCode = ResL;
+                ResL = (Std_ReturnType)DCM_E_NOT_OK;
+            }
+        }
+        else if (FALSE != Diag_TIGIP_IsResponseTimedOut())
+        {
+           *pErrorCode = DCM_RESPONSE_TIMEOUT;
+            ResL = (Std_ReturnType)DCM_E_NOT_OK;
+        }
+        else
+        {           
+            ResL = (Std_ReturnType)DCM_E_PENDING;
+        }
+        break;
+    default:
+        ResL = (Std_ReturnType)DCM_E_NOT_OK;
+        break;
+    }
+    return ResL;
+}
+
+
+//======================================================================================================================
+// DESCRIPTION:         Send diag request to GIP
+//
+// PARAMETERS:          SDiagRequest_t *pDiagReq
+//
+// RETURN VALUE:        None
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+void Diag_TIGIP_SendDiagRequest(P2CONST(DiagReqType, AUTOMATIC, DCM_VAR_NOINIT) pDiagReq)
+{
+    #ifdef MEET_GIP_SEPERATE_REQ_FOR_DID_DR_IO
+	SDiagDIDRequest DiagDIDReq;
+    SDiagIOCtrlRequest DiagIOCtrlReq;
+	SDiagRoutineRequest DiagRoutineReq;
+    /*RTE and Diag Request structure are program specific*/
+	if(DiagActionType_ReadWrite == (*(pDiagReq)).ActionP)
+	{
+		DiagDIDReq.did = (*(pDiagReq)).ServiceId;	
+		DiagDIDReq.didType = (*(pDiagReq)).DataP[0];
+		DiagDIDReq.dataLen = (*(pDiagReq)).LengthP;
+		
+		MemLib_MemSet(&DiagDIDReq.data,DIDZERO,UCL_Diag_Data_Buffer_Size); 
+		if(DiagDIDReq.dataLen > 0)
+		{
+			MemLib_MemCpy(&DiagDIDReq.data,&((*(pDiagReq)).DataP[1]),DiagDIDReq.dataLen);
+		}
+		Rte_Send_pSR_DiagDIDRequest_DiagDIDRequestData(&DiagDIDReq);
+		
+	}
+	else if(DiagActionType_RoutineCtrl == (*(pDiagReq)).ActionP)
+	{
+		DiagRoutineReq.routineId = (*(pDiagReq)).ServiceId;	
+		DiagRoutineReq.routineType = (*(pDiagReq)).DataP[0];
+		DiagRoutineReq.dataLen = (*(pDiagReq)).LengthP;
+		
+		MemLib_MemSet(&DiagRoutineReq.data,DIDZERO,UCL_Diag_Data_Buffer_Size); 
+		if(DiagRoutineReq.dataLen > 0)
+		{
+			MemLib_MemCpy(&DiagRoutineReq.data,&((*(pDiagReq)).DataP[1]),DiagRoutineReq.dataLen);
+		}
+		Rte_Send_pSR_DiagRoutineRequest_DiagRoutineRequestData(&DiagRoutineReq);
+	}
+	else if(DiagActionType_IOCtrl == (*(pDiagReq)).ActionP)
+	{
+		DiagIOCtrlReq.did = (*(pDiagReq)).ServiceId;	
+		DiagIOCtrlReq.optionCtrl = (*(pDiagReq)).DataP[0];
+		DiagIOCtrlReq.dataLen = (*(pDiagReq)).LengthP-1;
+
+        if(DiagIOCtrlReq.dataLen > 0U)
+        {
+            MemLib_MemCpy(&(DiagIOCtrlReq.data), &((*(pDiagReq)).DataP[1]), (uint16)DiagIOCtrlReq.dataLen);	
+        }
+        (void)Rte_Send_pSR_DiagIOCtrlRequest_DiagIOCtrlRequestData(&DiagIOCtrlReq); 
+    }
+    else
+    {
+        /*NULL*/
+    }
+    #else
+
+    #endif
+    DiagResponse.bResponseReceived = FALSE;
+    DiagResponse.u16ResponseTimeout = (uint16)cIOCBI_ResponseTimeoutIn10ms;
+}
+//======================================================================================================================
+// DESCRIPTION:         Callback for diag response received from GIP
+//
+// PARAMETERS:          DiagResultType DiagResultP, SDiagResponse_t DiagRespDataP
+//
+// RETURN VALUE:        None
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+void Diag_TIGIP_DiagResponse(DiagResultType DiagResultP, SDiagResponse_t DiagRespDataP)
+{
+     (void) memcpy(&DiagResponse.DiagResult, &DiagResultP, (uint16)sizeof(DiagResultP));
+    (void) memcpy(&DiagResponse.DiagRespData, &DiagRespDataP, (uint16)sizeof(DiagRespDataP));
+    DiagResponse.bResponseReceived = TRUE;
+	
+}
+
+
+//======================================================================================================================
+// DESCRIPTION:         Periodic function of TIGIP
+//
+// PARAMETERS:          None
+//
+// RETURN VALUE:        TRUE if response has been received or FALSE otherwise
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+void Diag_TIGIP_MainFunction(void)
+{
+    if (DiagResponse.u16ResponseTimeout > 0U)
+    {
+        DiagResponse.u16ResponseTimeout--;
+    }
+}
+
+//======================================================================================================================
+// DESCRIPTION:         Check for response when a request is sent to GIP
+//
+// PARAMETERS:          None
+//
+// RETURN VALUE:        TRUE if response has been received or FALSE otherwise
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+boolean Diag_TIGIP_IsResponseReceived(void)
+{
+#ifdef EVENT_TRIGGERED_GIP_DIAG_RESPONSE
+#ifdef MEET_GIP_SEPERATE_REQ_FOR_DID_DR_IO
+    SDiagResponse DiagRespDataP;
+#endif
+    if (E_OK == (Std_ReturnType)Rte_Receive_rSR_DiagResponse_DiagResponseData(&DiagRespDataP))
+    {
+        //DiagResponse.DiagResult helps to check DID resp from GIP por/neg
+        DiagResponse.DiagResult = DiagRespDataP.responseCode;
+        
+        //from GIP core additional 3bytes will be received for each req, mentioning DID ID,action type
+        if(DiagRespDataP.dataLen > 3u)
+        {
+            DiagResponse.DiagRespData.Length = (uint8)(DiagRespDataP.dataLen - 3u); //actual data length
+            (void) MemLib_MemCpy(&DiagResponse.DiagRespData.DiagRespBuffer, &DiagRespDataP.data[3], (uint16)DiagResponse.DiagRespData.Length);
+        }
+        DiagResponse.bResponseReceived = TRUE;
+    }
+    else
+    {
+        DiagResponse.bResponseReceived = FALSE;
+    }
+#endif	
+    boolean bRespL = DiagResponse.bResponseReceived;
+    
+    return bRespL;
+}
+
+//======================================================================================================================
+// DESCRIPTION:         Check if no response received in expected time GIP
+//
+// PARAMETERS:          None
+//
+// RETURN VALUE:        TRUE if response failed to arrive in time
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+boolean Diag_TIGIP_IsResponseTimedOut(void)
+{
+    return (0U == DiagResponse.u16ResponseTimeout);
+}
+
+//======================================================================================================================
+// DESCRIPTION:         Get the result of the GIP response
+//
+// PARAMETERS:          None
+//
+// RETURN VALUE:        TRUE if there is a response received or FALSE otherwise
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+DiagResultType Diag_TIGIP_GetDiagResult(void)
+{
+    return DiagResponse.DiagResult;
+}
+
+//======================================================================================================================
+// DESCRIPTION:         Get the response data of the GIP response
+//
+// PARAMETERS:          None
+//
+// RETURN VALUE:        Pointer to DiagRespData
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+SDiagResponse_t* Diag_TIGIP_GetDiagResponse(void)
+{
+    return &DiagResponse.DiagRespData;
+}
+
+static void memcpy ( void * const pDest, const void * const pSrc, const uint16 BytesCount )
+{
+    uint8 * const pDestBuf = (uint8 *)pDest;
+    const uint8 * const pSrcBuf = (const uint8 *)pSrc;
+    uint16 fl_index_u16 = 0U;
+    for(fl_index_u16 = 0U; fl_index_u16 < BytesCount; fl_index_u16++)
+    {
+       pDestBuf[fl_index_u16] = pSrcBuf[fl_index_u16];
+    }
+}
+#ifdef MEET_GIP_ENABLED_CRYPTO
+//======================================================================================================================
+// DESCRIPTION:         Send request to GIP and wait for response  for cryptography services
+//
+// PARAMETERS:          DCM operation status, Diag request buffer
+//
+// RETURN VALUE:        Standard DCM return code
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+Std_ReturnType Meet_Process_Gip_Diag_Request_Crypto(GIPDataRquestState DcmStatus,P2VAR(MeetDiagReqType, AUTOMATIC, DCM_VAR_NOINIT) pDiagReq,uint8 *pErrorCode)
+{
+    Std_ReturnType ResL;
+
+    switch (DcmStatus) {
+    case eGIP_InitiateRequest:
+        Diag_TIGIP_SendDiagRequest_Crypto(pDiagReq);
+        ResL = (Std_ReturnType)DCM_E_PENDING;			
+        break;
+
+    case eGIP_WaitForResponse:
+        if (Diag_TIGIP_IsResponseReceived() != FALSE)
+        {
+            ResL = Diag_TIGIP_GetDiagResult();
+            if (ResL > (Std_ReturnType)DCM_E_PENDING)
+            { 
+                *pErrorCode = ResL;
+                ResL = (Std_ReturnType)DCM_E_NOT_OK;
+            }
+        }
+        else if (FALSE != Diag_TIGIP_IsResponseTimedOut())
+        {
+           *pErrorCode = DCM_RESPONSE_TIMEOUT;
+            ResL = (Std_ReturnType)DCM_E_NOT_OK;
+        }
+        else
+        {           
+            ResL = (Std_ReturnType)DCM_E_PENDING;				
+        }
+        break;
+
+    default:
+        ResL = (Std_ReturnType)DCM_E_NOT_OK;		   
+        break;
+    }
+    return ResL;
+}
+
+
+//======================================================================================================================
+// DESCRIPTION:         Send diag request to GIP for cyptography service
+//
+// PARAMETERS:          SDiagRequest_t *pDiagReq
+//
+// RETURN VALUE:        None
+//
+// DESIGN INFORMATION:  None
+//======================================================================================================================
+void Diag_TIGIP_SendDiagRequest_Crypto(P2VAR(MeetDiagReqType, AUTOMATIC, DCM_VAR_NOINIT) pDiagReq)
+{
+    Rte_Send_ppSR_ppMeetDiagrequest_TI_MeetVIPGIP_DiagReq_MeetDiagRequest( pDiagReq);				 //Rte project specific
+    DiagResponse.bResponseReceived = FALSE;
+    DiagResponse.u16ResponseTimeout = (uint16)cIOCBI_ResponseTimeoutIn10ms;
+}
+#endif
+#endif
+#ifdef READ_INTERFACE_FOR_APPL_COMPONENTS
+/*=====================================================================================================================
+**
+** Function Name    :  IsGIPReadDID
+**
+** Visibility       :  Private
+**
+** Description      : Tells if request read service is Gip or Vip related
+**
+**
+** Invocation       : CMeetCdd_Meet_Mgrdiagcdd_Action(), CMeetCdd_Mgrdiagcdd_ReadAction()
+**
+** Inputs           : DID
+**
+** Outputs          : boolean TRUE = GIP, FALSE = VIP
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+boolean IsGIPReadDID(uint32 *DID)
+{
+	boolean status = FALSE;
+	if((*DID == ECU_SW2_PART_NUM_DID_ID) ||(*DID == ECU_CALIB2_NUM_DID_ID)||(*DID == ECU_CALIB3_NUM_DID_ID)||(*DID ==ECU_CALIB4_NUM_DID_ID )||(*DID == ECU_CALIB5_NUM_DID_ID))
+	{
+		status = TRUE;
+	}
+	return status;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Meet_Mgrdiagcdd_Update_GIP_DID_Data
+**
+** Visibility       :  Private
+**
+** Description      :
+**
+**
+** Invocation       : CmpActive()
+**
+** Inputs           :
+**
+** Outputs          :
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+void Meet_Mgrdiagcdd_Update_GIP_DID_Data(uint8* UpdateStatus)
+{
+
+	Std_ReturnType Ret = E_NOT_OK;
+	static uint8 Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index = 0U;
+
+    if(oDmnStatus.dmnStatus == DMN_NOT_READY)
+    {
+    	(void)Rte_Read_rp_SR_DmnInfo_SDmnStatus(&oDmnStatus);
+    }
+
+	/* check for Domain manager is ready or not */
+	if((DMN_NOT_READY != oDmnStatus.dmnStatus) && (Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index < NO_OF_NON_DCM_DIDS)) /*DMN_READY -> Ucl is up*/
+	{
+		/* Delay of 1s is added before reading NON DCM DIDs to provide time to mount the software from GIP side */
+		if(Delay_Counter > READ_NONDCM_COMP_COUNTER)
+		{
+			if(Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].DID_Status == E_NOT_OK)
+			{
+				/* Delay of 500ms is to be given before retry reading NON DCM DIDs if it fails due to not having enough time to mount */
+				if(Readback_Delay_Counter == READ_NONDCM_READBACK_COMP_COUNTER)
+				{
+					/*Read data from GIP via UCL*/
+					Ret = CMeet_Mgrdiagcdd_Update_GIP_DID_Data(Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].DID_Data, &Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].l_did_number);
+		
+					if(Ret != DCM_E_PENDING)
+					{
+						if(E_OK == Ret)
+						{
+							/*GIP data read is success*/
+							Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].DID_Status = E_OK;
+							
+							Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index++ ;
+							
+							/* Resetting the counter values to thier orignal For the next NON DCM READ */
+							Readback_DID_Counter = 0U;
+							Readback_Delay_Counter = READ_NONDCM_READBACK_COMP_COUNTER;
+						
+							if(Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index == NO_OF_NON_DCM_DIDS)
+							{
+								/*Reading all DIDs in table is completed*/
+								*UpdateStatus = E_OK;
+								IsStartUpGipReadCompleted = E_OK;
+								Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index = 0U;
+							}
+						}
+						else
+						{
+							/*clear the delay counter to wait for 500ms before next read*/
+							Readback_Delay_Counter = 0U;
+							
+							if(Readback_DID_Counter == READ_NONDCM_READBACK_DID_COUNTER)
+							{
+								/*The current DID read has failed in all maximum retires configured (readback counter)*/
+								/*Proceed with reading next DID*/
+								Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index++ ;
+								
+								/* Resetting the counter values to the orignal, for the next NON DCM READ */
+								Readback_DID_Counter = 0U;
+								Readback_Delay_Counter = READ_NONDCM_READBACK_COMP_COUNTER;
+								if(Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index == NO_OF_NON_DCM_DIDS)
+								{
+									/*Reading all DIDs in table is completed*/
+									*UpdateStatus = E_OK;
+									IsStartUpGipReadCompleted = E_OK;
+									Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index = 0U;
+								}
+							}
+							else
+							{
+								/*retry read till configured readback counter times*/
+								Readback_DID_Counter++;
+							}
+						}
+					}
+					else
+					{
+						/*On DCM_E_PENDING return value, wait till response received from GIP via UCL*/
+					}
+				}
+				else
+				{
+					/*counter to wait for 500ms after any GIP service read fail*/
+					Readback_Delay_Counter++;
+				}
+			}
+		}
+		else
+		{
+			/*counter to wait for 1s before start reading GIP services*/
+			Delay_Counter++;
+		}		
+	}
+	else
+	{
+		/*DMN_NOT_READY*/
+	}
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Meet_Mgrdiagcdd_Get_GIP_DID_Data
+**
+** Visibility       :  Public
+**
+** Description      :
+**
+**
+** Invocation       : CMeetCdd_Mgrdiagcdd_ReadAction()
+**
+** Inputs           :
+**
+** Outputs          :
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Meet_Mgrdiagcdd_Get_GIP_DID_Data(uint8* Data, uint32* DID)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    static uint8 Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index = 0U;
+    for(Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index = 0U; Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index < NO_OF_NON_DCM_DIDS; Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index++)
+    {
+        if((Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].l_did_number == *DID) && (Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].DID_Status != E_NOT_OK))
+        {
+            (void)memcpy(Data, Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].DID_Data, (uint16)Meet_Cdd_NonDcm_Read_GIP_DID_Table[Meet_Cdd_NonDcm_GIP_Read_DID_Table_Index].Data_size);
+            Ret = E_OK;
+            break;
+        }
+    }
+return Ret;
+}
+#endif
+
+#ifdef OSCDIAG_CLOCK_MONITORING
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FE0B
+**
+** Visibility       :  Public
+**
+** Description      :   Service to start clock monitoring and fetch status.
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE0B(uint8 * Data,uint8* Length)
+{
+    Length[0U] = 0x00U;
+    Length[1U] = 0x01U;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Oscdiag_clock_Monitoring_RC_Start(Data,ErrorCode);
+    if(E_NOT_OK == Ret)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef DISPLAY_CONTENT_CHECK
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FE0C
+**
+** Visibility       :  Public
+**
+** Description      :   Service to start monitoring ePRNDLIcon and fetch RGB checksum status.
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE0C(uint8 * Data,uint8* Length)
+{
+    Length[0U] = 0x00U;
+    Length[1U] = 0x01U;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = DisplayContentVerfication_RC_Start(Data,ErrorCode);
+    if(E_NOT_OK == Ret)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef IOCTRL_FUEL_LEVEL_SENDER_READ_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_4190
+**
+** Visibility       :  Public
+**
+** Description      :   Service to read Fuel Level 1 A/D counts
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_4190(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType fl_bRet = E_NOT_OK;
+
+    fl_bRet = Ioctrld_Read_Fuel_Level_Sender_1(Data);
+    return fl_bRet;
+}
+#endif
+
+#ifdef IOCTRL_FUEL_SENDER_READ_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_61B7
+**
+** Visibility       :  Public
+**
+** Description      :   Service to read Fuel sender 1 data.
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_61B7(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType fl_bRet = E_NOT_OK;
+    fl_bRet = Ioctrld_Read_Fuel_Sender_1(Data);
+    return fl_bRet;
+}
+#endif
+
+#ifdef IOCTRL_FILTER_BYPASS_MODE_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FE70
+**
+** Visibility       :  Public
+**
+** Description      :   Service to read the Filter ByPass Mode.
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE70(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType fl_bRet = E_NOT_OK;
+    fl_bRet = Ioctrld_Read_Filter_Bypass_Mode(Data);
+
+return fl_bRet;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FE70
+**
+** Visibility       :  Public
+**
+** Description      :   Service to turn ON/OFF Filter ByPass Mode
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FE70(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+
+    Ret = Ioctrlrd_Filter_Bypass_Mode_STA(Data);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = DCM_E_REQUESTOUTOFRANGE;
+    }
+    else
+    {
+        /*NULL*/
+    }
+return Ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FE70
+**
+** Visibility       :  Public
+**
+** Description      :   Service to turn off Filter Bypass Modes
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FE70(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+
+    Ret = Ioctrlrd_Filter_Bypass_Mode_RCTE(Data);
+    return Ret;
+}
+#endif
+
+#ifdef TRACEDIAG_RESERVEDBYTES
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA09
+**
+** Visibility       :  Public 
+**
+** Description      :  Read Service for Reserved bytes
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA09(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Reserved_Bytes_Read(Data,ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA09
+**
+** Visibility       :  Public 
+**
+** Description      :  Write Service for Reserved bytes
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA09(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Reserved_Bytes_Write(Data,ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+
+#ifdef TRACEDIAG_TRACEBYTES_STATION_1
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA1B
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Traceability bytes TRACE_STATION_1
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA1B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_1_Read(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA1B
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Traceability bytes TRACE_STATION_1
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA1B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_1_Write(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_TRACEBYTES_STATION_2
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA1C
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Traceability bytes TRACE_STATION_2
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA1C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_2_Read(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA1C
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Traceability bytes TRACE_STATION_2
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA1C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_2_Write((void*)Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_TRACEBYTES_STATION_3
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA1D
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Traceability bytes TRACE_STATION_3
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA1D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_3_Read(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA1D
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Traceability bytes TRACE_STATION_3
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA1D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_3_Write((void*)Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_TRACEBYTES_STATION_4
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA1E
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Traceability bytes TRACE_STATION_4
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA1E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_4_Read(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA1E
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Traceability bytes TRACE_STATION_4
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA1E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_4_Write((void*)Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_TRACEBYTES_STATION_5
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD4D
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Traceability bytes TRACE_STATION_5
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FD4D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_5_Read(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD4D
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Traceability bytes TRACE_STATION_5
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD4D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Traceability_Bytes_TRACE_STATION_5_Write(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_CUSTOMER_HW_REFERENCE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA49
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for customer HW reference and this has to be taken care by application
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA49(uint8 *Data, uint8 *Length)
+{
+    // This DID is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA49
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for customer HW reference and this has to be taken care by application
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA49(uint8 *Data, uint8 *Length)
+{
+    // This DID is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_PCB_VISTEON_PART_NO_PCB_ID1
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA80
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Equipped PCB visteon part number - PCB ID 1
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA80(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA80
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Equipped PCB visteon part number - PCB ID 1
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA80(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_PCB_VISTEON_PART_NO_PCB_ID2
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA81
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Equipped PCB visteon part number - PCB ID 2
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA81(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA81
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Equipped PCB visteon part number - PCB ID 2
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA81(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_PCB_VISTEON_PART_NO_PCB_ID3
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA82
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Equipped PCB visteon part number - PCB ID 3
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA82(uint8 *Data, uint8 *Length)
+{
+    // This DID is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA82
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Equipped PCB visteon part number - PCB ID 3
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA82(uint8 *Data, uint8 *Length)
+{
+    // This is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_PCB_VISTEON_PART_NO_PCB_ID4
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA83
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Equipped PCB visteon part number - PCB ID 4
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA83(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA83
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Equipped PCB visteon part number - PCB ID 4
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA83(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_SERIAL_NO_PCB_ID1
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA84
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Serial number - PCB ID 1
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA84(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA84
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Serial number - PCB ID 1
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA84(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_SERIAL_NO_PCB_ID2
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA85
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read serial number - PCB ID 2
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA85(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA85
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Serial number - PCB ID 2
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA85(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_SERIAL_NO_PCB_ID3
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA86
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read serial number - PCB ID 3
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA86(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA86
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write serial number - PCB ID 3
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA86(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_SERIAL_NO_PCB_ID4
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA87
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read serial number - PCB ID 4
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA87(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA87
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write serial number - PCB ID 4
+**                     Application has to handle this service since it is application specific 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA87(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific.So only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef TRACEDIAG_TRACEABILITY_BYTES
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD01
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Customer software version
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD01(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Tracediag_Traceability_Bytes_Read(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD01
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Customer software version
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD01(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Tracediag_Traceability_Bytes_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SHAREDIAG_MODULE_ENABLE
+#ifdef SHAREDIAG_SERVICE_ENABLE_1
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD49
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Assembly Manufacturing Date
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD49(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+ //   Ret = Tracediag_Read_Service_15(Data,ErrorCode);
+    Ret = ShareDiag_Read_Service_1(Data, ErrorCode);   
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD49
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Assembly Manufacturing Date
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD49(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+//    Ret = Tracediag_Write_Service_15(Data,ErrorCode);
+    Ret = ShareDiag_Write_Service_1(Data, ErrorCode);    
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SHAREDIAG_SERVICE_ENABLE_2
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD12
+**
+** Visibility       :  Public 
+**
+** Description      :  Read Service for System Supplier ECU Hardware Version Number
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD12(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+//    Ret = Tracediag_Read_Service_7(Data,ErrorCode);
+    Ret = ShareDiag_Read_Service_2(Data, ErrorCode);    
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_F193
+**
+** Visibility       :  Public
+**
+** Description      :  Write Service for System Supplier ECU Hardware Version Number
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD12(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    //Ret = Tracediag_Write_Service_7(Data,ErrorCode);
+    Ret = ShareDiag_Write_Service_2(Data, ErrorCode);    
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SHAREDIAG_SERVICE_ENABLE_3
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD45
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Customer part number
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD45(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = ShareDiag_Read_Service_3(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD45
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Customer part number
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD45(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = ShareDiag_Write_Service_3(Data,ErrorCode);
+    return (Ret);
+}
+#endif
+
+#endif
+// OSC diag services
+#ifdef OSCDIAG_QUARTZ_CORRECTION
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA10
+**
+** Visibility       :  Public 
+**
+** Description      :  Read Service for Quartz correction(in ppm)
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Oscdiag_Quartz_Correction_Read(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA10
+**
+** Visibility       :  Public 
+**
+** Description      :  Write Service for Quartz correction(in ppm)
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Oscdiag_Quartz_Correction_Write(Data,ErrorCode);
+    return (Ret);
+}
+#endif
+#ifdef OSCDIAG_QUARTZ_CONTROL
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD06
+** Visibility       :  Public 
+** Description      :  Service to test Quartz control
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD06(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Oscdiag_Quartz_Control_ShortTermAdjustment(Data, ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD06
+** Visibility       :  Public 
+** Description      :  Service to restore the Quartz control
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD06(uint8 *Data, uint8 *Length)
+{
+   Std_ReturnType Ret = E_NOT_OK;
+   Dcm_NegativeResponseCodeType  ErrorCode[2U];
+   ErrorCode[0U] = DCM_E_OK;
+   Ret = Oscdiag_Quartz_Control_ReturnControlToECU(ErrorCode);
+   if(Ret == E_NOT_OK)
+   {
+        Data[0U] =   ErrorCode[0U];
+   }
+   
+   return (Ret);
+}
+#endif
+// IOCalib services
+#ifdef IOCALIBDIAG_RTC_CALIBRATION
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD0F
+** Visibility       :  Public 
+** Description      :  Service to STA RTC calibration
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD0F(uint8 *Data, uint8 *Length)
+{
+   UNUSED(Length);
+   Std_ReturnType Ret = E_NOT_OK;
+   Dcm_NegativeResponseCodeType ErrorCode[2U];
+   ErrorCode[0U] = DCM_E_OK;
+   Ret = Iocalibdiag_RtcCalibration_STA(Data, ErrorCode);
+   if (Ret == E_NOT_OK)
+   {
+        Data[0U] = ErrorCode[0U];
+   }
+   return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD0F
+** Visibility       :  Public 
+** Description      :  Service to RCTE RTC calibration
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD0F(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Data);
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_RtcCalibration_RCTE(ErrorCode);
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ANALOGMEASCALIBFUELLVLENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA30
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Analog measurements calibration for channel id 0
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA30(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_AnalogMeasurementCalib_FuelLevelInput_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA30
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Analog measurements calibration for channel id 0
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA30(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_AnalogMeasurementCalib_FuelLevelInput_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ANALOGMEASCALIBOILLVLENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA31
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Analog measurements calibration for channel id 1
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA31(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_AnalogMeasurementCalib_OilLevelInput_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA31
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Analog measurements calibration for channel id 1
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA31(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_AnalogMeasurementCalib_OilLevelInput_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef LEFTSWTBACKLIGHTENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA51
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWm calibration reading -Left switch board backlight
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA51(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_LeftSwitchBacklight_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA51
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWm calibration  -Left switch board backlight
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA51(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_LeftSwitchBacklight_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef RIGHTSWTBACKLIGHTENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA52
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Right switch board backlight
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA52(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_RightSwitchBacklight_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA52
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Right switch board backlight
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA52(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_RightSwitchBacklight_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHOSCALEILLUMNENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA53
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Tacho scale illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA53(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TachoScale_Illumination_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA53
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Tacho scale illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA53(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TachoScale_Illumination_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUELTEMPSCALEILLUMNENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA54
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Fuel/Temp scale illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA54(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_Fuel_TempScale_Illumination_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA54
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Fuel/Temp scale illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA54(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_Fuel_TempScale_Illumination_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHOPTRILLUMNENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA55
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Tacho pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA55(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TachoPointer_Illumination_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA55
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Tacho pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA55(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TachoPointer_Illumination_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TEMPPTRILLUMNENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA56
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Temp pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA56(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TempPointer_Illumination_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA56
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Temp pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA56(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_TempPointer_Illumination_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUELPTRILLUMNENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA57
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Backlight PWM calibration  - Fuel pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA57(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_FuelPointer_Illumination_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA57
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write Backlight PWM calibration  - Fuel pointer illumination
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA57(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_FuelPointer_Illumination_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUEL_SENDER_CALIBRATION_TABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD09
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read Fuel RAD count from fuel calibration Table present in NVM
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_FuelSender_Calibration_Table_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD09
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to write Fuel RAD count in Fuel calibration Table present in NVM
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Iocalibdiag_FuelSender_Calibration_Table_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef IOCALIBSOUNDCHANNELVOLUME
+Std_ReturnType Read_Diag_FE04(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = IOCalibDiag_Sound_Channel_Volume_OutputRead(Data, ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    else
+    {
+        
+    }
+    
+    return (Ret);  
+}
+Std_ReturnType Write_Diag_FE04(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    NumberOfBlkIds = 70U;
+    if((Data[0U] <= 4U) && (Data[0U] > 0U))
+    {
+        Ret = IOCalibDiag_Sound_Channel_Volume_OutputWrite(Data, ErrorCode);
+    }
+    else
+    {
+        Ret = E_NOT_OK;
+        ErrorCode[0U] = 0x31U;//DIAG_REQUESTOUTOFRANGE
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FE04
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to write volume control on the requested channel in range
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+#ifdef SOUNDCHANNELVOLUMECONTROL
+Std_ReturnType Write_Diag_FE04(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    if((Data[0U] <= 4U) && (Data[0U] > 0U))
+    {
+        Ret = Ioctrlrd_dio_diag_TestSpeakerVolumeControl_Write(Data,ErrorCode);
+    }
+    else
+    {
+        Ret = E_NOT_OK;
+        ErrorCode[0U] = 0x31U;//DIAG_REQUESTOUTOFRANGE
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef IOCONTOLRD_PLAY_TONE_CONTROL
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE05
+** Visibility       :  Public
+** Description      :  Service to start the Play Tone Routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE05(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+    Ret = Ioctrlrd_dio_diag_SpeakerTone_RCStart(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef IOCALIBSOUNDMIXEROUTPUTVOLUME
+Std_ReturnType Read_Diag_FE09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = IOCalibDiag_Sound_Mixer_Volume_OutputRead(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    else
+    {
+        
+    }
+    
+    return (Ret);    
+}
+Std_ReturnType Write_Diag_FE09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    NumberOfBlkIds = 70U;
+    if(Data[0U] == 1U)
+    {
+        Ret = IOCalibDiag_Sound_Mixer_Volume_OutputWrite(Data,ErrorCode);
+    }
+    else
+    {
+        Ret = E_NOT_OK;
+        ErrorCode[0U] = 0x31U;//DIAG_REQUESTOUTOFRANGE
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+// Display services
+#ifdef DISPLAYXYPARAMETERENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA50
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read X-Y parameters of display
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA50(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_DisplayXYParameterReading_Read(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA50
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write X-Y parameters of Display
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA50(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_DisplayXYParameterReading_Write(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef DISPLAY_LCD_SEGMENT_CTRL_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD15
+**
+** Visibility       :  Public
+**
+** Description      :   Service to display the pattern
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD15(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+   Ret = Displaycontroldiag_LCDSegmentControl_Duty_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD15
+**
+** Visibility       :  Public
+**
+** Description      :   Service to restore the default pattern in display
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD15(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_LCDSegmentControl_Duty_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TFTFULLCOLORCTRLENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD0E
+** Visibility       :  Public 
+** Description      :  Service to generate TFT RGB colors using LUT Gamma RGB values, if Gamma LUT activation is on
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD0E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTFullColorControl_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD0E
+** Visibility       :  Public
+** Description      :  Service to restore TFT RGB colors
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD0E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTFullColorControl_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TFTONEDOTCTRLENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD0F
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to update the current pattern dispalyed by setting one dot on coordinates X-Y to a RGB level 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD0F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTOneDotUpdateControl_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD0F
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore the display from one dot control
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD0F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTOneDotUpdateControl_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TFTXYSHIFTCTRLENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD10
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move the current pattern dispalyed by an X-Y shifting 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTXYShiftControl_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD10
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore the current pattern dispalyed by an X-Y shifting 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTXYShiftControl_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TFTADJCHESSPTRNCTRLENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD11
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to allows to do pixel chessboard and reverse chessboard with cell area size 
+**                     adjustable and with 2 adjustable colours.  
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD11(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTAdjustableChessboardPatternControl_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD11
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore display from chessboard pattern control 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD11(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_TFTAdjustableChessboardPatternControl_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef DISPLAYSPLSEQEXEENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F116
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start the selected Display sequence
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F116(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_DisplaySpecialSequencesExecution_RCStart(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F116
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Display special sequences execution  
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F116(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_DisplaySpecialSequencesExecution_RCStop(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F116
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status Display special sequences execution  
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F116(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Displaycontroldiag_DisplaySpecialSequencesExecution_RCStatus(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef	LCD_LED_ALL_LIT
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F001
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to turn LED,LCD seg on and change the colour pattern in TFT 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F001(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    #ifdef LCD_CONTROL_ALL_LIT_SEGMENT_ENABLE
+    Ret = Displaycontroldiag_LCDAllSegmentControl_RCStart(Data,ErrorCode);
+    #endif
+    #ifdef TFT_CONTROL_ALL_LIT_COLOR_ENABLE
+    Ret = Displaycontroldiag_TFTAllLit_ColorControl_RCStart(Data,ErrorCode);
+    #endif
+    #ifdef IOCONTOLRD_ALL_LIT_LED_ENABLE
+    Ret = Ioctrlrd_dio_diag_All_Lit_telltale_RCStart(Data,ErrorCode);
+    #endif
+    #ifdef IOCONTOLRD_ALL_LIT_ILLUMINATION_ENABLE
+    Ret = Ioctrlrd_pwm_diag_All_Lit_Illumination_RCStart(Data,ErrorCode);
+    #endif
+    if(Ret == E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F001
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to turn off LED,LCD seg off and change the colour pattern in TFT  
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F001(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    #ifdef LCD_CONTROL_ALL_LIT_SEGMENT_ENABLE
+    Ret = Displaycontroldiag_LCDAllSegmentControl_RCStop(Data,ErrorCode);
+    #endif
+    #ifdef TFT_CONTROL_ALL_LIT_COLOR_ENABLE
+    Ret =  Displaycontroldiag_TFTAllLit_ColorControl_RCStop(Data,ErrorCode);
+    #endif
+    #ifdef IOCONTOLRD_ALL_LIT_LED_ENABLE
+    Ret = Ioctrlrd_dio_diag_All_Lit_telltale_RCStop(ErrorCode);
+    #endif
+    #ifdef IOCONTOLRD_ALL_LIT_ILLUMINATION_ENABLE
+    Ret = Ioctrlrd_pwm_diag_All_Lit_Illumination_RCStop(ErrorCode);
+    #endif
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+#endif
+#ifdef IOCONTOLRD_TELLTALE_CONTROL_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FEF4
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to turn ON LED/Telltales
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+   	Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+	Ret = Ioctrlrd_dio_diag_All_Lit_telltale_RCStart(Data,ErrorCode);
+	if(Ret == (uint8)E_NOT_OK)
+	{
+	   Data[0U] = ErrorCode[0U];
+	}
+	else
+	{
+		//NULL
+	}
+
+	return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FEF4
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to turn off LED/Telltales 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+/*Std_ReturnType IOCTL_RCTE_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+	Ret = Ioctrlrd_dio_diag_All_Lit_telltale_RCStop(ErrorCode);
+	if(Ret == (uint8)E_NOT_OK)
+	{
+	   Data[0U] = ErrorCode[0U];
+	}
+	else
+	{
+		NULL
+	}
+	
+	return (Ret);
+}*/
+#endif
+
+#ifdef DISPLAY_CONTENT_INTEGRITY_CHECK
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F109
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start the checksum of the image  
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F109(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Displaycontroldiag_DCIC_RCStart(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+
+    }
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F109
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop the checksum of the image  
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F109(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Displaycontroldiag_DCIC_RCStop(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        
+    }
+    
+    return (Ret);
+
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F109
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to check the status of the image checksum 
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F109(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Displaycontroldiag_DCIC_RCStatus(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        
+    }
+    
+    return (Ret);
+
+}
+
+#endif
+
+// IOCtrlRd services
+#ifdef IOCTRLRD_BKRND_BUTTON_CHECK
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA11
+**
+** Visibility       :  Public 
+**
+** Description      :  Read Service for button check by backround
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA11(uint8 *Data, uint8 *Length)
+{
+    // This DID is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+#endif
+#ifdef IOCTRLRD_PWM_INPUT_CHECK
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FE04
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read the value of pwm ports and return frequency
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE04(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+	Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType  ErrorCode[2U];
+	ErrorCode[0U] = DCM_E_OK;
+	Ret =Ioctrlrd_pwm_diag_Pwm_InputCheck_Read(Data ,ErrorCode);
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		Data[0U] =   ErrorCode[0U];
+	}
+	return (Ret);
+}
+#endif
+#ifdef IO_INTERNAL_DIGITAL_SIGNAL_READ_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA39
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for internal digital signal status
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA39(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_InternalDigitalSignal_Read(Data, ErrorCode);
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+#endif
+#ifdef IOCTRLRD_INTERANL_ANALOGIC_SIG_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA3A
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for internal analogic signal and this has to be taken care by application
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA3A(uint8 *Data, uint8 *Length)
+{
+    // This DID is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+#endif
+
+#ifdef IOCONTOLRD_DOUT_CONTROL_ENABLE
+// IO Control Short term adjust
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD14
+** Visibility       :  Public
+** Description      :  Service to control DOUTs
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD14(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_dio_diag_DOUT_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD14
+** Visibility       :  Public
+** Description      :  Service to make SPEED OUTPUT  to the original condition.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD14(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_dio_diag_DOUT_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+#endif
+#ifdef IOCONTOLRD_DOUT_CONTROL_PORT_ENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FE31
+** Visibility       :  Public
+** Description      :  Service to control DOUTs as per PORTID
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FE31(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    DiagReqType diagRequest;
+    uint8 DataLength;
+    uint8 LocData = Data[0];    
+    ErrorCode[0U] = DCM_E_OK;
+    if((6U == LocData) || (8U == LocData) || (10U == LocData) || (11U == LocData) || (17U == Data[0]))
+    {
+        #ifdef MEET_GIP_ENABLED
+        DataLength = (uint8)3U;    // Byte 1 -Port Index, Byte 2 - Mask Bytes, Byte 3 - Output Bytes
+        diagRequest.ActionP = DiagActionType_IOCtrl;		
+        diagRequest.ServiceId = 0xFE31U;   
+        diagRequest.DataP[0] = 3U;
+        diagRequest.DataP[1] = Data[0];
+        diagRequest.DataP[2] = Data[1];
+        diagRequest.DataP[3] = Data[2];
+        diagRequest.LengthP = (uint16)(DataLength + 1U);
+        
+        switch(Mgrdiagcdd_CurrentGIPState)
+        {
+            case eGIP_InitiateRequest:
+                Ret = Meet_Process_Gip_Diag_Request(Mgrdiagcdd_CurrentGIPState, &diagRequest, ErrorCode);
+                Mgrdiagcdd_CurrentGIPState = eGIP_WaitForResponse;
+                break;
+            case eGIP_WaitForResponse:
+                Ret = Meet_Process_Gip_Diag_Request(Mgrdiagcdd_CurrentGIPState, &diagRequest, ErrorCode);
+                if(Ret != (Std_ReturnType)DCM_E_PENDING)
+                {
+                    Mgrdiagcdd_CurrentGIPState = eGIP_InitiateRequest;
+                }
+                break;
+            default: /*No action required in default case*/
+                break;
+        }
+        if((Std_ReturnType)E_OK == Ret)
+        {
+            Length[0] = 0U;
+            Length[1] = 0U; 
+        }
+        #endif
+    }
+    else
+    {
+        uint8 LocDataVal[3] = {0U, 0U, 0U};
+        for(uint8 i = 0U; i < 3U; i++)
+        {
+            LocDataVal[i] = Data[i];
+        }
+        Ret = Ioctrlrd_dio_diag_DOUT_PORT_Control_STA(LocDataVal,ErrorCode);
+    }
+    if(Ret == (Std_ReturnType)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0U];
+    }
+    return Ret;
+}
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FE31
+** Visibility       :  Public
+** Description      :  Service to make SPEED OUTPUT  to the original condition.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FE31(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    DiagReqType diagRequest;
+    uint8 LocData = Data[0];    
+    ErrorCode[0U] = DCM_E_OK;
+    if((6U == LocData) || (8U == LocData) || (10U == LocData) || (11U == LocData) || (17U == LocData))
+    {
+        diagRequest.ActionP = DiagActionType_IOCtrl;		
+        diagRequest.ServiceId = 0xFE31U;   
+        diagRequest.DataP[0] = 0U;   // RCTECU
+        diagRequest.DataP[1] = 0U;
+        diagRequest.DataP[2] = 0U;
+        diagRequest.DataP[3] = 0U;
+        diagRequest.LengthP = (uint16)4U;
+        
+        switch(Mgrdiagcdd_CurrentGIPState)
+        {
+            case eGIP_InitiateRequest:
+                Ret = Meet_Process_Gip_Diag_Request(Mgrdiagcdd_CurrentGIPState, &diagRequest, ErrorCode);
+                Mgrdiagcdd_CurrentGIPState = eGIP_WaitForResponse;
+                break;
+            case eGIP_WaitForResponse:
+                Ret = Meet_Process_Gip_Diag_Request(Mgrdiagcdd_CurrentGIPState, &diagRequest, ErrorCode);
+                if(Ret != (Std_ReturnType)DCM_E_PENDING)
+                {
+                    Mgrdiagcdd_CurrentGIPState = eGIP_InitiateRequest;
+                }
+                break;
+            default: /*No action required in default case*/
+                break;
+        }
+        if((Std_ReturnType)E_OK == Ret)
+        {
+            Length[0] = 0U;
+            Length[1] = 0U; 
+        }
+    }
+    else
+    {
+        Ret = Ioctrlrd_dio_diag_DOUT_PORT_Control_RCTE(ErrorCode);
+    }
+    if(Ret == (Std_ReturnType)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+#endif
+#ifdef IOCTRlRD_ALALOGIC_SIGNAL_CTRL
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD12
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to control duty of pwm signals configured under internal analogic
+**                      signal control 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD12(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_analog_diag_InternalAnalogicSignalControl_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {                                          
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD12
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore pwm signals with default duty configured under internal analogic
+**                      signal control 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD12(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_analog_diag_InternalAnalogicSignalControl_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_PWM_FREQUENCY_CONTROL_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD17
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to cotrol frequency of pwm signals
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD17(uint8 *Data, const uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    (void)Length;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Ioctrlrd_pwm_diag_PWMFrequencyControl_STA(Data,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD17
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore pwm signals with default frequency
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD17(const uint8 *Data, const uint8 *Length)
+{
+    (void)Data;
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Ioctrlrd_pwm_diag_PWMFrequencyControl_RCTE(ErrorCode);
+    return (Ret);
+}
+#endif
+#ifdef IOCONTOLRD_BUZZER_TET_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD17
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to test speaker by chime ID/frequency ID
+**                      signal control 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD17(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_dio_diag_TestBuzzerTone_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD17
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore the speaker
+**                      signal control 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD17(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_dio_diag_TestBuzzerToneControl_RCTE(ErrorCode);
+    return (Ret);
+}
+#endif
+
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_FE30
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start AutoConfigureorVerify
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_FE30(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+	Length[0U] = 0x00u;
+	Length[1U] = 0x02u;
+#else
+UNUSED(Length);
+#endif
+    Ret = Memdiag_AutoConfigureorVerify_RCStart(Data,ErrorCode);
+	if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_FE30
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop AutoConfigureorVerify
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_FE30(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Memdiag_AutoConfigureorVerify_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_FE30
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status and results of AutoConfigureorVerify
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_FE30(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    //uint8 Channel_ID;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+	Length[0U] = 0x00u;
+	Length[1U] = 0x02u;
+#else
+UNUSED(Length);
+#endif
+    Ret = Memdiag_AutoConfigureorVerify_RCStatus(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_BY_UNIT_WCalib
+#ifndef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F106
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to start reading of analog i/p value by unit with WCalib
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F106(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    uint8 Numberofsamples = 1;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	uint8 Analog_Channel = 0;//Since here only one channel is there given as channel 0.
+	Numberofsamples = 	9;    
+	Ret = Ioctrlrd_analog_diag_FuelInputReading_byunit_RCStart_WCalib(Analog_Channel,Numberofsamples,Data,ErrorCode);
+	
+	if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F106
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to get the status and results of analog i/p value by unit with UCalib
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F106(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+	uint8 Numberofsamples = 1;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	uint8 Analog_Channel = 0;//Since here only one channel is there given as channel 0.
+	
+    Ret = Ioctrlrd_analog_diag_FuelInputReading_byunit_RCStatus_WCalib(Analog_Channel,Numberofsamples,Data,ErrorCode);
+    
+	if(MANUF_FAIL == Ret)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+#else
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F106
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to start reading of analog i/p value by unit with WCalib
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F106(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    uint8 Numberofsamples = 1;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	uint8 Analog_Channel = 0;//Since here only one channel is there given as channel 0.
+	Numberofsamples = 	9;    
+	Ret = Ioctrlrd_analog_diag_FuelInputReading_three_point_Calib_RCStart(Analog_Channel,Numberofsamples,Data,ErrorCode);
+	
+	if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F106
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to get the status and results of analog i/p value by unit with UCalib
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F106(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+	uint8 Numberofsamples = 1;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	uint8 Analog_Channel = 0;//Since here only one channel is there given as channel 0.
+	
+    Ret = Ioctrlrd_analog_diag_FuelInputReading_three_point_Calib_RCStatus(Analog_Channel,Numberofsamples,Data,ErrorCode);
+    
+	if(MANUF_FAIL == Ret)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+#endif
+
+#ifdef IOCONTOLRD_ADC_READ_GROUP
+#if IOCONTOLRD_ADC_READ_GROUP > 0
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD02
+**
+** Visibility       :  Public 
+**
+** Description      :  Read ADC channel individually/groupwise without sampling
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD02(uint8 *Data, const uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    (void)Length;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Ioctrlrd_analog_diag_read_ADC_Group_00(Data ,ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+        *Data =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#if IOCONTOLRD_ADC_READ_GROUP > 1
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD05
+**
+** Visibility       :  Public 
+**
+** Description      :   Read ADC channel individually/groupwise without sampling
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD05(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_analog_diag_read_ADC_Group_01(Data ,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+#if IOCONTOLRD_ADC_READ_GROUP > 2
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD07
+**
+** Visibility       :  Public 
+**
+** Description      :   Read ADC channel individually/groupwise without sampling
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD07(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_analog_diag_read_ADC_Group_02(Data ,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#if IOCONTOLRD_ADC_READ_GROUP > 3
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD07
+**
+** Visibility       :  Public
+**
+** Description      :   Read ADC channel individually/groupwise without sampling
+**
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD08(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Ioctrlrd_analog_diag_read_ADC_Group_03(Data ,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#endif
+
+#ifdef EXTNVMACCESSBYBLOCKIDREADWRITEENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA5E
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read external NVM by block id
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA5E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType Dummy_Error[2];
+    Dummy_Error[0] = DCM_E_OK;
+    Ret =  Memdiag_DataflashNVMaccessbyblockID_Read(Data,Dummy_Error);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   Dummy_Error[0];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA5E
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to write external NVM by block id
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA5E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Memdiag_DataflashNVMaccessbyblockID_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef MEMDIAG_UNLOCK_SECURE_ACCESS
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F0FC
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start unlock secure access routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+  
+Std_ReturnType RC_START_Diag_F0FC(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F0FC
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop unlock secure access routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F0FC(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F0FC
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to know the status of unlock secure access routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F0FC(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef MEMWRITETESTENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F115
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start memory write test(TCRAM and hyper RAM) routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F115(uint8 *Data, uint8 *Length)
+{
+    //Memory write test
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Memdiag_MemoryWritingTest_RCStart(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F115
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop memory write test(TCRAM and hyper RAM) routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F115(uint8 *Data, uint8 *Length)
+{
+    //Memory write test
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Memdiag_MemoryWritingTest_RCStop(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F115
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of memory write test(TCRAM and hyper RAM) routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F115(uint8 *Data, uint8 *Length)
+{
+    //Memory write test
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Memdiag_MemoryWritingTest_RCStatus(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F11E
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start hyper flash checksum test routine.
+**                      (This function will do only marker check )
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+	//Data[0U] = Data[0U] - 1U;			//razhakes-since in P33 req, FlashID's range from 1 to 4 and in meetcdd FlashID's range from 0 to 3
+	Ret = Memdiag_VIP_GIP_Memory_Checksum_RCStart(Data,ErrorCode); 
+	
+    if(Ret == (uint8)E_NOT_OK)
+    {
+	   ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+       Data[0U] = ErrorCode[0U];
+    }
+    
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F11E
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop hyper flash checksum test routine.
+**                      (This function will stop marker check )
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+		Ret = Memdiag_VIP_GIP_Memory_Checksum_RCStop(Data,ErrorCode);
+	
+    if(Ret == (uint8)E_NOT_OK)
+    {
+		ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F11E
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of  hyper flash checksum test routine.
+**                     ( This function will return only marker check result) 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+		//Data[0U] = Data[0U] -1;
+		Ret = Memdiag_VIP_GIP_Memory_Checksum_RCStatus(Data,ErrorCode);
+	
+    if(Ret == (uint8)E_NOT_OK)
+    {
+		ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+        Data[0U] =   ErrorCode[0U];
+    }
+    return Ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_FE42
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start checksum test routine.
+**                      (This function will do only marker check )
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_FE44(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+	Ret = Memdiag_DisplayMicroROMChecksum_RCStart(Data,ErrorCode); 
+		
+	if(Ret == (uint8)E_NOT_OK)
+	{
+	   ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+	   Data[0U] = ErrorCode[0U];
+	}
+	else
+	{
+		/*NULL*/
+	}
+    
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_FE42
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop checksum test routine.
+**                      (This function will stop marker check )
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_FE44(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	
+	Ret = Memdiag_DisplayMicro_ROMChecksum_Check_RCStop(Data,ErrorCode);
+	
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+		Data[0U] =   ErrorCode[0U];
+	}
+	else
+	{
+		/*NULL*/
+	}
+	
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_FE42
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of checksum test routine.
+**                     ( This function will return only marker check result) 
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_FE44(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	Ret = Memdiag_DisplayMicro_ROMChecksum_Check_RCStatus(Data,ErrorCode);
+	
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+		Data[0U] =   ErrorCode[0U];
+	}
+	else
+	{
+		/*NULL*/
+	}
+	
+    return (Ret);
+}
+#endif
+
+#ifdef RSTCNTRREADINGENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FD03
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Reset counter
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FD03(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Resetsleepdiag_ResetCounters_Read(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FD03
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Reset counter
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FD03(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = ResetDiag_Reset_Counter_Validity(Data);
+    if(Ret == (uint8)E_OK)
+    {
+        Ret = Resetsleepdiag_ResetCounters_Write(Data,ErrorCode);
+    }
+    else
+    {
+	    ErrorCode[0U] = DCM_E_REQUESTOUTOFRANGE;
+    }
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+static Std_ReturnType ResetDiag_Reset_Counter_Validity(uint8 *Data)
+{
+    Std_ReturnType fl_ret_U8 = E_OK;
+    uint8 fl_rst_counter_idx_U8;
+    uint8 fl_err_counter_U8 = 0;
+    for(fl_rst_counter_idx_U8 = (uint8)0; fl_rst_counter_idx_U8 < (uint8)9; fl_rst_counter_idx_U8++)
+    {
+        if(Data[fl_rst_counter_idx_U8]!= (uint8)0)
+        {
+            fl_err_counter_U8++;
+        }
+    }
+    if( fl_err_counter_U8 > (uint8)0)
+    {
+         fl_ret_U8 = E_NOT_OK; 
+    }
+    return fl_ret_U8;
+}
+#endif
+
+// Com diag services
+#ifdef COMM_BUS_VERIFICATION_TEST
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F108
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start communication bus verification test routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F108(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Comm_Bus_Verification_Test_RCStart(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F108
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop communication bus verification test routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F108(uint8 *Data, uint8 *Length)
+{
+    // This service needs to be handled in application
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F108
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of communication bus verification test routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F108(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Comm_Bus_Verification_Test_RCStatus(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef COM_BUS_GATEWAY
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F110
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Internal communication bus gateway routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F110(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F110
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Internal communication bus gateway routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F110(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F110
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of Internal communication bus gateway routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F110(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef COM_AUTO_TEST_INT_COM_BUS
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F10F
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Auto-test internal communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F10F(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F10F
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Auto-test internal communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F10F(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F10F
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status Auto-test internal communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F10F(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#ifdef COM_TEMP_DEACTIVATE_MAIN_COM_BUS
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F117
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Temporary deactivation of main communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F117(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F117
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Temporary deactivation of main communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F117(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F117
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of Temporary deactivation of main communication bus routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F117(uint8 *Data, uint8 *Length)
+{
+    // This service is application specific so only framework done
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+
+// Stepper services
+#ifdef MOTORDIAG_SERVICE
+#ifdef MMOS_CALIB_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA0F
+**
+** Visibility       :  Public 
+**
+** Description      :  Read Service for Magnetic offset
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA0F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_MMOS_Calibration_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA0F
+**
+** Visibility       :  Public 
+**
+** Description      :  Write Service for Magnetic offset
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA0F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_MMOS_Calibration_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+
+}
+#endif
+#ifdef READ_MOTOR_POSITION
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA17
+**
+** Visibility       :  Public 
+**
+** Description      :  Service to read motor position reached
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA17(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_MotorPosition_Reached_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+#endif
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA18
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for motor speed
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA18(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+
+    return (Ret);
+
+}
+#ifdef POINTER_POSITION_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA19
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for pointer placement position
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA19(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Position_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA19
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for pointer placement position
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA19(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Position_Write((void*)Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef POINTER_AUTHOMODE_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA1A
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for pointer placement mode authorisation
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA1A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Mode_Authorisation_Read(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA1A
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for pointer placement mode authorisation
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA1A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Mode_Authorisation_Write((void*)Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SPEEDO_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA20
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Speedo mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA20(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA20
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Speedo mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA20(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHO_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA21
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Tacho Mapping table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA21(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA21
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Tacho mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA21(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUEL_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA22
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Fuel Mapping table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA22(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA22
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Fuel Mapping table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA22(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ENGTEMP_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA23
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Engine temp Mapping table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA23(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA23
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Engine temp Mapping table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA23(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SPEEDO_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA24
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Speedo Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA24(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA24
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Speedo Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA24(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHO_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA25
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Tacho Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA25(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA25
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Tacho Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA25(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUEL_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA26
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Fuel Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA26(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA26
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Fuel Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA26(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ZERO_POINT_POSITION_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA27
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for zero point position - Pointer gauge calibration
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA27(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Gauge_Calibration_Zero_Point_Position_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA27
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for zero point position - Pointer gauge calibration
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA27(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Gauge_Calibration_Zero_Point_Position_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SPEEDO_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA28
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Speedo Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA28(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA28
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Speedo Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA28(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHO_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA29
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Tacho Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA29(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA29
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Tacho Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA29(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUEL_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2A
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Fuel Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA2A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2A
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Fuel Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA2A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ENGTEMP_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2B
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Engine temp Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA2B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2B
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Engine temp Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA2B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SPEEDO_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2C
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Speedo Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA2C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2C
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Speedo Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA2C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Speedo_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TACHO_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2D
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Tacho Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA2D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2D
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Tacho Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA2D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Tacho_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FUEL_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2E
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Fuel Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA2E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2E
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Fuel Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA2E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Fuel_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SWZERO_SCALE_PARAMETERS
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA2F
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Software zero scale parameter
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA2F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Gauge_Calibration_SWZero_ScaleParameter_Read(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA2F
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Software zero scale parameter
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA2F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Gauge_Calibration_SWZero_ScaleParameter_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ENGTEMP_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA4A
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for Engine temp Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA4A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA4A
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for Engine temp Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA4A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ENGTEMP_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA4B
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for Engine temp Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA4B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA4B
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for Engine temp Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA4B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_EngTemp_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef OILPRS_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA4E
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for OilPressure mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA4E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA4E
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for OilPressure mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA4E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef OILPRS_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA42
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for OilPressure Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA42(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA42
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for OilPressure Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA42(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef OILPRS_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA4F
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for OilPressure Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA4F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA4F
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for OilPressure Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA4F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef OILPRS_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA4D
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for OilPressure Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA4D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA4D
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for OilPressure Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA4D(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_OilPressure_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TRANSTEMP_MAPTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA5B
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for TransTemp mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA5B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibrationPointPosition_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA5B
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for TransTemp mapping table x
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA5B(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibrationPointPosition_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TRANSTEMP_MAPTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA5C
+**
+** Visibility       :  Public 
+**
+** Description      :  Read service for TransTemp Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA5C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibrationPointPosition_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA5C
+**
+** Visibility       :  Public 
+**
+** Description      :  Write service for TransTemp Mapping table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA5C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibrationPointPosition_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TRANSTEMP_CRTNTABLE_Y
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA61
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for TransTemp Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA61(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibration_Y_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA61
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for TransTemp Correction table Y
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA61(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibration_Y_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef TRANSTEMP_CRTNTABLE_X
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_FA60
+**
+** Visibility       :  Public 
+**
+** Description      :   Read service for TransTemp Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FA60(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibration_X_Read(Data,ErrorCode);
+    return (Ret);
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Write_Diag_FA60
+**
+** Visibility       :  Public 
+**
+** Description      :   Write service for TransTemp Correction table X
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType Write_Diag_FA60(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_TransTemp_PointerGaugeCalibration_X_Write(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef ORDER_IN_USTEPS_OR_DEG
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD07
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move stepper motor to a mechanical position defined in microsteps or Degrees 
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD07(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Order_In_Microsteps_Or_Degrees_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD07
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move back steper motor to a original position from mechanical position defined in microsteps or degrees.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD07(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Order_In_Microsteps_Or_Degrees_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef ORDER_IN_VEHICLE_UNIT
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD08
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move stepper motor to a gauge position defined in vehicle unit 
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD08(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Order_In_Vehicle_Unit_STA(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD08
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move back stepper motor to a original position from gauge position defined in Vehicle unit 
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD08(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Order_In_Vehicle_Unit_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef HIGH_IMPEDANCE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD09
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to put motor pins in open circuit without any power 
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_High_Impedance_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD09
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to exit high impedence mode. 
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD09(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_High_Impedance_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef LOW_TORQUE
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD0A
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to set a lower torque on the stepper motor o/p by coil voltage  
+**                     adjustment(defined in %)   
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD0A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Low_Torque_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD0A
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to restore default torque.
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD0A(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Low_Torque_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef JUMP_IN_USTEPS
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_STA_Diag_FD0C
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to force the pointers to jump of a given amount of usteps(can be forward/backward)
+**                        
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_STA_Diag_FD0C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Jump_In_Microsteps_STA(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  IOCTL_RCTE_Diag_FD0C
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to move pointers to the default position(High calibration has to be done)
+**                        
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType IOCTL_RCTE_Diag_FD0C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Jump_In_Microsteps_RCTE(ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F102
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Continuous motor movement
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**s
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F102(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+  //  Ret = StpDiagCdd_Start_Continuous_Pointer_Movement(Data,Length);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F102
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Continuous motor movement
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F102(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+  //  Ret = StpDiagCdd_Stop_Continuous_Pointer_Movement(Data,Length);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F102
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of Continuous motor movement routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F102(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+  //  Ret = StpDiagCdd_Status_Continuous_Pointer_Movement(Data,Length);
+    return (Ret);
+}
+
+#ifdef HIGH_CALIBRATION_CONTROL
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F104
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start the high calibration routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F104(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    uint8 Out_Data[4];
+    Out_Data[0U] = 0;
+
+    Ret = Motordiag_High_Calibration_Control_RCStart(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+      Data[0U] = Out_Data[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F104
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop the high calibration routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F104(uint8 *Data, uint8 *Length)
+{
+    /* This service is not required */
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F104
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of high calibration routine
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F104(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_High_Calibration_Control_RCStatus(Data, ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef CONTINOUS_POINTER_MOVEMENT
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F112
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Continuous pointer movement
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F112(uint8 *Data, uint8 *Length)
+{
+    /* It is Duplicate of F102 */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Continuous_Pointer_Movement_RCStart(Data,ErrorCode);
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F112
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Continuous pointer movement
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F112(uint8 *Data, uint8 *Length)
+{
+    /* It is Duplicate of F102 */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Continuous_Pointer_Movement_RCStop(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F112
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of Continuous pointer movement
+**                       
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F112(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Continuous_Pointer_Movement_RCStatus(Data,ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef POINTER_PLACEMENT_ROUTINE
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F121
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start pointer placement routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F121(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Routine_RCStart(Data, ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F121
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop pointer placement routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F121(uint8 *Data, uint8 *Length)
+{
+    /* This service is not required */
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F121
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status  pointer placement routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F121(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Pointer_Placement_Routine_RCStatus(Data, ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef SFD_ROC_ROUTINE
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F122
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start SFD for ROC routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F122(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    if(F122_start_check_bool == FALSE)
+    {
+       Ret = Motordiag_Stepper_Flip_Detection_for_Rotor_Offset_Calibration_RCStart(Data, ErrorCode);
+       F122_start_check_bool = TRUE;
+    }
+    else
+    {
+    	ErrorCode[0U] = SEQUENCE_ERROR;
+    }
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F122
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop SFD for ROC routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_STOP_Diag_F122(uint8 *Data, uint8 *Length)
+{
+    /* This service is not required */
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F122
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of SFD for ROC routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F122(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    uint8 fl_index_u8 = 0;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_Stepper_Flip_Detection_for_Rotor_Offset_Calibration_RCStatus(Data, ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+	else
+	{
+	
+		if((Data[1] > SFDROC_VALID_FLIP_STATE_MAX_VALUE)||(Data[2] > SFDROC_VALID_FLIP_STATE_MAX_VALUE)||(Data[3] > SFDROC_VALID_FLIP_STATE_MAX_VALUE)||(Data[4] > SFDROC_VALID_FLIP_STATE_MAX_VALUE))
+		{
+			Data[0U] = MGRDIAG_CDD_CFG_DIAG_COND_NOT_CORRECT;
+		}
+		else
+		{
+		
+			for(fl_index_u8 = 1; fl_index_u8 <= SFDROC_VALID_GAUGE_SIZE;fl_index_u8++)
+			{
+				Data[fl_index_u8] = ((64*(44-Data[fl_index_u8]))% 256);/* Calculating Rotor offsets for the corresponding flip states*/
+			}
+			Ret = E_OK;
+			F122_start_check_bool = FALSE;
+		}
+	}
+
+    return (Ret);
+}
+#endif
+
+#ifdef SELFTEST_GAUGES
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F123
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start Self-test stepper stall detection routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F123(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = Motordiag_SelftestStepperStallDetectionRoutine_RCStart(Data, ErrorCode);
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_STOP_Diag_F123
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to stop Self-test stepper stall detection routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F123(uint8 *Data, uint8 *Length)
+{
+    /* This service is not required */
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F123
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status of  Self-test stepper stall detection routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F123(uint8 *Data, uint8 *Length)
+{
+    /* This service is not required*/
+    Std_ReturnType Ret = E_NOT_OK;
+    return (Ret);
+}
+#endif
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF1
+** Visibility       :  Public 
+** Description      :  Service to start the AES Key IV storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF1(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_AES_IV_Key_Storage_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEF1
+** Visibility       :  Public 
+** Description      :  Service to check the status of the AES Key IV storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEF1(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_AES_IV_Key_Storage_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF0
+** Visibility       :  Public 
+** Description      :  Service to start the AES Key storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF0(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_AES_Key_Storage_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEF0
+** Visibility       :  Public 
+** Description      :  Service to check the status of the AES Key storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEF0(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_AES_Key_Storage_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+
+}
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF2
+** Visibility       :  Public 
+** Description      :  Service to start the RSA Key storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF2(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_RSA_Key_Storage_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEF2
+** Visibility       :  Public 
+** Description      :  Service to check the status of the RSA Key storage
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEF2(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_RSA_Key_Storage_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF6
+** Visibility       :  Public 
+** Description      :  Service to start the Secure Fuse Programming
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF6(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SecureFuseProgramming_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+		Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF9
+** Visibility       :  Public 
+** Description      :  Service to start Secure Fuse Reading
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF9(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SecureFuse_Reading_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+		Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF8
+** Visibility       :  Public 
+** Description      :  Service to start the Secure Lock
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF8(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SecureLock_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+		Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEFA
+** Visibility       :  Public 
+** Description      :  Service to start reading the Secure Fuse Lock
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEFA(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SecureLock_Read_RCStart(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEF7
+** Visibility       :  Public 
+** Description      :  Service to start the Symmetric key programming
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEF7(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SymmetricKeyProgramming_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEF0
+** Visibility       :  Public 
+** Description      :  Service to check the status of Symmetric key programming
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEF0(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_SecureSymmetricKeyProgramming_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef CYBERSECDIAG_DATA_LOCK_AES_IV
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FEF4
+** Visibility       :  Public 
+** Description      :  Service to read lock/unlock status byte of AES IV Key
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+	Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType  ErrorCode[2U];
+	ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Cybersecdiag_AES_IV_Key_lock_unlock_Read(Data,ErrorCode);
+
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		Data[0U] =   ErrorCode[0U];
+	}
+
+	return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FEF4
+** Visibility       :  Public 
+** Description      :  Service to write the lock/unlock status value of AES IV Key
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret =  Cybersecdiag_AES_IV_Key_lock_unlock_Write(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef CYBERSECDIAG_DATA_LOCK_RSA
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FEF5
+** Visibility       :  Public 
+** Description      :  Service to read lock/unlock status byte of RSA Key
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+
+Std_ReturnType Read_Diag_FEF5(uint8 *Data, uint8 *Length)
+{
+	Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType  ErrorCode[2U];
+	ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Cybersecdiag_RSA_Key_lock_unlock_Read(Data,ErrorCode);
+
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		Data[0U] =   ErrorCode[0U];
+	}
+
+	return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FEF5
+** Visibility       :  Public
+** Description      :  Service to write the lock/unlock status value of RSA Key
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FEF5(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret =  Cybersecdiag_RSA_Key_lock_unlock_Write(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEFB
+** Visibility       :  Public 
+** Description      :  Service to start BackUp bank verification
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEFB(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_Backup_bank_verification_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEFB
+** Visibility       :  Public 
+** Description      :  Service to get result of BackUp bank verification
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEFB(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	boolean VerifyStatus = FALSE;
+	
+    Ret = Cybersecdiag_Backup_bank_verification_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+	else
+	{
+		if(eROUTINE_FINISH_OK == Data[0U])
+		{
+			VerifyStatus = TRUE;
+		}
+		Data[1] = VerifyStatus;
+	}
+    return (Ret);
+} 
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FEFC
+** Visibility       :  Public 
+** Description      :  Service to start Cybersecurity key verification
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEFC(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Cybersecdiag_Symmetrickey_Verification_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEFC
+** Visibility       :  Public 
+** Description      :  Service to get result of  Cybersecurity key verification
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FEFC(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+     
+    Ret = Cybersecdiag_SymmetricKey_Verification_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+} 
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEE1
+** Visibility       :  Public
+** Description      :  Service to read M4/M5 value from specific slot
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FEE1(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Data[0U] = CYBERSECDIAG_M4M5_SLOT1;
+
+    Ret = CybersecDiag_SHESlots_Read(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEE4
+** Visibility       :  Public
+** Description      :  Service to read M4/M5 value from specific slot
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FEE4(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Data[0U] = CYBERSECDIAG_M4M5_SLOT4;
+
+    Ret = CybersecDiag_SHESlots_Read(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEE5
+** Visibility       :  Public
+** Description      :  Service to read M4/M5 value from specific slot
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FEE5(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Data[0U] = CYBERSECDIAG_M4M5_SLOT5;
+
+    Ret = CybersecDiag_SHESlots_Read(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FEE6
+** Visibility       :  Public
+** Description      :  Service to read M4/M5 value from specific slot
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FEE6(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Data[0U] = CYBERSECDIAG_M4M5_SLOT6;
+
+    Ret = CybersecDiag_SHESlots_Read(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+void App_spec_One_Sec_Timer(void)
+{
+    static uint16 l_10ms_timer_U16;
+    if(0U != l_One_Sec_Timer_Status_U8)
+    {
+        l_10ms_timer_U16++;
+        if(l_10ms_timer_U16 >= 100U)
+        {
+            l_One_Sec_Timer_Status_U8 = 0U;
+            l_10ms_timer_U16 = 0U;
+        }
+    }
+#ifdef MEET_GIP_ENABLED
+    Diag_TIGIP_MainFunction();
+#endif
+}
+void App_Timer_Set_Status(uint8 p_timer_status_U8)
+{
+    l_One_Sec_Timer_Status_U8 = p_timer_status_U8;
+}
+uint8 App_Timer_Get_Status(void)
+{
+    return l_One_Sec_Timer_Status_U8;
+}
+void Manuf_SessionCheck(uint8 *SessionValue)
+{
+    #ifndef MEETMODE_CHECK_FOR_ALL_SERVICES
+        //Session check Not required - allow functionality always; Hence by default MEETSESSION assigned
+        *SessionValue = (uint8)MEET_SESSION;
+    #else
+        uint16 MfgModeReq = 0U;
+        (void)Rte_Call_rp_CS_MemAbsGet_Get_BsShare_VisMeet_EOLEntry_Element(&MfgModeReq);	//the enum for this RTE should match with MEETSESSION value, 1- MeetModeActive
+        if(MfgModeReq == (uint16)MEET_NVM_FLAG)
+        {
+            *SessionValue = (uint8)MEET_SESSION;
+        }
+        else
+        {
+            *SessionValue = (uint8)NORMAL_SESSION;
+        }
+    #endif
+}
+#ifdef PRECONDITION_CHECK_REQUIRED
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Fn to check whether in Meet mode or NOT.
+///
+/// @param    void
+///
+/// @return   boolean val - True if currently in MEET mode(i.e. Manuf Security unlocked)
+//----------------------------------------------------------------------------------------------------------------------
+boolean Mgrdiagcdd_ConfigMEET(void)
+{
+    boolean fl_bRet = FALSE;
+    uint8 MeetModeStatus_u8;
+   
+    Rte_Read_rp_SR_MeetMode_MeetModeStatus(&MeetModeStatus_u8);	
+    if(eModeModeInactive != MeetModeStatus_u8)
+    {
+        fl_bRet = TRUE;
+    }
+    return fl_bRet;
+}
+#endif
+
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+Std_ReturnType Mgrdiagcdd_MapDID_DcmExtAction(EDcmExtAction *Action, teDIDOperation eOperation)
+{
+	Std_ReturnType Ret = E_OK;
+	switch(eOperation)
+	{
+		//To Do: below case enums need to cross verified with Rte_DcmExt_Type.h once standardized
+		case eRead:
+			*Action = MGRDIAGCDD_READ_ACTION;
+			break;
+		case eWrite:
+			*Action = MGRDIAGCDD_WRITE_ACTION;
+			break;
+		case eSTA:
+			*Action = MGRDIAGCDD_IOC_STA_ACTION;
+			break;
+		case eRTCtrl:
+			*Action = MGRDIAGCDD_IOC_RCTE_ACTION;
+			break;
+		case eCheckConditions:
+			*Action = MGRDIAGCDD_CHECKCONDITIONS_ACTION;
+			break;
+		default:
+			Ret = E_NOT_OK;
+			break;
+	}
+	return Ret;
+}
+
+Std_ReturnType Mgrdiagcdd_MapRID_DcmExtAction(EDcmExtAction *Action, teDIDOperation eOperation)
+{
+	Std_ReturnType Ret = E_OK;
+	switch(eOperation)
+	{
+		//To Do: below case enums need to cross verified with Rte_DcmExt_Type.h once standardized
+		case eRoutineStart:
+			*Action = MGRDIAGCDD_ROC_START_ACTION;
+			break;
+		case eRoutineStop:
+			*Action = MGRDIAGCDD_ROC_STOP_ACTION;
+			break;
+		case eRoutineResults:
+			*Action = MGRDIAGCDD_ROC_RESULTS_ACTION;
+			break;
+		default:
+			Ret = E_NOT_OK;
+			break;
+	}
+	return Ret;
+}
+#endif
+
+#ifdef PRECONDITION_CHECK_REQUIRED
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Converts Power Mode enumeration to nibble value, in order to match tsPreCheckStruct format.
+///
+/// @param    tPwrModeState fp_tCurrentState - Power Mode current enumeration value
+///
+/// @return   uint8 fl_u8NewValue - Converted Power mode value (0,1,2,4,8).
+//----------------------------------------------------------------------------------------------------------------------
+uint8 Mgrdiagcdd_PwrModeMod(tPwrModeState fp_tCurrentState)
+{
+    uint8 fl_u8NewValue = DIDZERO;
+
+    /* Convert enumeration value to 2^n value */
+    switch ((uint8) fp_tCurrentState)
+    {
+        case MGRDIAGCDD_OFFPWRMODE:
+            fl_u8NewValue = DIDBIT0MASK;
+            break;
+
+        case MGRDIAGCDD_ACCPWRMODE:
+            fl_u8NewValue = DIDBIT1MASK;
+            break;
+
+        case MGRDIAGCDD_STARTPWRMODE:
+            fl_u8NewValue = DIDBIT2MASK;
+            break;
+
+        case MGRDIAGCDD_RUNPWRMODE:
+            fl_u8NewValue = DIDBIT3MASK;
+            break;
+
+        default:
+            fl_u8NewValue = DIDZERO;
+            break;
+    }
+
+    return fl_u8NewValue;
+}
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Validation of High and Low voltage flags if available for the selected DID/RID.
+///
+/// @param    boolean  fp_XVSDf - Flag to verify voltage flag for the selected DID/RID.
+/// @param    boolean  fp_CVSDf - Current value of voltage flag.
+///
+/// @return   boolean fl_bRtn - True if DID flag is correct or = N/A, False if configuration is wrong.
+//----------------------------------------------------------------------------------------------------------------------
+boolean Mgrdiagcdd_VoltFlagValidation(boolean fp_bXVSDf,
+                                     boolean fp_bCVSDf)
+{
+    boolean fl_bRtn = TRUE;
+
+    if (FALSE != fp_bXVSDf)
+    {
+        /* DID needs voltage flag validation */
+        if (TRUE == fp_bCVSDf)
+        {
+            /* Bad XVSD0 Send a NRC 0x22 */
+            fl_bRtn = FALSE;
+        }
+    }
+
+    return fl_bRtn;
+}
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Provides the service Mgrdiagcdd_DID_PreConditionCheck
+///
+/// @param    uint16 DIDNum - Hex value of the DID to process.
+/// @param    uint8 * pNrc - Negative Response Code to send
+///
+/// @return   boolean - TRUE - if all preconditions PASS
+//----------------------------------------------------------------------------------------------------------------------
+boolean Mgrdiagcdd_DID_PreConditionCheck(uint16 DIDNum, uint8 *pNrc)
+{
+	uint16       fl_u16DidSelected   = (uint16)MGRDIAGCDD_DIDs_COUNT;
+    uint8        fl_u8CurrentPwrMode = DIDZERO;
+    boolean      fl_bRtn             = (boolean)TRUE;
+	uint8 fl_loop_count_U8;
+	*pNrc          = DIDZERO;
+	
+    /* Search if the DID is supported */ 
+    for(fl_loop_count_U8 = 0; fl_loop_count_U8 < MGRDIAGCDD_DIDs_COUNT ;fl_loop_count_U8++)
+    {        
+        if(DidPreCheckTable[fl_loop_count_U8].ID == DIDNum)
+        {
+            break;
+        }
+           
+    } /* End of Command traverse for loop */  
+    fl_u16DidSelected =  fl_loop_count_U8;
+	
+    if (fl_u16DidSelected < MGRDIAGCDD_DIDs_COUNT)
+    {
+        /* DID found */
+            
+        tPwrModeState PwrMode;
+        boolean       LVSD0Flag;
+        boolean       HVSD0Flag;
+
+        (void) MGRDIAGCDD_GET_LVSD0_FLAG(&LVSD0Flag);
+        (void) MGRDIAGCDD_GET_HVSD0_FLAG(&HVSD0Flag);
+        (void) MGRDIAGCDD_GET_POWER_MODE(&PwrMode);
+
+        fl_u8CurrentPwrMode = Mgrdiagcdd_PwrModeMod(PwrMode);
+            
+        /* Check LVSD0 */
+        fl_bRtn = Mgrdiagcdd_VoltFlagValidation(DidPreCheckTable[fl_u16DidSelected].LVSDf, LVSD0Flag);
+
+        if (FALSE != fl_bRtn)
+        {
+            /* Check HVSD0 */
+            fl_bRtn = Mgrdiagcdd_VoltFlagValidation(DidPreCheckTable[fl_u16DidSelected].HVSDf, HVSD0Flag);
+
+            if (FALSE != fl_bRtn)
+            {
+                /* Check Power Mode */
+                if (DIDZERO == (fl_u8CurrentPwrMode & DidPreCheckTable[fl_u16DidSelected].pwrMode))
+                {
+                    /* Power mode not allowed, send NRC 0x22 */
+                    *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+                    fl_bRtn  = FALSE;
+                }
+				else
+				{
+					if(TRUE == DidPreCheckTable[fl_u16DidSelected].bMeetmode_flag)
+					{
+						fl_bRtn = Mgrdiagcdd_ConfigMEET();
+						if(FALSE == fl_bRtn)
+						{
+							*pNrc = MGRDIAG_INVALID_MODE;
+						}
+					}
+				}
+            }
+            else
+            {
+                /* Bad HVSD0, send NRC 0x22 */
+                *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+            }
+        }
+        else
+        {
+            /* Bad LVSD0, send NRC 0x22 */
+            *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+        }  
+	}
+	else
+	{
+		/*corresponding DID not configured in MeetCdd*/
+		*pNrc = DCM_E_CONDITIONSNOTCORRECT;
+	}
+	return fl_bRtn;
+}
+boolean Mgrdiagcdd_RID_PreConditionCheck(uint16 RIDNum, uint8 *pNrc)
+{
+	uint16       fl_u16RidSelected   = (uint16)MGRDIAGCDD_RIDs_COUNT;
+    uint8        fl_u8CurrentPwrMode = DIDZERO;
+    boolean      fl_bRtn             = (boolean)TRUE;
+	uint8 fl_loop_count_U8;
+	*pNrc          = DIDZERO;
+	
+    /* Search if the RID is supported */ 
+    for(fl_loop_count_U8 = 0; fl_loop_count_U8 < MGRDIAGCDD_RIDs_COUNT ;fl_loop_count_U8++)
+    {        
+        if(RidPreCheckTable[fl_loop_count_U8].ID == RIDNum)
+        {
+            break;
+        }
+           
+    } /* End of Command traverse for loop */  
+    fl_u16RidSelected =  fl_loop_count_U8;
+	
+    if (fl_u16RidSelected < MGRDIAGCDD_RIDs_COUNT)
+    {
+        /* RID found */
+            
+        tPwrModeState PwrMode;
+        boolean       LVSD0Flag;
+        boolean       HVSD0Flag;
+
+        (void) MGRDIAGCDD_GET_LVSD0_FLAG(&LVSD0Flag);
+        (void) MGRDIAGCDD_GET_HVSD0_FLAG(&HVSD0Flag);
+        (void) MGRDIAGCDD_GET_POWER_MODE(&PwrMode);
+
+        fl_u8CurrentPwrMode = Mgrdiagcdd_PwrModeMod(PwrMode);
+            
+        /* Check LVSD0 */
+        fl_bRtn = Mgrdiagcdd_VoltFlagValidation(RidPreCheckTable[fl_u16RidSelected].LVSDf, LVSD0Flag);
+        if (FALSE != fl_bRtn)
+        {
+            /* Check HVSD0 */
+            fl_bRtn = Mgrdiagcdd_VoltFlagValidation(RidPreCheckTable[fl_u16RidSelected].HVSDf, HVSD0Flag);
+            if (FALSE != fl_bRtn)
+            {
+                /* Check Power Mode */
+                if (DIDZERO == (fl_u8CurrentPwrMode & RidPreCheckTable[fl_u16RidSelected].pwrMode))
+                {
+                    /* Power mode not allowed, send NRC 0x22 */
+                    *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+                    fl_bRtn  = FALSE;
+                }
+				else
+				{
+					if(TRUE == RidPreCheckTable[fl_u16RidSelected].bMeetmode_flag)
+					{
+						fl_bRtn = Mgrdiagcdd_ConfigMEET();
+						if(FALSE == fl_bRtn)
+						{
+							*pNrc = MGRDIAG_INVALID_MODE;
+						}
+					}
+				}
+            }
+            else
+            {
+                /* Bad HVSD0, send NRC 0x22 */
+                *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+            }
+        }
+        else
+        {
+            /* Bad LVSD0, send NRC 0x22 */
+            *pNrc = DCM_E_CONDITIONSNOTCORRECT;
+        }        
+	}
+	else
+	{
+		/*corresponding RID not configured in MeetCdd*/
+		*pNrc = DCM_E_CONDITIONSNOTCORRECT;
+	}
+	return fl_bRtn;
+}
+#endif
+
+#ifdef CMEETCDD_STUBS_CHIMES
+void Stub_SetDiagToneCtrlStart(const tGenMdlDiagToneCtrlData * pChimeToneCtrlData, tGenMdlDiagResp * DiagRespStatus)
+{
+	tSndCtrlToneParam SndCDDToneParamL;
+		
+	SndCDDToneParamL.ToneFrequency       =  pChimeToneCtrlData->ChimeFreq;	
+	SndCDDToneParamL.AmplitudeDutyCycle  =  (uint16)(pChimeToneCtrlData->VolumePercent);
+	
+	// Place the request for custom chime to Sound CDD/SndCtrl and set positive response
+	SndCtrl_RequestCustomChime(&SndCDDToneParamL);
+	*DiagRespStatus = eDiagPositiveResponse;	//value of this enum is 0 in GenMdl
+}
+void Stub_SetDiagToneCtrlStop(void)
+{
+	SndCtrl_StopCustomChime();
+}
+#endif
+
+#ifdef CMEETCDD_STUBS_ILLUM
+void Stub_SetDisplayBrightness(uint16 DutyVal)
+{
+	DutyVal = DutyVal/10;
+	CBacklightCdd_SetBrightnessValue(1 , DutyVal);
+}
+#endif
+
+
+
+#ifdef IOCTRL_ANALOG_READ_ADC_SINGLE_CH
+/*=====================================================================================================================
+**
+** Function Name    :  Read_Diag_F442
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to read single Adc channel
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F442(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	uint16 fl_temp_volt_U16;
+	uint32     fl_volt_U32;
+	
+		Ret = Ioctrlrd_analog_diag_read_Adc_SingleChannel(eIO_ADC_VBATT_MON,&fl_temp_volt_U16);
+		if(E_OK != Ret)
+		{
+			ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+			Data[0U] = ErrorCode[0U];
+		}
+		else
+		{	
+		/*Below calculation is to accommodate any changes in the offset value or in the scale value
+		  with any resolution with in UINT16 limit*/
+
+		/*Calculate Battery voltage using the conversion constant for the given A/D counts input*/
+		fl_volt_U32 = (uint32) ((fl_temp_volt_U16 * BATTVOLT_IN_SCALE) + BATTVOLT_IN_OFFSET);
+
+		/*Calculate the DID counts for the Battery voltage calculated above*/
+		fl_volt_U32 = (uint32) (((fl_volt_U32 * IPCVOLTAGE_DID_SCALE_NMR) / IPCVOLTAGE_DID_SCALE_DNR) + \
+								IPCVOLTAGE_DID_OFFSET);
+
+		/*QAC_DEVIATION_MESSAGE_END*/
+		/*Note: The final result obtained in fl_volt_U32 would be well with in UINT16 limit. */
+		/*Do the shift and fill the buffer.                                             */
+
+		Data[DIDZERO] = (uint8) (fl_volt_U32 >> F442_BIT_SHIFTER);
+		Data[DIDONE]  = (uint8) (fl_volt_U32);
+		}
+	
+    
+    return (Ret);
+}
+#endif
+
+#ifdef RESETSLEEPDIAG_ODOMETER_RESET
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FEDC
+** Visibility       :  Public
+** Description      :  Service to reset the odometer
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FEDC(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    if(Data[0U] == 0xFFU)
+    {
+    	Ret = Resetsleepdiag_odometer_Reset(Data,ErrorCode);
+    }
+    else
+    {
+    	ErrorCode[0U] = DCM_E_REQUESTOUTOFRANGE;
+    }
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef IO_BUTTON_READ_ENABLE
+/******************************************************************************************************************
+** Function Name    :  Read_Diag_FA16
+** Visibility       :  Public
+** Description      :  Read Service for Digital and button input
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType Read_Diag_FA16(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Ioctrlrd_dio_diag_ButtonCheck_Read(Data, ErrorCode);
+    if (Ret == E_NOT_OK)
+    {
+        *Data = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_TFT_CONTINUITY_LOOP_CHECK
+/******************************************************************************************************************
+** Function Name    :  Read_Diag_FE02
+** Visibility       :  Public
+** Description      :  Read Service for TFT Connection Check
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType Read_Diag_FE02(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+
+    Ret = Ioctrlrd_dio_diag_continuity_loop_check(Data);
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCTRLRD_ANALOG_DIAG_BY_UNIT
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F105
+** Visibility       :  Public
+** Description      :  Service to start reading of analog i/p value by unit
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F105(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    uint8 Numberofsamples = 0;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Channel_ID = Data[0U];
+    Numberofsamples = Data[1];
+
+    Length[0U] = 0U;
+    Length[1U] = 2U;
+
+    if(Numberofsamples == 0U || Numberofsamples > IOCTRLRD_ANA_NUM_CHANNELS_UNIT)
+    {
+    	ErrorCode[0U] = DCM_E_REQUESTOUTOFRANGE;
+    	Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+        Ret = Ioctrlrd_analog_diag_AdcInputReading_byunit_RCStart((uint8)Channel_ID, Numberofsamples, Data, ErrorCode);
+        Data[1U] = Channel_ID;
+
+        if(Ret == (uint8)MANUF_FAIL)
+        {
+           Data[0U] = ErrorCode[0U];
+        }
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F105
+** Visibility       :  Public
+** Description      :  Service to stop reading of analog i/p value by unit
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F105(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_analog_diag_AdcInputReading_byunit_RCStop(Channel_ID,Data,ErrorCode);
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F105
+** Visibility       :  Public
+** Description      :  Service to get the status and results of analog i/p value by unit
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F105(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    //uint8 Channel_ID; //Globally Defined
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 6U;
+
+    Ret = Ioctrlrd_analog_diag_AdcInputReading_byunit_RCStatus(Channel_ID, Data, ErrorCode);
+
+    if(MANUF_FAIL == Ret)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCTRLRD_ANALOG_DIAG
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F11F
+** Visibility       :  Public
+** Description      :  Service to start reading of analog i/p value
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F11F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+    uint16 Filter_table_entity_nbr=((Data[DATA_BYTE_1]*8) + 1U);
+    uint8 Numberofsamples = 0U;
+    Length[DATA_BYTE_1] = 1U;
+    if(AnalogDiag_RoutineStatus != eROUTINE_INPROGRESS)
+    {
+        ADC_Channel_ID = Data[DATA_BYTE_0];
+        Numberofsamples = ( Filter_table_entity_nbr > MANUF_MAX_NO_OF_SAMPLES ) ? MANUF_MAX_NO_OF_SAMPLES : Filter_table_entity_nbr;
+
+        if(Numberofsamples == 0U || Numberofsamples > MANUF_ANA_MAX_NUM_SAMPLES)
+        {
+            ErrorCode = DCM_E_REQUESTOUTOFRANGE;
+            Data[DATA_BYTE_0] = (uint8)ErrorCode; 
+            Ret = E_NOT_OK; 
+        }
+        else if(IOCTRLRD_ANA_NUM_CHANNELS_UNIT > ADC_Channel_ID)
+        {
+            Ret = (Std_ReturnType)Ioctrlrd_analog_diag_AdcInputReading_RCStart(ADC_Channel_ID, Numberofsamples, Data, &ErrorCode);
+        }
+        else if(MANUF_ANA_ALL_CHANNELS > ADC_Channel_ID)
+        {
+            Ret = (Std_ReturnType)Ioctrlrd_analog_diag_AdcInputReading_RCStart(ADC_Channel_ID, Numberofsamples, Data, &ErrorCode);
+        }
+        else
+        {
+            ErrorCode = DCM_E_REQUESTOUTOFRANGE;
+            Data[DATA_BYTE_0] = (uint8)ErrorCode; 
+            Ret = E_NOT_OK; 
+        }
+        if(Ret == E_OK)
+        {
+            AnalogDiag_RoutineStatus = eROUTINE_INPROGRESS;
+        }
+        else
+        {
+            Data[DATA_BYTE_0] = (uint8)ErrorCode;  
+        }
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F11F
+** Visibility       :  Public
+** Description      :  Service to stop reading of analog i/p value
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F11F(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+    
+    if(AnalogDiag_RoutineStatus != eROUTINE_INACTIVE)
+    {
+        if(IOCTRLRD_ANA_NUM_CHANNELS_UNIT > ADC_Channel_ID)
+        {
+            Ret = (Std_ReturnType)Ioctrlrd_analog_diag_AdcInputReading_RCStop((uint8)(ADC_Channel_ID + 1U), Data, &ErrorCode);
+        }
+        else if(MANUF_ANA_ALL_CHANNELS > ADC_Channel_ID)
+        {
+            Ret = (Std_ReturnType)Ioctrlrd_analog_diag_AdcInputReading_RCStop(ADC_Channel_ID, Data, &ErrorCode);
+        }
+        else
+        {
+            //donothing
+        }
+        
+        if (E_NOT_OK == Ret)
+        {
+            Data[DIDBYTE0] = (uint8)ErrorCode;
+        }
+        else
+        {
+            AnalogDiag_RoutineStatus = eROUTINE_STOPPED;
+        }
+    }
+    else
+    {
+        //do nothing
+    }
+    return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F11F
+** Visibility       :  Public
+** Description      :  Service to get the status and results of analog i/p value
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F11F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+    
+    Length[DATA_BYTE_1] = RC_RSP_SHORT_LENGTH;
+    
+    if (AnalogDiag_RoutineStatus == eROUTINE_INPROGRESS)
+    {
+        Ret = (Std_ReturnType)Ioctrlrd_analog_diag_AdcInputReading_RCStatus(ADC_Channel_ID, Data, &ErrorCode);
+        
+        if (Ret == E_OK)
+        {
+            if (MANUF_ANA_ALL_CHANNELS == ADC_Channel_ID)
+            {
+                Length[DATA_BYTE_1] = RC_RESULTS_ALL_ADC_RSP_LENGTH;
+                AnalogDiag_RoutineStatus = eROUTINE_INACTIVE;
+            }
+            else
+            {
+                if (Data[0] == (uint8)eROUTINE_FINISH_OK)
+                {
+                    Length[DATA_BYTE_1] = RC_RESULTS_ONE_ADC_RSP_LENGTH;
+                    AnalogDiag_RoutineStatus = eROUTINE_INACTIVE;
+                }
+                else if (Data[0] == (uint8)eROUTINE_FINISH_NOK)
+                {
+                    ErrorCode = DCM_E_GENERALREJECT;
+                    Data[DATA_BYTE_0] = (uint8)ErrorCode;
+                    AnalogDiag_RoutineStatus = eROUTINE_INACTIVE;
+                    Ret = E_NOT_OK;
+                }
+                else
+                {
+                    ErrorCode = DCM_E_REQUESTCORRECTLYRECEIVEDRESPONSEPENDING; 
+                    Data[DATA_BYTE_0] = (uint8)ErrorCode;
+                    Ret = E_NOT_OK;
+                }
+            }
+        }
+        else
+        {
+            if (ErrorCode == DCM_E_REQUESTOUTOFRANGE)
+            {
+                Data[DATA_BYTE_0] = (uint8)ErrorCode;
+                AnalogDiag_RoutineStatus = eROUTINE_INACTIVE;
+            }
+            else
+            {
+                ErrorCode = DCM_E_REQUESTCORRECTLYRECEIVEDRESPONSEPENDING;
+                Data[DATA_BYTE_0] = (uint8)ErrorCode;
+            }
+            Ret = E_NOT_OK;
+        }
+    }
+    else
+    {
+        ErrorCode = DCM_E_REQUESTSEQUENCEERROR; 
+        Data[DIDBYTE0] = (uint8)ErrorCode;
+        Ret = E_NOT_OK;
+    }
+    return Ret;
+}
+#endif
+
+#ifdef IOCTRL_ANALOG_READ_ALL_ADC
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FE03
+** Visibility       :  Public
+** Description      :  Service to read all Adc channels
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE03(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Ioctrlrd_analog_diag_read_All_Adc(Data,ErrorCode);
+
+    return Ret;
+}
+#endif
+
+#ifdef MEMDIAG_ODOMETER_NVM_READWRITE
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FF00
+** Visibility       :  Public
+** Description      :  Read service for Odometer NVM
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FF00(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_OdometerNVMRead(Data,ErrorCode);
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FF00
+** Visibility       :  Public
+** Description      :  Write service for Odometer NVM
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FF00(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_OdometerNVMWrite(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef CYBERSECDIAG_KEY_STORE_AND_LOCK
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FD87
+** Visibility       :  Public
+** Description      :  Service to store Cybersecurity Keys and Lock peripherals
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FD87(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+	Length[0U] = 0x00u;
+	Length[1U] = 0x00u; //Response data length
+
+	Ret = Cybersecdiag_Key_Storage_and_Lock_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+//Memdiag services
+#ifdef NVMVALIDITYCHKENABLE
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FA38
+** Visibility       :  Public
+** Description      :  Read service for NVM validity check status
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA38(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_NVMValidityCheck_Read(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+#ifdef FAULTINJECTIONSAFETY
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F100
+** Visibility       :  Public
+** Description      :  Service to write Visteon Part Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F781(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)FITDID_FaultInjectionAction(Data,ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+Std_ReturnType FITDID_FaultInjectionAction(uint8 *Data, uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+    uint8 OpStatus = 0x00U; /* DCM_INITIAL */
+    ret = CDD_FitManager_RouteFITDID((uint8*)Data, OpStatus, ErrorCode);
+    if (ret == E_NOT_OK)
+    {
+       *Data = *ErrorCode;
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (ret);
+}
+#endif
+#ifdef TRACEDIAG_SERVICE_1
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F100
+** Visibility       :  Public
+** Description      :  Service to read Visteon Part Number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+#ifdef TRACEDIAG_SERVICE_1
+Std_ReturnType Read_Diag_F100(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_1(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F100
+** Visibility       :  Public
+** Description      :  Service to write Visteon Part Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F100(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_1(Data, ErrorCode);
+        
+    if (Ret == E_NOT_OK)
+    {
+       *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_2
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F181
+** Visibility       :  Public
+** Description      :  Service to read Visteon PCB Part Number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F181(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_2(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+       *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F181
+** Visibility       :  Public
+** Description      :  Service to write Visteon PCB Part Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F181(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_2(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_3
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F182
+** Visibility       :  Public
+** Description      :  Service to read PCB Serial Numbere
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F182(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_3(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+       *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F182
+** Visibility       :  Public
+** Description      :  Service to write PCB Serial Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F182(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_3(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_4
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F187
+** Visibility       :  Public
+** Description      :  Service to read SMT Manufacturing Date
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F187(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_4(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F187
+** Visibility       :  Public
+** Description      :  Service to write SMT Manufacturing Date
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F187(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_4(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_5
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F188
+** Visibility       :  Public
+** Description      :  Service to read SMT Plant Number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F188(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_5(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F188
+** Visibility       :  Public
+** Description      :  Service to write SMT Plant Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F188(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_5(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_6
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F18B
+** Visibility       :  Public
+** Description      :  Service to read Assembly Plant Date
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F18B(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_6(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F18B
+** Visibility       :  Public
+** Description      :  Service to write Assembly Plant Date
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F18B(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_6(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_7
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F18C
+** Visibility       :  Public
+** Description      :  Service to read Assembly Manufacturing Date
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F18C(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_7(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F18C
+** Visibility       :  Public
+** Description      :  Service to write Assembly Manufacturing Date
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F18C(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_7(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_8
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F18E
+** Visibility       :  Public
+** Description      :  Service to read Product Serial Number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F18E(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_8(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F18E
+** Visibility       :  Public
+** Description      :  Service to write Product Serial Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F18E(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_8(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_9
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F190
+** Visibility       :  Public
+** Description      :  Service to read HW Modification Index
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F190(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Read_Service_9(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F190
+** Visibility       :  Public
+** Description      :  Service to write HW Modification Index
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F190(uint8 *Data, uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Ret = (Std_ReturnType)Tracediag_Write_Service_9(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+       *Data = (uint8)ErrorCode[0U];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_10
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F191
+** Visibility       :  Public
+** Description      :  Service to read ECU Hardware Number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F191(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_10(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F191
+** Visibility       :  Public
+** Description      :  Service to write ECU Hardware Number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F191(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_10(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_11
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F199
+** Visibility       :  Public
+** Description      :  Service to read Application SW Programming Date
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F199(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_11(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F199
+** Visibility       :  Public
+** Description      :  Service to write Application SW Programming Date
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F199(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_11(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_12
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F19B
+** Visibility       :  Public
+** Description      :  Service to read Calibration Date
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F19B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_12(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F19B
+** Visibility       :  Public
+** Description      :  Service to write Calibration Date
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F19B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_12(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_13
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FA03
+** Visibility       :  Public
+** Description      :  Service to read NVM and Software versions Reading
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA03(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_13(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FA03
+** Visibility       :  Public
+** Description      :  Service to write NVM and Software versions Reading
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA03(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_13(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_14
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FDBB
+** Visibility       :  Public
+** Description      :  Service to read MAC Address
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FDBB(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_14(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FDBB
+** Visibility       :  Public
+** Description      :  Service to write MAC Address
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FDBB(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_14(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_15
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FE47
+** Visibility       :  Public
+** Description      :  Service to read MAC Address
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE47(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_15(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FE47
+** Visibility       :  Public
+** Description      :  Service to write MAC Address
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FE47(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_15(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_16
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_F195
+** Visibility       :  Public
+** Description      :  Service to read MAC Address
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_F195(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_16(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_F195
+** Visibility       :  Public
+** Description      :  Service to write MAC Address
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_F195(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_16(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_18
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FE61
+** Visibility       :  Public
+** Description      :  Service to read MAC Address
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE61(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_18(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FE61
+** Visibility       :  Public
+** Description      :  Service to write MAC Address
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FE61(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_18(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TRACEDIAG_SERVICE_19
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FE4D
+** Visibility       :  Public
+** Description      :  Service to read MAC Address
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE4D(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Read_Service_19(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FE4D
+** Visibility       :  Public
+** Description      :  Service to write MAC Address
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FE4D(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Tracediag_Write_Service_19(Data,ErrorCode);
+    
+    if (Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+    else
+    {
+        /* Do nothing */
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IO_DOUT_WRITE_ENABLE
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FE10
+** Visibility       :  Public
+** Description      :  Service to write DigitalOutputs
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FE10(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_DigitalOutputs_Write(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_INTERNAL_DIGITAL_SIGNAL_CONTROL_ENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD10
+** Visibility       :  Public
+** Description      :  Service to cotrol internal digital signal control for Seat belt
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Ioctrlrd_dio_diag_InternalDigitalSignalControl_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD10
+** Visibility       :  Public
+** Description      :  Service to restore internal digital signal seat belt
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD10(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_InternalDigitalSignalControl_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_PWM_DIMMING_ENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD03
+** Visibility       :  Public
+** Description      :  Service to control dimming
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD03(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Ioctrlrd_pwm_diag_DimmingControl_STA(Data,ErrorCode);
+
+    Data[0U] = CONTROL_OPTION_STA;
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD03
+** Visibility       :  Public
+** Description      :  Service to make dimming lines to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD03(uint8 *Data,uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Ioctrlrd_pwm_diag_DimmingControl_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    Data[0U] = CONTROL_OPTION_RCTE;
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_PWM_OUTPUTCONTROL_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FD28
+** Visibility       :  Public
+** Description      :  Service to make short term adjustments on PWM Outputs
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FD28(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_OutputControl_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FD28
+** Visibility       :  Public
+** Description      :  Service to make short term adjustments on PWM Outputs
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FD28(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Data);
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_OutputControl_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_SPEAKER_TEST_ENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FEF3
+** Visibility       :  Public
+** Description      :  Service to test speaker signal control
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FEF3(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_TestSpeakerTone_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FEF3
+** Visibility       :  Public
+** Description      :  Service to restore the speaker signal control
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FEF3(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Data);
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_TestSpeakerTone_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_LED_CONTROL_DUTY_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FE0D
+** Visibility       :  Public
+** Description      :  Service to turn on Telltale
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FE0D(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_LEDControl_DUTY_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FE0D
+** Visibility       :  Public
+** Description      :  Service to turn off Telltale
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FE0D(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_LEDControl_DUTY_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_ECTLED_CONTROL_DUTY_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FEF4
+** Visibility       :  Public
+** Description      :  Service to turn on ECT LED bars
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_ECTLEDControl_DUTY_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FEF4
+** Visibility       :  Public
+** Description      :  Service to turn off ECT LED bars
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FEF4(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_ECTLEDControl_DUTY_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_FUELLED_CONTROL_DUTY_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FEF5
+** Visibility       :  Public
+** Description      :  Service to turn on Fuel LED bars
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FEF5(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_FUELLEDControl_DUTY_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FEF5
+** Visibility       :  Public
+** Description      :  Service to turn off Fuel LED bars
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FEF5(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_FUELLEDControl_DUTY_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTOLRD_TACHOLED_CONTROL_DUTY_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FEF6
+** Visibility       :  Public
+** Description      :  Service to turn on Tacho LED bars
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FEF6(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_TACHOLEDControl_DUTY_STA(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FEF6
+** Visibility       :  Public
+** Description      :  Service to turn off Tacho LED bars
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FEF6(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_dio_diag_TACHOLEDControl_DUTY_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_FUELECT_ILLUMINATION_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FE70
+** Visibility       :  Public
+** Description      :  Service to make short term adjustment on Fuel/ECT Illumination Gauge
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FE70(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_FuelEct_Illumination_STA(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FE70
+** Visibility       :  Public
+** Description      :  Service to make Fuel/ECT Illumination Gauge back to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FE70(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_FuelEct_Illumination_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_TACHO_ILLUMINATION_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FD26
+** Visibility       :  Public
+** Description      :  Service to make short term adjustment on TACHO Illumination Gauge
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FD26(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_Tacho_Illumination_STA(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FD26
+** Visibility       :  Public
+** Description      :  Service to make TACHO Illumination Gauge back to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FD26(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_Tacho_Illumination_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef IOCONTROlRD_DISPLAY_ILLUMINATION_ENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FD27
+** Visibility       :  Public
+** Description      :  Service to make short term adjustment on Display Illumination Gauge
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FD27(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_Display_Illumination_STA(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FD27
+** Visibility       :  Public
+** Description      :  Service to make Display Illumination Gauge back to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FD27(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Ioctrlrd_pwm_diag_Display_Illumination_RCTE(ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef OSCDIAG_CLOCKVALUE_ENABLE
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FE07
+** Visibility       :  Public
+** Description      :  Service to read Clock value
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FE07(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Oscdiag_ClockValue_Read(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FE07
+** Visibility       :  Public
+** Description      :  Service to write Clock value
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FE07(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Oscdiag_ClockValue_Write(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef TFTPATTERNCTRLENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FD0D
+** Visibility       :  Public
+** Description      :  Service to make short term adjustment on Display/TFT patterns control
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FD0D(uint8* Data, uint8* Length)
+{
+    Std_ReturnType Ret = E_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Length[0U] = (uint8)0U;
+    
+    Length[1U] = (uint8)1U;
+    
+    Ret = Displaycontroldiag_TFTPatternControl_Duty_STA(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    *Data = CONTROL_OPTION_STA;
+    
+    return (Std_ReturnType)Ret;
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FD0D
+** Visibility       :  Public
+** Description      :  Service to make Display/TFT patterns control back to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FD0D(uint8* Data, uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    Length[0U] = (uint8)0U;
+    Length[1U] = (uint8)1U;
+    Ret = Displaycontroldiag_TFTPatternControl_Duty_RCTE(ErrorCode);
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    *Data = CONTROL_OPTION_RCTE;
+
+    return (Ret);
+}
+#endif
+
+#ifdef TFT_VIDEOCHECK_ENABLE
+/*=====================================================================================================================
+** Function Name    :  IOCTL_STA_Diag_FD60
+** Visibility       :  Public
+** Description      :  Service to check the video hardware interface.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_STA_Diag_FD60(uint8 *Data, uint8 *Length)
+{
+	Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_VideoCheck_STA(Data,ErrorCode);
+
+    Data[0U] = CONTROL_OPTION_STA;
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  IOCTL_RCTE_Diag_FD60
+** Visibility       :  Public
+** Description      :  Cluster shall exit showing video format and show previous screen.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType IOCTL_RCTE_Diag_FD60(uint8 *Data, uint8 *Length)
+{
+	Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_VideoCheck_RCTE(ErrorCode);
+
+    Data[0U] = CONTROL_OPTION_RCTE;
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef LOWQCURRENTENABLE
+/******************************************************************************************************************
+** Function Name    :  IOCTL_STA_Diag_FD5F
+** Visibility       :  Public
+** Description      :  Service to make short term adjustment on LowQCurrent
+** Invocation       :  Mgrdiag_Ioc_Sta_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_STA_Diag_FD5F(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+	Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+	Ret = ResetSleepdiag_SetLowQCurrent(Data);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+       Data[0U] = ErrorCode[0U];
+    }
+
+	return Ret;
+}
+
+/******************************************************************************************************************
+** Function Name    :  IOCTL_RCTE_Diag_FD5F
+** Visibility       :  Public
+** Description      :  Service to make LowQCurrent back to original condition
+** Invocation       :  Mgrdiag_Ioc_Rcte_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType IOCTL_RCTE_Diag_FD5F(uint8 *Data, uint8 *Length)
+{
+    UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    *Data = eLowQCmdOFF; /*Since for RCTE needs to reset the flag.*/
+
+    Ret = ResetSleepdiag_SetLowQCurrent(Data);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       ErrorCode[0U] = DCM_E_CONDITIONSNOTCORRECT;
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return Ret;
+}
+#endif
+
+#ifdef IO_SELFCHECK_ENABLE
+/******************************************************************************************************************
+** Function Name    :  Read_Diag_FA37
+** Visibility       :  Public
+** Description      :  Read Service for ROM flash memory check result
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType Read_Diag_FA37(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+
+    //Data[0U] = ROMFLASH_MEMORYCHECK_READ;
+
+    Ret = Ioctrlrd_dio_diag_SelfCheck_Read(Data);
+
+    return (Ret);
+}
+
+/******************************************************************************************************************
+** Function Name    :  Read_Diag_FD15
+** Visibility       :  Public
+** Description      :  Read Service for WIFI status
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+******************************************************************************************************************/
+Std_ReturnType Read_Diag_FD15(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+
+    //Data[0U] = WIFISTATUS_READ;
+
+    Ret = Ioctrlrd_dio_diag_SelfCheck_Read(Data);
+
+    return (Ret);
+}
+#endif
+
+#ifdef MFGMODEREQENABLE
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FA4C
+** Visibility       :  Public
+** Description      :  Service to read the value(0x52AE/0xFFFF) of manufacturing mode entry
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FA4C(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType  ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Ret = Memdiag_ManufacturingModeRequested_Read(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    
+    return (Std_ReturnType)Ret;
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FA4C
+** Visibility       :  Public
+** Description      :  Service to write the value(0x52AE/0xFFFF) to enter/exit manufacturing mode entry
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA4C(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Ret = Memdiag_ManufacturingModeRequested_Write(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+        *Data = ErrorCode[0U];
+    }
+    
+    return (Std_ReturnType)Ret;
+}
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_010B
+** Visibility       :  Public
+** Description      :  Service to read the safe key number
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_010B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+	Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType  ErrorCode[2U];
+	ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Cybersecdiag_SafeKey_Read(Data,ErrorCode);
+
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		Data[0U] =   ErrorCode[0U];
+	}
+
+	return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_010B
+** Visibility       :  Public
+** Description      :  Service to write the safe Key number
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_010B(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret =  Cybersecdiag_SafeKey_Write(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE
+/*=====================================================================================================================
+** Function Name    :  Read_Diag_FD0D
+** Visibility       :  Public
+** Description      :  Service to read the Jtag Locking status
+** Invocation       :  Mgrdiag_Read_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Read_Diag_FD0D(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+	Std_ReturnType Ret = E_NOT_OK;
+	Dcm_NegativeResponseCodeType  ErrorCode[2U];
+	ErrorCode[0U] = DCM_E_OK;
+
+	Ret = Cybersecdiag_JTAG_passwordProtection_Status(Data,ErrorCode);
+
+	if(Ret == (uint8)E_NOT_OK)
+	{
+		Data[0U] =   ErrorCode[0U];
+	}
+
+	return (Ret);
+}
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_LOCK_ENABLE)
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FEF3
+** Visibility       :  Public
+** Description      :  Service to write the Jtag Password
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FEF3(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret =  Cybersecdiag_JTAG_passwordProtection_Write(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =  ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+#if defined(CYBERSECDIAG_UART_UNLOCK_ENABLE) 
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_FEE3
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to unlock the UART
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FEE3(uint8* Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2] = {0};
+
+    Ret =  Cybersecdiag_UART_password_UnLock(Data,ErrorCode);
+    if((uint8)E_NOT_OK == Ret)
+    {
+        Data[0] =   ErrorCode[0];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef NVMACCESSBYBLOCKIDREADWRITEENABLE
+/*=====================================================================================================================
+** Function Name    :  Write_Diag_FA5E
+** Visibility       :  Public
+** Description      :  Service to write the NVM blocks
+** Invocation       :  Mgrdiag_Write_DID
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType Write_Diag_FA5E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret =  Memdiag_DataflashNVMaccessbyblockID_Write(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef HYPERFLASHCHKSUMTSTENABLE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F11E
+** Visibility       :  Public
+** Description      :  Service to start hyper flash checksum test routine.
+**                     (This function will do only marker check )
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    uint8 locData[NUMBER_OF_HYPER_FLASH] = {0U};
+
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    if(Data[0U] == 0x01U)
+    {
+        locData[0U] = 0xFEU;
+
+        Ret = Memdiag_HyperflashChecksumTest_RCStart(locData, ErrorCode);
+    }
+    else
+    {
+    	ErrorCode[0U] = DCM_E_REQUESTOUTOFRANGE;
+    }
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+    else
+    {
+    	Data[0U] = locData[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F11E
+** Visibility       :  Public
+** Description      :  Service to stop hyper flash checksum test routine.
+**                     (This function will stop marker check )
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_HyperflashChecksumTest_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F11E
+** Visibility       :  Public
+** Description      :  Service to get the status of  hyper flash checksum test routine.
+**                     (This function will return only marker check result)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F11E(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_HyperflashChecksumTest_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] =   ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef PROGRAM_NVM_FROM_ROM
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE20
+** Visibility       :  Public
+** Description      :  Service to start program NVM to default routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE20(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_Program_NVM_from_ROM_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FE20
+** Visibility       :  Public
+** Description      :  Service to stop program NVM to default routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FE20(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+
+    /* NVBlockID access */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_Program_NVM_from_ROM_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE20
+** Visibility       :  Public
+** Description      :  Service to get the status and result of program NVM to default routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE20(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_Program_NVM_from_ROM_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef NVMACCESSBYBLOCKIDRCENABLE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F20F
+** Visibility       :  Public
+** Description      :  Service to start dataflash access by block ID routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F20F(uint8 *Data, uint8 *Length)
+{
+	/* NVBlockID access */
+    Std_ReturnType Ret = E_NOT_OK;
+    uint16 nvm_blockID = 0U;
+
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    nvm_blockID = (Data[DATA_BYTE_0] * 256U) + Data[DATA_BYTE_1];
+
+    if(nvm_blockID <= NVM_NUM_OF_BLOCKS)
+    {
+    	l_nvm_DataLength = ((NvM_BlockConfig[nvm_blockID].NvBlockLength) + 1U);
+    }
+    else
+    {
+    	/*Assigning to the max length*/
+    	l_nvm_DataLength = 255U;
+    }
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_DataflashNVMaccessbyblockID_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F20F
+** Visibility       :  Public
+** Description      :  Service to stop  dataflash access by block ID routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F20F(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+
+    /* NVBlockID access */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_DataflashNVMaccessbyblockID_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F20F
+** Visibility       :  Public
+** Description      :  Service to get the status and result of  dataflash access by block ID routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F20F(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = (uint8)(l_nvm_DataLength >> 0x0008U);
+    Length[1U] = (uint8)(l_nvm_DataLength & 0x00FFU);
+
+    Ret = Memdiag_DataflashNVMaccessbyblockID_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef MEMDIAG_MEMORY_VALIDITY_CHECK
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FA38
+** Visibility       :  Public
+** Description      :  Service to start NVM validity check.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FA38(uint8 *Data, uint8 *Length)
+{
+	/* NVBlockID access */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_NVMValidityCheck_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FA38
+** Visibility       :  Public
+** Description      :  Service to stop NVM validity check.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FA38(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+
+    /* NVBlockID access */
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_NVMValidityCheck_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FA38
+** Visibility       :  Public
+** Description      :  Service to get the status and result of NVM validity check routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FA38(uint8 *Data, uint8 *Length)
+{
+    //NVM blockID access
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_NVMValidityCheck_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef MEMDIAG_MEMORY_VALIDITY_CHECK
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FA37
+** Visibility       :  Public
+** Description      :  Service to start Memory validity check.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FA37(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Data[0U] = 5U;
+
+    Ret = Memdiag_Memory_Validity_Check_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FA37
+** Visibility       :  Public
+** Description      :  Service to stop Memory validity check.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FA37(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Data[0U] = 5U;
+
+    Ret = Memdiag_Memory_Validity_Check_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FA37
+** Visibility       :  Public
+** Description      :  Service to get the status and result of Memory validity check
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FA37(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Data[0U] = 5U;
+
+    Ret = Memdiag_Memory_Validity_Check_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+#ifdef MEMDIAG_ODOMETER_NVM_ROUTINE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE3C
+** Visibility       :  Public
+** Description      :  Service to start Odometer routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE3C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    if(Data[0U] == 0x00U)
+    {
+    	Ret = Memdiag_Odometer_NVM_RCStart(Data,ErrorCode);
+    }
+    else
+    {
+    	ErrorCode[0U] = DCM_E_REQUESTOUTOFRANGE;
+    }
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FE3C
+** Visibility       :  Public
+** Description      :  Service to stop Odometer routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FE3C(uint8 *Data, uint8 *Length)
+{
+	UNUSED(Length);
+
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Ret = Memdiag_Odometer_NVM_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE3C
+** Visibility       :  Public
+** Description      :  Service to get the status and result of Odometer routine.
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE3C(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Memdiag_Odometer_NVM_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+    	Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+#endif
+
+// Reset and sleep services
+#ifdef SLEEPMODEENABLE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F103
+** Visibility       :  Public
+** Description      :  Service to start the sleep routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F103(uint8 *Data, uint8 *Length)
+{
+
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Resetsleepdiag_SleepingMode_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+	else
+	{
+		Data[0U] = 1U;
+	}
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F103
+** Visibility       :  Public
+** Description      :  Service to stop the sleep routine (This service will not be called at all)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F103(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Resetsleepdiag_SleepingMode_RCStop(Data,ErrorCode);
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F103
+** Visibility       :  Public
+** Description      :  Service to get the status of sleep routine (This function will not be called at all)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F103(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Resetsleepdiag_SleepingMode_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef WDRSTENABLE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_F000
+** Visibility       :  Public
+** Description      :  Service to start watchdog reset routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_F000(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Ret = Resetsleepdiag_WDReset_RCStart(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    
+    return (Std_ReturnType)Ret;
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_F000
+** Visibility       :  Public
+** Description      :  Service to stop watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_F000(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Ret = Resetsleepdiag_WDReset_RCStop(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    
+    return (Std_ReturnType)Ret;
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_F000
+** Visibility       :  Public
+** Description      :  Service to get the status of watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_F000(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+    
+    Ret = Resetsleepdiag_WDReset_RCStatus(Data, ErrorCode);
+    
+    if(Ret == E_NOT_OK)
+    {
+       *Data = ErrorCode[0U];
+    }
+    
+    return (Std_ReturnType)Ret;
+}
+#endif
+
+#ifdef DISPLAY_TOUCH_TEST_CHECK
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE02
+** Visibility       :  Public
+** Description      :  Service to start touch test routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE02(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_TouchTest_RCStart(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FE02
+** Visibility       :  Public
+** Description      :  Service to stop touch test routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FE02(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_TouchTest_RCStop(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE02
+** Visibility       :  Public
+** Description      :  Service to get result of touch test routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE02(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 2U;
+
+    Ret = Displaycontroldiag_TouchTest_RCStatus(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef COMMCONTROLDIAG_MCANTEST_ROUTINE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FA41
+** Visibility       :  Public
+** Description      :  Service to start watchdog reset routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FA41(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_Mcancontroldiag_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FA41
+** Visibility       :  Public
+** Description      :  Service to stop watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FA41(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_Mcancontroldiag_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FA41
+** Visibility       :  Public
+** Description      :  Service to get the status of watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FA41(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_Mcancontroldiag_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef COMMCONTROLDIAG_CXPITEST_ROUTINE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FA40
+** Visibility       :  Public
+** Description      :  Service to start watchdog reset routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FA40(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_CxpiCddcontroldiag_RCStart(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FA40
+** Visibility       :  Public
+** Description      :  Service to stop watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FA40(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_CxpiCddcontroldiag_RCStop(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FA40
+** Visibility       :  Public
+** Description      :  Service to get the status of watchdog reset routine(This function will not be used)
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FA40(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Commdiag_CxpiCddcontroldiag_RCStatus(Data,ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+#endif
+#ifdef DISPLAYCONTROLDIAG_I2CTEST_ROUTINE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE42
+** Visibility       :  Public
+** Description      :  Service to start I2c address read routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE42(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+    
+    Length[0U] = (uint8)0U;
+    
+    Length[1U] = (uint8)1U;
+    
+    Ret = Displaycontroldiag_I2CTest_RCStart(Data, ErrorCode);
+    
+    if (Ret == E_NOT_OK)
+    {
+        Data[0U] = (uint8)ErrorCode[0];
+    }
+
+    return (Std_ReturnType)Ret;
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE42
+** Visibility       :  Public
+** Description      :  Service to get result of I2c address read routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE42(uint8 *Data, uint8 *Length)
+{
+    Std_ReturnType Ret = E_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+    
+    /* Fix 88633: Explicit cast to uint8 to resolve size mismatch */
+    Length[0U] = (uint8)0U;
+    
+    /* Fix Pointer Arithmetic issues: Replaced *(Length + 1) with array syntax and explicit cast */
+    Length[1U] = (uint8)4U;
+    
+    Ret = Displaycontroldiag_I2CTest_RCStatus(Data, ErrorCode);
+
+    if (Ret == E_NOT_OK)
+    {
+        *Data = ErrorCode[0];
+    }
+    return (Std_ReturnType)Ret;
+}
+#endif
+
+#ifdef DISPLAYCONTROLDIAG_TSW_I2CREAD_ROUTINE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE0B
+** Visibility       :  Public
+** Description      :  Service to start I2c address read routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE0B(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Length[0] = 0U;
+    Length[1] = 0U;
+
+    Ret = Displaycontroldiag_TSWI2CREAD_RCStart(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0] = ErrorCode[0];
+    }
+
+    return (Ret);
+}
+
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE0B
+** Visibility       :  Public
+** Description      :  Service to get result of I2c address read routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE0B(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Length[0] = 0U;
+    Length[1] = 17U;
+
+    Ret = Displaycontroldiag_TSWI2CREAD_RCStatus(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef NVMACCESSBYADDRESSRCENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F0FA
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start data write access by address routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F0FA(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+	Length[0] = 0x00u;	
+	Length[1] = 0x01u;
+#else
+	UNUSED(Length);
+#endif
+    Ret = Memdiag_Data_Write_NVM_Address_RCStart(Data,ErrorCode);
+    if((uint8)E_NOT_OK == Ret)
+    {
+       Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F0FA
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status and result of  data Write access by address routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F0FA(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+	Length[0] = 0x00u;
+	Length[1] = 0x01u;	
+#else
+	UNUSED(Length);
+#endif
+    Ret = Memdiag_Data_Write_NVM_Address_RCStatus(Data,ErrorCode);
+    if((uint8)E_NOT_OK == Ret)
+    {
+       Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_START_Diag_F0FB
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to start data Read access by address routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_START_Diag_F0FB(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+	Length[0] = 0x00u;	
+	Length[1] = 0x01u;
+#else
+	UNUSED(Length);
+#endif
+	Mgrdiag_NVM_Data_Length_By_Address = (uint16)Data[DATA_BYTE_4];
+    Ret = Memdiag_Data_Read_NVM_Address_RCStart(Data,ErrorCode);
+    if((uint8)E_NOT_OK == Ret)
+    {
+       Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  RC_RESULTS_Diag_F0FB
+**
+** Visibility       :  Public 
+**
+** Description      :   Service to get the status and result of  data Read access by address routine.
+**                      
+**
+** Invocation       :  Meet_Mgrdiagcdd_Action
+**
+** Inputs           :  data and length.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+Std_ReturnType RC_RESULTS_Diag_F0FB(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0] = DCM_E_OK;
+
+    Ret = Memdiag_Data_Read_NVM_Address_RCStatus(Data,ErrorCode);
+#ifdef SEPERATE_DCMEXT_INTERFACE_FOR_DID_RID
+   if(Data[0] != (uint8)2u)
+   {
+        Length[0] = 0x00u;	
+	    Length[1] = 0x01u;    /* Response Length One byte when Inprogress or Finished NOK*/
+   }
+   else
+   {     
+		if(Mgrdiag_NVM_Data_Length_By_Address < 255U)
+		{
+			Length[0] = 0x00u;
+			Length[1] = (uint8)(Mgrdiag_NVM_Data_Length_By_Address + 1U); /* Response Length increment by one for status byte*/
+		}
+		else
+		{
+			Length[0] = 0x01u;
+			Length[1] = 0x00u;	//256
+		}
+    }
+#else
+	UNUSED(Length);
+#endif
+   if((uint8)E_NOT_OK == Ret)
+    {
+       Data[0] = ErrorCode[0];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef DISPLAY_TOUCH_VERIFICATION_CHECK
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE0C
+** Visibility       :  Public
+** Description      :  Service to start Touch panel verification routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE0C(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_TouchVerification_RCStart(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FE0C
+** Visibility       :  Public
+** Description      :  Service to stop I2c Touch panel verification routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FE0C(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 1U;
+
+    Ret = Displaycontroldiag_TouchVerification_RCStop(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+        Data[0U] = ErrorCode[0U];
+    }
+
+    return (Ret);
+}
+/*=====================================================================================================================
+** Function Name    :  RC_RESULTS_Diag_FE0C
+** Visibility       :  Public
+** Description      :  Service to get result of Touch panel verification routine
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_RESULTS_Diag_FE0C(uint8 * Data,uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0U] = DCM_E_OK;
+
+    Length[0U] = 0U;
+    Length[1U] = 32U;
+
+    Ret = Displaycontroldiag_TouchVerification_RCStatus(Data, ErrorCode);
+
+    if(Ret == (uint8)E_NOT_OK)
+    {
+       Data[0U] = ErrorCode[0U];
+    }
+    return (Ret);
+}
+#endif
+
+#ifdef VALIDATETDMINTERFACE
+/*=====================================================================================================================
+** Function Name    :  RC_START_Diag_FE3B
+** Visibility       :  Public
+** Description      :  Service to start TDM interface validation
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length.
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_START_Diag_FE3B(uint8* Data, uint8* Length)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2];
+    ErrorCode[0U] = DCM_E_OK;
+    Length[0] = 0U;
+    Length[1] = 1U;
+        *Data = ErrorCode[0U];
+
+    return Ret;
+}
+/*=====================================================================================================================
+** Function Name    :  RC_STOP_Diag_FE3B
+** Visibility       :  Public
+** Description      :  Service to stop reading of TDM interface validation
+** Invocation       :  Meet_Mgrdiagcdd_Action
+** Inputs           :  data and length
+** Outputs          :  E_OK/E_NOT_OK
+** Critical Section :  No
+**====================================================================================================================*/
+Std_ReturnType RC_STOP_Diag_FE3B(uint8 *Data, const uint8 *Length)
+{
+    (void)Length;
+    
+    Std_ReturnType Ret = E_NOT_OK;
+    Dcm_NegativeResponseCodeType ErrorCode[2U];
+    
+    /* Fix for ID 88637: Use raw unsigned literal instead of enum */
+    ErrorCode[0U] = DCM_E_OK;
+
+    *Data = ErrorCode[0U];
+    
+    return Ret;
+}
+#endif
+#endif
+/*End of File*/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*=====================================================================================================================
+** Date              :  26/May/2023
+** CDSID             :  spalan11
+** Traceability      :  RTC - 2021383
+** Change Description:  New feature implemented UART UNLOCK
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  17/April/2023
+** CDSID             :  mprajapa
+** Traceability      :  RTC-1985454
+** Change Description:  Touch Screen Verification Routine Services are added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  17/03/2023
+** CDSID             :  rsubra13
+** Traceability      :  RTC 1951466
+** Change Description:  EEPROM Read/Write by address Response updated.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  15/Mar/2023
+** CDSID             :  mprajapa
+** Traceability      :  RTC-1951989
+** Change Description:  I2C-Read Related Configuration is added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  07/Sept/2022
+** CDSID             :  razhakes
+** Traceability      :  RTC-1759758
+** Change Description:  READ_INTERFACE_FOR_APPL_COMPONENTS updated
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  24/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1744046
+** Change Description:  Redundant interfaces are removed and minor code clean up
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  03/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1707104
+** Change Description:  MeetCdd Coverity-MISRA fix
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  23/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1634375
+** Change Description:  Coverity/MISRA Fix and Minor update.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1632871, 1655512, 1660171
+** Change Description:  TATAGEN2 related DIDs and DRs are implemented and Conflicting interfaces are removed.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  05/Aug/2020
+** CDSID             :  razhakes
+** Traceability      :  RTC-880214,RTC-880217
+** Change Description: Cybersecurity Key Verification and Backup Bank Verification service addition
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  13/05/2020
+** CDSID             :  dkasiman
+** Traceability      :  RTC 880204
+** Change Description:  Communication bus verification test service addition.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/March/2020
+** CDSID             :  razhakes and dkasiman
+** Traceability      :  RTC -760543
+** Change Description:  Support for security DID implementation
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 12/Dec/2019
+** CDSID             : dkasiman
+** Traceability      : RTC-1393187 
+** Change Description: TFT connection check service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 27-Sep-2019
+** CDSID             : vsupraja
+** Traceability      : RTC-1372600 
+** Change Description: VIP MEET - Fix MISRA warnings
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 11/Sept/2018
+** CDSID             : razhakes
+** Traceability      : RTC-1368176 
+** Change Description: Digital output control/InternalDigitalSignalControl updated.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  9/11/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1365920
+** Change Description:  Odometer NVM read write service newly implemented
+**====================================================================================================================*/
+/**====================================================================================================================
+** Date              :  10/09/2019
+** CDSID             :  vsupraja
+** Traceability      :  RTC 1367817
+** Change Description:  Updated DCIC routine status - VIP
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/07/2019
+** CDSID             :  vsupraja
+** Traceability      :  RTC - 1348007
+** Change Description:  Added Read and Write services for Sound Channel volume and Sound mixer volume
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/06/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC-1334319
+** Change Description:  program NVM from ROM service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  31/05/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC-1331232
+** Change Description:  Auto configure/verify service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  17/05/2019
+** CDSID             :  dkasiman
+** Traceability      :  RTC 1310404,1310400,1297825 and 1321988
+** Change Description:  Display content integrity check(SIG unit check) service added and
+                        Three point fuel calibration added
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  5/May/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1326853
+** Change Description:  SFD ROC - start and result routine updated
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  12/march/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1262819
+** Change Description:  vip - gip communication related functions are declared
+**====================================================================================================================*/
+/*---------------------------------------------------------------------------
+** Date              :  11/1/2019
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1265368
+** Change Description:  added missing endif statement
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+** Date              :  01/11/2018
+** CDSID             :  gdhilipr
+** Traceability      :  RTC 1229036 
+** Change Description:  Implementation : Fuel Input Reading - F106
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              : 05/Oct/2018
+CDSID             : gdhilipr
+Traceability      : RTC 1210657
+Change Description: Analog input reading by Unit
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              : 01/Oct/2018
+CDSID             : gdhilipr
+Traceability      : RTC 1208270
+Change Description: Traceability services update(FD4D )– For the station WS2 & 
+                    Generalizing the Station names(ICT - Station1,FCT- Station2,
+                    AC  - Station3,FC  -  Station4,WS2 - Station5,AMS to Station6)
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              : 01/Oct/2018
+CDSID             : gdhilipr
+Traceability      : RTC 1208215
+Change Description: Dimming control updated with Control Type1(customer calibrated level)
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              : 19/Sep/2018
+Modified by       : athiyag2
+Traceability      : RTC 1195631,1195632,1195633
+Change Description: Added Pwm input check,video check and self test stepper stall detection
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              : 10/Aug/2018 
+CDSID             : dkasiman
+Traceability      : RTC: 1148618/1148619 
+Change Description: Timer added for security algorithm. 
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 17/Jul/2018 
+Date              : gnataraj
+Traceability      : RTC-1144520, RTC-1145376
+Change Description: Added Continuous Pointer Movement Service ($F112)
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 13/Jul/2018 
+Date              : dkasiman
+By                : RTC-1148605/RTC-1148623 and RTC-1148640
+Change Description: Check program dependency macro/function renamed to Memory validity 
+                    check and Services are rearranged featurewise.
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 11/Jul/2018 
+Date              : dkasiman
+By                : RTC-1148605/RTC-1148623 and RTC-1148640
+Change Description: Traceability bytes implementation and check programming dependencies routine.
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 10/Jul/2018 
+Date              : gnataraj
+By                : RTC-1152264, RTC-1153689
+Change Description: The read and write functions are generalized in Tracediag module
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 5/June/2018 
+Date              : dkasiman
+By                : RTC-1112314
+Change Description: Review comments closure 
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Release Label     : 20/May/2018 
+Date              : dkasiman
+By                : RTC-1112314
+Change Description: Initial version for MeetCdd bookshelf 
+-----------------------------------------------------------------------------*/
+#endif

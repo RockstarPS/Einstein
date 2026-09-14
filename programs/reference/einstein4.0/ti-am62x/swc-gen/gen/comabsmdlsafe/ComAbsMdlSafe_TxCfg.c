@@ -1,0 +1,113 @@
+/********************************************************************************************************************
+ * C O P Y R I G H T
+ ********************************************************************************************************************
+ * Copyright (c) 2019 by Visteon Corporation.       All rights reserved.
+ *
+ * NOTICE: This Is an unpublished work Of authorship, which contains trade secrets.
+ * Visteon Corporation owns all rights to this work And intends to maintain it in confidence to preserve
+ * its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+ * Or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+ * in the event of an inadvertent Or deliberate unauthorized publication. Visteon Corporation also reserves its
+ * rights under all copyright laws to protect this work as a published work, when appropriate.
+ * Those having access to this work may Not copy it, use it, modify it, Or disclose the information contained in it
+ * without the written authorization of Visteon Corporation.
+ ********************************************************************************************************************/
+/*!*****************************************************************************************************************
+ *    @file ComAbsMdlSafe_TxCfg.c
+ *    @ingroup ComAbsMdlSafe
+ *    @brief This file contains the configuration of the ComAbsMdlSafe component.
+ *    @Note : Auto Generated code .Do Not hand modify this file
+ *    Auto generated code in ABASAVAR at 2025-11-14 16:05:41.216111
+ ********************************************************************************************************************/
+#include "ComAbsMdlSafe.h"
+#include "ComAbsMdlSafe_TxCfg.h"
+#include "Rte_CComAbsMdlSafe_Type.h"
+#include "Rte_Type.h"
+
+#define COMABSMDLSAFE_SEC_CODE_START
+#define COMABSMDLSAFE_CORE_CONST_SEC_START
+#define COMABSMDLSAFE_CORE_DATA_SEC_START
+#define COMABSMDLSAFE_CORE_BSS_SEC_START
+#include "MemMap.h"
+
+/********************************************************************************************************************
+ *  PUBLIC CONSTANT AND VARIABLE DEFINITION
+ ********************************************************************************************************************/
+const ComAbsMdlSafe_TxCanSetSignalFunctPtrType ComAbsMdlSafe_TxCanSetSignalFunctPtrConfig[CANCOMABSMDLSAFE_NUM_OF_SET_SIG_FUNCT] =
+{
+    &ComAbsMdlSafe_TxCanSetSig_Battery_Voltage  /* 0 - eBattery_VoltageOut */
+};
+
+const ComAbsMdlSafe_TxCanSetSignalU8ArrFunctPtrType ComAbsMdlSafe_TxCanSetSignalU8ArrFunctPtrConfig[CANCOMABSMDLSAFE_NUM_OF_SET_SIG_U8ARR_FUNCT] =
+{
+    NULL_PTR
+};
+
+const ComAbsMdlSafe_TxCanSignalConfigType ComAbsMdlSafe_TxCanSignalConfig[eEndofSafeTxSignals] =
+{
+  [0] = { 1U, COMABSMDLSAFE_TXCAN_NUM_OF_U8_BUFFERS, 0U, (COMABSMDLSAFE_TXCAN_CONFIRMATION_ENABLED) } /* 0 Battery_Voltage */
+};
+
+#define COMABSMDLSAFE_STOP_SEC_CONST
+#include "MemMap.h"
+
+/* === Place all function code into Safe/ASIL CODE section === */
+#define COMABSMDLSAFE_START_SEC_CODE
+#include "MemMap.h"
+
+/********************************************************************************************************************
+*   @brief   This method Is used to send the signal Battery_Voltage to Com
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+Std_ReturnType ComAbsMdlSafe_TxCanSetSig_Battery_Voltage(const uint8 *pSignalValue)
+{
+    SG_COM_HS msg;
+    Rte_TransformerError transformerError;
+    Std_ReturnType ret = E_NOT_OK;
+
+    if (pSignalValue != NULL_PTR)
+    {
+        msg.Battery_Voltage = *pSignalValue;
+        ret = Rte_Write_TrustecSWC_PP_TX_SG_COM_HS_SG_COM_HS(&msg, &transformerError);
+    }
+
+    return ret;
+}
+
+/********************************************************************************************************************
+*   @brief   Generic function to route signal to correct setter
+*   @param[in] id Signal ID
+*   @param[in] pSignalValue pointer to signal data
+*   @return Std_ReturnType status
+********************************************************************************************************************/
+Std_ReturnType ComAbsMdlSafe_TxCanPutTo_COM_HS_Core(tSafeTxSignalId id, const uint8 *pSignalValue)
+{
+    Std_ReturnType retVal = E_NOT_OK;
+    if (pSignalValue != NULL_PTR)
+    {
+        switch (id)
+        {
+        case eBattery_VoltageOut:
+            retVal = ComAbsMdlSafe_TxCanSetSig_Battery_Voltage(pSignalValue); // No cast needed
+            break;
+
+        default:
+            retVal = E_NOT_OK;
+            break;
+        }
+    }
+    else
+    {
+        retVal = E_NOT_OK;
+    }
+    return retVal;
+}
+
+#define COMABSMDLSAFE_SEC_CODE_STOP
+#define COMABSMDLSAFE_CORE_CONST_SEC_END
+#define COMABSMDLSAFE_CORE_DATA_SEC_END
+#define COMABSMDLSAFE_CORE_BSS_SEC_END
+#include "MemMap.h"
+/*******************************************************************************************************************
+ *                                 END OF FILE
+ ********************************************************************************************************************/

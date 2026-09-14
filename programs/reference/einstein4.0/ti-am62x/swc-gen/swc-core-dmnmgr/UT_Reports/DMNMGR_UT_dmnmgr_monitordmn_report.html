@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<!-- VectorCAST Report header -->
+<html lang="en">
+  <head>
+    <title>Aggregate Coverage Report</title>
+    <meta charset="utf-8"/>
+    <style>
+    /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+html{line-height:1.15;-webkit-text-size-adjust:100%}
+body{margin:0}
+h1{font-size:2em;margin:.67em 0}
+hr{box-sizing:content-box;height:0;overflow:visible}
+pre{font-family:monospace,monospace;font-size:1em}
+a{background-color:transparent}
+abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}
+b,strong{font-weight:bolder}
+code,kbd,samp{font-family:monospace,monospace;font-size:1em}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sub{bottom:-.25em}
+sup{top:-.5em}
+img{border-style:none}
+button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}
+button,input{overflow:visible}
+button,select{text-transform:none}
+[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}
+[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}
+[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}
+fieldset{padding:.35em .75em .625em}
+legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}
+progress{vertical-align:baseline}
+textarea{overflow:auto}
+[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}
+[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}
+[type=search]{-webkit-appearance:textfield;outline-offset:-2px}
+[type=search]::-webkit-search-decoration{-webkit-appearance:none}
+::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
+details{display:block}
+summary{display:list-item}
+template{display:none}
+[hidden]{display:none}
+ html {box-sizing:border-box;position:relative;height:100%;width:100%;}
+*, *:before, *:after {box-sizing:inherit;}
+body {position:relative;height:100%;width:100%;font-size:10pt;font-family:helvetica, Arial, sans-serif;color:#3a3e3f;}
+.alternate-font {font-family:Arial Unicode MS, Arial, sans-serif;}
+#page {position:relative;width:100%;height:100%;overflow:hidden;}
+#title-bar {position:absolute;top:0px;left:0em;right:0px;height:1.8em;background-color:#B1B6BA;white-space:nowrap;box-shadow:1px 1px 5px black;z-index:100;}
+#report-title {font-size:3em;text-align:center;font-weight:bold;background-color:white;padding:0.5em;margin-bottom:0.75em;border:1px solid #e5e5e5;}
+.contents-block {position:absolute;top:1.8em;left:0em;width:22em;bottom:0em;overflow:auto;background-color:#DADEE1;border-right:1px solid silver;padding-left:0.75em;padding-right:0.5em;}
+.testcase .report-block, .testcase .report-block-coverage {padding-bottom:2em;border-bottom:3px double #e5e5e5;}
+.testcase .report-block:last-child, .testcase .report-block-coverage:last-child {border-bottom:0px solid white;}
+.report-body {position:absolute;top:1.8em;left:22em;right:0em;bottom:0em;padding-left:2em;padding-right:2em;overflow:auto;padding-bottom:1.5em;background-color:#DADEE1;}
+.report-body.no-toc {left:0em;}
+.report-body > .report-block, .report-body > .report-block-coverage, .report-body > .testcase {border:1px solid #e5e5e5;margin-bottom:2em;padding-bottom:1em;padding-right:2em;background-color:white;padding-left:2em;padding-top:0.1em;margin-top:1em;overflow-x:auto;}
+.title-bar-heading {display:none;position:absolute;text-align:center;width:100%;color:white;font-size:3em;bottom:0px;margin-bottom:0.3em;}
+.title-bar-logo {display:inline-block;height:100%;}
+.title-bar-logo img {width:120px;margin-left:0.5em;margin-top:-16px;}
+.contents-block ul {padding-left:1.5em;list-style-type:none;line-height:1.5;}
+li.collapsible-toc > input ~ ul {display:none;}
+li.collapsible-toc > input:checked ~ ul {display:block;}
+li.collapsible-toc > input {display:none;}
+li.collapsible-toc > label {cursor:pointer;}
+li.collapsible-toc > label.collapse {display:none;}
+li.collapsible-toc > label.expand {display:inline;}
+li.collapsible-toc > input:checked ~ label.expand {display:none;}
+li.collapsible-toc > input:checked ~ label.collapse {display:inline;}
+.contents-block ul.toc-level1 {padding-left:1em;}
+.contents-block ul.toc-level1 > li {margin-top:0.75em;}
+.contents-block li {white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.tc-passed:before, .tc-failed:before, .tc-none:before{display:inline-block;margin-right:0.25em;width:0.5em;text-align:center;}
+.tc-passed:before {content:"✓";color:darkgreen;}
+.tc-failed:before {content:"✗";color:#b70032;}
+.tc-none:before {content:"•";}
+.tc-item {margin-top:0.75em;margin-left:-1em;}
+table {margin-top:0.5em;margin-bottom:1em;border-collapse:collapse;min-width:40em;}
+table.table-hover tbody tr:hover {background-color:#DADEE1;}
+th, td {text-align:left;padding:0.25em;padding-right:1em;border-bottom:1px solid #e5e5e5;}
+table thead th {border-bottom:2px solid silver;border-top:0;border-left:0;border-right:0;}
+.pull-right {display:none;}
+h1, h2 {border-bottom:3px solid silver;}
+h1, h2, h3, h4 {margin-top:1em;margin-bottom:0.25em;}
+h1 {font-size:3.5em;}
+h2 {font-size:2.5em;}
+h3 {font-size:2em;}
+h4 {font-size:1.25em;border-bottom:0;margin-bottom:0;}
+h5 {font-size:1em;font-weight:bold;margin-top:0.5em;margin-bottom:0.25em;}
+pre {padding:1em;padding-left:1.5em;border:1px solid #e5e5e5;background-color:#DADEE1;min-width:40em;width:auto;clear:both;display:inline-block;margin-top:0.25em;}
+ul.unstyled {list-style-type:none;margin-top:0.25em;padding-left:0px;}
+ul {line-height:1.3;}
+p {margin-top:0.5em;margin-bottom:1em;max-width:50em;}
+pre p {max-width:inherit;}
+a, a:visited {color:inherit;text-decoration:none;}
+a:hover {text-decoration:underline;text-decoration-color:#b70032;-webkit-text-decoration-color:#b70032;-moz-text-decoration-color:#b70032;cursor:pointer;}
+pre.aggregate-coverage {padding-left:0px;padding-right:0px;margin-top:1em;}
+pre.aggregate-coverage span {width:100%;display:inline-block;padding-left:1em;padding-right:1em;line-height:1.3;}
+.bg-success, .success, span.full-cvg {background-color:#c8f0c8;}
+span.ann-cvg, span.annpart-cvg {background-color:#cacaff;}
+.bg-danger, .danger, span.no-cvg {background-color:#facaca;}
+.bg-warning, .warning, span.part-cvg {background-color:#f5f5c8;}
+.fit-content {width:max-content;}
+.rel-pos {position:relative;}
+.report-block > .bs-callout.test-timeline, .mcdc-condition {padding-left:0px;}
+.report-block.single-test {padding-left:2em;padding-right:2em;width:100%;height:100%;overflow:auto;}
+.test-action-header + h4.event{margin-top:0.5em;}
+.event.bs-callout > .bs-callout, .mcdc-condition {margin-bottom:2em;border-left:2px solid silver;}
+.event.bs-callout {margin-top:1.5em;}
+.bs-callout, .mcdc-condition {padding-left:1.5em;}
+.bs-callout.bs-callout-success {border-left:2px solid green;margin-left:0px;}
+.bs-callout.bs-callout-success .bs-callout.bs-callout-success {border-left:none;margin-left:0px;}
+.bs-callout.bs-callout-danger {border-left:2px solid #b70032;margin-left:0px;}
+.bs-callout.bs-callout-warning {border-left:2px solid wheat;padding-left:1.5em;margin-left:0px;}
+.event.bs-callout .bs-callout.bs-callout-warning {border-left:2px solid wheat;padding-left:1.5em;margin-left:0px;}
+.bs-callout.bs-callout-danger .bs-callout.bs-callout-danger {margin-left:1.5em;border-left:2px solid #b70032;padding-left:1.5em;}
+.bs-callout-info {margin-top:1em;}
+.text-muted {font-size:0.9em;}
+.test-action-header {border-top:3px solid silver;border-bottom:1px solid #e5e5e5;min-width:42em;white-space:nowrap;margin-bottom:0.5em;padding-top:0.25em;padding-bottom:0.25em;margin-top:2em;background-color:#DADEE1;margin-left:-1.5em;padding-left:1.5em;}
+.test-action-header h4 {margin-top:0px;}
+.test-action-header:first-child{margin-top:0px;}
+.test-timeline > .event.bs-callout:first-child{margin-top:1em;}
+.event > .bs-callout {margin-left:2px !important;}
+.testcase-notes {white-space:pre;word-wrap:none;}
+.mcdc-condition {margin-bottom:3em;}
+.mcdc-table {margin-top:0px;}
+.mcdc-rows-table {margin-top:2em;min-width:auto;}
+.mcdc-rows-table td{border:1px solid #e5e5e5;}
+.mcdc-condition.full-cvg {border-left-color:green;border-left-width:2px;}
+.mcdc-condition.part-cvg {border-left-color:wheat;border-left-width:2px;}
+.mcdc-condition.no-cvg {border-left-color:#b70032;border-left-width:2px;}
+.i0 {padding-left:0.25em;min-width:11em }
+.i1 {padding-left:1.25em;min-width:11em }
+.i2 {padding-left:2.25em;}
+.i3 {padding-left:3.25em;}
+.i4 {padding-left:4.25em;}
+.i5 {padding-left:5.25em;}
+.i6 {padding-left:6.25em;}
+.i7 {padding-left:7.25em;}
+.i8 {padding-left:8.25em;}
+.i9 {padding-left:9.25em;}
+.i10 {padding-left:10.25em;}
+.i11 {padding-left:11.25em;}
+.i12 {padding-left:12.25em;}
+.i13 {padding-left:13.25em;}
+.i14 {padding-left:14.25em;}
+.i15 {padding-left:15.25em;}
+.i16 {padding-left:16.25em;}
+.i17 {padding-left:17.25em;}
+.i18 {padding-left:18.25em;}
+.i19 {padding-left:19.25em;}
+.i20 {padding-left:20.25em;}
+.right {float:right;}
+.req-notes-list {white-space:pre;}
+.uncovered_func_calls-list {white-space:pre;}
+.bold-text {font-weight:bold;}
+.static-cell {}
+.static-cell-right {text-align:right;}
+.static-doc {width:100%;}
+.static-title-bar {height:1.9em;width:100%;font-size:1.7em;border-bottom:1px solid #e5e5e5;margin:0;padding-top:8px;font-weight:bold;}
+.static-id {float:left;width:100px;}
+.static-title {float:left;}
+.static-doctext {width:auto;background-color:#efefef;border:1px solid #e5e5e5;min-width:40em;}
+.static-doctext pre {padding:0;margin:0.2em 0 0.2em 1em;border:none;}
+.static-doctext p {padding:0;margin:0.2em 0 0.2em 1em;}
+.static-doctext h2 {font-size:1.5em;}
+.static-doctext h3 {font-size:1.3em;}
+.missing_control_flow {max-width:40em;}
+.preformatted {font-family:monospace;white-space:pre;}
+.col_unit {word-break:break-all;width:30%;}
+.col_subprogram {word-break:break-all;width:30%;}
+.col_complexity {white-space:nowrap;}
+.col_metric {white-space:nowrap;}
+.col_nowrap {white-space:nowrap;}
+.col_wrap {word-break:break-all;}
+.subtitle {font-size:1.3em;}
+@media print{html, body {height:auto;overflow:auto;color:black;}
+.contents-block {display:none;}
+#title-bar {position:initial;height:20pt;}
+#main-scroller {background-color:white;margin:0;padding:0;position:initial;left:auto;top:auto;}
+pre {background-color:white;font-size:10pt;border:none;border-left:1px solid #e5e5e5;font-size:9pt;}
+.report-body > .testcase, .report-body > .report-block, .report-body > .report-block-coverage {border:none;padding-bottom:0in;}
+.report-body > .testcase {page-break-before:always }
+#report-title {border:none;font-size:3em;text-align:left;font-weight:bold;padding-bottom:0px;border-bottom:3px solid silver;}
+h1, h2, h3, h4 {padding-top:0;margin-top:0.2in;}
+html, body, .report-body {background-color:white;font-size:1vw;}
+}
+
+    </style>
+  </head>
+  <body>
+    <div id='page'><!-- ReportTitle -->
+<div id="title-bar">
+  <div class="title-bar-logo">
+    <img alt="Vector" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IldPUlQtX3gyRl9CSUxETUFSS0Vfc1JHQiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCgkgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI0MTUuMTc5cHgiIGhlaWdodD0iMTk3LjU3MnB4IiB2aWV3Qm94PSIwIDAgNDE1LjE3OSAxOTcuNTcyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA0MTUuMTc5IDE5Ny41NzIiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBvbHlnb24gaWQ9IkJpbGRtYXJrZV8xODNfeDJGXzBfeDJGXzUwIiBmaWxsPSIjQjcwMDMyIiBwb2ludHM9IjI5Mi4yODgsMTE1LjI1IDI5Mi4yODgsMTMxLjcxNSAzNDkuMzIyLDk4Ljc4NiAyOTIuMjg4LDY1Ljg1NyANCgkyOTIuMjg4LDgyLjMyMSAzMjAuODA1LDk4Ljc4NiAiLz4NCjxwb2x5Z29uIHBvaW50cz0iOTAuNTU0LDg0LjUyOSA5OC43ODcsODQuNTI5IDgyLjMyMiwxMTMuMDQ3IDY1Ljg1Nyw4NC41MjkgNzQuMDg5LDg0LjUyOSA4Mi4zMjIsOTguNzg4ICIvPg0KPHBhdGggZD0iTTIxNy43NTQsODMuODE5Yy04LjI2OSwwLTE0Ljk3Miw2LjcwMy0xNC45NzIsMTQuOTcyYzAsOC4yNjksNi43MDMsMTQuOTcxLDE0Ljk3MiwxNC45NzENCgljOC4yNjksMCwxNC45NzItNi43MDMsMTQuOTcyLTE0Ljk3MUMyMzIuNzI2LDkwLjUyMiwyMjYuMDIzLDgzLjgxOSwyMTcuNzU0LDgzLjgxOXogTTIxNy43NTUsMTA2LjY2OA0KCWMtNC4zNTEsMC03Ljg3OC0zLjUyNy03Ljg3OC03Ljg3OGMwLTQuMzUxLDMuNTI3LTcuODc3LDcuODc4LTcuODc3YzQuMzUxLDAsNy44NzgsMy41MjcsNy44NzgsNy44NzcNCglDMjI1LjYzMywxMDMuMTQyLDIyMi4xMDUsMTA2LjY2OCwyMTcuNzU1LDEwNi42Njh6Ii8+DQo8cGF0aCBkPSJNMTU1LjEyMSwxMDYuNjY4Yy00LjM1MSwwLTcuODc4LTMuNTI3LTcuODc4LTcuODc4YzAtNC4zNTEsMy41MjctNy44NzcsNy44NzgtNy44NzdjMi4xNzQsMCw0LjE0MywwLjg4MSw1LjU2OCwyLjMwNQ0KCWw1LjAxNi01LjAxNmMtMi43MDktMi43MDgtNi40NTEtNC4zODMtMTAuNTg0LTQuMzgzYy04LjI2OSwwLTE0Ljk3Miw2LjcwMy0xNC45NzIsMTQuOTcyYzAsOC4yNjksNi43MDMsMTQuOTcxLDE0Ljk3MiwxNC45NzENCgljNC4xMzYsMCw3Ljg3OS0xLjY3NiwxMC41ODktNC4zODdsLTUuMDE2LTUuMDE2QzE1OS4yNjgsMTA1Ljc4NiwxNTcuMjk3LDEwNi42NjgsMTU1LjEyMSwxMDYuNjY4eiIvPg0KPHBvbHlnb24gcG9pbnRzPSIxNzEuNDQ2LDkwLjk0NiAxODEuMDcxLDkwLjk0NiAxODEuMDcxLDExMy4wNDcgMTg4LjIwMSwxMTMuMDQ3IDE4OC4yMDEsOTAuOTQ2IDE5Ny44MjUsOTAuOTQ2IDE5Ny44MjUsODQuNTI5IA0KCTE3MS40NDYsODQuNTI5ICIvPg0KPHBvbHlnb24gcG9pbnRzPSIxMDguMDY5LDExMy4wNDcgMTMwLjE3LDExMy4wNDcgMTMwLjE3LDEwNi42MyAxMTUuMTk4LDEwNi42MyAxMTUuMTk4LDEwMS42NCAxMjYuODkxLDEwMS42NCAxMjYuODkxLDk1LjM2NiANCgkxMTUuMTk4LDk1LjM2NiAxMTUuMTk4LDkwLjk0NiAxMzAuMTcsOTAuOTQ2IDEzMC4xNyw4NC41MjkgMTA4LjA2OSw4NC41MjkgIi8+DQo8cGF0aCBkPSJNMjcwLjE4Nyw5NC4wNDdjMC01LjI1LTQuMjU1LTkuNTE4LTkuNTA1LTkuNTE4aC0xNy41ODd2MjguNTE4aDcuMTI5di05LjQ4Mmg2LjI0NGw1LjQ4Nyw5LjQ4Mmg4LjIzMWwtNS44OTktMTAuMjMxDQoJQzI2Ny43NDgsMTAxLjM5NSwyNzAuMTg3LDk4LjAyLDI3MC4xODcsOTQuMDQ3eiBNMjYwLjAyMyw5Ny4yMmgtOS43OTh2LTYuMzQ2aDkuNzk2YzEuNjg5LDAuMDc0LDMuMDM3LDEuNDY2LDMuMDM3LDMuMTczDQoJQzI2My4wNTgsOTUuNzUzLDI2MS43MTEsOTcuMTQ1LDI2MC4wMjMsOTcuMjJ6Ii8+DQo8L3N2Zz4NCg=="/>
+  </div>
+</div>
+  <div class="report-body no-toc" id="main-scroller">
+    <div id="report-title">Aggregate Coverage Report</div>
+<!-- AggregateCoverage -->
+      <div class='report-block-coverage'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="AggregateCoverage"></a>Aggregate Coverage</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10"><h3><a id="coverage_for_unit_13"></a>Code Coverage for DmnMgr_MonitorDmn</h3></div>
+        </div>
+        <table class='table table-small'>
+          <thead>
+          </thead>
+          <tbody>
+          <tr>
+            <th>Coverage Type</th><td>Statement+MC/DC+Function Call</td>
+          </tr>
+          <tr>
+            <th>Unit</th><td>DmnMgr_MonitorDmn</td>
+          </tr>
+          <tr>
+            <th>Test Case</th><td>Aggregate</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <pre class="aggregate-coverage"><span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // VISTEON CORPORATION CONFIDENTIAL</span>
+<span class="na-cvg">               // ________________________________</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // [2020] Visteon Corporation</span>
+<span class="na-cvg">               // All Rights Reserved.</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // NOTICE: This is an unpublished work of authorship, which contains trade secrets.</span>
+<span class="na-cvg">               // Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve</span>
+<span class="na-cvg">               // its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States</span>
+<span class="na-cvg">               // or those of any other country that may have jurisdiction, to protect this work as an unpublished work,</span>
+<span class="na-cvg">               // in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights</span>
+<span class="na-cvg">               // under all copyright laws to protect this work as a published work, when appropriate.</span>
+<span class="na-cvg">               // Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it</span>
+<span class="na-cvg">               // without the written authorization of Visteon Corporation.</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               //--------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_Main.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_MonitorDmn.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_ControlDmn.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_PublishDmnStatus.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               static SDmnRunTimeStatus DmnMgrStatus[(4u)];</span>
+<span class="na-cvg">               static SPowerSystemState domainsystemstate;</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               static EDomainId DmnMgr_MonitorGetDomainIdPostIdxCheck(EDomainId dmnId);</span>
+<span class="na-cvg">               DmnMgr_ReturnType DmnMgr_ResetDmnRunTimeStatus(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">1 0     (T)    DmnMgr_ResetDmnRunTimeStatus</span>
+<span class="full-cvg success-marker">1 1      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="na-cvg">                //cert_int30_c vioation fix - wrap around check added.</span>
+<span class="full-cvg success-marker">1 2      *       EDomainId domainID = </span>
+<span class="full-cvg success-marker">1 3     [*]      DmnMgr_MonitorGetDomainIdPostIdxCheck(dmnId);</span>
+<span class="full-cvg success-marker">1 4      *       SDmnRunTimeStatus *pDmnSts = 0;</span>
+<span class="na-cvg">                /* Coverity warning fix - Added a check before accessing array index */</span>
+<span class="full-cvg success-marker">1 5     (T)(F)   if(</span>
+<span class="full-cvg success-marker">1 5.1   (T)(F)   domainID &lt; (4u))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">1 6      *         pDmnSts = &amp;DmnMgrStatus[domainID];</span>
+<span class="full-cvg success-marker">1 7      *         pDmnSts-&gt;dmnId = dmnId;</span>
+<span class="na-cvg">                 //UCL Related Configurations</span>
+<span class="full-cvg success-marker">1 8      *         pDmnSts-&gt;isFirstLinkUpRcvd = ((unsigned char)0U);</span>
+<span class="full-cvg success-marker">1 9      *         pDmnSts-&gt;dmnUclLinkState = (0U);</span>
+<span class="full-cvg success-marker">1 10     *         pDmnSts-&gt;dmnUclFatalErrorRcvd = 0;</span>
+<span class="na-cvg">                 //Domain System State Related Configuration</span>
+<span class="full-cvg success-marker">1 11     *         pDmnSts-&gt;dmnCurSystemState = (0xFFu);</span>
+<span class="full-cvg success-marker">1 12     *         pDmnSts-&gt;dmnReqSystemState = (0U);</span>
+<span class="full-cvg success-marker">1 13     *         pDmnSts-&gt;dmnStateChangeReqStatus = (0xFFu);</span>
+<span class="na-cvg">                 //Domain HB Related Configuration</span>
+<span class="full-cvg success-marker">1 14     *         pDmnSts-&gt;dmnHBMissCount = 0u;</span>
+<span class="full-cvg success-marker">1 15     *         pDmnSts-&gt;dmnLastSeqCount = 0u;</span>
+<span class="full-cvg success-marker">1 16     *         pDmnSts-&gt;dmnHBLastRcvTime = 0u;</span>
+<span class="na-cvg">                 // Various Domain States</span>
+<span class="full-cvg success-marker">1 17     *         pDmnSts-&gt;dmnLastRstReason = (0xFFu);</span>
+<span class="full-cvg success-marker">1 18     *         pDmnSts-&gt;dmnHealthState = (0xFFu);//</span>
+<span class="full-cvg success-marker">1 19     *         pDmnSts-&gt;dmnThermalState = (0xFFu);</span>
+<span class="full-cvg success-marker">1 20     *         pDmnSts-&gt;dmnStatus = (0U);</span>
+<span class="na-cvg">                 //Domain Manager Timing Configurations</span>
+<span class="full-cvg success-marker">1 21     *         pDmnSts-&gt;dmnExtendShutDownTimeMs = 0u;</span>
+<span class="full-cvg success-marker">1 22     *         pDmnSts-&gt;dmnKeepSystemAwakeMs = 0u;</span>
+<span class="full-cvg success-marker">1 23     *         pDmnSts-&gt;dmnShutDownWaitTime = 0u;</span>
+<span class="full-cvg success-marker">1 24     *         pDmnSts-&gt;dmnSystemAwakeWaitTime = 0u;</span>
+<span class="full-cvg success-marker">1 25     *         pDmnSts-&gt;dmnUpWaitTime = 0u;</span>
+<span class="na-cvg">                 //Domain Manager Statistics</span>
+<span class="full-cvg success-marker">1 26     *         pDmnSts-&gt;ErrStatus.linkUpbfrDownErrCnt = 0u;</span>
+<span class="full-cvg success-marker">1 27     *         pDmnSts-&gt;ErrStatus.linkDownbfrUpErrCnt = 0u;</span>
+<span class="full-cvg success-marker">1 28     *         pDmnSts-&gt;ErrStatus.invalidLinkStatus = 0;</span>
+<span class="full-cvg success-marker">1 29     *         pDmnSts-&gt;ErrStatus.dmnFirstLinkUpExpiry = 0u;</span>
+<span class="full-cvg success-marker">1 30     *         pDmnSts-&gt;ErrStatus.dmnFirstHBExpiry = 0u;</span>
+<span class="na-cvg">                 //Publish all the status to RTE</span>
+<span class="full-cvg success-marker">1 31     *         (void)</span>
+<span class="full-cvg success-marker">1 32    [*]        DmnMgr_SetDmnInfo_dmnId(&amp;(pDmnSts-&gt;dmnId));</span>
+<span class="full-cvg success-marker">1 33     *         (void)</span>
+<span class="full-cvg success-marker">1 34    [*]        DmnMgr_PublishUclLinkStatus(pDmnSts-&gt;dmnId);</span>
+<span class="full-cvg success-marker">1 35     *         (void)</span>
+<span class="full-cvg success-marker">1 36    [*]        DmnMgr_PublishUclFatatError(pDmnSts-&gt;dmnId);</span>
+<span class="full-cvg success-marker">1 37     *         (void)</span>
+<span class="full-cvg success-marker">1 38    [*]        DmnMgr_PublishDmnSystemState(pDmnSts-&gt;dmnId);</span>
+<span class="full-cvg success-marker">1 39     *         (void)</span>
+<span class="full-cvg success-marker">1 40    [*]        DmnMgr_PublishDmnHealthStaus(pDmnSts-&gt;dmnId);</span>
+<span class="full-cvg success-marker">1 41     *         (void)</span>
+<span class="full-cvg success-marker">1 42    [*]        DmnMgr_PublishDmnThermalState(pDmnSts-&gt;dmnId);</span>
+<span class="full-cvg success-marker">1 43     *         ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">1 44     *       return ret;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               DmnMgr_ReturnType DmnMgr_GetDmnRunTimeStatus( EDomainId dmnId, SDmnRunTimeStatus **pDmnSts)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">2 0     (T)    DmnMgr_GetDmnRunTimeStatus</span>
+<span class="full-cvg success-marker">2 1      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="na-cvg">                EDomainId domainID;</span>
+<span class="full-cvg success-marker">2 2     (T)(F)   if( </span>
+<span class="full-cvg success-marker">2 2.1   (T)(F)   pDmnSts != 0 )</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">2 3      *         domainID = </span>
+<span class="full-cvg success-marker">2 4     [*]        DmnMgr_MonitorGetDomainIdPostIdxCheck(dmnId);</span>
+<span class="na-cvg">                 /* Coverity warning fix - Added a check before accessing array index */</span>
+<span class="full-cvg success-marker">2 5     (T)(F)     if( </span>
+<span class="full-cvg success-marker">2 5.1   (T)(F)     domainID &lt; (4u) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">2 6      *           *pDmnSts = &amp;DmnMgrStatus[domainID];</span>
+<span class="full-cvg success-marker">2 7      *           ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">2 8      *       return ret;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgPowerExtendShutdownTime</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnExtendShutdownTime(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">3 0     (T)    DmnMgr_MonitorDmnExtendShutdownTime</span>
+<span class="full-cvg success-marker">3 1      *       SPowerExtendShutdownTime extShtTime = {0U};</span>
+<span class="na-cvg">                uint8 idx;</span>
+<span class="full-cvg success-marker">3 2     (T)(F)   if(</span>
+<span class="full-cvg success-marker">3 2.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">3 3     [*]      Rte_Receive_DmnMgr_rSR_PowerExtendShutdownTime_PowerExtendShutdownTimeData(&amp;extShtTime))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">3 4     (T)(F)     if((</span>
+<span class="full-cvg success-marker">3 4.1   (T)(F)     extShtTime.domainId &gt; (0U)) &amp;&amp; (</span>
+<span class="full-cvg success-marker">3 4.2   (T)(F)     extShtTime.domainId &lt;= (4u)))</span>
+<span class="na-cvg">                  {</span>
+<span class="full-cvg success-marker">3 5      *           idx = extShtTime.domainId - 1u;</span>
+<span class="na-cvg">                  //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">3 6      *           DmnMgrStatus[idx].dmnExtendShutDownTimeMs = extShtTime.timeoutMs;</span>
+<span class="full-cvg success-marker">3 7      *           DmnMgrStatus[idx].dmnShutDownWaitTime = extShtTime.timeoutMs;</span>
+<span class="na-cvg">                  }</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgPowerKeepSystemAwake</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnKeepSystemAwake(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">4 0     (T)    DmnMgr_MonitorDmnKeepSystemAwake</span>
+<span class="full-cvg success-marker">4 1      *       SPowerKeepSystemAwake sysAwkTime = {0U};</span>
+<span class="na-cvg">                uint8 idx;</span>
+<span class="full-cvg success-marker">4 2     (T)(F)   if(</span>
+<span class="full-cvg success-marker">4 2.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">4 3     [*]      Rte_Receive_DmnMgr_rSR_PowerKeepSystemAwake_PowerKeepSystemAwakeData(&amp;sysAwkTime))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">4 4     (T)(F)     if((</span>
+<span class="full-cvg success-marker">4 4.1   (T)(F)     sysAwkTime.domainId &gt; (0U)) &amp;&amp; (</span>
+<span class="full-cvg success-marker">4 4.2   (T)(F)     sysAwkTime.domainId &lt;= (4u)))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">4 5      *           idx = sysAwkTime.domainId-1u;</span>
+<span class="na-cvg">                  //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">4 6      *           DmnMgrStatus[idx].dmnKeepSystemAwakeMs = sysAwkTime.timeoutMs;</span>
+<span class="full-cvg success-marker">4 7      *           DmnMgrStatus[idx].dmnSystemAwakeWaitTime = sysAwkTime.timeoutMs;</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgPowerSystemState</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnPowerSystemState(void)</span>
+<span class="na-cvg">               {</span>
+<span class="na-cvg">                //SPowerSystemState dmnSysState = {0U};</span>
+<span class="full-cvg success-marker">5 0     (T)    DmnMgr_MonitorDmnPowerSystemState</span>
+<span class="full-cvg success-marker">5 1      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="full-cvg success-marker">5 2      *       uint8 idx = 0u; //Initialized to remove compiler warning</span>
+<span class="na-cvg">                //if((Std_ReturnType)E_OK == Rte_Read_rSR_PowerSystemState_PowerSystemStateData(&amp;dmnSysState))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Validate Received dmnSysState.domainId </span>
+<span class="na-cvg">                 //if((dmnSysState.domainId  &gt; EDomainId_VP) &amp;&amp; (dmnSysState.domainId &lt;= MANAGED_DOMAINS_CNT))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">5 3      *       ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="na-cvg">                  //idx = dmnSysState.domainId-1U;</span>
+<span class="na-cvg">                  //domainsystemstate = dmnSysState;</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                /* Coverity warning fix - Added a check before accessing array index */</span>
+<span class="na-cvg">                //Validate Received dmnSysState.state		</span>
+<span class="na-cvg">                //if((ret == DMNMGR_E_OK) &amp;&amp; ( dmnSysState.state &lt; ESystemState_Last) &amp;&amp; ( idx &lt; MANAGED_DOMAINS_CNT ))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Update the respective DmnMgrStatus database</span>
+<span class="na-cvg">                 //DmnMgrStatus[idx].dmnCurSystemState = dmnSysState.state;</span>
+<span class="na-cvg">                 //If there is any Pending System State change request then update the request status</span>
+<span class="full-cvg success-marker">5 4     (T)(F)   if(</span>
+<span class="full-cvg success-marker">5 4.1   (T)(F)   DmnMgrStatus[idx].dmnReqSystemState == DmnMgrStatus[idx].dmnCurSystemState)</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">5 5      *         DmnMgrStatus[idx].dmnStateChangeReqStatus = (4U);</span>
+<span class="na-cvg">                  //Stop the shutdown timer if shutdown request is pending</span>
+<span class="full-cvg success-marker">5 6     (T)(F)     if(</span>
+<span class="full-cvg success-marker">5 6.1   (T)(F)     DmnMgrStatus[idx].dmnReqSystemState == (6U))</span>
+<span class="na-cvg">                  {</span>
+<span class="full-cvg success-marker">5 7      *           DmnMgrStatus[idx].dmnShutDownWaitTime = 0;</span>
+<span class="na-cvg">                  }</span>
+<span class="full-cvg success-marker">5 8      *         DmnMgrStatus[idx].dmnReqSystemState = (0U);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                 //Update Overall Domain status</span>
+<span class="na-cvg">                 //DmnMgr_ConsolidatedDmnStatus(dmnSysState.domainId);</span>
+<span class="na-cvg">                 //Publish the Domain System State</span>
+<span class="na-cvg">                 //(void)DmnMgr_PublishDmnSystemState(dmnSysState.domainId);</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                //else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Do Nothing</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //void DmnMgr_Domainsystemstate(SPowerSystemState *systemstates)</span>
+<span class="na-cvg">               //{</span>
+<span class="na-cvg">               //	*systemstates = domainsystemstate;</span>
+<span class="na-cvg">               //}</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgHealthHeartbeat</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnHeartBeat(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">6 0     (T)    DmnMgr_MonitorDmnHeartBeat</span>
+<span class="full-cvg success-marker">6 1      *       SHealthDomainHeartbeat dmnHeartBeat = {0U};</span>
+<span class="full-cvg success-marker">6 2      *       DmnMgr_ReturnType ret = 0xff;</span>
+<span class="full-cvg success-marker">6 3      *       SDmnMgrUsrCfgList *pCfg = 0;</span>
+<span class="na-cvg">                uint32 lastSeqCnt;</span>
+<span class="na-cvg">                uint32 alwdSeqDeviation; // ReadMe_Cfg:Make sure to have minimum configuration of this value as 1 in cfg &amp; Write a configuration validate function in DmnMgr_Main to valid all the input Configuration and raise a DET error immediately</span>
+<span class="na-cvg">                uint8 idx;</span>
+<span class="na-cvg">                uint32 ticks;</span>
+<span class="na-cvg">                uint32 totalSeqCnt;</span>
+<span class="full-cvg success-marker">6 4     (T)(F)   if(</span>
+<span class="full-cvg success-marker">6 4.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">6 5     [*]      Rte_Receive_DmnMgr_rSR_HealthDomainHeartbeat_HealthDomainHeartbeatData(&amp;dmnHeartBeat))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Validate Received dmnSysState.domainId </span>
+<span class="full-cvg success-marker">6 6     (T)(F)     if((</span>
+<span class="full-cvg success-marker">6 6.1   (T)(F)     dmnHeartBeat.domainId &gt; (0U)) &amp;&amp; (</span>
+<span class="full-cvg success-marker">6 6.2   (T)(F)     dmnHeartBeat.domainId &lt;= (4u)))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">6 7      *           ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="full-cvg success-marker">6 8      *           idx = dmnHeartBeat.domainId-1u;</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                 else</span>
+<span class="na-cvg">                 {</span>
+<span class="na-cvg">                  //Do Nothing</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                //Validate Received dmnSysState.state		</span>
+<span class="full-cvg success-marker">6 9     (T)(F)   if(</span>
+<span class="full-cvg success-marker">6 9.1   (T)(F)   ret == ((DmnMgr_ReturnType) 0))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">6 10     *         ret = </span>
+<span class="full-cvg success-marker">6 11    [*]        DmnMgr_MainGetDmnUsrCfg( dmnHeartBeat.domainId, &amp;pCfg );</span>
+<span class="full-cvg success-marker">6 12    (T)(F)     if( ( </span>
+<span class="full-cvg success-marker">6 12.1  (T)(F)     ret == ((DmnMgr_ReturnType) 0)) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">6 12.2  (T)(F)     pCfg != 0 ) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">6 13     *           lastSeqCnt = DmnMgrStatus[idx].dmnLastSeqCount;</span>
+<span class="full-cvg success-marker">6 14     *           alwdSeqDeviation = pCfg-&gt;dmnSeqCntrDeviation;</span>
+<span class="na-cvg">                  //If this is the first HB from Domain stop dmnUpWaitTime timer &amp; make Health status as health Active</span>
+<span class="full-cvg success-marker">6 15    (T)(F)       if( </span>
+<span class="full-cvg success-marker">6 15.1  (T)(F)       DmnMgrStatus[idx].dmnHBLastRcvTime == 0u )</span>
+<span class="na-cvg">                  {</span>
+<span class="na-cvg">                   //Stop the dmnUpWaitTime Timer</span>
+<span class="full-cvg success-marker">6 16     *             DmnMgrStatus[idx].dmnUpWaitTime = 0;</span>
+<span class="na-cvg">                   //Update Domain Health Status</span>
+<span class="full-cvg success-marker">6 17     *             DmnMgrStatus[idx].dmnHealthState = (0U);</span>
+<span class="na-cvg">                   //Verify if first Sequence Count from Domain is 0</span>
+<span class="full-cvg success-marker">6 18    (T)(F)         if ( </span>
+<span class="full-cvg success-marker">6 18.1  (T)(F)         dmnHeartBeat.seqCnt != 0u )</span>
+<span class="na-cvg">                   {</span>
+<span class="full-cvg success-marker">6 19     *               DmnMgrStatus[idx].ErrStatus.RcvdInvalidSeqCnt++;</span>
+<span class="na-cvg">                   }</span>
+<span class="na-cvg">                   else</span>
+<span class="na-cvg">                   {</span>
+<span class="na-cvg">                    //Do Nothing</span>
+<span class="na-cvg">                   }</span>
+<span class="na-cvg">                  }</span>
+<span class="na-cvg">                  //Verify if subsequent sequence counter values are valid</span>
+<span class="na-cvg">                  else</span>
+<span class="na-cvg">                  {</span>
+<span class="na-cvg">                   //cert_int30_c vioation fix - wrap around check added.</span>
+<span class="na-cvg">                   //if( ( UINT32_MAX_VALUE - lastSeqCnt ) &gt;  alwdSeqDeviation )</span>
+<span class="na-cvg">                   //{</span>
+<span class="na-cvg">                   //	totalSeqCnt = lastSeqCnt + alwdSeqDeviation;</span>
+<span class="na-cvg">                   //}</span>
+<span class="na-cvg">                   //else</span>
+<span class="na-cvg">                   //{</span>
+<span class="na-cvg">                    //Wrap around Error. Set max value.</span>
+<span class="na-cvg">                   //	totalSeqCnt = UINT32_MAX_VALUE;</span>
+<span class="na-cvg">                   //}</span>
+<span class="na-cvg">                   //If Received Sequence Count &gt; than allowed Deviation then Initiate Domain Reset</span>
+<span class="full-cvg success-marker">6 20    (T)(F)         if (( </span>
+<span class="full-cvg success-marker">6 20.1  (T)(F)         dmnHeartBeat.seqCnt &gt; 0u ) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">6 20.2  (T)(F)         (uint32)(dmnHeartBeat.seqCnt) &gt; (totalSeqCnt)))</span>
+<span class="na-cvg">                   {</span>
+<span class="full-cvg success-marker">6 21     *               DmnMgrStatus[idx].ErrStatus.RcvdInvalidSeqCnt++;</span>
+<span class="na-cvg">                    /* NOTE: Please enable DMNMGR_E_NOK handle below if below line is uncommented. */</span>
+<span class="na-cvg">                   }</span>
+<span class="na-cvg">                   else{</span>
+<span class="na-cvg">                    //Do Nothing</span>
+<span class="na-cvg">                   }</span>
+<span class="na-cvg">                  }</span>
+<span class="na-cvg">                  //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">6 22     *           ticks = </span>
+<span class="full-cvg success-marker">6 23    [*]          DmnMgr_MainGetElapsedTicks();</span>
+<span class="full-cvg success-marker">6 24     *           DmnMgrStatus[idx].dmnHBLastRcvTime = ( ticks * (5u));</span>
+<span class="full-cvg success-marker">6 25     *           DmnMgrStatus[idx].dmnLastSeqCount = (uint32)(dmnHeartBeat.seqCnt);</span>
+<span class="full-cvg success-marker">6 26     *           DmnMgrStatus[idx].dmnHBMissCount = 0u;</span>
+<span class="na-cvg">                  //Update Overall Domain status</span>
+<span class="full-cvg success-marker">6 27     *     </span>
+<span class="full-cvg success-marker">6 28    [*]          DmnMgr_ConsolidatedDmnStatus(dmnHeartBeat.domainId);</span>
+<span class="na-cvg">                  //Publish the health status of the Domain</span>
+<span class="full-cvg success-marker">6 29     *           (void)</span>
+<span class="full-cvg success-marker">6 30    [*]          DmnMgr_PublishDmnHealthStaus(dmnHeartBeat.domainId);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                   //Do Nothing</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgHealthFatalError</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnHealthFatalError(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">7 0     (T)    DmnMgr_MonitorDmnHealthFatalError</span>
+<span class="full-cvg success-marker">7 1      *       SHealthDomainFatalError dmnHealthFatalErr = {0U};</span>
+<span class="full-cvg success-marker">7 2      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="na-cvg">                uint8 idx;</span>
+<span class="full-cvg success-marker">7 3     (T)(F)   if(</span>
+<span class="full-cvg success-marker">7 3.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">7 4     [*]      Rte_Receive_DmnMgr_rSR_HealthDomainFatalError_HealthDomainFatalErrorData(&amp;dmnHealthFatalErr))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Validate Received dmnSysState.domainId </span>
+<span class="full-cvg success-marker">7 5     (T)(F)     if((</span>
+<span class="full-cvg success-marker">7 5.1   (T)(F)     dmnHealthFatalErr.domainId &gt; 0u) &amp;&amp; (</span>
+<span class="full-cvg success-marker">7 5.2   (T)(F)     dmnHealthFatalErr.domainId &lt;= (4u)))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">7 6      *           ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="full-cvg success-marker">7 7      *           idx = dmnHealthFatalErr.domainId-1u;</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                //Validate Received dmnSysState.state		</span>
+<span class="full-cvg success-marker">7 8     (T)(F)   if(</span>
+<span class="full-cvg success-marker">7 8.1   (T)(F)   ret == ((DmnMgr_ReturnType) 0))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">7 9      *         DmnMgrStatus[idx].dmnHealthState = (3U);</span>
+<span class="na-cvg">                 //Update Overall Domain status</span>
+<span class="full-cvg success-marker">7 10     *     </span>
+<span class="full-cvg success-marker">7 11    [*]        DmnMgr_ConsolidatedDmnStatus(dmnHealthFatalErr.domainId);</span>
+<span class="na-cvg">                 //Publish the health fatal error of the Domain</span>
+<span class="full-cvg success-marker">7 12     *         (void)</span>
+<span class="full-cvg success-marker">7 13    [*]        DmnMgr_PublishDmnHealthStaus(dmnHealthFatalErr.domainId);</span>
+<span class="na-cvg">                 //Initiate Doamin Recovery</span>
+<span class="full-cvg success-marker">7 14     *         (void)</span>
+<span class="full-cvg success-marker">7 15    [*]        DmnMgr_DmnCtrlResetDmn(dmnHealthFatalErr.domainId);</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message DkMsgThermalSystemStatus</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /*</span>
+<span class="na-cvg">               static void DmnMgr_MonitorDmnThermalState(void)</span>
+<span class="na-cvg">               {</span>
+<span class="na-cvg">               	Rte_Receive_rSR_Ucl_DkMsgThermalSystemStatus</span>
+<span class="na-cvg">               	Update the respective DmnMgrStatus database</span>
+<span class="na-cvg">               	Publish the Thermal State Change of the Domain</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               */</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message HealthDumpData</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnHealthDumpData(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">8 0     (T)    DmnMgr_MonitorDmnHealthDumpData</span>
+<span class="full-cvg success-marker">8 1      *     }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Runnable activated on DRE for message HealthDumpHdrInfo</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               void DmnMgr_MonitorDmnHealthDumpHdrInfo(void)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">9 0     (T)    DmnMgr_MonitorDmnHealthDumpHdrInfo</span>
+<span class="full-cvg success-marker">9 1      *     }</span>
+<span class="na-cvg">               void DmnMgr_ErrorNotification(UInt8 DLInst, SInt32 ErrorCode)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">10 0    (T)    DmnMgr_ErrorNotification</span>
+<span class="full-cvg success-marker">10 1     *       (void)DLInst;/*Added to avoid warning*/</span>
+<span class="na-cvg">                /* No need to change dmnHealthState &amp; dmnUclFatalErrorRcvd for UCL_E_DATA_LOSS (-52) */</span>
+<span class="full-cvg success-marker">10 2    (T)(F)   if( </span>
+<span class="full-cvg success-marker">10 2.1  (T)(F)   (-52) != ErrorCode )</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">10 3     *         DmnMgrStatus[(1U)-1U].dmnUclFatalErrorRcvd = ErrorCode;</span>
+<span class="na-cvg">                 //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">10 4     *         DmnMgrStatus[(1U)-1U].dmnHealthState = (1U);</span>
+<span class="na-cvg">                 //Update Overall Domain status</span>
+<span class="full-cvg success-marker">10 5     *     </span>
+<span class="full-cvg success-marker">10 6    [*]        DmnMgr_ConsolidatedDmnStatus((1U));</span>
+<span class="na-cvg">                 //Publish UCL Fatal Error </span>
+<span class="full-cvg success-marker">10 7     *         (void)</span>
+<span class="full-cvg success-marker">10 8    [*]        DmnMgr_PublishUclFatatError((1U));</span>
+<span class="na-cvg">                 //Initiate Domain Recovery: Not applicable for programs based upon Ford S2.8</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 /* Do nothing */</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               void DmnMgr_LinkStatusChanged(UInt8 DLInst, SInt32 Status)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">11 0    (T)    DmnMgr_LinkStatusChanged</span>
+<span class="full-cvg success-marker">11 1     *       (void)DLInst;/*Added to avoid warning*/</span>
+<span class="full-cvg success-marker">11 2     *       uint8 idx = (1U)-1u; //To do : needs to revisit incase of any domain added</span>
+<span class="na-cvg">                //Update the respective DmnMgrStatus database</span>
+<span class="full-cvg success-marker">11 3    (T)(F)   if( </span>
+<span class="full-cvg success-marker">11 3.1  (T)(F)   Status == -50 )//Link Up</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">11 4    (T)(F)     if( </span>
+<span class="full-cvg success-marker">11 4.1  (T)(F)     DmnMgrStatus[idx].dmnUclLinkState != (1U) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">11 5     *           DmnMgrStatus[idx].ErrStatus.linkUpbfrDownErrCnt++;</span>
+<span class="na-cvg">                 }</span>
+<span class="full-cvg success-marker">11 6    (T)(F)     if( </span>
+<span class="full-cvg success-marker">11 6.1  (T)(F)     DmnMgrStatus[idx].isFirstLinkUpRcvd != ((unsigned char)1U) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">11 7     *           DmnMgrStatus[idx].isFirstLinkUpRcvd = ((unsigned char)1U);</span>
+<span class="na-cvg">                  //Restart the dmnUpWaitTime Timer to monitor time for first heartbeat after linkup.</span>
+<span class="na-cvg">                  // The first HB should be received within dmnTimeForFirstHBMs(configured in cfg) after receiving first link up.</span>
+<span class="full-cvg success-marker">11 8     *           DmnMgrStatus[idx].dmnUpWaitTime = 0;</span>
+<span class="na-cvg">                 }</span>
+<span class="full-cvg success-marker">11 9    (T)(F)     if(</span>
+<span class="full-cvg success-marker">11 9.1  (T)(F)     DmnMgrStatus[idx].dmnHealthState == (0xFFu))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">11 10    *           DmnMgrStatus[idx].dmnHealthState = (0U);</span>
+<span class="na-cvg">                 }</span>
+<span class="full-cvg success-marker">11 11    *         DmnMgrStatus[idx].dmnUclLinkState = (2U);</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else </span>
+<span class="full-cvg success-marker">11 12   (T)(F)     if( </span>
+<span class="full-cvg success-marker">11 12.1 (T)(F)     Status == -51 )//Link Down</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">11 13   (T)(F)       if( </span>
+<span class="full-cvg success-marker">11 13.1 (T)(F)       DmnMgrStatus[idx].dmnUclLinkState != (2U) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">11 14    *             DmnMgrStatus[idx].ErrStatus.linkDownbfrUpErrCnt++;</span>
+<span class="na-cvg">                 }</span>
+<span class="full-cvg success-marker">11 15    *           DmnMgrStatus[idx].dmnUclLinkState = (1U);</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else{</span>
+<span class="full-cvg success-marker">11 16    *           DmnMgrStatus[idx].ErrStatus.invalidLinkStatus = Status;</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                //Find Overall Domain status</span>
+<span class="full-cvg success-marker">11 17    *     </span>
+<span class="full-cvg success-marker">11 18   [*]      DmnMgr_ConsolidatedDmnStatus(DmnMgrStatus[idx].dmnId);</span>
+<span class="na-cvg">                   //Publish the health status of the Domain</span>
+<span class="full-cvg success-marker">11 19    *       (void)</span>
+<span class="full-cvg success-marker">11 20   [*]      DmnMgr_PublishDmnHealthStaus(DmnMgrStatus[idx].dmnId);</span>
+<span class="na-cvg">                //Publish The Link Status Changed Notification</span>
+<span class="full-cvg success-marker">11 21    *       (void)</span>
+<span class="full-cvg success-marker">11 22   [*]      DmnMgr_PublishUclLinkStatus((EDomainId)(idx+(uint8)1));</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               void DmnMgr_ConsolidatedDmnStatus(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">12 0    (T)    DmnMgr_ConsolidatedDmnStatus</span>
+<span class="full-cvg success-marker">12 1     *       uint8 idx = dmnId - (uint8)1;</span>
+<span class="full-cvg success-marker">12 2    (T)(F)   if(</span>
+<span class="full-cvg success-marker">12 2.1  (T)(F)   idx&lt;(4u))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">12 3     *         DmnMgrStatus[idx].dmnStatus = (1U); /*workaround untill dmnmgr issues when multiple domains enabled are fixed  */</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               static EDomainId DmnMgr_MonitorGetDomainIdPostIdxCheck(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">13 0    (T)    DmnMgr_MonitorGetDomainIdPostIdxCheck</span>
+<span class="full-cvg success-marker">13 1     *       EDomainId retVal = 0u;</span>
+<span class="full-cvg success-marker">13 2    (T)(F)   if(</span>
+<span class="full-cvg success-marker">13 2.1  (T)(F)   dmnId &gt; 0u)</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Valid dmnId. No unsigned int wrap around.</span>
+<span class="full-cvg success-marker">13 3     *         retVal = dmnId - (EDomainId)1;</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Invalid dmnId.</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">13 4     *       return retVal;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //DM Core DmnMgr Status Update</span>
+<span class="na-cvg">               void DmnMgr_DM_Core_DmnMgrStatus(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">14 0    (T)    DmnMgr_DM_Core_DmnMgrStatus</span>
+<span class="full-cvg success-marker">14 1     *       uint8 idx = dmnId - (uint8)1;</span>
+<span class="full-cvg success-marker">14 2    (T)(F)   if(</span>
+<span class="full-cvg success-marker">14 2.1  (T)(F)   idx&lt;(4u))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">14 3     *         DmnMgrStatus[idx].dmnId = (2u);</span>
+<span class="na-cvg">                 //Set dmnStatus to ready for testing</span>
+<span class="full-cvg success-marker">14 4     *         DmnMgrStatus[idx].dmnStatus = (1U);</span>
+<span class="full-cvg success-marker">14 5     *         DmnMgrStatus[idx].isFirstLinkUpRcvd = ((unsigned char)1U);</span>
+<span class="full-cvg success-marker">14 6     *         DmnMgrStatus[idx].dmnHBLastRcvTime = 1;</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //do nothing</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //HSM Core DmnMgr Status Update</span>
+<span class="na-cvg">               void DmnMgr_HSM_Core_DmnMgrStatus(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">15 0    (T)    DmnMgr_HSM_Core_DmnMgrStatus</span>
+<span class="full-cvg success-marker">15 1     *       uint8 idx = dmnId - (uint8)1;</span>
+<span class="full-cvg success-marker">15 2    (T)(F)   if(</span>
+<span class="full-cvg success-marker">15 2.1  (T)(F)   idx&lt;(4u))</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">15 3     *         DmnMgrStatus[idx].dmnId = (3u);</span>
+<span class="na-cvg">                 //Set dmnStatus to ready for testing</span>
+<span class="full-cvg success-marker">15 4     *         DmnMgrStatus[idx].dmnStatus = (1U);</span>
+<span class="full-cvg success-marker">15 5     *         DmnMgrStatus[idx].isFirstLinkUpRcvd = ((unsigned char)1U);</span>
+<span class="full-cvg success-marker">15 6     *         DmnMgrStatus[idx].dmnHBLastRcvTime = 1;</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //do nothing</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+</pre>
+
+        <h4>TEST COVERAGE SUMMARY</h4>
+        <p>
+   146 of 146 Lines Covered ( 100% )</p>
+        <p>
+   147 of 147 Branches Covered ( 100% )</p>
+        <p>
+   24 of 24 Function Calls Covered ( 100% )</p>
+      </div>
+<!-- McdcTables -->
+      <div class='report-block'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="MC/DCConditionTables"></a>MC/DC Condition Tables</h2>
+          </div>
+        </div>
+      <div class='report-block'>
+          <h3><a id="mcdc_unit_13"></a>Unit: DmnMgr_MonitorDmn</h3>
+        
+        <h3>DmnMgr_ResetDmnRunTimeStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 5</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_ResetDmnRunTimeStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>39</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>domainID &lt; 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">domainID &lt; 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_GetDmnRunTimeStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_GetDmnRunTimeStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>95</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts != (0)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts != (0)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 5</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_GetDmnRunTimeStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>101</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>domainID &lt; 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">domainID &lt; 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorDmnExtendShutdownTime</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnExtendShutdownTime</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>118</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_PowerExtendShutdownTime_PowerExtendShutdownTimeData(&amp;extShtTime)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_PowerExtendShutdownTime_PowerExtendShutdownTimeData(&amp;extShtTime)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 4</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnExtendShutdownTime</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>122</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>extShtTime.domainId &gt; 0U &amp;&amp; extShtTime.domainId &lt;= 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">extShtTime.domainId &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">extShtTime.domainId &lt;= 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorDmnKeepSystemAwake</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnKeepSystemAwake</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>141</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_PowerKeepSystemAwake_PowerKeepSystemAwakeData(&amp;sysAwkTime)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_PowerKeepSystemAwake_PowerKeepSystemAwakeData(&amp;sysAwkTime)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 4</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnKeepSystemAwake</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>145</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>sysAwkTime.domainId &gt; 0U &amp;&amp; sysAwkTime.domainId &lt;= 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">sysAwkTime.domainId &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">sysAwkTime.domainId &lt;= 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorDmnPowerSystemState</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 4</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnPowerSystemState</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>182</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnReqSystemState == (DmnMgrStatus[idx]).dmnCurSystemState</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnReqSystemState == (DmnMgrStatus[idx]).dmnCurSystemState</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 6</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnPowerSystemState</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>187</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnReqSystemState == 6U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnReqSystemState == 6U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorDmnHeartBeat</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 4</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>222</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_HealthDomainHeartbeat_HealthDomainHeartbeatData(&amp;dmnHeartBeat)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_HealthDomainHeartbeat_HealthDomainHeartbeatData(&amp;dmnHeartBeat)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 6</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>227</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnHeartBeat.domainId &gt; 0U &amp;&amp; dmnHeartBeat.domainId &lt;= 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnHeartBeat.domainId &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">dmnHeartBeat.domainId &lt;= 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 9</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>240</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 12</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>245</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0 &amp;&amp; pCfg != (0)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">pCfg != (0)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 15</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>252</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnHBLastRcvTime == 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnHBLastRcvTime == 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 18</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>18</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>260</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnHeartBeat.seqCnt != 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnHeartBeat.seqCnt != 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 20</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHeartBeat</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>284</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnHeartBeat.seqCnt &gt; 0U &amp;&amp; (uint32)(dmnHeartBeat.seqCnt) &gt; totalSeqCnt</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnHeartBeat.seqCnt &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">(uint32)(dmnHeartBeat.seqCnt) &gt; totalSeqCnt</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorDmnHealthFatalError</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 3</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHealthFatalError</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>323</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_HealthDomainFatalError_HealthDomainFatalErrorData(&amp;dmnHealthFatalErr)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == Rte_Receive_DmnMgr_rSR_HealthDomainFatalError_HealthDomainFatalErrorData(&amp;dmnHealthFatalErr)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 5</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHealthFatalError</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>328</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnHealthFatalErr.domainId &gt; 0U &amp;&amp; dmnHealthFatalErr.domainId &lt;= 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnHealthFatalErr.domainId &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">dmnHealthFatalErr.domainId &lt;= 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 8</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorDmnHealthFatalError</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>337</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+         
+         
+        
+        <h3>DmnMgr_ErrorNotification</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_ErrorNotification</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>383</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>-52 != ErrorCode</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">-52 != ErrorCode</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_LinkStatusChanged</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 3</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>409</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>Status == -50</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">Status == -50</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 4</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>412</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnUclLinkState != 1U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnUclLinkState != 1U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 6</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>417</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).isFirstLinkUpRcvd != (unsigned char)1U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).isFirstLinkUpRcvd != (unsigned char)1U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 9</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>425</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnHealthState == 0xffU</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnHealthState == 0xffU</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 12</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>432</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>Status == -51</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">Status == -51</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 13</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_LinkStatusChanged</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>13</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>436</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgrStatus[idx]).dmnUclLinkState != 2U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgrStatus[idx]).dmnUclLinkState != 2U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_ConsolidatedDmnStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_ConsolidatedDmnStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>460</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>idx &lt; 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">idx &lt; 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_MonitorGetDomainIdPostIdxCheck</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_MonitorGetDomainIdPostIdxCheck</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>470</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnId &gt; 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnId &gt; 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_DM_Core_DmnMgrStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DM_Core_DmnMgrStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>487</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>idx &lt; 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">idx &lt; 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_HSM_Core_DmnMgrStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_MonitorDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_HSM_Core_DmnMgrStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>506</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>idx &lt; 4U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">idx &lt; 4U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>  
+        </div>   
+      </div>
+<!-- Metrics -->
+      <div class='report-block'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="Metrics"></a>Metrics</h2>
+          </div>
+        </div>
+        <h3 id="coverage_type">Statement+MC/DC+Function Call</h3>
+        <table class='table table-small table-hover table-bordered'>
+          <thead class="thead-default">
+            <tr>
+              <th class="col_unit">Unit</th><th class="col_subprogram">Subprogram</th><th class="col_complexity">Complexity</th><th class="col_metric">Function Coverage</th><th class="col_metric">Statements</th><th class="col_metric">Branches</th><th class="col_metric">Pairs</th><th class="col_metric">Function Calls</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col_unit">DmnMgr_MonitorDmn</td><td class="col_subprogram">DmnMgr_ResetDmnRunTimeStatus</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">37 / 37 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">7 / 7 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_GetDmnRunTimeStatus</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">7 / 7 (100%)</td><td class="success col_metric">9 / 9 (100%)</td><td class="success col_metric">2 / 2 (100%)</td><td class="success col_metric">1 / 1 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnExtendShutdownTime</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">11 / 11 (100%)</td><td class="success col_metric">3 / 3 (100%)</td><td class="success col_metric">1 / 1 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnKeepSystemAwake</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">11 / 11 (100%)</td><td class="success col_metric">3 / 3 (100%)</td><td class="success col_metric">1 / 1 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnPowerSystemState</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">8 / 8 (100%)</td><td class="success col_metric">9 / 9 (100%)</td><td class="success col_metric">2 / 2 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnHeartBeat</td><td class="col_complexity">8</td><td class="success col_metric">100%</td><td class="success col_metric">25 / 25 (100%)</td><td class="success col_metric">35 / 35 (100%)</td><td class="success col_metric">10 / 10 (100%)</td><td class="success col_metric">5 / 5 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnHealthFatalError</td><td class="col_complexity">4</td><td class="success col_metric">100%</td><td class="success col_metric">11 / 11 (100%)</td><td class="success col_metric">15 / 15 (100%)</td><td class="success col_metric">4 / 4 (100%)</td><td class="success col_metric">4 / 4 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnHealthDumpData</td><td class="col_complexity">1</td><td class="success col_metric">100%</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorDmnHealthDumpHdrInfo</td><td class="col_complexity">1</td><td class="success col_metric">100%</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_ErrorNotification</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">2 / 2 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_LinkStatusChanged</td><td class="col_complexity">7</td><td class="success col_metric">100%</td><td class="success col_metric">19 / 19 (100%)</td><td class="success col_metric">25 / 25 (100%)</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">3 / 3 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_ConsolidatedDmnStatus</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">3 / 3 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_MonitorGetDomainIdPostIdxCheck</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">4 / 4 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_DM_Core_DmnMgrStatus</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_HSM_Core_DmnMgrStatus</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <th class="col_unit">TOTALS</th><th class="col_subprogram">15</th><th class="col_complexity">45</th><th class="success col_metric">15 / 15 (100%)</th><th class="success col_metric">146 / 146 (100%)</th><th class="success col_metric">147 / 147 (100%)</th><th class="success col_metric">36 / 36 (100%)</th><th class="success col_metric">24 / 24 (100%)</th>
+            </tr>
+            <tr>
+              <th class="col_unit">GRAND TOTALS</th><th class="col_subprogram">15</th><th class="col_complexity">45</th><th class="success col_metric">15 / 15 (100%)</th><th class="success col_metric">146 / 146 (100%)</th><th class="success col_metric">147 / 147 (100%)</th><th class="success col_metric">36 / 36 (100%)</th><th class="success col_metric">24 / 24 (100%)</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+<!-- VectorCAST Report footer -->
+    </div></div>
+  </body>
+</html>

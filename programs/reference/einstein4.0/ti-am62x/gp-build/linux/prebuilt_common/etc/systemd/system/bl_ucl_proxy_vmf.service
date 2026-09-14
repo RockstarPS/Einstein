@@ -1,0 +1,21 @@
+[Unit]
+Description=UCL proxy VMF appliation
+ConditionKernelCommandLine=BOOT_MODE=REC
+After=vmf.service dlt-daemon.service
+Wants=vmf.service dlt-daemon.service
+
+ConditionKernelCommandLine=|BOOT_MODE=REC
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/usr/bin/bl_ucl_proxy_vmf
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

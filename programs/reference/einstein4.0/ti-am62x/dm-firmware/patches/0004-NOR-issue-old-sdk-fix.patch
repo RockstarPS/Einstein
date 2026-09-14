@@ -1,0 +1,48 @@
+e2e : https://e2e.ti.com/e2eprivate/visteon/visteon-infotainment/f/visteon-infotainment-forum/1660976/am62p-mcu-sdk-12-00-00-27-migration-issue---nor/6407211
+diff --git a/source/board/flash/ospi/flash_nor_ospi.c b/source/board/flash/ospi/flash_nor_ospi.c
+index 5ad15752c..ce39f6c8e 100644
+--- a/source/board/flash/ospi/flash_nor_ospi.c
++++ b/source/board/flash/ospi/flash_nor_ospi.c
+@@ -680,22 +680,30 @@ static int32_t Flash_set888mode(Flash_Config *config, uint8_t seq)
+         status = Flash_norOspiRegRead(config, octCfg->cmdRegRd, octCfg->cfgReg, &reg);
+         if(SystemP_SUCCESS == status)
+         {
+-            /* Clear the config bits in the register  */
+-            reg &= ~(uint8_t)(octCfg->mask | dCfg->mask);
+-            /* Bitwise OR the bit pattern for setting the dummyCycle selected */
+-            reg |= (octCfg->cfgRegBitP << octCfg->shift);
+-            if(pCfg->isDtr == TRUE)
++            /* Octal DDR is special. Check if it is already enabled */
++            if((((reg >> octCfg->shift) & 0x01) == 1) && (((reg >> dCfg->shift) & 0x01) == 1))
+             {
+-                /* Set the SDR/DDR bit for 8D-8D-8D */
+-                reg |= (dCfg->cfgRegBitP << dCfg->shift);
++                /* Already 8D */
+             }
+             else
+             {
+-                /* Clear the SDR/DDR bit for 8S-8S-8S */
+-                reg &= ~(dCfg->cfgRegBitP << dCfg->shift);
+-            }
+-
+-            status = Flash_norOspiRegWrite(config, octCfg->cmdRegWr, octCfg->cfgReg, reg);
++	            /* Clear the config bits in the register  */
++	            reg &= ~(uint8_t)(octCfg->mask | dCfg->mask);
++	            /* Bitwise OR the bit pattern for setting the dummyCycle selected */
++	            reg |= (octCfg->cfgRegBitP << octCfg->shift);
++	            if(pCfg->isDtr == TRUE)
++	            {
++	                /* Set the SDR/DDR bit for 8D-8D-8D */
++	                reg |= (dCfg->cfgRegBitP << dCfg->shift);
++	            }
++	            else
++	            {
++	                /* Clear the SDR/DDR bit for 8S-8S-8S */
++	                reg &= ~(dCfg->cfgRegBitP << dCfg->shift);
++	            }
++
++	            status = Flash_norOspiRegWrite(config, octCfg->cmdRegWr, octCfg->cfgReg, reg);
++			}
+         }
+         OSPI_setProtocol((OSPI_Handle)(obj->ospiHandle), gFlashToSpiProtocolMap[pCfg->protocol]);
+     }

@@ -1,0 +1,12 @@
+[Unit]
+Description=Check the /proc/vmcore during boot, load the crashkernel using kexec if vmcore dosen't exist or run the makedumpfile if vmcore files exists
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+After=mount_primary.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/crashkernel.sh
+
+[Install]
+WantedBy=sysinit.target
+

@@ -1,0 +1,73 @@
+# E2E Ref - https://e2e.ti.com/e2eprivate/visteon/visteon-infotainment/f/visteon-infotainment-forum/1364816/processor-sdk-am62p-ospi-to-emmc---boot-part-0-or-boot-part-1-selection/5651267
+diff --git a/source/drivers/.meta/bootloader/templates/bootloader_config.c.xdt b/source/drivers/.meta/bootloader/templates/bootloader_config.c.xdt
+index 77b2b4a00..4618aa986 100644
+--- a/source/drivers/.meta/bootloader/templates/bootloader_config.c.xdt
++++ b/source/drivers/.meta/bootloader/templates/bootloader_config.c.xdt
+@@ -110,6 +110,7 @@ Bootloader_`common.camelSentence(instance.bootMedia)`Args gBootloader`i`Args =
+     .MMCSDIndex      = `instance.MMCSDDriver.$name.toUpperCase()`,
+     .curOffset       = 0,
+     .appImageOffset  = `instance.EMMCAppImageOffset`,
++    .bootPartIndex   = `instance.bootPartIndex`,
+     % }
+     % else if(instance.bootMedia == "BUFIO") {
+     .curOffset      = 0,
+diff --git a/source/drivers/.meta/bootloader/v0/bootloader_v0.syscfg.js b/source/drivers/.meta/bootloader/v0/bootloader_v0.syscfg.js
+index 96982207f..6e57aa4e6 100644
+--- a/source/drivers/.meta/bootloader/v0/bootloader_v0.syscfg.js
++++ b/source/drivers/.meta/bootloader/v0/bootloader_v0.syscfg.js
+@@ -42,6 +42,7 @@ function getConfig(){
+                 /* EMMCAppImageOffset applicable only for EMMC boot */
+                 if(inst.bootMedia == "EMMC") {
+                     ui.EMMCAppImageOffset.hidden = false;
++                    ui.bootPartIndex.hidden = false;
+                 }
+                 else {
+                     ui.EMMCAppImageOffset.hidden = true;
+@@ -77,6 +78,13 @@ function getConfig(){
+             default: "0x00000000",
+             hidden: true,
+         },
++        {
++            name: "bootPartIndex",
++            displayName: "Boot Partition",
++            description: "EMMC Boot Partition Index",
++            default: "1",
++            hidden: true,
++        },
+     ]
+     if(common.getSocName() == "am263x"){
+         cfg.push(
+diff --git a/source/drivers/bootloader/bootloader_mmcsd_raw.c b/source/drivers/bootloader/bootloader_mmcsd_raw.c
+index ca70a9521..95f9f5862 100644
+--- a/source/drivers/bootloader/bootloader_mmcsd_raw.c
++++ b/source/drivers/bootloader/bootloader_mmcsd_raw.c
+@@ -72,8 +72,14 @@ static int32_t MMCSDRaw_imgRead(void *dst, uint32_t len, void *args)
+ 
+     if(status == SystemP_SUCCESS)
+     {
+-        status = MMCSD_enablePartitionAccess(handle, MMCSD_HW_PARTITION_BOOT0);
+-
++        if(0 == MMCSDArgs->bootPartIndex)
++        {
++            status = MMCSD_disableBootPartition(handle);
++        }
++        else
++        {
++            status = MMCSD_enableBootPartition(handle, MMCSDArgs->bootPartIndex);
++        }
+         if(status != SystemP_SUCCESS)
+         {
+ 
+diff --git a/source/drivers/bootloader/bootloader_mmcsd_raw.h b/source/drivers/bootloader/bootloader_mmcsd_raw.h
+index 2ca361fd0..383b593d1 100644
+--- a/source/drivers/bootloader/bootloader_mmcsd_raw.h
++++ b/source/drivers/bootloader/bootloader_mmcsd_raw.h
+@@ -50,7 +50,7 @@ typedef struct Bootloader_MmcsdArgs_s
+     uint32_t MMCSDIndex;
+     uint32_t curOffset;
+     uint32_t appImageOffset;
+-
++    uint32_t bootPartIndex;
+ } Bootloader_MmcsdArgs;
+ 
+ extern Bootloader_Fxns gBootloaderMmcsdFxns;

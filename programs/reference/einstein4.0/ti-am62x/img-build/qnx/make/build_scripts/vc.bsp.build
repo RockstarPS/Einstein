@@ -1,0 +1,42 @@
+
+###########################################################################
+## Visteon BSP Build File
+###########################################################################
+
+###########################################################################
+## BSP Extension Executables
+###########################################################################
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/resmgr_dio = resmgr_dio
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/resmgr_display = resmgr_display
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/display_power_on = display_power_on
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/display_power_off = display_power_off
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/fuse_prog = fuse_prog
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/resmgr_edac = resmgr_edac
+#[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/resmgr_sigunit = resmgr_sigunit
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/jpeg_decoder = jpeg_decoder
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin] /usr/sbin/jpeg_test = jpeg_test
+
+###########################################################################
+## BSP Extension Libraries
+###########################################################################
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdisplay.so = libdisplay.so
+[uid=0 gid=0 perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdlt.so.2=libdlt.so.2.18.10
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libimx_sys_shutdown.so = libimx_sys_shutdown.so
+#[type=link] /usr/lib/shutdown_nvram.so = /usr/lib/libimx_sys_shutdown.so
+#[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libbspal_sigunit.so = libbspal_sigunit.so
+#[type=link] /usr/lib/libbspal_sigunit.so.1 = /usr/lib/libbspal_sigunit.so
+#[type=link] /usr/lib/libbspal_sigunit.so.0 = /usr/lib/libbspal_sigunit.so
+
+###########################################################################
+## Visteon BSP dependent QNX Executables
+###########################################################################
+[uid=0 gid=0 perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libjson.so.1=libjson.so.1
+[type=link] /lib/libjson.so=/lib/libjson.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libcatalog.so.1=libcatalog.so.1
+[type=link] /lib/libcatalog.so=/lib/libcatalog.so.1
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libm.so.3=libm.so.3
+[type=link] /lib/libm.so=/lib/libm.so.3
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/usr/lib] /usr/lib/libc++.so.2=libc++.so.2
+[type=link] /usr/lib/libc++.so=/usr/lib/libc++.so.2
+[uid=0 gid=0 perms=0755 search=${QNX_TARGET}/${PLATFORM}/lib] /lib/libsocket.so.4=libsocket.so.4
+[type=link] /lib/libsocket.so=/lib/libsocket.so.4

@@ -1,0 +1,102 @@
+/*****************************************************************************
+ *                                                                            *
+ *              CONFIDENTIAL VISTEON CORPORATION                              *
+ *                                                                            *
+ * This is an unpublished work of authorship, which contains trade            *
+ * secrets, created in 2018. Visteon Corporation owns all rights to           *
+ * this work and intends to maintain it in confidence to preserve             *
+ * its trade secret status. Visteon Corporation reserves the right,           *
+ * under the copyright laws of the United States or those of any              *
+ * other country that may have jurisdiction, to protect this work             *
+ * as an unpublished work, in the event of an inadvertent or                  *
+ * deliberate unauthorized publication. Visteon Corporation also              *
+ * reserves its rights under all copyright laws to protect this               *
+ * work as a published work, when appropriate. Those having access            *
+ * to this work may not copy it, use it, modify it or disclose the            *
+ * information contained in it without the written authorization              *
+ * of Visteon Corporation.                                                    *
+ *                                                                            *
+ ******************************************************************************/
+#ifndef SYSTST_CFG_H
+#define SYSTST_CFG_H
+/*!***************************************************************************
+ * @ingroup
+ * @file SysTst_Cfg.h
+ * @brief Configuration header file for SysTst inputs
+ * ****************************************************************************/
+/*****************************************************************************
+ *  Include Files                                                             *
+ ******************************************************************************/
+#include "Std_Types.h"
+
+/*****************************************************************************
+ *  Public Macros Definitions                                                *
+ ******************************************************************************/
+
+/**
+ * @brief Macro to enable API
+ */
+
+#define RAMTST_ENABLE                  STD_ON
+#define FLSTST_ENABLE                  STD_OFF
+#define FLSTST_FGNDTEST_ENABLE         STD_OFF
+#define CORTST_ENABLE                  STD_ON
+#define STARTUPTEST_ENABLE             STD_OFF
+#define MCU_RESET_ENABLE               STD_ON
+#define SECURITY_HASH_ENABLE           STD_OFF
+#define SECURITY_VECTOR_HASH_ENABLE    STD_OFF
+#define SECURITY_VAUTOSAR_HASH_ENABLE  STD_OFF
+
+#define FLSTSTCONFIG &FlsTstBlock
+#define RAMTSTCONFIG &RamTstConfig
+#define CORTSTCONFIG &CorTstBlock
+#define CSMJOBID_RSA_HASH CsmJobID_RSA_Hash_Syn
+#define DATA_LENGHTH_ONECYCLE  1024UL
+#define ADDRESS_START 0x08081000
+#define ADDRESS_END  0x08180FE0
+#define HASH_LENGTH 32
+
+#define FLSTST_NO_OF_FGNDTEST_BLOCK 5U
+#define SAFETYRAM_TESTBLOCKID 5U
+/*****************************************************************************
+ *  Type Declarations                                              			 *
+ ******************************************************************************/
+
+
+/*****************************************************************************
+ *  Public Forward Declarations                                          	 *
+ ******************************************************************************/
+#if (RAMTST_ENABLE == STD_ON)
+extern void RamtstJobErrorNotification(void);
+extern void RamtstJobCompleteNotification(void);
+#endif
+#if (FLSTST_ENABLE == STD_ON)
+extern void FlsTstTestCompletedNotification(void);
+#endif
+#endif /* SYSTST_CFG_H */
+
+/*End of File*/
+/*****************************************************************************
+ *  for each change to this file, be sure to record:                         *
+ *     1.  who made the change and when the change was made                  *
+ *     2.  why the change was made and the intended result                   *
+ *  Following block needs to be repeated for each change
+ ******************************************************************************
+ *  Note: In the trace-ability column we need to trace back to the Design Doc.*
+ *  For the initial version it is traced to the Design Document section.     *
+ *  For further changes it shall trace to the source of the change which may *
+ *  be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  *
+ *  other reason                                                            *
+ ******************************************************************************/
+/*****************************************************************************
+ Date              :16-Jul-2020
+ By                :bbaskara
+ Traceability      :RTC
+ Change Description: VAUTOSAR_HASH_ENABLE Turned ON
+ ******************************************************************************/
+/*****************************************************************************
+Date              :8-Apr-2021
+By                :praj1
+Traceability      :RTC 1297228
+Change Description:Initial Version for RamTst implementation
+******************************************************************************/

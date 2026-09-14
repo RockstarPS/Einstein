@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<!-- VectorCAST Report header -->
+<html lang="en">
+  <head>
+    <title>Aggregate Coverage Report</title>
+    <meta charset="utf-8"/>
+    <style>
+    /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+html{line-height:1.15;-webkit-text-size-adjust:100%}
+body{margin:0}
+h1{font-size:2em;margin:.67em 0}
+hr{box-sizing:content-box;height:0;overflow:visible}
+pre{font-family:monospace,monospace;font-size:1em}
+a{background-color:transparent}
+abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}
+b,strong{font-weight:bolder}
+code,kbd,samp{font-family:monospace,monospace;font-size:1em}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sub{bottom:-.25em}
+sup{top:-.5em}
+img{border-style:none}
+button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}
+button,input{overflow:visible}
+button,select{text-transform:none}
+[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}
+[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}
+[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}
+fieldset{padding:.35em .75em .625em}
+legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}
+progress{vertical-align:baseline}
+textarea{overflow:auto}
+[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}
+[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}
+[type=search]{-webkit-appearance:textfield;outline-offset:-2px}
+[type=search]::-webkit-search-decoration{-webkit-appearance:none}
+::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
+details{display:block}
+summary{display:list-item}
+template{display:none}
+[hidden]{display:none}
+ html {box-sizing:border-box;position:relative;height:100%;width:100%;}
+*, *:before, *:after {box-sizing:inherit;}
+body {position:relative;height:100%;width:100%;font-size:10pt;font-family:helvetica, Arial, sans-serif;color:#3a3e3f;}
+.alternate-font {font-family:Arial Unicode MS, Arial, sans-serif;}
+#page {position:relative;width:100%;height:100%;overflow:hidden;}
+#title-bar {position:absolute;top:0px;left:0em;right:0px;height:1.8em;background-color:#B1B6BA;white-space:nowrap;box-shadow:1px 1px 5px black;z-index:100;}
+#report-title {font-size:3em;text-align:center;font-weight:bold;background-color:white;padding:0.5em;margin-bottom:0.75em;border:1px solid #e5e5e5;}
+.contents-block {position:absolute;top:1.8em;left:0em;width:22em;bottom:0em;overflow:auto;background-color:#DADEE1;border-right:1px solid silver;padding-left:0.75em;padding-right:0.5em;}
+.testcase .report-block, .testcase .report-block-coverage {padding-bottom:2em;border-bottom:3px double #e5e5e5;}
+.testcase .report-block:last-child, .testcase .report-block-coverage:last-child {border-bottom:0px solid white;}
+.report-body {position:absolute;top:1.8em;left:22em;right:0em;bottom:0em;padding-left:2em;padding-right:2em;overflow:auto;padding-bottom:1.5em;background-color:#DADEE1;}
+.report-body.no-toc {left:0em;}
+.report-body > .report-block, .report-body > .report-block-coverage, .report-body > .testcase {border:1px solid #e5e5e5;margin-bottom:2em;padding-bottom:1em;padding-right:2em;background-color:white;padding-left:2em;padding-top:0.1em;margin-top:1em;overflow-x:auto;}
+.title-bar-heading {display:none;position:absolute;text-align:center;width:100%;color:white;font-size:3em;bottom:0px;margin-bottom:0.3em;}
+.title-bar-logo {display:inline-block;height:100%;}
+.title-bar-logo img {width:120px;margin-left:0.5em;margin-top:-16px;}
+.contents-block ul {padding-left:1.5em;list-style-type:none;line-height:1.5;}
+li.collapsible-toc > input ~ ul {display:none;}
+li.collapsible-toc > input:checked ~ ul {display:block;}
+li.collapsible-toc > input {display:none;}
+li.collapsible-toc > label {cursor:pointer;}
+li.collapsible-toc > label.collapse {display:none;}
+li.collapsible-toc > label.expand {display:inline;}
+li.collapsible-toc > input:checked ~ label.expand {display:none;}
+li.collapsible-toc > input:checked ~ label.collapse {display:inline;}
+.contents-block ul.toc-level1 {padding-left:1em;}
+.contents-block ul.toc-level1 > li {margin-top:0.75em;}
+.contents-block li {white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.tc-passed:before, .tc-failed:before, .tc-none:before{display:inline-block;margin-right:0.25em;width:0.5em;text-align:center;}
+.tc-passed:before {content:"✓";color:darkgreen;}
+.tc-failed:before {content:"✗";color:#b70032;}
+.tc-none:before {content:"•";}
+.tc-item {margin-top:0.75em;margin-left:-1em;}
+table {margin-top:0.5em;margin-bottom:1em;border-collapse:collapse;min-width:40em;}
+table.table-hover tbody tr:hover {background-color:#DADEE1;}
+th, td {text-align:left;padding:0.25em;padding-right:1em;border-bottom:1px solid #e5e5e5;}
+table thead th {border-bottom:2px solid silver;border-top:0;border-left:0;border-right:0;}
+.pull-right {display:none;}
+h1, h2 {border-bottom:3px solid silver;}
+h1, h2, h3, h4 {margin-top:1em;margin-bottom:0.25em;}
+h1 {font-size:3.5em;}
+h2 {font-size:2.5em;}
+h3 {font-size:2em;}
+h4 {font-size:1.25em;border-bottom:0;margin-bottom:0;}
+h5 {font-size:1em;font-weight:bold;margin-top:0.5em;margin-bottom:0.25em;}
+pre {padding:1em;padding-left:1.5em;border:1px solid #e5e5e5;background-color:#DADEE1;min-width:40em;width:auto;clear:both;display:inline-block;margin-top:0.25em;}
+ul.unstyled {list-style-type:none;margin-top:0.25em;padding-left:0px;}
+ul {line-height:1.3;}
+p {margin-top:0.5em;margin-bottom:1em;max-width:50em;}
+pre p {max-width:inherit;}
+a, a:visited {color:inherit;text-decoration:none;}
+a:hover {text-decoration:underline;text-decoration-color:#b70032;-webkit-text-decoration-color:#b70032;-moz-text-decoration-color:#b70032;cursor:pointer;}
+pre.aggregate-coverage {padding-left:0px;padding-right:0px;margin-top:1em;}
+pre.aggregate-coverage span {width:100%;display:inline-block;padding-left:1em;padding-right:1em;line-height:1.3;}
+.bg-success, .success, span.full-cvg {background-color:#c8f0c8;}
+span.ann-cvg, span.annpart-cvg {background-color:#cacaff;}
+.bg-danger, .danger, span.no-cvg {background-color:#facaca;}
+.bg-warning, .warning, span.part-cvg {background-color:#f5f5c8;}
+.fit-content {width:max-content;}
+.rel-pos {position:relative;}
+.report-block > .bs-callout.test-timeline, .mcdc-condition {padding-left:0px;}
+.report-block.single-test {padding-left:2em;padding-right:2em;width:100%;height:100%;overflow:auto;}
+.test-action-header + h4.event{margin-top:0.5em;}
+.event.bs-callout > .bs-callout, .mcdc-condition {margin-bottom:2em;border-left:2px solid silver;}
+.event.bs-callout {margin-top:1.5em;}
+.bs-callout, .mcdc-condition {padding-left:1.5em;}
+.bs-callout.bs-callout-success {border-left:2px solid green;margin-left:0px;}
+.bs-callout.bs-callout-success .bs-callout.bs-callout-success {border-left:none;margin-left:0px;}
+.bs-callout.bs-callout-danger {border-left:2px solid #b70032;margin-left:0px;}
+.bs-callout.bs-callout-warning {border-left:2px solid wheat;padding-left:1.5em;margin-left:0px;}
+.event.bs-callout .bs-callout.bs-callout-warning {border-left:2px solid wheat;padding-left:1.5em;margin-left:0px;}
+.bs-callout.bs-callout-danger .bs-callout.bs-callout-danger {margin-left:1.5em;border-left:2px solid #b70032;padding-left:1.5em;}
+.bs-callout-info {margin-top:1em;}
+.text-muted {font-size:0.9em;}
+.test-action-header {border-top:3px solid silver;border-bottom:1px solid #e5e5e5;min-width:42em;white-space:nowrap;margin-bottom:0.5em;padding-top:0.25em;padding-bottom:0.25em;margin-top:2em;background-color:#DADEE1;margin-left:-1.5em;padding-left:1.5em;}
+.test-action-header h4 {margin-top:0px;}
+.test-action-header:first-child{margin-top:0px;}
+.test-timeline > .event.bs-callout:first-child{margin-top:1em;}
+.event > .bs-callout {margin-left:2px !important;}
+.testcase-notes {white-space:pre;word-wrap:none;}
+.mcdc-condition {margin-bottom:3em;}
+.mcdc-table {margin-top:0px;}
+.mcdc-rows-table {margin-top:2em;min-width:auto;}
+.mcdc-rows-table td{border:1px solid #e5e5e5;}
+.mcdc-condition.full-cvg {border-left-color:green;border-left-width:2px;}
+.mcdc-condition.part-cvg {border-left-color:wheat;border-left-width:2px;}
+.mcdc-condition.no-cvg {border-left-color:#b70032;border-left-width:2px;}
+.i0 {padding-left:0.25em;min-width:11em }
+.i1 {padding-left:1.25em;min-width:11em }
+.i2 {padding-left:2.25em;}
+.i3 {padding-left:3.25em;}
+.i4 {padding-left:4.25em;}
+.i5 {padding-left:5.25em;}
+.i6 {padding-left:6.25em;}
+.i7 {padding-left:7.25em;}
+.i8 {padding-left:8.25em;}
+.i9 {padding-left:9.25em;}
+.i10 {padding-left:10.25em;}
+.i11 {padding-left:11.25em;}
+.i12 {padding-left:12.25em;}
+.i13 {padding-left:13.25em;}
+.i14 {padding-left:14.25em;}
+.i15 {padding-left:15.25em;}
+.i16 {padding-left:16.25em;}
+.i17 {padding-left:17.25em;}
+.i18 {padding-left:18.25em;}
+.i19 {padding-left:19.25em;}
+.i20 {padding-left:20.25em;}
+.right {float:right;}
+.req-notes-list {white-space:pre;}
+.uncovered_func_calls-list {white-space:pre;}
+.bold-text {font-weight:bold;}
+.static-cell {}
+.static-cell-right {text-align:right;}
+.static-doc {width:100%;}
+.static-title-bar {height:1.9em;width:100%;font-size:1.7em;border-bottom:1px solid #e5e5e5;margin:0;padding-top:8px;font-weight:bold;}
+.static-id {float:left;width:100px;}
+.static-title {float:left;}
+.static-doctext {width:auto;background-color:#efefef;border:1px solid #e5e5e5;min-width:40em;}
+.static-doctext pre {padding:0;margin:0.2em 0 0.2em 1em;border:none;}
+.static-doctext p {padding:0;margin:0.2em 0 0.2em 1em;}
+.static-doctext h2 {font-size:1.5em;}
+.static-doctext h3 {font-size:1.3em;}
+.missing_control_flow {max-width:40em;}
+.preformatted {font-family:monospace;white-space:pre;}
+.col_unit {word-break:break-all;width:30%;}
+.col_subprogram {word-break:break-all;width:30%;}
+.col_complexity {white-space:nowrap;}
+.col_metric {white-space:nowrap;}
+.col_nowrap {white-space:nowrap;}
+.col_wrap {word-break:break-all;}
+.subtitle {font-size:1.3em;}
+@media print{html, body {height:auto;overflow:auto;color:black;}
+.contents-block {display:none;}
+#title-bar {position:initial;height:20pt;}
+#main-scroller {background-color:white;margin:0;padding:0;position:initial;left:auto;top:auto;}
+pre {background-color:white;font-size:10pt;border:none;border-left:1px solid #e5e5e5;font-size:9pt;}
+.report-body > .testcase, .report-body > .report-block, .report-body > .report-block-coverage {border:none;padding-bottom:0in;}
+.report-body > .testcase {page-break-before:always }
+#report-title {border:none;font-size:3em;text-align:left;font-weight:bold;padding-bottom:0px;border-bottom:3px solid silver;}
+h1, h2, h3, h4 {padding-top:0;margin-top:0.2in;}
+html, body, .report-body {background-color:white;font-size:1vw;}
+}
+
+    </style>
+  </head>
+  <body>
+    <div id='page'><!-- ReportTitle -->
+<div id="title-bar">
+  <div class="title-bar-logo">
+    <img alt="Vector" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IldPUlQtX3gyRl9CSUxETUFSS0Vfc1JHQiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCgkgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI0MTUuMTc5cHgiIGhlaWdodD0iMTk3LjU3MnB4IiB2aWV3Qm94PSIwIDAgNDE1LjE3OSAxOTcuNTcyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA0MTUuMTc5IDE5Ny41NzIiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBvbHlnb24gaWQ9IkJpbGRtYXJrZV8xODNfeDJGXzBfeDJGXzUwIiBmaWxsPSIjQjcwMDMyIiBwb2ludHM9IjI5Mi4yODgsMTE1LjI1IDI5Mi4yODgsMTMxLjcxNSAzNDkuMzIyLDk4Ljc4NiAyOTIuMjg4LDY1Ljg1NyANCgkyOTIuMjg4LDgyLjMyMSAzMjAuODA1LDk4Ljc4NiAiLz4NCjxwb2x5Z29uIHBvaW50cz0iOTAuNTU0LDg0LjUyOSA5OC43ODcsODQuNTI5IDgyLjMyMiwxMTMuMDQ3IDY1Ljg1Nyw4NC41MjkgNzQuMDg5LDg0LjUyOSA4Mi4zMjIsOTguNzg4ICIvPg0KPHBhdGggZD0iTTIxNy43NTQsODMuODE5Yy04LjI2OSwwLTE0Ljk3Miw2LjcwMy0xNC45NzIsMTQuOTcyYzAsOC4yNjksNi43MDMsMTQuOTcxLDE0Ljk3MiwxNC45NzENCgljOC4yNjksMCwxNC45NzItNi43MDMsMTQuOTcyLTE0Ljk3MUMyMzIuNzI2LDkwLjUyMiwyMjYuMDIzLDgzLjgxOSwyMTcuNzU0LDgzLjgxOXogTTIxNy43NTUsMTA2LjY2OA0KCWMtNC4zNTEsMC03Ljg3OC0zLjUyNy03Ljg3OC03Ljg3OGMwLTQuMzUxLDMuNTI3LTcuODc3LDcuODc4LTcuODc3YzQuMzUxLDAsNy44NzgsMy41MjcsNy44NzgsNy44NzcNCglDMjI1LjYzMywxMDMuMTQyLDIyMi4xMDUsMTA2LjY2OCwyMTcuNzU1LDEwNi42Njh6Ii8+DQo8cGF0aCBkPSJNMTU1LjEyMSwxMDYuNjY4Yy00LjM1MSwwLTcuODc4LTMuNTI3LTcuODc4LTcuODc4YzAtNC4zNTEsMy41MjctNy44NzcsNy44NzgtNy44NzdjMi4xNzQsMCw0LjE0MywwLjg4MSw1LjU2OCwyLjMwNQ0KCWw1LjAxNi01LjAxNmMtMi43MDktMi43MDgtNi40NTEtNC4zODMtMTAuNTg0LTQuMzgzYy04LjI2OSwwLTE0Ljk3Miw2LjcwMy0xNC45NzIsMTQuOTcyYzAsOC4yNjksNi43MDMsMTQuOTcxLDE0Ljk3MiwxNC45NzENCgljNC4xMzYsMCw3Ljg3OS0xLjY3NiwxMC41ODktNC4zODdsLTUuMDE2LTUuMDE2QzE1OS4yNjgsMTA1Ljc4NiwxNTcuMjk3LDEwNi42NjgsMTU1LjEyMSwxMDYuNjY4eiIvPg0KPHBvbHlnb24gcG9pbnRzPSIxNzEuNDQ2LDkwLjk0NiAxODEuMDcxLDkwLjk0NiAxODEuMDcxLDExMy4wNDcgMTg4LjIwMSwxMTMuMDQ3IDE4OC4yMDEsOTAuOTQ2IDE5Ny44MjUsOTAuOTQ2IDE5Ny44MjUsODQuNTI5IA0KCTE3MS40NDYsODQuNTI5ICIvPg0KPHBvbHlnb24gcG9pbnRzPSIxMDguMDY5LDExMy4wNDcgMTMwLjE3LDExMy4wNDcgMTMwLjE3LDEwNi42MyAxMTUuMTk4LDEwNi42MyAxMTUuMTk4LDEwMS42NCAxMjYuODkxLDEwMS42NCAxMjYuODkxLDk1LjM2NiANCgkxMTUuMTk4LDk1LjM2NiAxMTUuMTk4LDkwLjk0NiAxMzAuMTcsOTAuOTQ2IDEzMC4xNyw4NC41MjkgMTA4LjA2OSw4NC41MjkgIi8+DQo8cGF0aCBkPSJNMjcwLjE4Nyw5NC4wNDdjMC01LjI1LTQuMjU1LTkuNTE4LTkuNTA1LTkuNTE4aC0xNy41ODd2MjguNTE4aDcuMTI5di05LjQ4Mmg2LjI0NGw1LjQ4Nyw5LjQ4Mmg4LjIzMWwtNS44OTktMTAuMjMxDQoJQzI2Ny43NDgsMTAxLjM5NSwyNzAuMTg3LDk4LjAyLDI3MC4xODcsOTQuMDQ3eiBNMjYwLjAyMyw5Ny4yMmgtOS43OTh2LTYuMzQ2aDkuNzk2YzEuNjg5LDAuMDc0LDMuMDM3LDEuNDY2LDMuMDM3LDMuMTczDQoJQzI2My4wNTgsOTUuNzUzLDI2MS43MTEsOTcuMTQ1LDI2MC4wMjMsOTcuMjJ6Ii8+DQo8L3N2Zz4NCg=="/>
+  </div>
+</div>
+  <div class="report-body no-toc" id="main-scroller">
+    <div id="report-title">Aggregate Coverage Report</div>
+<!-- AggregateCoverage -->
+      <div class='report-block-coverage'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="AggregateCoverage"></a>Aggregate Coverage</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10"><h3><a id="coverage_for_unit_11"></a>Code Coverage for DmnMgr_ControlDmn</h3></div>
+        </div>
+        <table class='table table-small'>
+          <thead>
+          </thead>
+          <tbody>
+          <tr>
+            <th>Coverage Type</th><td>Statement+MC/DC+Function Call</td>
+          </tr>
+          <tr>
+            <th>Unit</th><td>DmnMgr_ControlDmn</td>
+          </tr>
+          <tr>
+            <th>Test Case</th><td>Aggregate</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <pre class="aggregate-coverage"><span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // VISTEON CORPORATION CONFIDENTIAL</span>
+<span class="na-cvg">               // ________________________________</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // [2020] Visteon Corporation</span>
+<span class="na-cvg">               // All Rights Reserved.</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               // NOTICE: This is an unpublished work of authorship, which contains trade secrets.</span>
+<span class="na-cvg">               // Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve</span>
+<span class="na-cvg">               // its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States</span>
+<span class="na-cvg">               // or those of any other country that may have jurisdiction, to protect this work as an unpublished work,</span>
+<span class="na-cvg">               // in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights</span>
+<span class="na-cvg">               // under all copyright laws to protect this work as a published work, when appropriate.</span>
+<span class="na-cvg">               // Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it</span>
+<span class="na-cvg">               // without the written authorization of Visteon Corporation.</span>
+<span class="na-cvg">               //</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               #include &#34;c:/vcast/mingw/include/string.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_ControlDmn.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/bmalgeka/DmnMgr_UT/cluster-platform/turing/swccore/swc-core-dmnmgr/src/DmnMgr_Main.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               /* below macros will be deleted in Phase3 once HL is implemented */</span>
+<span class="na-cvg">               // # define dHLSwcId_DmnMgr 0U</span>
+<span class="na-cvg">               // # define dHLErrorCode_Domain1Reset 0U</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+<span class="na-cvg">               extern void Mcu_PerformReset(void);</span>
+<span class="na-cvg">               /// @brief This method implements Fetching of last Domain reset reason of the Domains from health manager</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @param dmnId</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @return DmnMgr_ReturnType</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @brief This method implements the Domain System State Change Request Server Operation</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @param DmnId - Domain Id (0 - VIP Domain, 1 - Cluster Domain)</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @param DmnState - Requested System State</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @return Std_ReturnType </span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               static boolean DM_ShutdownReq_Success = ((unsigned char)0U);</span>
+<span class="na-cvg">               static boolean HSM_ShutdownReq_Success = ((unsigned char)0U);</span>
+<span class="na-cvg">               Std_ReturnType DmnMgr_DmnSystemStateChangeReq(EDomainId DmnId, ESystemState DmnState)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">1 0     (T)    DmnMgr_DmnSystemStateChangeReq</span>
+<span class="full-cvg success-marker">1 1      *       SPowerSystemStateReqChange reqDmnState = {DmnId, DmnState};</span>
+<span class="full-cvg success-marker">1 2      *       SPowerSystemStateReqChange reqestedDmnState = {DmnId, DmnState};</span>
+<span class="full-cvg success-marker">1 3      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="full-cvg success-marker">1 4      *       Std_ReturnType sRet = (0x01U);</span>
+<span class="full-cvg success-marker">1 5      *       SDmnMgrUsrCfgList *pCfg = 0;</span>
+<span class="full-cvg success-marker">1 6      *       SDmnRunTimeStatus *pDmnSts = 0;</span>
+<span class="na-cvg">                //Get the RunTime Domain Status</span>
+<span class="full-cvg success-marker">1 7      *       ret = </span>
+<span class="full-cvg success-marker">1 8     [*]      DmnMgr_GetDmnRunTimeStatus( DmnId, &amp;pDmnSts );</span>
+<span class="full-cvg success-marker">1 9     (T)(F)   if( ( </span>
+<span class="full-cvg success-marker">1 9.1   (T)(F)   ret == ((DmnMgr_ReturnType) 0) ) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">1 9.2   (T)(F)   pDmnSts != 0 ) )</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Valid dmnId &amp; dmnState Received</span>
+<span class="full-cvg success-marker">1 10    (T)(F)     if(( </span>
+<span class="full-cvg success-marker">1 10.1  (T)(F)     DmnId &gt; (0U) ) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">1 10.2  (T)(F)     DmnId &lt;= (4u) ) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">1 10.3  (T)(F)     DmnState == (6U) ))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">1 11    (T)(F)       if (</span>
+<span class="full-cvg success-marker">1 11.1  (T)(F)       pDmnSts-&gt;dmnStatus != (1U))</span>
+<span class="na-cvg">                  {</span>
+<span class="full-cvg success-marker">1 12     *             pDmnSts-&gt;dmnStateChangeReqStatus = (7U);</span>
+<span class="na-cvg">                  }</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                 //Do not accept any new request if previous request is pending</span>
+<span class="full-cvg success-marker">1 13    (T)(F)     if(</span>
+<span class="full-cvg success-marker">1 13.1  (T)(F)     pDmnSts-&gt;dmnStateChangeReqStatus == (3U) )</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">1 14     *           ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="na-cvg">                 }</span>
+<span class="full-cvg success-marker">1 15    (T)(F)     if( </span>
+<span class="full-cvg success-marker">1 15.1  (T)(F)     ((DmnMgr_ReturnType) 0) == ret )</span>
+<span class="na-cvg">                 {</span>
+<span class="na-cvg">                  // Send the Request to UCL only if current state is different from the requested state</span>
+<span class="full-cvg success-marker">1 16    (T)(F)       if(</span>
+<span class="full-cvg success-marker">1 16.1  (T)(F)       pDmnSts-&gt;dmnCurSystemState != DmnState)</span>
+<span class="na-cvg">                  {</span>
+<span class="na-cvg">                   //Handle special preparation before inform the UCL status change</span>
+<span class="full-cvg success-marker">1 17     *             switch(DmnState)</span>
+<span class="na-cvg">                   {</span>
+<span class="full-cvg success-marker">1 18    (T)              case (6U):</span>
+<span class="full-cvg success-marker">1 19     *                 pDmnSts-&gt;dmnReqSystemState = DmnState;</span>
+<span class="na-cvg">                     //No Awake time set</span>
+<span class="full-cvg success-marker">1 20    (T)(F)             if((</span>
+<span class="full-cvg success-marker">1 20.1  (T)(F)             pDmnSts-&gt;dmnSystemAwakeWaitTime == 0u) &amp;&amp; (</span>
+<span class="full-cvg success-marker">1 20.2  (T)(F)             pDmnSts-&gt;dmnShutDownWaitTime == 0u))</span>
+<span class="na-cvg">                     {</span>
+<span class="full-cvg success-marker">1 21     *                   ret = </span>
+<span class="full-cvg success-marker">1 22    [*]                  DmnMgr_MainGetDmnUsrCfg( DmnId, &amp;pCfg );</span>
+<span class="full-cvg success-marker">1 23    (T)(F)               if( ( </span>
+<span class="full-cvg success-marker">1 23.1  (T)(F)               ret == ((DmnMgr_ReturnType) 0)) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">1 23.2  (T)(F)               pCfg != 0 ) )</span>
+<span class="na-cvg">                      {</span>
+<span class="full-cvg success-marker">1 24     *                     pDmnSts-&gt;dmnShutDownWaitTime = pCfg-&gt;dmnTimeForShutdown;</span>
+<span class="full-cvg success-marker">1 25    (T)(F)                 if(</span>
+<span class="full-cvg success-marker">1 25.1  (T)(F)                 DmnId != (2U))</span>
+<span class="na-cvg">                       {</span>
+<span class="full-cvg success-marker">1 26     *                       pDmnSts-&gt;dmnStateChangeReqStatus = (3U);</span>
+<span class="na-cvg">                       }</span>
+<span class="full-cvg success-marker">1 27     *                     reqDmnState.domainId = DmnId;</span>
+<span class="full-cvg success-marker">1 28     *                     reqDmnState.state = DmnState;</span>
+<span class="full-cvg success-marker">1 29    (T)(F)                 if(</span>
+<span class="full-cvg success-marker">1 29.1  (T)(F)                 DmnId == (1U))</span>
+<span class="na-cvg">                       {</span>
+<span class="na-cvg">                        //Send Change Request to UCL</span>
+<span class="full-cvg success-marker">1 30     *                       (void) ((0U));</span>
+<span class="na-cvg">                       }</span>
+<span class="full-cvg success-marker">1 31    (T)(F)                 if(</span>
+<span class="full-cvg success-marker">1 31.1  (T)(F)                 DmnId == (2u))</span>
+<span class="na-cvg">                       {</span>
+<span class="na-cvg">                        // Shutdown Request to DM Core</span>
+<span class="full-cvg success-marker">1 32     *                       DM_ShutdownReq_Success = ((unsigned char)1U);</span>
+<span class="na-cvg">                       }</span>
+<span class="full-cvg success-marker">1 33    (T)(F)                 if(</span>
+<span class="full-cvg success-marker">1 33.1  (T)(F)                 DmnId == (3u))</span>
+<span class="na-cvg">                       {</span>
+<span class="na-cvg">                        // Shutdown Request to HSM Core</span>
+<span class="full-cvg success-marker">1 34     *                       HSM_ShutdownReq_Success = ((unsigned char)1U);</span>
+<span class="na-cvg">                       }</span>
+<span class="na-cvg">                      }</span>
+<span class="na-cvg">                      else</span>
+<span class="na-cvg">                      {</span>
+<span class="na-cvg">                       // Handle error appropriately</span>
+<span class="na-cvg">                      }</span>
+<span class="na-cvg">                     }</span>
+<span class="na-cvg">                     else </span>
+<span class="full-cvg success-marker">1 35    (T)(F)               if(</span>
+<span class="full-cvg success-marker">1 35.1  (T)(F)               pDmnSts-&gt;dmnShutDownWaitTime != 0u)</span>
+<span class="na-cvg">                     {</span>
+<span class="full-cvg success-marker">1 36     *                     pDmnSts-&gt;dmnStateChangeReqStatus = (2U);</span>
+<span class="na-cvg">                     }</span>
+<span class="na-cvg">                     else</span>
+<span class="na-cvg">                     {</span>
+<span class="full-cvg success-marker">1 37     *                     pDmnSts-&gt;dmnStateChangeReqStatus = (1U);</span>
+<span class="na-cvg">                     }</span>
+<span class="full-cvg success-marker">1 38     *                 break;</span>
+<span class="full-cvg success-marker">1 39    (T)              default:</span>
+<span class="full-cvg success-marker">1 40    (T)(F)             if(</span>
+<span class="full-cvg success-marker">1 40.1  (T)(F)             DmnId == (2U))</span>
+<span class="na-cvg">                    {</span>
+<span class="na-cvg">                         //Send Change Request to IVI domain </span>
+<span class="full-cvg success-marker">1 41     *                   (void)((0U));</span>
+<span class="na-cvg">                    }</span>
+<span class="full-cvg success-marker">1 42     *                 break;</span>
+<span class="na-cvg">                   }</span>
+<span class="na-cvg">                  }</span>
+<span class="na-cvg">                  else</span>
+<span class="na-cvg">                  {</span>
+<span class="na-cvg">                   //If Current system state &amp; requested state are same just return success.</span>
+<span class="full-cvg success-marker">1 43     *             pDmnSts-&gt;dmnStateChangeReqStatus = (4U);</span>
+<span class="na-cvg">                  }</span>
+<span class="full-cvg success-marker">1 44     *           sRet = (0x00U);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                 else</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">1 45     *           pDmnSts-&gt;dmnReqSystemState = (0U);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Invoke DET</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">1 46     *       return sRet;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @brief This method implements the Domain System State Change Request Status Server Operation</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @param DmnId - Domain Id (0 - VIP Domain, 1 - Cluster Domain)</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @param DmnStatus - a pointer to save the status</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               /// @return void</span>
+<span class="na-cvg">               ///</span>
+<span class="na-cvg">               void DmnMgr_DmnSystemStateChangeStatus(EDomainId DmnId, EDmnChangeReqStatus_t *DmnStatus)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">2 0     (T)    DmnMgr_DmnSystemStateChangeStatus</span>
+<span class="full-cvg success-marker">2 1      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 1);</span>
+<span class="full-cvg success-marker">2 2      *       SDmnRunTimeStatus *pDmnSts = 0;</span>
+<span class="na-cvg">                //Get the RunTime Domain Status</span>
+<span class="full-cvg success-marker">2 3      *       ret = </span>
+<span class="full-cvg success-marker">2 4     [*]      DmnMgr_GetDmnRunTimeStatus( DmnId, &amp;pDmnSts );</span>
+<span class="full-cvg success-marker">2 5     (T)(F)   if( ( </span>
+<span class="full-cvg success-marker">2 5.1   (T)(F)   ret == ((DmnMgr_ReturnType) 0) ) &amp;&amp; ( </span>
+<span class="full-cvg success-marker">2 5.2   (T)(F)   pDmnSts != 0 ) )</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">2 6     (T)(F)     if((</span>
+<span class="full-cvg success-marker">2 6.1   (T)(F)     DmnStatus != 0) &amp;&amp; (</span>
+<span class="full-cvg success-marker">2 6.2   (T)(F)     DmnId &lt;= (4u)) &amp;&amp; (</span>
+<span class="full-cvg success-marker">2 6.3   (T)(F)     DmnId != (0U)))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">2 7      *           *DmnStatus = pDmnSts-&gt;dmnStateChangeReqStatus;</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Invoke DET</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Periodic Function to collect RTC Data from CAN</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               DmnMgr_ReturnType DmnMgr_DmnCtrlResetDmn(EDomainId dmnId)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">3 0     (T)    DmnMgr_DmnCtrlResetDmn</span>
+<span class="full-cvg success-marker">3 1      *       DmnMgr_ReturnType ret = ((DmnMgr_ReturnType) 0);</span>
+<span class="na-cvg">                //No need to verfy dmnId if the call is internal to Domain Manager.</span>
+<span class="na-cvg">                //Domain Manager Developer should that proper dmnId is passed to the respective APIs</span>
+<span class="na-cvg">                // Trigger Domain Reset Request server operation</span>
+<span class="full-cvg success-marker">3 2     (T)(F)   if(</span>
+<span class="full-cvg success-marker">3 2.1   (T)(F)   dmnId == (1U))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                }</span>
+<span class="na-cvg">                else</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //Rte_Call_rpCSModeRequestReset_ResetRequest(dmnId);	// Will be replaced with a trusted API for IVI reset</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">3 3      *       return ret;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Check if the RTC signal received from CAN is valid or not</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               /// @brief  Calculate the Month and Date from YearDay</span>
+<span class="na-cvg">               //---------------------------------------------------------------------------------------------------------------------</span>
+<span class="na-cvg">               extern boolean b_DmnMgr_StopVarReset;</span>
+<span class="na-cvg">               Std_ReturnType DmnMgr_StartDomainMonitoring(EDomainId DmnID)</span>
+<span class="na-cvg">               {</span>
+<span class="full-cvg success-marker">4 0     (T)    DmnMgr_StartDomainMonitoring</span>
+<span class="full-cvg success-marker">4 1      *       Std_ReturnType ret = (0x01U);</span>
+<span class="full-cvg success-marker">4 2     (T)(F)   if(</span>
+<span class="full-cvg success-marker">4 2.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">4 3     [*]      CUclProxyCdd_Impl_Initialize())</span>
+<span class="na-cvg">                {</span>
+<span class="full-cvg success-marker">4 4     (T)        if((Std_ReturnType)(0x00U) == (0x00U))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">4 5      *           (void)</span>
+<span class="full-cvg success-marker">4 6     [*]          DmnMgr_ResetDmnRunTimeStatus(DmnID);</span>
+<span class="full-cvg success-marker">4 7      *           b_DmnMgr_StopVarReset = ((unsigned char)1U);</span>
+<span class="full-cvg success-marker">4 8      *           ret = (0x00U);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">4 9      *       return ret;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               Std_ReturnType DmnMgr_StopDomainMonitoring(EDomainId DmnID)</span>
+<span class="na-cvg">               {</span>
+<span class="na-cvg">                //Invoke UCL ShutDown server operation</span>
+<span class="full-cvg success-marker">5 0     (T)    DmnMgr_StopDomainMonitoring</span>
+<span class="full-cvg success-marker">5 1      *       Std_ReturnType ret = (0x01U);</span>
+<span class="full-cvg success-marker">5 2     (T)(F)   if((</span>
+<span class="full-cvg success-marker">5 2.1   (T)(F)   (Std_ReturnType)(0x00U) == </span>
+<span class="full-cvg success-marker">5 3     [*]      CUclProxyCdd_Impl_Shutdown()))</span>
+<span class="na-cvg">                {</span>
+<span class="na-cvg">                 //if((Std_ReturnType)E_OK == Rte_Call_rp_CmpLibCmd_UclProxyCdd_Impl_OnCommand(eCmpCmd_DeActivate))</span>
+<span class="na-cvg">                 {</span>
+<span class="full-cvg success-marker">5 4      *         b_DmnMgr_StopVarReset = ((unsigned char)0U);</span>
+<span class="full-cvg success-marker">5 5      *         (void)</span>
+<span class="full-cvg success-marker">5 6     [*]        DmnMgr_ResetDmnRunTimeStatus(DmnID);</span>
+<span class="full-cvg success-marker">5 7      *         ret = (0x00U);</span>
+<span class="na-cvg">                 }</span>
+<span class="na-cvg">                }</span>
+<span class="full-cvg success-marker">5 8      *       return ret;</span>
+<span class="na-cvg">               }</span>
+<span class="na-cvg">               #include &#34;C:/BMALGEKA/DMNMGR_UT/PROGRAMS/REFERENCE/EINSTEIN4.0/TI-AM62X/VP-BUILD/stubs/MemMap.h&#34;</span>
+</pre>
+
+        <h4>TEST COVERAGE SUMMARY</h4>
+        <p>
+   66 of 66 Lines Covered ( 100% )</p>
+        <p>
+   100 of 100 Branches Covered ( 100% )</p>
+        <p>
+   7 of 7 Function Calls Covered ( 100% )</p>
+      </div>
+<!-- McdcTables -->
+      <div class='report-block'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="MC/DCConditionTables"></a>MC/DC Condition Tables</h2>
+          </div>
+        </div>
+      <div class='report-block'>
+          <h3><a id="mcdc_unit_11"></a>Unit: DmnMgr_ControlDmn</h3>
+        
+        <h3>DmnMgr_DmnSystemStateChangeReq</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 9</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>60</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0 &amp;&amp; pDmnSts != (0)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">pDmnSts != (0)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 10</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>10</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>65</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnId &gt; 0U &amp;&amp; DmnId &lt;= 4U) &amp;&amp; DmnState == 6U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId &gt; 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">DmnId &lt;= 4U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "c" (Cc) is</th>
+      <td colspan="3">DmnState == 6U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>((a &amp;&amp; b) &amp;&amp; c)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Cc</th><th>Rslt</th><th>Pa</th><th>Pb</th><th>Pc</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>T</td><td>5</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>T</td><td>F</td><td>T</td><td>F</td><td>&nbsp;</td><td>1</td><td>&nbsp;</td></tr>
+                <tr><td>*5</td><td>F</td><td>T</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/5)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/5</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pc</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 3 of 3 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 11</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>11</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>70</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts-&gt;dmnStatus != 1U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnStatus != 1U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 13</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>13</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>77</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts-&gt;dmnStateChangeReqStatus == 3U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnStateChangeReqStatus == 3U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 15</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>82</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnMgr_ReturnType)0 == ret</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(DmnMgr_ReturnType)0 == ret</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 16</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>16</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>86</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts-&gt;dmnCurSystemState != DmnState</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnCurSystemState != DmnState</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 20</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>95</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts-&gt;dmnSystemAwakeWaitTime == 0U &amp;&amp; pDmnSts-&gt;dmnShutDownWaitTime == 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnSystemAwakeWaitTime == 0U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnShutDownWaitTime == 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 23</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>23</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>101</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0 &amp;&amp; pCfg != (0)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">pCfg != (0)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 25</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>25</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>106</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>DmnId != 2U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId != 2U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 29</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>29</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>113</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>DmnId == 1U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId == 1U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 31</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>31</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>119</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>DmnId == 2U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId == 2U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 33</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>33</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>125</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>DmnId == 3U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId == 3U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 35</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>35</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>137</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>pDmnSts-&gt;dmnShutDownWaitTime != 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">pDmnSts-&gt;dmnShutDownWaitTime != 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 40</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeReq</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>40</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>149</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>DmnId == 2U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnId == 2U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_DmnSystemStateChangeStatus</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 5</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>193</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>ret == (DmnMgr_ReturnType)0 &amp;&amp; pDmnSts != (0)</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">ret == (DmnMgr_ReturnType)0</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">pDmnSts != (0)</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>(a &amp;&amp; b)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Rslt</th><th>Pa</th><th>Pb</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>F</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 2 of 2 ( 100% )
+            </h5>
+          </div>
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 6</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnSystemStateChangeStatus</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>6</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>197</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(DmnStatus != (0) &amp;&amp; DmnId &lt;= 4U) &amp;&amp; DmnId != 0U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">DmnStatus != (0)</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "b" (Cb) is</th>
+      <td colspan="3">DmnId &lt;= 4U</td>
+    </tr>
+    <tr class="bg-success">
+      <th>Condition "c" (Cc) is</th>
+      <td colspan="3">DmnId != 0U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>((a &amp;&amp; b) &amp;&amp; c)</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Cb</th><th>Cc</th><th>Rslt</th><th>Pa</th><th>Pb</th><th>Pc</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>T</td><td>T</td><td>5</td><td>3</td><td>2</td></tr>
+                <tr><td>*2</td><td>T</td><td>T</td><td>F</td><td>F</td><td>&nbsp;</td><td>&nbsp;</td><td>1</td></tr>
+                <tr><td>*3</td><td>T</td><td>F</td><td>T</td><td>F</td><td>&nbsp;</td><td>1</td><td>&nbsp;</td></tr>
+                <tr><td>*5</td><td>F</td><td>T</td><td>T</td><td>F</td><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/5)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/5</td></tr>
+              <tr class="bg-success"><th>Pb</th><td>a pair was satisfied (1/3)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/3</td></tr>
+              <tr class="bg-success"><th>Pc</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 3 of 3 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_DmnCtrlResetDmn</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_DmnCtrlResetDmn</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>220</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>dmnId == 1U</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">dmnId == 1U</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_StartDomainMonitoring</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_StartDomainMonitoring</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>241</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == CUclProxyCdd_Impl_Initialize()</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == CUclProxyCdd_Impl_Initialize()</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div> 
+        
+        <h3>DmnMgr_StopDomainMonitoring</h3>
+        
+          <div class="mcdc-condition full-cvg">
+            <div class='test-action-header'>
+              <h4>Condition 2</h4>
+            </div>
+            <table class='table mcdc-table'>
+              <tbody>
+                <tr>
+                  <th>Unit</th>
+                  <td>DmnMgr_ControlDmn</td>
+                </tr>
+                <tr>
+                  <th>Subprogram</th>
+                  <td>DmnMgr_StopDomainMonitoring</td>
+                </tr>
+                <tr>
+                  <th>Condition</th>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th>Source line</th>
+                  <td>260</td>
+                </tr>
+                <tr>
+                  <th>Actual Expression is</th>
+                  <td>(Std_ReturnType)0U == CUclProxyCdd_Impl_Shutdown()</td>
+                </tr>
+    <tr class="bg-success">
+      <th>Condition "a" (Ca) is</th>
+      <td colspan="3">(Std_ReturnType)0U == CUclProxyCdd_Impl_Shutdown()</td>
+    </tr>
+                <tr>
+                  <th>Simplified Expression is</th>
+                  <td>a</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class='table mcdc-rows-table table-hover'>
+              <thead>
+                <tr><th>Row</th><th>Ca</th><th>Rslt</th><th>Pa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>*1</td><td>T</td><td>T</td><td>2</td></tr>
+                <tr><td>*2</td><td>F</td><td>F</td><td>1</td></tr>
+              </tbody>
+            </table><table class='table mcdc-table'>
+              <tr class="bg-success"><th>Pa</th><td>a pair was satisfied (1/2)</td></tr>
+              <tr><td class='right'>all pairs:</td><td>1/2</td></tr>
+            </table>
+            <h5>
+              Pairs satisfied: 1 of 1 ( 100% )
+            </h5>
+          </div>  
+        </div>   
+      </div>
+<!-- Metrics -->
+      <div class='report-block'>
+        <div class="row">
+          <div class="col-md-10">
+            <h2><a id="Metrics"></a>Metrics</h2>
+          </div>
+        </div>
+        <h3 id="coverage_type">Statement+MC/DC+Function Call</h3>
+        <table class='table table-small table-hover table-bordered'>
+          <thead class="thead-default">
+            <tr>
+              <th class="col_unit">Unit</th><th class="col_subprogram">Subprogram</th><th class="col_complexity">Complexity</th><th class="col_metric">Function Coverage</th><th class="col_metric">Statements</th><th class="col_metric">Branches</th><th class="col_metric">Pairs</th><th class="col_metric">Function Calls</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col_unit">DmnMgr_ControlDmn</td><td class="col_subprogram">DmnMgr_DmnSystemStateChangeReq</td><td class="col_complexity">16</td><td class="success col_metric">100%</td><td class="success col_metric">44 / 44 (100%)</td><td class="success col_metric">69 / 69 (100%)</td><td class="success col_metric">19 / 19 (100%)</td><td class="success col_metric">2 / 2 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_DmnSystemStateChangeStatus</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">15 / 15 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_DmnCtrlResetDmn</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">3 / 3 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="col_metric"> </td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_StartDomainMonitoring</td><td class="col_complexity">3</td><td class="success col_metric">100%</td><td class="success col_metric">7 / 7 (100%)</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">2 / 2 (100%)</td>
+            </tr>
+            <tr>
+              <td class="col_unit">&nbsp;</td><td class="col_subprogram">DmnMgr_StopDomainMonitoring</td><td class="col_complexity">2</td><td class="success col_metric">100%</td><td class="success col_metric">6 / 6 (100%)</td><td class="success col_metric">5 / 5 (100%)</td><td class="success col_metric">1 / 1 (100%)</td><td class="success col_metric">2 / 2 (100%)</td>
+            </tr>
+            <tr>
+              <th class="col_unit">TOTALS</th><th class="col_subprogram">5</th><th class="col_complexity">26</th><th class="success col_metric">5 / 5 (100%)</th><th class="success col_metric">66 / 66 (100%)</th><th class="success col_metric">100 / 100 (100%)</th><th class="success col_metric">27 / 27 (100%)</th><th class="success col_metric">7 / 7 (100%)</th>
+            </tr>
+            <tr>
+              <th class="col_unit">GRAND TOTALS</th><th class="col_subprogram">5</th><th class="col_complexity">26</th><th class="success col_metric">5 / 5 (100%)</th><th class="success col_metric">66 / 66 (100%)</th><th class="success col_metric">100 / 100 (100%)</th><th class="success col_metric">27 / 27 (100%)</th><th class="success col_metric">7 / 7 (100%)</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+<!-- VectorCAST Report footer -->
+    </div></div>
+  </body>
+</html>

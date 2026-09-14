@@ -1,0 +1,73 @@
+
+###########################################################################
+## GIP Simulation Build File ( On Target this would be IFS content )
+###########################################################################
+
+###########################################################################
+## Basic Services
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/sbin]             /usr/sbin/slm=slm
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]              /usr/lib/libham.so.2 = libham.so.2
+
+###########################################################################
+## COMM
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/ucl_proxy_vmf=ucl_proxy_vmf
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/vmf=vmf
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/vmf_sender=vmf_sender
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/vmf_listener=vmf_listener
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/lib/libvmf_client.so=libvmf_client.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libvmf_trace.so=libvmf_trace.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libucl_vmf.so = libucl_vmf.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libUclCommon.so = libUclCommon.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libUclDL.so = libUclDL.so
+
+###########################################################################
+## Services
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/power_mgr = power_mgr
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/display_mgr=display_mgr
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/wdg_proxy=wdg_proxy
+
+###########################################################################
+## Display
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/bin]         /usr/bin/resmgr_display = resmgr_display
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libdisplay.so = libdisplay.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libbspal_sys_shutdown.so = libbspal_sys_shutdown.so
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib]         /usr/lib/libbspal_display.so.0.11.0 = libbspal_display.so.0.11.0
+[type=link] /usr/lib/libbspal_display.so.0 = ./libbspal_display.so.0.11.0
+[type=link] /usr/lib/libbspal_display.so = ./libbspal_display.so.0.11.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libbspal_dio.so.0.11.0 = libbspal_dio.so.0.11.0
+[type=link] /usr/lib/libbspal_dio.so = ./libbspal_dio.so.0.11.0
+[type=link] /usr/lib/libbspal_dio.so.0 = ./libbspal_dio.so.0.11.0
+
+###########################################################################
+## Dijkstra
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_logger.so.0.8.0 = libdk_logger.so.0.8.0
+[type=link] /usr/lib/libdk_logger.so.0 = ./libdk_logger.so.0.8.0
+[type=link] /usr/lib/libdk_logger.so = ./libdk_logger.so.0.8.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_runtime.so.0.11.0 = libdk_runtime.so.0.11.0
+[type=link] /usr/lib/libdk_runtime.so.0 = ./libdk_runtime.so.0.11.0
+[type=link] /usr/lib/libdk_runtime.so = ./libdk_runtime.so.0.11.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libosal.so.0.1.1 = libosal.so.0.1.1
+[type=link] /usr/lib/libosal.so.0 = ./libosal.so.0.1.1
+[type=link] /usr/lib/libosal.so = ./libosal.so.0.1.1
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_logger_gpp.so.0.8.0 = libdk_logger_gpp.so.0.8.0
+[type=link] /usr/lib/libdk_logger_gpp.so.0 = ./libdk_logger_gpp.so.0.8.0
+[type=link] /usr/lib/libdk_logger_gpp.so = ./libdk_logger_gpp.so.0.8.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_runtime_gpp.so.0.11.0 = libdk_runtime_gpp.so.0.11.0
+[type=link] /usr/lib/libdk_runtime_gpp.so.0 = ./libdk_runtime_gpp.so.0.11.0
+[type=link] /usr/lib/libdk_runtime_gpp.so = ./libdk_runtime_gpp.so.0.11.0
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libosal_gpp.so.0.1.1 = libosal_gpp.so.0.1.1
+[type=link] /usr/lib/libosal_gpp.so.0 = ./libosal_gpp.so.0.1.1
+[type=link] /usr/lib/libosal_gpp.so = ./libosal_gpp.so.0.1.1
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/usr/lib] /usr/lib/libdk_wdg_client.so = libdk_wdg_client.so
+
+###########################################################################
+## Visteon Dijkstra Configurations
+###########################################################################
+[search=${BSP_INSTALL_DIR}/etc/system_state] /usr/bin/system_state.ini = system_state.ini
+[search=${BSP_INSTALL_DIR}/etc/display_mgr]  /usr/bin/display_mgr.ini = display_mgr.ini
+

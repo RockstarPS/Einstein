@@ -1,0 +1,33 @@
+
+###########################################################################
+## QNX USB Build File
+###########################################################################
+
+###########################################################################
+## QNX Executables - General Commands
+###########################################################################
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]            /sbin/io-usb-otg=io-usb-otg
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]            /sbin/ulink_ctrl=ulink_ctrl
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/sbin]            /sbin/devb-umass=devb-umass
+
+################################################################################################
+## USB host shared libraries
+################################################################################################
+# screen loads libhiddi.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]             /lib/libhiddi.so.1=libhiddi.so.1
+[type=link] /lib/libhiddi.so=/system/lib/libhiddi.so.1
+
+###########################################################################
+## QNX Libraries
+###########################################################################
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]         /lib/dll/devnp-usbdnet.so=devnp-usbdnet.so
+#[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib/dll]         /lib/dll/devnp-asix.so=devnp-asix.so
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]             /lib/libusbdi.so.2=libusbdi.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]             /lib/libusbdci.so.2=libusbdci.so.2
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/lib]             /lib/libpci.so.3.0=libpci.so.3.0
+
+###########################################################################
+## QNX Prebuilt Libraries - Not available on SDP/Conan
+###########################################################################
+[perms=0777 search=${BSP_INSTALL_DIR}/${PLATFORM}/lib/dll]    /lib/dll/devu-hcd-dwc3-xhci.so=devu-hcd-dwc3-xhci.so
+

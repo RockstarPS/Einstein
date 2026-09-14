@@ -1,0 +1,197 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2024. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  LedDrv_Cfg.h                                             *
+*  Module Short Name :  leddrv-tlc6c5724                                     *
+*  VOBName           :                                                       *
+*  Author            : sdv                                                   *
+*  Description       : This file contains external configuration             *
+                       for LedDrv Module                                     *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  Clang                                                  *
+* Target Hardware  :  Independent                                            *
+*                                                                            *
+******************************************************************************/
+
+#ifndef LEDDRV_CFG_H
+#define LEDDRV_CFG_H
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "LedDrv_Types.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+/*Number of Led driver chips connected*/
+#define LEDDRV_NUM_OF_CHIPS                     1U
+
+/*Number of Leds control per chip*/  
+#define LEDDRV_NUM_OF_LEDS_PER_CHIP             24U
+
+/*36 bytes per chip - Based on the register map - groups as 8 bits = 288/8 = 36 bytes*/
+#define LEDDRV_NUM_OF_BYTES_PER_CHIP            36U
+
+/*Number of Leds connected*/
+#define LEDDRV_NUM_OF_LEDS                      (LEDDRV_NUM_OF_CHIPS * LEDDRV_NUM_OF_LEDS_PER_CHIP)
+
+/*Number of data bytes*/
+#define LEDDRV_DATA_LENGTH                      (LEDDRV_NUM_OF_CHIPS * LEDDRV_NUM_OF_BYTES_PER_CHIP)
+
+/*Spi Channel used for communication*/
+#define LEDDRV_SPI_CHANNEL_ID                    4U
+
+/*Switch on LED with last set brightness*/
+// #define LEDDRV_LED_ON_WITH_LAST_SET_BRIGHTNESS
+
+/*Maximum Brightness*/
+#define LEDDRV_MAX_BRIGHTNESS                    (uint16)1000U
+
+/*Maximum Current - msec (Based on the IREF and REF)*/
+#define LEDDRV_MAX_CURRENT                       19 
+
+/*The Maximum value of the GS Mode selected*/
+#define LEDDRV_GS_MAX_VAL                        (uint16)LEDDRV_10BIT_GS_MAX
+
+/*Leds number that required fault detection*/
+#define LEDDRV_NUM_OF_FAULT_DETECTION_LED        1U
+
+#define LEDDRV_DEFAULT_CURRENT           12U
+
+#define LEDDRV_PIN_LATCH   Main_GPIO0_LED_LATCH
+#define LEDDRV_PIN_BLANK   Main_GPIO0_LED_BLANK
+#define LEDDRV_PIN_ERROR   Main_GPIO0_LED_ERR
+
+/*Channel Id for Leds*/
+#define LEFT_RUN_CRANK_BIAS  0U       //OUTR0
+#define LEFT_RIGHT_ILL_LOGO_LED1  1U  //OUTR1
+#define LEFT_RIGHT_ILL_LOGO_LED2  2U  //OUTR2
+#define LEFT_SERVICE_ENGINE_LED  3U   //OUTR3
+#define LEFT_ESC_OFF_LED  4U          //OUTR4
+#define LEFT_ESC_SERVICE_LED  5U      //OUTR5
+#define LEFT_TIRE_PRESSURE_LED  6U    //OUTR6
+#define LEFT_SPARE  7U                //OUTR7
+#define LEFT_EU_BRAKE_LED  8U         //OUTG0
+#define LEFT_DRV_AIR_BAG_LED   9U     //OUTG1
+#define LEFT_SEATBELT_LED   10U       //OUTG2
+#define LEFT_US_BRAKE_LED   11U       //OUTG3
+#define LEFT_ANTILOCK_BRAKE_LED   12U //OUTG4
+#define LEFT_LEFT_ILL_LOGO_LED1   13U //OUTG5
+#define LEFT_LEFT_ILL_LOGO_LED2   14U //OUTG6
+
+#define RIGHT_RUN_CRANK_BIAS  15U       //OUTG7
+#define RIGHT_RIGHT_ILL_LOGO_LED1  16U  //OUTB0
+#define RIGHT_RIGHT_ILL_LOGO_LED2  17U  //OUTB1
+#define RIGHT_SERVICE_ENGINE_LED  18U  //OUTB2
+#define RIGHT_ESC_OFF_LED  19U          //OUTB3
+#define RIGHT_ESC_SERVICE_LED  20U      //OUTB4
+#define RIGHT_TIRE_PRESSURE_LED  21U    //OUTB5
+#define RIGHT_SPARE  22U                //OUTB6
+#define RIGHT_EU_BRAKE_LED  23U         //OUTB7
+
+#define LED_NOT_CONNECTED    255U
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+/*Callback type for Fault*/
+typedef void (*LedDrv_FaultDetectionCallbackType)(uint16 FaultStatus);
+
+/*Function Control FC Settings*/
+typedef struct
+{
+    uint8 LedDrv_ChipIndex; /*Chip Index - 0 to LEDDRV_NUM_OF_CHIPS - 1 - Asceding order*/
+    LedDrv_LedMaskType LedMask; /*LED Mask*/
+    LedDrv_SlewRateType SlewRate; /*Slew Rate*/
+    LedDrv_LODThresoldType LODThresold; /*LOD Threshold*/
+    LedDrv_LSDThresoldType LSDThresold; /*LSD Threshold*/
+    LedDrv_APSCurrentType APSCurrent; /*Adjacent Pin Short Detection sink current*/
+    LedDrv_APSTimeType APSTime; /*Adjacent Pin Short Detection Time*/
+    LedDrv_GSCounterModeType GSCounterMode; /*GS Counter Mode*/
+    LedDrv_TimingResetType TimingReset; /*Timing Reset*/
+    LedDrv_AutoRepeatModeType AutoRepeatMode; /*Auto Repeat Mode*/
+    LedDrv_DcRange_BlueType DcRange_Blue; /*DC Range Blue*/
+    LedDrv_DcRange_GreenType DcRange_Green; /*DC Range Green*/
+    LedDrv_DcRange_RedType DcRange_Red; /*DC Range Red*/
+}LedDrv_FCConfigType;
+
+
+/*Led Driver Pin Configuration*/
+typedef struct
+{
+    uint8 ChipPosition;  /*Chip Position in which the LEDs are connected*/
+    uint8 BitPosition;   /*Bit Position of the LEDs connected to the chip*/
+    uint8 LedIndex;      /*Index of the LED*/
+    uint8 Group; 
+}LedDrv_LedConfigType;
+
+/*Led Driver Fault Detection Configuration*/
+typedef struct 
+{
+    uint8 FaultLedIndex;
+    LedDrv_FaultDetectionCallbackType FaultDetectionCallback;
+}LedDrv_FaultType;
+
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+
+/*****************************************************************************
+*                               Functions                                    *
+******************************************************************************/
+extern const LedDrv_FCConfigType LedDrv_FCConfig[LEDDRV_NUM_OF_CHIPS];
+extern const LedDrv_LedConfigType LedDrv_LedConfig[LEDDRV_NUM_OF_LEDS];
+extern const LedDrv_FaultType LedDrv_LedFault[LEDDRV_NUM_OF_FAULT_DETECTION_LED];
+
+void LedDrv_FaultIndication_Cb(uint16 FaultStatus);
+#endif /* LEDDRV_CFG_H */
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*----------------------------------------------------------------------------
+REVISION HISTORY
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :  
+By                :  SDV
+Traceability      : 
+-----------------------------------------------------------------------------*/

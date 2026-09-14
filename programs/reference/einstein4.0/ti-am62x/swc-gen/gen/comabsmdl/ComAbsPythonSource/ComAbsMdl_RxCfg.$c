@@ -1,0 +1,264 @@
+/********************************************************************************************************************
+* C O P Y R I G H T                                                                                                 *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This Is an unpublished work Of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work And intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* Or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent Or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may Not copy it, use it, modify it, Or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file ComAbsMdl_RxCfg.c
+*    @ingroup ComAbsMdl
+*    @brief This file contains the configuration of the ComAbsMdl component.
+*    Auto generated code in ABASAVAR at 2025-11-14 16:42:48.206591
+********************************************************************************************************************/
+#include "ComAbsMdl.h"
+#include "ComAbsMdl_RxCfg.h"
+#include "Rte_CComAbsMdl_Type.h"
+
+#define COMABSMDL_SEC_CODE_START
+#define COMABSMDL_CORE_CONST_SEC_START
+#define COMABSMDL_CORE_DATA_SEC_START
+#define COMABSMDL_CORE_BSS_SEC_START
+#include "MemMap.h"
+
+// Global status arrays
+uint8 ComAbsMdl_RxCanSignalNRStatus[COMABSMDL_RXCAN_NUM_OF_NR_STATUS_BYTES];
+uint8 ComAbsMdl_RxCanSignal_currentStatus[COMABSMDL_RXCAN_NUM_OF_NR_STATUS_BYTES];
+uint8 ComAbsMdl_RxCanJustRcvdStatus[COMABSMDL_RXCAN_NUM_OF_JUST_RCVD_STATUS_BYTES];
+uint8 ComAbsMdl_RxCanSignalMissingStatus[COMABSMDL_RXCAN_NUM_OF_MISSING_STATUS_BYTES];
+
+/********************************************************************************************************************
+*  PUBLIC CONSTANT AND VARIABLE DEFINITION                                                                          *
+********************************************************************************************************************/
+const ComAbsMdl_RxCanGetSignalFunctConfigType ComAbsMdl_RxCanGetSignalFunctConfig[COMABSMDL_RXCAN_NUM_OF_GET_SIG_FUNCT] =
+{
+    /* { ComAbsMdl_RxCanGetSignalFunctPtrType } */
+    { &ComAbsMdl_RxCanGetDayNightMode },  /* 0 eDayNightModeIn */
+    { &ComAbsMdl_RxCanGetIllumination_level },  /* 1 eIllumination_levelIn */
+    { &ComAbsMdl_RxCanGetAmbient_Light_level },  /* 2 eAmbient_Light_levelIn */
+    { &ComAbsMdl_RxCanGetPowerMode },  /* 3 ePowerModeIn */
+    { &ComAbsMdl_RxCanGetTransportMode },  /* 4 eTransportModeIn */
+    { &ComAbsMdl_RxCanGetGearMode },  /* 5 eGearModeIn */
+    { &ComAbsMdl_RxCanGetGearRecommendation },  /* 6 eGearRecommendationIn */
+    { &ComAbsMdl_RxCanGetGear },  /* 7 eGearIn */
+    { &ComAbsMdl_RxCanGetWarning },  /* 8 eWarningIn */
+    { &ComAbsMdl_RxCanGetGearStatus },  /* 9 eGearStatusIn */
+    { &ComAbsMdl_RxCanGetEngineSpeed },  /* 10 eEngineSpeedIn */
+    { &ComAbsMdl_RxCanGetTurn_Indicator_Control }  /* 11 eTurn_Indicator_ControlIn */
+};
+
+const ComAbsMdl_RxCanGetSignalU8ArrConfigType ComAbsMdl_RxCanGetSignalU8ArrConfig[COMABSMDL_RXCAN_NUM_OF_U8ARR_SIG_CFG] =
+{
+    /* { SignalU8ArrBufferLenIdx, ComAbsMdl_RxCanGetSignalU8ArrFunctPtrType } */
+};
+
+const ComAbsMdl_RxCanSignalConfigType ComAbsMdl_RxCanSignalConfig[eEndOfRxSignal] =
+{
+    /* { SignalLengthInByte , SignalBufferStartIdx , SignalInvalidIdx , SignalGetFunctIdx , */
+    /*   RxSigMonitoringType , SignalMissingCounterValue } */
+    {1U, 0U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 0U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 0 DayNightMode eDayNightModeIn */
+    {1U, 1U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 1U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 1 Illumination_level eIllumination_levelIn */
+    {1U, 2U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 2U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 2 Ambient_Light_level eAmbient_Light_levelIn */
+    {1U, 3U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 3U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 3 PowerMode ePowerModeIn */
+    {1U, 4U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 4U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 4 TransportMode eTransportModeIn */
+    {1U, 5U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 5U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 5 GearMode eGearModeIn */
+    {1U, 6U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 6U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 6 GearRecommendation eGearRecommendationIn */
+    {1U, 7U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 7U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 7 Gear eGearIn */
+    {1U, 8U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 8U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 8 Warning eWarningIn */
+    {1U, 9U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 9U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 9 GearStatus eGearStatusIn */
+    {2U, 0U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 10U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U},  /* 10 EngineSpeed eEngineSpeedIn */
+    {1U, 10U, COMABSMDL_RXCAN_NO_INVALDID_SIGNAL, 11U, (COMABSMDL_RXCAN_SIG_NR_ENABLE | COMABSMDL_RXCAN_SIG_MISSING_ENABLE), 200U}  /* 11 Turn_Indicator_Control eTurn_Indicator_ControlIn */
+};
+
+const ComAbsMdl_RxCanSignalInvalidConfigType ComAbsMdl_RxCanSignalInvalidConfig[COMABSMDL_RXCAN_NUM_OF_INVALID_SIGNALS] =
+{
+    /* { SignalInvalidSigIdx, SignalInvalidCounterValue, pSignalInvalidCheckFunc } */
+    { 0U, 0U, NULL_PTR }
+};
+
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal DayNightMode
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetDayNightMode(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxDayNightMode_DayNightMode(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal Illumination_level
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetIllumination_level(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxIllumination_level_Illumination_level(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal Ambient_Light_level
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetAmbient_Light_level(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxAmbient_Light_level_Ambient_Light_level(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal PowerMode
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetPowerMode(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxPowerMode_PowerMode(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal TransportMode
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetTransportMode(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxTransportMode_TransportMode(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal GearMode
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetGearMode(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxGearMode_GearMode(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal GearRecommendation
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetGearRecommendation(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxGearRecommendation_GearRecommendation(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal Gear
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetGear(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxGear_Gear(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal Warning
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetWarning(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxWarning_Warning(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal GearStatus
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetGearStatus(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxGearStatus_GearStatus(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal EngineSpeed
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetEngineSpeed(uint16 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxEngineSpeed_EngineSpeed(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is used to get the signal Turn_Indicator_Control
+*   @param[in] pSignalValue pointer to signal data
+********************************************************************************************************************/
+void ComAbsMdl_RxCanGetTurn_Indicator_Control(uint8 *pSignalValue)
+{
+    (void)Rte_Read_rp_SR_RxTurn_Indicator_Control_Turn_Indicator_Control(pSignalValue);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is called from COM on successful reception of the message Illum_control
+********************************************************************************************************************/
+void CComAbsMdl_OnDataRx_DayNightMode(void)
+{
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eDayNightModeIn >> 3U], (eDayNightModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eDayNightModeIn >> 3U], (eDayNightModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eDayNightModeIn >> 3U], (eDayNightModeIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eDayNightModeIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eIllumination_levelIn >> 3U], (eIllumination_levelIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eIllumination_levelIn >> 3U], (eIllumination_levelIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eIllumination_levelIn >> 3U], (eIllumination_levelIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eIllumination_levelIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eAmbient_Light_levelIn >> 3U], (eAmbient_Light_levelIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eAmbient_Light_levelIn >> 3U], (eAmbient_Light_levelIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eAmbient_Light_levelIn >> 3U], (eAmbient_Light_levelIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eAmbient_Light_levelIn);
+}
+
+/********************************************************************************************************************
+*   @brief   This method is called from COM on successful reception of the message VehicleControl
+********************************************************************************************************************/
+void CComAbsMdl_OnDataRx_PowerMode(void)
+{
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[ePowerModeIn >> 3U], (ePowerModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[ePowerModeIn >> 3U], (ePowerModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[ePowerModeIn >> 3U], (ePowerModeIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(ePowerModeIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eTransportModeIn >> 3U], (eTransportModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eTransportModeIn >> 3U], (eTransportModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eTransportModeIn >> 3U], (eTransportModeIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eTransportModeIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eGearModeIn >> 3U], (eGearModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eGearModeIn >> 3U], (eGearModeIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eGearModeIn >> 3U], (eGearModeIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eGearModeIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eGearRecommendationIn >> 3U], (eGearRecommendationIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eGearRecommendationIn >> 3U], (eGearRecommendationIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eGearRecommendationIn >> 3U], (eGearRecommendationIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eGearRecommendationIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eGearIn >> 3U], (eGearIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eGearIn >> 3U], (eGearIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eGearIn >> 3U], (eGearIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eGearIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eWarningIn >> 3U], (eWarningIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eWarningIn >> 3U], (eWarningIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eWarningIn >> 3U], (eWarningIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eWarningIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eGearStatusIn >> 3U], (eGearStatusIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eGearStatusIn >> 3U], (eGearStatusIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eGearStatusIn >> 3U], (eGearStatusIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eGearStatusIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eEngineSpeedIn >> 3U], (eEngineSpeedIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eEngineSpeedIn >> 3U], (eEngineSpeedIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eEngineSpeedIn >> 3U], (eEngineSpeedIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eEngineSpeedIn);
+    COMABSMDL_CLEAR_BIT(ComAbsMdl_RxCanSignalNRStatus[eTurn_Indicator_ControlIn >> 3U], (eTurn_Indicator_ControlIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanJustRcvdStatus[eTurn_Indicator_ControlIn >> 3U], (eTurn_Indicator_ControlIn & 0x7U));
+    COMABSMDL_SET_BIT(ComAbsMdl_RxCanSignal_currentStatus[eTurn_Indicator_ControlIn >> 3U], (eTurn_Indicator_ControlIn & 0x7U));
+    ComAbsMdl_ReloadMissingTimer(eTurn_Indicator_ControlIn);
+}
+
+#define {PREFIX}_SEC_CODE_STOP
+#define {PREFIX}_CORE_CONST_SEC_END
+#define {PREFIX}_CORE_DATA_SEC_END
+#define {PREFIX}_CORE_BSS_SEC_END
+#include "MemMap.h"
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

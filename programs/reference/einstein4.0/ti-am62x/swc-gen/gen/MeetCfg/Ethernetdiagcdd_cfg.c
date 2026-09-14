@@ -1,0 +1,440 @@
+/*=================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==================================================================================================================
+**
+** Name:           Ethernetdiagcdd_cfg.c
+**
+** Description:    contains configurable functions to call RTE /API for each service
+**                 
+**
+**===================================================================================================================*/
+
+#ifndef ETHERNETDIAGCDD_CFG_C
+#define ETHERNETDIAGCDD_CFG_C
+
+/*====================================================================================================================
+**                 I N C L U D E   F I L E S
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+#include "Ethernetdiagcdd_cfg.h"
+#include "Rte_CMeetCdd.h"
+#include "Rte_Dcm_Type.h"
+#include "Eth_GeneralTypes.h"
+#ifdef AUTOSAR_ETH_ENABLE
+#include "EthTrcv.h"
+#endif
+
+
+/*====================================================================================================================
+**   I N T E R N A L   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+/*=====================================================================================================================
+**  T Y P E    D E C L A R A T I O N S 
+**====================================================================================================================*/
+#ifdef ETHERNET_SQI_READ
+static Std_ReturnType Ethernetdiag_Sqi_Read(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef ETHERNET_LINK_STATUS_READ
+static Std_ReturnType Ethernetdiag_LinkStatus_Read(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef ETHERNET_TEST_MODE_IOCTRL
+static Std_ReturnType EthernetDiag_EthTestModeCtrl_STA(const uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType EthernetDiag_EthTestModeCtrl_RCTE(uint8 *ErrorCode);
+#endif
+
+#ifdef MEET_GIP_ENABLED
+static GIPDataRquestState Ethernet_GIPDataReqState = eGIP_InitiateRequest;
+#endif
+static Std_ReturnType EthernetDiag_SetTestMode(const uint8 *Data, uint8 *ErrorCode);
+extern FUNC(Std_ReturnType, ETHTRCV_CODE)EthTrcv_SetPhyTestMode(uint8 TrcvIdx,EthTrcv_PhyTestModeType Mode);
+/*=====================================================================================================================
+**  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**====================================================================================================================*/
+#ifdef ETHERNET_SQI_READ
+
+const Ethernetdiag_SqiReadtype Ethernetdiag_SqiReadConfig = 
+{
+  &Ethernetdiag_Sqi_Read,
+};
+#endif
+
+#ifdef ETHERNET_LINK_STATUS_READ
+const Ethernetdiag_LinkStatusReadtype Ethernetdiag_LinkStatusConfig = 
+{
+  &Ethernetdiag_LinkStatus_Read,
+};
+#endif
+
+#ifdef ETHERNET_TEST_MODE_IOCTRL
+const EthTestModeDiag_IOCTL EthTestModeConfig =
+{
+    &EthernetDiag_EthTestModeCtrl_STA,
+    &EthernetDiag_EthTestModeCtrl_RCTE,
+}; 
+#endif
+/*=====================================================================================================================
+**  PRIVATE
+**====================================================================================================================*/
+
+#ifdef ETHERNET_SQI_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Ethernetdiag_Sqi_Read
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read ethernet sqi value
+**
+** Invocation       :  Eth.diagcdd , Function:Ethernet_diag_read_SQI
+**
+** Inputs           :  Data[In]:data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType Ethernetdiag_Sqi_Read(uint8 *Data,uint8 *ErrorCode)
+{		
+	Std_ReturnType ret = E_NOT_OK;
+	
+	#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_ReadWrite;
+    DiagReq.ServiceId = cRead_EthernetSQIValueCtrl;
+    DiagReq.LengthP = cRead_EthernetSQIValue_DataLength;
+    DiagReq.DataP[0u] = MGRDIAGCDD_READ_ACTION;
+	//uint8 idx = 0u;    
+    //for(idx=1u;idx <= DiagReq.LengthP;idx++)
+    //{
+    //    DiagReq.DataP[idx] = Data[idx-1u];
+    //}
+
+    switch(Ethernet_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+            Ethernet_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+			
+         case eGIP_WaitForResponse:
+             ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+             if(ret != DCM_E_PENDING)
+             {
+                 Ethernet_GIPDataReqState = eGIP_InitiateRequest;
+             }
+             break;
+          default:
+              break;
+    }   
+	 
+   	#else
+	{ 
+		ret = E_OK;
+    }
+	#endif
+
+    return ret;
+}
+#endif
+
+#ifdef ETHERNET_LINK_STATUS_READ
+/*=====================================================================================================================
+**
+** Function Name    :  Ethernetdiag_LinkStatus_Read
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to Read Ethernet Link Status 
+**
+** Invocation       :  Eth.diagcdd , Function:Read_EthernetLinkStatus
+**
+** Inputs           :  Data[In]:data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType Ethernetdiag_LinkStatus_Read(uint8 *Data,uint8 *ErrorCode)
+{
+		
+	Std_ReturnType ret = E_NOT_OK;
+	
+	#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_ReadWrite;
+    DiagReq.ServiceId = cRead_EthernetLinkStatusCtrl;
+    DiagReq.LengthP = cRead_EthernetLinkStatus_DataLength;
+    DiagReq.DataP[0u] = MGRDIAGCDD_READ_ACTION;
+	//uint8 idx = 0u;    
+    //for(idx=1u;idx <= DiagReq.LengthP;idx++)
+    //{
+    //    DiagReq.DataP[idx] = Data[idx-1u];
+    //}
+
+    switch(Ethernet_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+            Ethernet_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+			
+         case eGIP_WaitForResponse:
+             ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+             if(ret != DCM_E_PENDING)
+             {
+                 Ethernet_GIPDataReqState = eGIP_InitiateRequest;
+             }
+             break;
+          default:
+              break;
+    }   
+	 
+   	#else
+	{ 
+		ret = E_OK;
+    }
+	#endif
+
+    return ret;
+}
+#endif
+
+
+#ifdef ETHERNET_TEST_MODE_IOCTRL
+/*=====================================================================================================================
+**
+** Function Name    :  EthernetDiag_SetTestMode
+**
+** Visibility       :  Private
+**
+** Description      :  Set the Ethernet PHY into one of the test modes required for Ethernet compliance testing
+**
+** Inputs           :  Data - Contains the test mode to be set.
+**                     ErrorCode - To store error in case of failure.
+**
+** Outputs          :  E_OK/E_NOT_OK
+**
+** Critical Section : No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType EthernetDiag_SetTestMode(const uint8 *Data, uint8 *ErrorCode)
+{
+    Std_ReturnType Ret = E_NOT_OK;
+    uint8 TestMode;
+    EthTrcv_PhyTestModeType EthTestMode;
+
+    if(Data != NULL)
+    {
+        TestMode = Data[0U];
+    switch (TestMode)
+    {
+        case 0x00U:
+        EthTestMode = ETHTRCV_PHYTESTMODE_NONE;  
+            Ret = E_OK;
+        break;
+        case 0x01U:
+            EthTestMode = (EthTrcv_PhyTestModeType)ETHTRCV_PHYTESTMODE_1; /* Output Droop*/
+            Ret = E_OK; 
+        break;
+        case 0x02U:
+            EthTestMode = (EthTrcv_PhyTestModeType)ETHTRCV_PHYTESTMODE_2;/* Master jitter and Clock Frequency*/
+            Ret = E_OK;  
+        break;
+        case 0x03U:
+            EthTestMode = (EthTrcv_PhyTestModeType)ETHTRCV_PHYTESTMODE_3; /*  Slave Jitter*/
+            Ret = E_OK; 
+            break;
+        case 0x04U:
+            EthTestMode = (EthTrcv_PhyTestModeType)ETHTRCV_PHYTESTMODE_4; /*Distortion*/
+            Ret = E_OK; 
+            break;
+        case 0x05U:
+            EthTestMode = (EthTrcv_PhyTestModeType)ETHTRCV_PHYTESTMODE_5;  /* Power Spectral density and Peak differential output*/
+            Ret = E_OK;
+            break;
+
+        default:
+            *ErrorCode = DCM_E_REQUESTOUTOFRANGE;
+            Ret = E_NOT_OK;
+            break;
+        }
+
+        if(E_OK == Ret)
+        {
+            Ret = EthTrcv_SetPhyTestMode(0u, EthTestMode);
+            if(Ret != E_OK)
+            {
+                *ErrorCode = DCM_E_GENERALREJECT;
+                Ret = E_NOT_OK;
+
+            }
+        }
+    }
+
+    return Ret;
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  EthernetDiag_EthTestModeCtrl_STA
+**
+** Visibility       :  Private 
+**
+** Description      :  calls the API to do Ethernet Test mode (Short Term Adjustment)
+**                      
+** Invocation       :  Eth.diagcdd, Function:Ethdiag_EthTestModeControl_STA
+**
+** Inputs           :  Data[In]: Modes to be selected
+**					   Errorcode:to be updated with error code if any
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType EthernetDiag_EthTestModeCtrl_STA(const uint8 *Data, uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	
+	#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_IOCtrl;
+    DiagReq.ServiceId = cIOC_EthernetTestModeCntrl;
+    DiagReq.LengthP = cIOC_EthernetTestModeCntrl_DataLength;
+    DiagReq.DataP[0u] = IOCTRL_STA_ACTION;
+	uint8 idx = 0u;    
+    for(idx=1u;idx <= DiagReq.LengthP;idx++)
+    {
+        DiagReq.DataP[idx] = Data[idx-1u];
+    }
+
+    switch(Ethernet_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+            Ethernet_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+			
+         case eGIP_WaitForResponse:
+             ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+             if(ret != DCM_E_PENDING)
+             {
+                 Ethernet_GIPDataReqState = eGIP_InitiateRequest;
+             }
+             break;
+          default:
+              break;
+    }  	 
+   	#else
+	{ 
+		ret = EthernetDiag_SetTestMode(Data, ErrorCode); /*set the Ethernet test mode*/
+    }
+	#endif
+
+    return ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  EthernetDiag_EthTestModeCtrl_RCTE
+**
+** Visibility       :  Private 
+**
+** Description      :  calls the API to ddo Ethernet Test mode RCTE(Return control to ECU)
+**                      
+** Invocation       :  Eth.diagcdd, Function:Ethdiag_EthTestModeControl_RCTE
+**
+** Inputs           :  Errorcode:to be updated with error code if any
+**					   
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType EthernetDiag_EthTestModeCtrl_RCTE(uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    
+    DiagReq.ActionP = DiagActionType_IOCtrl;
+    DiagReq.ServiceId = cIOC_EthernetTestModeCntrl;
+    DiagReq.LengthP = 1u;
+    DiagReq.DataP[0u] = IOCTRL_RCTE_ACTION;
+    		
+    switch(Ethernet_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+            Ethernet_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+			
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Ethernet_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+               Ethernet_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            break;
+    }  
+   	#else
+	{
+		ret = E_OK;
+    }
+	#endif
+
+    return ret;
+}
+#endif
+
+/*=====================================================================================================================
+**  for each change to this file, be sure to record:                     
+**  1.  who made the change and when the change was made                 
+**  2.  why the change was made and the intended result                
+**  Following block needs to be repeated for each change
+**====================================================================================================================*/
+/*=====================================================================================================================
+**   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  22/August/2022
+** CDSID             :  Ajadhav5
+** Traceability      :  RTC 
+** Change Description:  Initial version of Ethernet DID implementation
+**====================================================================================================================*/
+#endif

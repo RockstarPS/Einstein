@@ -1,0 +1,13 @@
+#ifndef TEST_FT_UPDD_NEWVERSION_UPDCDD_CFG_H_
+#define TEST_FT_UPDD_NEWVERSION_UPDCDD_CFG_H_
+
+#define SPARSE_DECODER_EXT_NAME  "simg"
+
+#define FILL_CHAR_OFF_SIZE (4)
+#define FILL_CHAR_OFF_THR  (FILL_CHAR_OFF_SIZE - 1)
+
+// extern tUPDiIoAdapterVtbl StressIoAdapterVtbl;
+// void StressIoAdapter_SetConcutivePendingStatus(uint32 _PendingCalls);
+// void StressIoAdapter_InjectIoError(boolean _ReadError, boolean _WriteError);
+
+#endif /* TEST_FT_UPDD_NEWVERSION_UPDCDD_CFG_H_ */

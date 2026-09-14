@@ -1,0 +1,20 @@
+[Unit]
+Description=DLT Daemon
+Before=shutdown.target dlt_gateway.service
+Conflicts=shutdown.target
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStartPre=/bin/bash -c 'if [ ! -d /data/dlt_logs ]; then mkdir -p /data/dlt_logs; fi && cp /etc/dlt_logstorage.conf /data/dlt_logs'
+ExecStart=/bin/dlt-daemon -c /etc/dlt.conf
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

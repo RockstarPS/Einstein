@@ -1,0 +1,525 @@
+/*===================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**===================================================================================================================
+**
+** Name:           Cybersecdiagcdd_cfg.h
+**
+** Description:    contains configurable parameters for Memory services
+**                
+**
+**====================================================================================================================*/
+#ifndef CYBERSECDIAGCDD_CFG_H
+#define CYBERSECDIAGCDD_CFG_H
+
+/*====================================================================================================================
+** INCLUDE FILES
+**===================================================================================================================*/
+/*#include "MemLib.h"
+#include "Memdiagcdd.h"
+	 */
+#include "Mgrdiagcdd.h"
+#include "Mgrdiagcdd_cfg.h"
+#include "Cybersecdiagcdd_common_cfg.h"
+#include "Csm.h"
+#ifdef CRYPTO_KEY_MANAGEMENT
+#include "Crc.h"
+#include "Rte_UserTypes.h"
+// #include "s6j3300_TCFCFG.h"
+// #include "s6j3300_SHE.h"
+#endif
+//#include "Rte_Csm_Type.h"
+
+/*====================================================================================================================
+**   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+#define CYBERSECDIAG_IDLE	(uint8)(0U)
+#define CYBERSECDIAG_FAIL	(uint8)(1U)
+#define CYBERSECDIAG_PASS	(uint8)(2U)
+
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+ /* Enable/Disable protect for SA12 & SA13 */
+#define SECTOR_NO_PROTECT_SA12(status)  \
+ TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; \
+TCFCFG0_WSWP0_SWP12 = status; \
+
+#define SECTOR_NO_PROTECT_SA13(status)  \
+ TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; \
+TCFCFG0_WSWP0_SWP13 = status; \
+
+#endif
+
+#ifdef CYBERSECDIAG_ENCRYPT_DECRYPT_NOTIFYHANDLER
+#define 	DECRYPTION_FAILED           						(uint8)(0x00u)
+#define 	DECRYPTION_INPROGRESS       						(uint8)(0x01u)
+#define 	DECRYPTION_COMPLETED         						(uint8)(0x02u)
+#define 	DECRYPTION_DEFAULT         						    (uint8)(0xFFu)
+
+#define 	ENCRYPTION_FAILED           						(uint8)(0x00u)
+#define 	ENCRYPTION_INPROGRESS       						(uint8)(0x01u)
+#define 	ENCRYPTION_COMPLETED         						(uint8)(0x02u)
+#define 	ENCRYPTION_DEFAULT         						    (uint8)(0xFFu)
+#endif
+
+#define AES_IV_KEY1_SLOT_ID 1
+#define AES_IV_KEY2_SLOT_ID 2
+#define AES_IV_KEY3_SLOT_ID 3
+#define AES_IV_KEY4_SLOT_ID 4
+#define CYBERSEC_E_PENDING           3
+
+#define Enc_Dec_Key_ID (CsmConf_CsmKey_CsmKey_AES128Dec)	/* These Enum Configuration will not be used instead RTE itself will provide separate interface for each algorithm */
+#define CSM_KEY_ELEMENT_ID (CRYPTO_KE_CIPHER_KEY)		  /* These Enum Configuration will not be used instead RTE itself will provide separate interface for each algorithm */		
+#define Decryption_Job_ID (CsmConf_CsmJob_CsmJob_AES128Dec)/* These Enum Configuration will not be used instead RTE itself will provide separate interface for each algorithm */
+#define Encryption_Job_ID (CsmConf_CsmJob_CsmJob_AES128Enc) /* These Enum Configuration will not be used instead RTE itself will provide separate interface for each algorithm */
+
+#define  CYBERSECDIAG_AES_KEY_STORAGE_RCTYPE			((uint8)2u )
+#define  CYBERSECDIAG_AES_IV_KEY_STORAGE_RCTYPE			((uint8)2u )
+#define  CYBERSECDIAG_RSA_KEY_STORAGE_RCTYPE			((uint8)2u)
+#define  CYBERSECDIAG_GIP_SECURE_FUSE_RCTYPE			((uint8)1u)
+#define  CYBERSECDIAG_GIP_SYMMETRIC_KEY_RCTYPE			((uint8)2u)
+#define  CYBERSECDIAG_GIP_SECURE_FUSE_LOCK_RCTYPE		((uint8)1u)
+#define  CYBERSECDIAG_BACKUP_BANK_VERIFY_RCTYPE			((uint8)2u)
+#define  CYBERSECDIAG_CYBERSECURITY_KEY_VERIFY_RCTYPE	((uint8)2u)
+
+#define  CYBERSECDIAG_SECURE_SYMMETRIC_KEY_RCTYPE		((uint8)3u)
+#define  CYBERSECDIAG_KEY_VERIFICATION_RCTYPE		    ((uint8)3u)
+
+#define AES_IV_KEY_DEFAULT_ROM_ADDRESS  		(AES_IV_KEY_ROM_OFFSET) 
+#define RSA_KEY_DEFAULT_ROM_ADDRESS  			(RSA_KEY_ROM_OFFSET) 
+
+#define AES_IV_SINGLE_Key_DATA_PAYLOAD			((uint8)24U) 		//Payload Should be in multiple of 8. Data length is 16(Key)+4Bytes
+#define AES_IV_TOTAL_Key_DATA_PAYLOAD     		((uint8)72U) 		//Payload Should be in multiple of 8.Since 3 Keys 24*3=72
+#define AES_IV_SINGLE_Key_ACTUAL_DATA_SIZE		((uint8)20U )		//Data length is 16(Key)+4Bytes w.r.t spec
+#define RSA_key_DATA_PAYLOAD    				((uint16)264U )		//Payload Should be in multiple of 8. Data length is 259(Key)+5Bytes
+#define RSA_Key_length							((uint16)259U)	//refer TCS - only Key size
+#define AES_IV_length							((uint8)16U)			//refer TCS - only IV size
+#define AES_KEY_SIZE							((uint8)112U)
+
+#define SECTOR_ADDRESS_OFFSET_MASK  			((uint32)0x00FFFFFFUL)
+#define SECTOR_SIZE  							((uint32)0x1000UL)	    //0x1000 = 4K 
+#define Key_WorkFlash_Header               		((uint32)0x55AAUL)
+#define Key_WorkFlash_Footer               		((uint32)0x33FFUL)									   
+#define WorkFlash_ErasedValue          	   		((uint8)0xFFU)
+#define Key_MaxLimit           			  	 	((uint8)0xFFU)
+#define HeaderOffset       				  	 	((uint8)8u)
+#define FooterOffset      				   		((uint8)8u)
+
+#define cROUTINE_SECURE_FUSE_PROGRAMMING   		((uint32)0xFEF6UL)
+#define SecureFuse_Programming_Length 	 		((uint8)9u)
+#define cROUTINE_SECURE_FUSE_READING       		((uint32)0xFEF9UL)
+#define SecureFuse_reading_Length 				((uint8)2u)
+
+#define cROUTINE_SECURE_LOCK_PROGRAMMING     	((uint32)0xFEF8UL)
+#define SecureLock_Programming_Length 		 	((uint8)6u)
+#define cROUTINE_SECURE_LOCK_READING     		((uint32)0xFEFAUL)
+#define SecureLock_reading_Length 				((uint8)2u)
+
+#define cROUTINE_SYMMETRIC_KEY_PROGRAMMING  	((uint32)0xFEF7UL)
+#define SymmetricKey_Start_Length 	 			((uint8)35u)
+#define SymmetricKey_Status_Length 				 0u
+
+
+#define cROUTINE_SECURE_SYMMETRIC_AESKEY_PROGRAMMING         ((uint32)0xFEF0UL)
+#define Secure_SymmetricAESKey_Start_Length 	 			 ((uint8)116u)
+
+#define cROUTINE_SECURE_SYMMETRIC_KEY_PROGRAMMING        ( (uint32)0xFEF1UL)
+#define Secure_SymmetricKey_Start_Length 	 			  ((uint8)20u)
+
+#define cROUTINE_BACKUP_BANK_VERIFICATION_PROGRAMMING     ((uint32)0xFEFBUL)
+#define Backup_Bank_VerificationStart_Length 	 		  ((uint8)2u)
+
+#define cROUTINE_SECURE_ASYMMETRIC_KEY_PROGRAMMING  	 ( (uint32)0xFEF2UL)
+#define Secure_ASymmetricKey_Start_Length 	 			  ((uint8)264u)
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+#define cROUTINE_JTAG_PASSWORD_LOCKING  	              (uint32)0xFEF3UL
+#define JtagPassword_Lock_Length 	 			          (uint8)53u
+#endif
+
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+#define cROUTINE_UART_PASSWORD_UNLOCKING  	              (uint32)0xFEE3UL
+#define UART_Password_UnLock_Length 	 			      (uint8)26u
+#endif
+
+#define NO_OF_WORKFLASH_SECTORS_USED			 2u
+#define AES_IV_KEY_SECTOR_NUMBER				 13u				// For WorkFlash Sector 0x0E00D000	- Sector number is 13  
+#define RSA_KEY_SECTOR_NUMBER					 12u				 // For WorkFlash Sector 0x0E00C000	- Sector number is 12  
+
+/*Backupbank verification*/
+
+#define HYPERFLASH_FOTA_START_ADDRESS       	 ((uint32)0x90000000UL)           
+#define HYPERFLASH_FOTA_END_ADDRESS        		 ((uint32)0x903EFFFFUL)             
+#define INTERNALFLASH_FOTA_START_ADDRESS    	 ((uint32)0x01A10000UL )              
+#define INTERNALFLASH_FOTA_END_ADDRESS      	 ((uint32)0x01DFFFFFUL)   
+#define Initial_IV_Addr							 (uint32)(AES_IV_KEY_WFLASH_OFFSET+8u)
+#define TOTAL_APPL_SIZE  						 ((uint32)0x3F0000UL)	//i.e.(0x903EFFFF - 0x90000000 + 1)Bytes
+#define PERIODIC_DECRYPT_LENGTH					 ((uint16)0x100u )            //256 Bytes
+#define HYPERFLASH_CMAC_ADDRESS                  0x903EFFC0
+#define INTERNALFLASH_CMAC_ADDRESS               0x00DFFFC0
+#define PERIODIC_DECRYPT_CMAC_LENGTH             16
+#define Initial_IV_Addr_onlyCMAC                 0x903EFFB0
+
+/*for Cybersecurity key verification*/
+#define AES_Key_status_bit						 ((uint8)0x01u)
+#define AES_IV_status_bit						 ((uint8)0x02u)
+#define RSA_status_bit							 ((uint8)0x04u)
+#define Cybersecurity_FullPASS_status_bit		 ((uint8)0x01F)
+#define cROUTINE_CYBERSECURITY_KEY_VERIFICATION  ((uint32)0xFEFCUL)
+#define CyberSecuritykeyVerify_Length 	 	     0u
+
+#define NO_OF_VALID_CMAC_KEYS 					 ((uint8)3u) 
+#define NO_OF_VALID_ENC_DEC_KEYS				 ((uint8)7u)
+#define AES_KEY_VERIFY_SAMPLE_INPUT_LENGTH		 ((uint8)16u)
+#define CMAC_KEY_EMPTY_STATUS					 ((uint8)5u)			
+
+/*Below macros are need to be mapped to relevant RTEs*/
+typedef struct {
+    uint32 ConfigId;
+    uint32 Mode;
+    const uint8* DataPtr;
+    uint32 DataLen;
+    uint8* ResultPtr;
+    uint32* ResultLenPtr;
+} CyberSec_EncryptParamsType;
+
+void SetCsmCryWrapperKeyID(uint32 x);
+static inline void CYBERSECDIAG_SET_KEY_ID(uint32 x)
+{
+    SetCsmCryWrapperKeyID(x);
+}
+
+static inline Std_ReturnType CYBERSECDIAG_ENCRYPT(const CyberSec_EncryptParamsType* Params)
+{
+    return Csm_Encrypt(Params->ConfigId, 
+                       Params->Mode, 
+                       Params->DataPtr, 
+                       Params->DataLen, 
+                       Params->ResultPtr, 
+                       Params->ResultLenPtr);
+}
+
+static inline Std_ReturnType CYBERSECDIAG_DECRYPT(const CyberSec_EncryptParamsType* Params)
+{
+    return Csm_Decrypt(Params->ConfigId, 
+                       Params->Mode, 
+                       Params->DataPtr, 
+                       Params->DataLen, 
+                       Params->ResultPtr, 
+                       Params->ResultLenPtr);
+}
+
+static inline void CYBERSECDIAG_KEY_ELEMENT_SET(uint32 a, uint32 b, const uint8* c, uint32 d)
+{
+    (void)Csm_KeyElementSet(a, b, c, d);
+}
+
+static inline void CYBERSECDIAG_KEY_SET_VALID(uint32 x)
+{
+    (void)Csm_KeySetValid(x);
+}
+#define SECTOR_LOW_RANGE                      ((uint8)31u)
+#define SECTOR_HIGH_RANGE                     ((uint8)64u)
+#define SECTOR_RANGE_THIRTY_TWO               ((uint8)32u)
+
+#define SHE_ERC_CMDMAIN		(0U)
+#define SHAREDIAG_SIZE_5	(0U)
+#define FBL_BOOTROM_BASE	(0U)
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+extern const uint8 Valid_AES_CMAC_KeyIDs[NO_OF_VALID_CMAC_KEYS]; 	
+extern const uint8 ALL_VALID_VERIFIABLE_KEYIDs[NO_OF_VALID_ENC_DEC_KEYS+NO_OF_VALID_CMAC_KEYS];	
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_LOCK_ENABLE)
+#define SERIAL_NUMBER_SIZE						(uint8)10u
+#define JTAG_ENC_PASSWORD_SIZE 					(uint8)40u	
+#define JTAG_DEC_PASSWORD_SIZE					(uint8)16u
+//JTAG_DATA_WRITE_TOTAL_SIZE considers JTAG password, security write enable bytes and JTAG lock bytes in sequence
+//i.e. difference between last offset to be modified and first offset to be modified in security marker area
+#define JTAG_DATA_WRITE_TOTAL_SIZE				(uint8)172u		
+#endif	
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+#define CYBERSECDIAG_M4M5_SLOT1			(uint8)(1U)
+#define CYBERSECDIAG_M4M5_SLOT4			(uint8)(4U)
+#define CYBERSECDIAG_M4M5_SLOT5			(uint8)(5U)
+#define CYBERSECDIAG_M4M5_SLOT6			(uint8)(6U)
+#define CYBERSECDIAG_KEYMASK        	(0xFFFFFF00U)	//KeyMask   as suggested by CS Team
+#define CYBERSECDIAG_WRITTENKEY_LENGTH	(64U)			//KeyLength as suggested by CS Team
+#define E_KEYNOT_AVAILABLE				(5U)
+#define CYBERSECDIAG_M4M5_SLOTLENGTH	(uint8)(48U)
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+#define CYBERSEC_CRYPTO_BUSY       	CRYPTO_E_BUSY
+#define SAFE_KEY_ID					(uint32)7UL	
+#define SAFE_KEY_ELEMENT_ID			(uint32)4UL	
+#define SAFE_KEY_LENGTH				(uint32)16UL	
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE
+#define JTAG_ENCRYPT_BLOB_LENGTH		(40U)
+#define JTAG_DECRYPT_KEY_SIZE			(16U)
+#define JTAG_SAFE_KEY_LENGTH			(16U)	
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+#define CYBERSECDIAG_CRC_RECIEVED	                (uint8)(90U)
+#define CYBERSECDIAG_KEY_PROGRAMMING_LENGTH			(uint32)(88UL)
+#define CYBERSECDIAG_ADDITIONALBYTES_LENGTH			(uint32)(2UL)
+#define CSM_DECRYPT_KEY_SIZE	                	(uint32)(64UL)
+#define KEY_PROGRAMMING_ELEMENT_ID			        (uint32)(4UL)
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+#define CYBERSECDIAG_KEYVERIFICATION_LENGTH			(uint32)(33UL)
+#endif
+/*======================================================================================================================
+** T Y P E  D E F I N I T I O N S
+**======================================================================================================================*/
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_Secure_Fuse_Programming) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*CybersecDiag_Secure_Fuse_Reading)(uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*Cybersecdiag_SecureLock_programmingResult)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_SecureFuseProgrammingtype; 
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_Symmetric_Key_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*CybersecDiag_Symmetric_Key_Programming_Result)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_SymmetricKeyProgrammingtype; 
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+typedef struct
+{
+	Std_ReturnType (*WrittenKey_Read) (uint8 *Data, uint8 *ErrorCode);
+}CybersecDiag_SHESlotsType;
+#endif
+
+#if defined(CYBERSECDIAG_DATA_LOCK_AES_IV) || defined(CYBERSECDIAG_DATA_LOCK_RSA) || defined(CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV)
+
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_WorkFlash_Sector_Protection_Write) (boolean status);
+	void (*CybersecDiag_WorkFlash_Sector_Protection_Status_Read)(uint8 *Data);
+}Cybersecdiag_WorkFlashSectorProtectiontype; 
+#endif
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_GIP_Key_Verification) (uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_KeyVerificationtype;
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+typedef struct
+{
+	Std_ReturnType (*SecureSymmetricKey_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*SecureSymmetricKey_Programming_Result)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_IVSecureSymmetricKeyProgrammingtype; 
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+typedef struct
+{
+	Std_ReturnType (*SecureSymmetricAESKey_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*SecureSymmetricAESKey_Programming_Result)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_AESSecureSymmetricKeyProgrammingtype; 
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+typedef struct
+{
+	Std_ReturnType (*SecureASymmetricKey_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_SecureASymmetricKeyProgrammingtype;
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+typedef struct
+{
+	Std_ReturnType (*JtagLocking_Start) (uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_JtagLockingtype; 
+#endif
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+typedef struct
+{
+	Std_ReturnType (*UART_UnLocking_Start) (uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_UART_UnLockingtype; 
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+typedef struct
+{
+	Std_ReturnType (*BackupBank_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*BackupBank_Programming_Result)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_BackupBankVerificationtype;
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_SafeKey_Number_Write) (uint8 *Data);
+	Std_ReturnType (*CybersecDiag_SafeKey_Number_Read)(uint8 *Data, uint8 *ErrorCode);
+	Std_ReturnType (*CybersecDiag_SafeKey_Number_SetStatus)(uint8 *Data);
+}Cybersecdiag_SafeKeyNumbertype; 
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE
+typedef struct
+{
+	Std_ReturnType (*JtagPasswordLock_Write) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*JtagPasswordLock_Status)(uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*VerifySafekeyNumber)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_JtagPasswordLockingtype; 
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+typedef struct
+{
+	Std_ReturnType (*CybersecDiag_SecureSymmetric_Key_Programming_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*CybersecDiag_SecureSymmetric_Key_Programming_Result)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_SecureSymmetricKeyProgrammingtype;
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+typedef struct
+{
+	Std_ReturnType (*SymmetricKey_Verification_Start) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*SymmetricKey_Verification_Status)(uint8 *Data,uint8 *ErrorCode);
+}Cybersecdiag_SymmetricKeyVerificationtype;
+#endif
+/*=====================================================================================================================
+*  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**===================================================================================================================*/
+
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+extern const Cybersecdiag_SecureFuseProgrammingtype Cybersecdiag_SecureFuseConfig;
+extern const Cybersecdiag_SecureFuseProgrammingtype Cybersecdiag_SecureLockConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+extern const Cybersecdiag_SymmetricKeyProgrammingtype Cybersecdiag_SymmetricKeyConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+extern const CybersecDiag_SHESlotsType CybersecDiag_SHESlotsConfig;
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+extern const Cybersecdiag_BackupBankVerificationtype Cybersecdiag_BackupBankConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+extern const Cybersecdiag_IVSecureSymmetricKeyProgrammingtype Cybersecdiag_IV_SecureSymmetricKeyConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+extern const Cybersecdiag_AESSecureSymmetricKeyProgrammingtype Cybersecdiag_AES_SecureSymmetricKeyConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+extern const Cybersecdiag_SecureASymmetricKeyProgrammingtype Cybersecdiag_AES_SecureASymmetricKeyConfig;
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+extern const Cybersecdiag_JtagLockingtype Cybersecdiag_Password_JtagLockingConfig;
+#endif
+
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+extern const Cybersecdiag_UART_UnLockingtype Cybersecdiag_Password_UART_UnLockingConfig;
+#endif
+
+#if defined(CYBERSECDIAG_DATA_LOCK_AES_IV) || defined(CYBERSECDIAG_DATA_LOCK_RSA) || defined(CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV)
+extern const Cybersecdiag_WorkFlashSectorProtectiontype WorkFlashProtectionConfig[NO_OF_WORKFLASH_SECTORS_USED];
+#endif
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+extern const Cybersecdiag_KeyVerificationtype Cybersecdiag_KeyVerify;
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_LOCK_ENABLE) && defined(SHAREDIAG_SERVICE_ENABLE_3)
+void Cybersecdiag_Assign_JTAG_Data(uint8 *password,uint8 *JTAGwritedata);
+Std_ReturnType Cybersecdiag_Verify_Serial_Number(uint8 *data);
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+extern const Cybersecdiag_SafeKeyNumbertype Cybersecdiag_SafeKeyNumberConfig;
+#endif
+
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE
+extern const Cybersecdiag_JtagPasswordLockingtype Cybersecdiag_JtagPasswordLockingConfig;
+Std_ReturnType Cybersecdiag_Verify_SafeKey_Number(uint8 *data);
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+extern const Cybersecdiag_SecureSymmetricKeyProgrammingtype Cybersecdiag_SecureSymmetricKeyConfig;
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+extern const Cybersecdiag_SymmetricKeyVerificationtype Cybersecdiag_SymmetricKeyVerify;
+#endif
+
+/*=====================================================================================================================
+*   P U B L I C
+**=====================================================================================================================*/
+
+
+/*======================================================================================================================
+**  for each change to this file, be sure to record:
+**  1.who made the change and when the change was made
+**  2.why the change was made and the intended result
+**  following block needs to be repeated for each change
+**======================================================================================================================*/
+/*   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**======================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  26/May/2023
+** CDSID             :  spalan11
+** Traceability      :  RTC - 2021383
+** Change Description:  New feature implemented UART UNLOCK
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/April/2021
+** CDSID             :  razhakes
+** Traceability      :  RTC - 1214721
+** Change Description:  New feature implemented JTAG_LOCK_ENABLE
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  30/Mar/2021
+** CDSID             :  vkathir1
+** Traceability      :  RTC-1231729
+** Change Description:  CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC macro added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/March/2020
+** CDSID             :  razhakes,bbaliga and dkasiman
+** Traceability      :  RTC 
+** Change Description:  Initial version of security DID implementation
+**====================================================================================================================*/
+#endif
+
+

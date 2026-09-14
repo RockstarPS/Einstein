@@ -1,0 +1,167 @@
+// ============================================================================
+// 
+//                      CONFIDENTIAL VISTEON CORPORATION
+// 
+//  This is an unpublished work of authorship, which contains trade secrets,
+//  created in 2017. Visteon Corporation owns all rights to this work and
+//  intends to maintain it in confidence to preserve its trade secret status.
+//  Visteon Corporation reserves the right, under the copyright laws of the
+//  United States or those of any other country that may have jurisdiction,
+//  to protect this work as an unpublished work, in the event of an
+//  inadvertent or deliberate unauthorized publication. Visteon Corporation
+//  also reserves its rights under all copyright laws to protect this work as
+//  a published work, when appropriate. Those having access to this work may
+//  not copy it, use it, modify it or disclose the information contained in
+//  it without the written authorization of Visteon Corporation.
+// 
+// ============================================================================
+// All SHMI related manual definitions from Message Catalog 
+// ============================================================================
+#ifndef MESSAGE_CATALOG_DEFS_H
+#define MESSAGE_CATALOG_DEFS_H
+
+//Message Catalog Sheet: HmiStatus
+/*#define HMISTATUS_SHMI_READY (0xA0U)*/
+
+#define ABS_BIT_POS (0ULL)
+#define AIRBAG_BIT_POS (1ULL)
+#define BRAKE_RED_BIT_POS (2ULL)
+#define BRAKE_HOLD_BIT_POS (3ULL)
+#define ECB_BIT_POS (4ULL)
+#define EPB_BIT_POS (5ULL)
+#define SLIP_BIT_POS (6ULL)
+#define VSC_OFF_BIT_POS (7ULL)
+#define ABS_US_BIT_POS (8ULL)
+#define BRAKERED_US_BIT_POS (9ULL)
+#define EPB_US_BIT_POS (10ULL)
+#define SAF_RES4_BIT_POS (11ULL)
+#define SAF_RES5_BIT_POS (12ULL)
+#define SAF_RES6_BIT_POS (13ULL)
+#define SAF_RES7_BIT_POS (14ULL)
+#define SAF_RES8_BIT_POS (15ULL)
+#define ADAS_BIT_POS (16ULL)
+#define AUTO_HIGH_BEAM_BIT_POS (17ULL)
+#define BRAKE_HOLD_STANDBY_BIT_POS (18ULL)
+#define FUEL_BIT_POS (19ULL)
+#define FFOG_BIT_POS (20ULL)
+#define HEAD_LAMP_BIT_POS (21ULL)
+#define HIGH_BEAM_BIT_POS (22ULL)
+#define PCS_OFF_BIT_POS (23ULL)
+#define READY_GREEN_BIT_POS (24ULL)
+#define RFOG_BIT_POS (25ULL)
+#define SEAT_BELT_BIT_POS (26ULL)
+#define TAIL_LAMP_BIT_POS (27ULL)
+#define TURN_RIGHT_BIT_POS (28ULL)
+#define TURN_LEFT_BIT_POS (29ULL)
+#define EWT_BIT_POS (30ULL)
+#define LO_GREEN_BIT_POS (31ULL)
+#define SHADED_GREEN_BIT_POS (32ULL)
+#define HI_GREEN_BIT_POS (33ULL)
+#define HI_WHITE_BIT_POS (34ULL)
+#define INFRA_BIT_POS (35ULL)
+#define VEHICLE_BIT_POS (36ULL)
+#define COMBINATION_BIT_POS (37ULL)
+#define SSS_GREEN_BIT_POS (38ULL)
+#define SSS_AMBER_BIT_POS (39ULL)
+#define LCA_WHITE_LEFT_BIT_POS (40ULL)
+#define LCA_GRAY_LEFT_BIT_POS (41ULL)
+#define LCA_GREEN_LEFT_BIT_POS (42ULL)
+#define LCA_WHITE_RIGHT_BIT_POS (43ULL)
+#define LCA_GRAY_RIGHT_BIT_POS (44ULL)
+#define LCA_GREEN_RIGHT_BIT_POS (45ULL)
+#define LTA_GREEN_BIT_POS (46ULL)
+#define LTA_WHITE_BIT_POS (47ULL)
+#define LTA_AMBER_BIT_POS (48ULL)
+#define CC_GREEN_BIT_POS (49ULL)
+#define CC_WHITE_BIT_POS (50ULL)
+#define CC_AMBER_BIT_POS (51ULL)
+#define ACC_GREEN_BIT_POS (52ULL)
+#define ACC_WHITE_BIT_POS (53ULL)
+#define ACC_AMBER_BIT_POS (54ULL)
+#define ACC_DIST4_WHITE_BIT_POS (55ULL)
+#define ACC_DIST3_WHITE_BIT_POS (56ULL)
+#define ACC_DIST2_WHITE_BIT_POS (57ULL)
+#define ACC_DIST1_WHITE_BIT_POS (58ULL)
+#define ACC_DIST4_GREEN_BIT_POS (59ULL)
+#define ACC_DIST3_GREEN_BIT_POS (60ULL)
+#define ACC_DIST2_GREEN_BIT_POS (61ULL)
+#define ACC_DIST1_GREEN_BIT_POS (62ULL)
+#define SL_GREEN_BIT_POS (63ULL)
+
+/* Subsequent 8 bytes(8 to 15) of TT_Status of dynamic data will be processed in ulTTMask1 */
+/* The Bit positions updated below is 64 onwards from VIP */
+#define SL_WHITE_BIT_POS (0ULL)
+#define SL_AMBER_BIT_POS (1ULL)
+#define AUTO_LSD_BIT_POS (2ULL)
+#define DRIVEMODE_SPORT_BIT_POS (3ULL)
+#define DRIVEMODE_ECO_BIT_POS (4ULL)
+#define DRIVEMODE_CUSTOM_BIT_POS (5ULL)
+#define DRIVEMODE_RANGE_BIT_POS (6ULL)
+#define DRIVEMODE_REARCOMFORT_BIT_POS (7ULL)
+#define DRIVEMODE_SNOW_BIT_POS (8ULL)
+#define DRIVEMODE_TRACK_BIT_POS (9ULL)
+#define LDA_RED_BIT_POS (10ULL)
+#define LDA_AMBER_BIT_POS (11ULL)
+#define LDA_WHITE_BIT_POS (12ULL)
+#define LDA_OFF_AMBER_BIT_POS (13ULL)
+#define LDA_OFF_WHITE_BIT_POS (14ULL)
+#define ECO_INDICATOR_BIT_POS (15ULL)
+#define PLUS_SUPPORT_BIT_POS (16ULL)
+#define PKBOPER_TXT_BIT_POS (17ULL)
+#define PKBOPER_IMG_BIT_POS (18ULL)
+#define TPMS_AMBER_BIT_POS (19ULL)
+#define EBP_WIND_TXT_BIT_POS (20ULL)
+#define EBP_WIND_IMG_BIT_POS (21ULL)
+#define FMSR_AMBER_BIT_POS (22ULL)
+#define FMFR_AMBER_BIT_POS (23ULL)
+#define MULTIWEATHER_BIT_POS (24ULL)
+#define HCS_ACCESS_BIT_POS (25ULL)
+#define HCS_LIFT_GREEN_BIT_POS (26ULL)
+#define HCS_LIFT_AMBER_BIT_POS (27ULL)
+#define STEERING_SYS_RED_BIT_POS (28ULL)
+#define STEERING_SYS_AMBER_BIT_POS (29ULL)
+#define DVR_REC_BIT_POS (30ULL)
+#define TJA_WHITE_BIT_POS (31ULL)
+#define TJA_GREEN_BIT_POS (32ULL)
+#define TJA_AMBER_BIT_POS (33ULL)
+#define AHC_L_BIT_POS (34ULL)
+#define AHC_N_BIT_POS (35ULL)
+#define AHC_H_BIT_POS (36ULL)
+#define AHC_H1_BIT_POS (37ULL)
+#define AHC_H2_BIT_POS (38ULL)
+#define AHC_H3_BIT_POS (39ULL)
+#define AHC_M_BIT_POS (40ULL)
+#define AHC_OFF_BIT_POS (41ULL)
+#define AHC_ARROW_UP_GREEN_BIT_POS (42ULL)
+#define AHC_ARROW_UP_GREY_BIT_POS (43ULL)
+#define AHC_ARROW_DOWN_GREEN_BIT_POS (44ULL)
+#define AHC_ARROW_DOWN_GREY_BIT_POS (45ULL)
+#define AHC_VEHICLE_BIT_POS (46ULL)
+#define PARKING_SUPPORT_BRAKE_AMBER_BIT_POS (47ULL)
+#define MULTI_TERRAIN_SUV_GREEN_BIT_POS (48ULL)
+#define MULTI_TERRAIN_TRUCK_GREEN_BIT_POS (49ULL)
+#define DIRT_GREEN_BIT_POS (50ULL)
+#define ROCK_GREEN_BIT_POS (51ULL)
+#define MUD_GREEN_BIT_POS (52ULL)
+#define SAND_GREEN_BIT_POS (53ULL)
+#define DEEP_SNOW_GREEN_BIT_POS (54ULL)
+#define MOGUL_GREEN_BIT_POS (55ULL)
+
+/* The Bit positions updated below is for Telltale RSBR which have independant UCL Message */
+#define RSBR_RS_2_BG_BIT_POS (0U)
+#define RSBR_RS_2_RIGHT_BIT_POS (1U)
+#define RSBR_RS_2_LEFT_BIT_POS (2U)
+#define RSBR_RS_3_BG_BIT_POS (3U)
+#define RSBR_RS_3_RIGHT_BIT_POS (4U)
+#define RSBR_RS_3_MID_BIT_POS (5U)
+#define RSBR_RS_3_LEFT_BIT_POS (6U)
+#define RSBR_RS_3_3_BG_BIT_POS (7U)
+#define RSBR_RS_ROW_1_RIGHT_BIT_POS (8U)
+#define RSBR_RS_ROW_1_MID_BIT_POS (9U)
+#define RSBR_RS_ROW_1_LEFT_BIT_POS (10U)
+#define RSBR_RS_ROW_2_RIGHT_BIT_POS (11U)
+#define RSBR_RS_ROW_2_MID_BIT_POS (12U)
+#define RSBR_RS_ROW_2_LEFT_BIT_POS (13U)
+#define RSBR_DR_SEAT_BELT_BIT_POS (14U)
+
+#endif

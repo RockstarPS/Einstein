@@ -1,0 +1,202 @@
+/********************************************************************************************************************
+* C O P Y R I G H T                                                                                                 *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This Is an unpublished work Of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work And intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* Or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent Or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may Not copy it, use it, modify it, Or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file ComAbsMdl_TxCfg.h
+*    @ingroup ComAbsMdl
+*    @brief This file contains the configuration of the ComAbsMdl component.
+*    Auto generated code in ABASAVAR at 2025-11-14 16:42:48.206591
+********************************************************************************************************************/
+#ifndef COMABSMDL_TX_CFG_H_
+#define COMABSMDL_TX_CFG_H_
+
+/********************************************************************************************************************
+*  PUBLIC MACRO DEFINITIONS                                                                                         *
+********************************************************************************************************************/
+#define COMABSMDL_TXCAN_NUM_OF_U8_BUFFERS		 1U
+#define COMABSMDL_TXCAN_NUM_OF_U16_BUFFERS		 1U
+#define COMABSMDL_TXCAN_NUM_OF_U32_BUFFERS		 1U
+#define COMABSMDL_TXCAN_NUM_OF_U8ARR_BUFFERS		 1U
+#define COMABSMDL_TXCAN_NUM_OF_CONF_STATUS_BYTES		 7U
+#define COMABSMDL_TXCAN_NUM_OF_U8ARR_SIGNAL		 1U
+#define CANABSMDL_TXCAN_NUM_OF_SET_SIG_FUNCT		 48U
+#define COMABSMDL_TXCAN_NO_SET_SIG_FUNCT		     CANABSMDL_TXCAN_NUM_OF_SET_SIG_FUNCT
+#define CANABSMDL_TXCAN_NUM_OF_SET_SIG_U8ARR_FUNCT		 1U
+#define COMABSMDL_TXCAN_NO_SET_SIG_U8ARR_FUNCT		     CANABSMDL_TXCAN_NUM_OF_SET_SIG_U8ARR_FUNCT
+
+/********************************************************************************************************************
+*  PUBLIC TYPE DEFINITIONS                                                                                         *
+********************************************************************************************************************/
+typedef Std_ReturnType (*ComAbsMdl_TxCanSetSignalFunctPtrType)(uint8 * pSignalValue);
+typedef Std_ReturnType (*ComAbsMdl_TxCanSetSignalU8ArrFunctPtrType)(uint8 * pSignalValue,uint32 SignalLength);
+
+#define COMABSMDL_TXCAN_SIG_STATUS_NONE        0x0U
+#define COMABSMDL_TXCAN_KEEP_ALIVE_BIT_ENABLED 0x1U
+#define COMABSMDL_TXCAN_CONFIRMATION_ENABLED   0x2U
+#define COMABSMDL_TXCAN_ISO_SUPPORTED          0x4U
+typedef uint8 ComAbsMdl_TxCanSigalPropsType;
+
+typedef struct
+{
+    uint16    SignalLengthInByte;
+    uint16    SignalBufferStartIdx;
+    uint16	  TxSetSignalIdx;
+    ComAbsMdl_TxCanSigalPropsType TxSigalProps;
+}ComAbsMdl_TxCanSignalConfigType;
+
+/********************************************************************************************************************
+*  PUBLIC CONSTANT AND VARIABLE DECLARTAION                                                                         *
+********************************************************************************************************************/
+extern const ComAbsMdl_TxCanSignalConfigType ComAbsMdl_TxCanSignalConfig[eEndOfTxSignal];
+extern const ComAbsMdl_TxCanSetSignalFunctPtrType ComAbsMdl_TxCanSetSignalFunctPtrConfig[CANABSMDL_TXCAN_NUM_OF_SET_SIG_FUNCT];
+extern const ComAbsMdl_TxCanSetSignalU8ArrFunctPtrType ComAbsMdl_TxCanSetSignalU8ArrFunctPtrConfig[CANABSMDL_TXCAN_NUM_OF_SET_SIG_U8ARR_FUNCT];
+
+/********************************************************************************************************************
+*  PUBLIC FUNCTION PROTOTYPE                                                                         			    *
+********************************************************************************************************************/
+
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_SecureTxByte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_SecureTxByte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_SecureTxByte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_SecureTxByte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_MAC_Tx(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_FV_Tx(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_VehicleSpeedIC(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Illumination_PWM(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte4(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte5(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte6(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug1_Byte7(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte4(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte5(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte6(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug2_Byte7(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte4(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte5(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte6(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug3_Byte7(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte4(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte5(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte6(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug4_Byte7(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte0(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte1(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte2(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte3(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte4(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte5(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte6(uint8 * pSignalValue);
+extern Std_ReturnType ComAbsMdl_TxCanSetSig_Debug5_Byte7(uint8 * pSignalValue);
+
+#ifdef COMABSMDL_TXCAN_ISO_SIGNAL_SUPPORTED
+/*!******************************************************************************************************************
+*   @brief   This method is used to transmit the Iso signal value to the COM.
+*   @param[in] SignalId TX signal id
+*   @param[in] pTxSignalData pointer to the data to be updated in COM
+*   @param[in] SignalLength length of the data to be udpated
+*   @return Std_ReturnType status of the request
+*   E_OK status accepted
+*   E_NOT_OK status not accepted
+********************************************************************************************************************/
+extern Std_ReturnType CComAbsMdl_TxCan_SetIsoSignal(tTxSignalId SignalId,uint8 *pTxSignalData,uint32 SignalLength);
+
+/*!******************************************************************************************************************
+*   @brief   This method is called from ComAbsMdl_Tx on successful transmission of the signal CanTp signal.
+*   Based on the last transmission request the corresponding ISO signal confirmation to be udpated.
+********************************************************************************************************************/
+extern void CComAbsMdl_TxCan_SetIsoSignalConfirmation(tTxSignalId SignalId);
+#endif
+
+/********************************************************************************************************************
+*  Below are the set of signals that can be send via CComAbsMdl_TxCan_SetSignalValue API               			    *
+********************************************************************************************************************/
+/* SignalEnum SignalEnumValue SignalNameInDbc MessageName
+   =CONCATENATE("e",A2,"Out")     0     SecureTxByte0       Cluster_Secure_Tx
+   =CONCATENATE("e",A3,"Out")     1     SecureTxByte1       Cluster_Secure_Tx
+   =CONCATENATE("e",A4,"Out")     2     SecureTxByte2       Cluster_Secure_Tx
+   =CONCATENATE("e",A5,"Out")     3     SecureTxByte3       Cluster_Secure_Tx
+   =CONCATENATE("e",A6,"Out")     4     MAC_Tx              Cluster_Secure_Tx
+   =CONCATENATE("e",A7,"Out")     5     FV_Tx               Cluster_Secure_Tx
+   =CONCATENATE("e",A8,"Out")     6     VehicleSpeedIC      Cluster_Tx_Normal_COM_MS
+   =CONCATENATE("e",A9,"Out")     7     Illumination_PWM    Cluster_Tx_Reduced_Com
+   =CONCATENATE("e",A10,"Out")    8     Debug1_Byte0        Debug_Frame1
+   =CONCATENATE("e",A11,"Out")    9     Debug1_Byte1        Debug_Frame1
+   =CONCATENATE("e",A12,"Out")    10    Debug1_Byte2        Debug_Frame1
+   =CONCATENATE("e",A13,"Out")    11    Debug1_Byte3        Debug_Frame1
+   =CONCATENATE("e",A14,"Out")    12    Debug1_Byte4        Debug_Frame1
+   =CONCATENATE("e",A15,"Out")    13    Debug1_Byte5        Debug_Frame1
+   =CONCATENATE("e",A16,"Out")    14    Debug1_Byte6        Debug_Frame1
+   =CONCATENATE("e",A17,"Out")    15    Debug1_Byte7        Debug_Frame1
+   =CONCATENATE("e",A18,"Out")    16    Debug2_Byte0        Debug_Frame2
+   =CONCATENATE("e",A19,"Out")    17    Debug2_Byte1        Debug_Frame2
+   =CONCATENATE("e",A20,"Out")    18    Debug2_Byte2        Debug_Frame2
+   =CONCATENATE("e",A21,"Out")    19    Debug2_Byte3        Debug_Frame2
+   =CONCATENATE("e",A22,"Out")    20    Debug2_Byte4        Debug_Frame2
+   =CONCATENATE("e",A23,"Out")    21    Debug2_Byte5        Debug_Frame2
+   =CONCATENATE("e",A24,"Out")    22    Debug2_Byte6        Debug_Frame2
+   =CONCATENATE("e",A25,"Out")    23    Debug2_Byte7        Debug_Frame2
+   =CONCATENATE("e",A26,"Out")    24    Debug3_Byte0        Debug_Frame3
+   =CONCATENATE("e",A27,"Out")    25    Debug3_Byte1        Debug_Frame3
+   =CONCATENATE("e",A28,"Out")    26    Debug3_Byte2        Debug_Frame3
+   =CONCATENATE("e",A29,"Out")    27    Debug3_Byte3        Debug_Frame3
+   =CONCATENATE("e",A30,"Out")    28    Debug3_Byte4        Debug_Frame3
+   =CONCATENATE("e",A31,"Out")    29    Debug3_Byte5        Debug_Frame3
+   =CONCATENATE("e",A32,"Out")    30    Debug3_Byte6        Debug_Frame3
+   =CONCATENATE("e",A33,"Out")    31    Debug3_Byte7        Debug_Frame3
+   =CONCATENATE("e",A34,"Out")    32    Debug4_Byte0        Debug_Frame4
+   =CONCATENATE("e",A35,"Out")    33    Debug4_Byte1        Debug_Frame4
+   =CONCATENATE("e",A36,"Out")    34    Debug4_Byte2        Debug_Frame4
+   =CONCATENATE("e",A37,"Out")    35    Debug4_Byte3        Debug_Frame4
+   =CONCATENATE("e",A38,"Out")    36    Debug4_Byte4        Debug_Frame4
+   =CONCATENATE("e",A39,"Out")    37    Debug4_Byte5        Debug_Frame4
+   =CONCATENATE("e",A40,"Out")    38    Debug4_Byte6        Debug_Frame4
+   =CONCATENATE("e",A41,"Out")    39    Debug4_Byte7        Debug_Frame4
+   =CONCATENATE("e",A42,"Out")    40    Debug5_Byte0        Debug_Frame5
+   =CONCATENATE("e",A43,"Out")    41    Debug5_Byte1        Debug_Frame5
+   =CONCATENATE("e",A44,"Out")    42    Debug5_Byte2        Debug_Frame5
+   =CONCATENATE("e",A45,"Out")    43    Debug5_Byte3        Debug_Frame5
+   =CONCATENATE("e",A46,"Out")    44    Debug5_Byte4        Debug_Frame5
+   =CONCATENATE("e",A47,"Out")    45    Debug5_Byte5        Debug_Frame5
+   =CONCATENATE("e",A48,"Out")    46    Debug5_Byte6        Debug_Frame5
+   =CONCATENATE("e",A49,"Out")    47    Debug5_Byte7        Debug_Frame5
+*/
+/********************************************************************************************************************
+*  Below are the set of signals that can be send via CComAbsMdl_TxCan_SetSignalValueU8Arr API          			    *
+********************************************************************************************************************/
+/* SignalEnum SignalEnumValue SignalNameInDbc MessageName
+*/
+
+#endif /* COMABSMDL_TX_CFG_H_ */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/
+
+

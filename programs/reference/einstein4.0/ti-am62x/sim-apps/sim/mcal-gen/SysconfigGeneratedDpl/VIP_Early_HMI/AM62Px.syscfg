@@ -1,0 +1,464 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --device "AM62Px" --package "AMH" --part "Default" --context "mcu-r5fss0-0" --product "MCU_PLUS_SDK_AM62Px@10.00.00"
+ * @versions {"tool":"1.20.0+3587"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const epwm      = scripting.addModule("/drivers/epwm/epwm", {}, false);
+const epwm1     = epwm.addInstance();
+const gpio      = scripting.addModule("/drivers/gpio/gpio", {}, false);
+const gpio1     = gpio.addInstance();
+const gpio2     = gpio.addInstance();
+const gpio3     = gpio.addInstance();
+const gpio4     = gpio.addInstance();
+const gpio5     = gpio.addInstance();
+const gpio6     = gpio.addInstance();
+const gpio7     = gpio.addInstance();
+const gpio8     = gpio.addInstance();
+const gpio9     = gpio.addInstance();
+const gpio10    = gpio.addInstance();
+const gpio11    = gpio.addInstance();
+const gpio12    = gpio.addInstance();
+const gpio13    = gpio.addInstance();
+const gpio14    = gpio.addInstance();
+const gpio15    = gpio.addInstance();
+const gpio16    = gpio.addInstance();
+const gpio17    = gpio.addInstance();
+const gpio18    = gpio.addInstance();
+const gpio19    = gpio.addInstance();
+const gpio20    = gpio.addInstance();
+const gpio21    = gpio.addInstance();
+const gpio22    = gpio.addInstance();
+const gpio23    = gpio.addInstance();
+const gpio24    = gpio.addInstance();
+const gpio25    = gpio.addInstance();
+const gpio26    = gpio.addInstance();
+const gpio27    = gpio.addInstance();
+const gpio28    = gpio.addInstance();
+const gpio29    = gpio.addInstance();
+const gpio30    = gpio.addInstance();
+const gpio31    = gpio.addInstance();
+const gpio32    = gpio.addInstance();
+const gpio33    = gpio.addInstance();
+const gpio34    = gpio.addInstance();
+const gpio35    = gpio.addInstance();
+const gpio36    = gpio.addInstance();
+const gpio37    = gpio.addInstance();
+const gpio38    = gpio.addInstance();
+const gpio39    = gpio.addInstance();
+const gpio40    = gpio.addInstance();
+const gpio41    = gpio.addInstance();
+const gpio42    = gpio.addInstance();
+const gpio43    = gpio.addInstance();
+const gpio44    = gpio.addInstance();
+const gpio45    = gpio.addInstance();
+const gpio46    = gpio.addInstance();
+const gpio47    = gpio.addInstance();
+const gpio48    = gpio.addInstance();
+const gpio49    = gpio.addInstance();
+const gpio50    = gpio.addInstance();
+const gpio51    = gpio.addInstance();
+const i2c       = scripting.addModule("/drivers/i2c/i2c", {}, false);
+const i2c1      = i2c.addInstance();
+const i2c2      = i2c.addInstance();
+const i2c3      = i2c.addInstance();
+const mcspi     = scripting.addModule("/drivers/mcspi/mcspi", {}, false);
+const mcspi1    = mcspi.addInstance();
+const mcspi2    = mcspi.addInstance();
+const mcspi3    = mcspi.addInstance();
+const uart      = scripting.addModule("/drivers/uart/uart", {}, false);
+const uart1     = uart.addInstance();
+const uart2     = uart.addInstance();
+const debug_log = scripting.addModule("/kernel/dpl/debug_log");
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+epwm1.$name            = "CONFIG_EPWM1";
+epwm1.EPWM.$assign     = "EHRPWM1";
+epwm1.EPWM.A.$assign   = "MCASP0_AXR1";
+epwm1.EPWM.B.$used     = false;
+epwm1.EPWM.SYNCO.$used = false;
+epwm1.EPWM.SYNCI.rx    = false;
+epwm1.EPWM.SYNCI.$used = false;
+
+gpio1.useMcuDomainPeripherals = false;
+gpio1.$name                   = "DI_FALD_PG";
+gpio1.GPIO.$assign            = "GPIO0";
+gpio1.GPIO.gpioPin.$assign    = "GPMC0_DIR";
+
+gpio2.pinDir                  = "OUTPUT";
+gpio2.useMcuDomainPeripherals = false;
+gpio2.$name                   = "DO_SOC_PWR_LATCH";
+gpio2.GPIO.gpioPin.$assign    = "RGMII2_RD2";
+
+gpio3.$name                   = "TEST_GPIO2";
+gpio3.useMcuDomainPeripherals = false;
+gpio3.pinDir                  = "OUTPUT";
+gpio3.GPIO.gpioPin.$assign    = "RGMII2_RD3";
+
+gpio4.$name                    = "DO_3V3_DISP";
+gpio4.pinDir                   = "OUTPUT";
+gpio4.MCU_GPIO.$assign         = "MCU_GPIO0";
+gpio4.MCU_GPIO.gpioPin.rx      = false;
+gpio4.MCU_GPIO.gpioPin.$assign = "PMIC_LPM_EN0";
+
+gpio5.$name                   = "DO_DISP_RESET";
+gpio5.useMcuDomainPeripherals = false;
+gpio5.pinDir                  = "OUTPUT";
+gpio5.GPIO.gpioPin.rx         = false;
+gpio5.GPIO.gpioPin.$assign    = "VOUT0_DATA7";
+
+gpio6.$name                   = "DO_DISP_STBY";
+gpio6.useMcuDomainPeripherals = false;
+gpio6.pinDir                  = "OUTPUT";
+gpio6.GPIO.gpioPin.rx         = false;
+gpio6.GPIO.gpioPin.$assign    = "MMC1_DAT0";
+
+gpio7.pinDir                  = "OUTPUT";
+gpio7.$name                   = "DO_MD_TOUCH_RST";
+gpio7.useMcuDomainPeripherals = false;
+gpio7.GPIO.$assign            = "GPIO0";
+gpio7.GPIO.gpioPin.rx         = false;
+gpio7.GPIO.gpioPin.$assign    = "GPMC0_CSn0";
+
+gpio8.$name                   = "DO_1V2_EN";
+gpio8.pinDir                  = "OUTPUT";
+gpio8.useMcuDomainPeripherals = false;
+gpio8.GPIO.gpioPin.rx         = false;
+gpio8.GPIO.gpioPin.$assign    = "RGMII2_RXC";
+
+gpio9.$name                    = "DO_EN_5V";
+gpio9.pinDir                   = "OUTPUT";
+gpio9.MCU_GPIO.gpioPin.rx      = false;
+gpio9.MCU_GPIO.gpioPin.$assign = "MCU_UART0_CTSn";
+
+gpio10.$name                    = "DO_LIN_NSLP";
+gpio10.pinDir                   = "OUTPUT";
+gpio10.MCU_GPIO.gpioPin.rx      = false;
+gpio10.MCU_GPIO.gpioPin.$assign = "WKUP_UART0_RTSn";
+
+gpio11.$name                   = "DO_RTC_INTN";
+gpio11.pinDir                  = "OUTPUT";
+gpio11.useMcuDomainPeripherals = false;
+gpio11.GPIO.gpioPin.rx         = false;
+gpio11.GPIO.gpioPin.$assign    = "MMC2_SDCD";
+
+gpio12.$name                   = "LED_LATCH";
+gpio12.pinDir                  = "OUTPUT";
+gpio12.useMcuDomainPeripherals = false;
+gpio12.GPIO.$assign            = "GPIO0";
+gpio12.GPIO.gpioPin.$assign    = "VOUT0_DATA11";
+
+gpio13.$name                   = "LED_BLANK";
+gpio13.useMcuDomainPeripherals = false;
+gpio13.GPIO.$assign            = "GPIO0";
+gpio13.GPIO.gpioPin.$assign    = "VOUT0_DATA10";
+
+gpio14.$name                   = "LED_GCLK";
+gpio14.pinDir                  = "OUTPUT";
+gpio14.useMcuDomainPeripherals = false;
+gpio14.GPIO.$assign            = "GPIO0";
+gpio14.GPIO.gpioPin.$assign    = "VOUT0_DATA12";
+
+gpio15.$name                   = "LED_ERR";
+gpio15.useMcuDomainPeripherals = false;
+gpio15.GPIO.$assign            = "GPIO0";
+gpio15.GPIO.gpioPin.$assign    = "VOUT0_DATA13";
+
+gpio16.$name                    = "PIN_WKUP_UART0_CTSN";
+gpio16.pinDir                   = "OUTPUT";
+gpio16.MCU_GPIO.gpioPin.rx      = false;
+gpio16.MCU_GPIO.gpioPin.pu_pd   = "pu";
+gpio16.MCU_GPIO.gpioPin.$assign = "WKUP_UART0_CTSn";
+
+gpio17.$name                   = "DI_SBATT2_ERR";
+gpio17.useMcuDomainPeripherals = false;
+gpio17.GPIO.$assign            = "GPIO0";
+gpio17.GPIO.gpioPin.$assign    = "GPMC0_ADVn_ALE";
+
+gpio18.$name                   = "DI_MD_TOUCH_INTN";
+gpio18.useMcuDomainPeripherals = false;
+gpio18.GPIO.$assign            = "GPIO0";
+gpio18.GPIO.gpioPin.$assign    = "GPMC0_CSn1";
+
+gpio19.$name                   = "DI_BL_FAULT";
+gpio19.useMcuDomainPeripherals = false;
+gpio19.GPIO.$assign            = "GPIO0";
+gpio19.GPIO.gpioPin.$assign    = "VOUT0_DATA8";
+
+gpio20.$name                   = "DI_SOC_FPDLINK3_LOCK";
+gpio20.useMcuDomainPeripherals = false;
+gpio20.GPIO.$assign            = "GPIO0";
+gpio20.GPIO.gpioPin.$assign    = "MMC2_DAT2";
+
+gpio21.$name                   = "DI_SOC_FPDLINK3_PASS";
+gpio21.useMcuDomainPeripherals = false;
+gpio21.GPIO.$assign            = "GPIO0";
+gpio21.GPIO.gpioPin.$assign    = "MMC2_CLK";
+
+gpio22.$name                   = "DI_ENET_MII_INT";
+gpio22.useMcuDomainPeripherals = false;
+gpio22.GPIO.$assign            = "GPIO0";
+gpio22.GPIO.gpioPin.$assign    = "RGMII2_TD0";
+
+gpio23.$name                   = "DI_IGN_MON";
+gpio23.useMcuDomainPeripherals = false;
+gpio23.GPIO.$assign            = "GPIO0";
+gpio23.GPIO.gpioPin.$assign    = "RGMII2_TD1";
+
+gpio24.$name                   = "DI_CABLE_DETECT";
+gpio24.useMcuDomainPeripherals = false;
+gpio24.GPIO.$assign            = "GPIO1";
+gpio24.GPIO.gpioPin.$assign    = "RGMII2_RX_CTL";
+
+gpio25.$name                   = "DI_TCON_IND_OUT";
+gpio25.useMcuDomainPeripherals = false;
+gpio25.GPIO.$assign            = "GPIO1";
+gpio25.GPIO.gpioPin.$assign    = "MCASP0_ACLKX";
+
+gpio26.$name                   = "DI_MCU_FALD_CONN_CHK";
+gpio26.useMcuDomainPeripherals = false;
+gpio26.GPIO.$assign            = "GPIO1";
+gpio26.GPIO.gpioPin.$assign    = "RGMII2_RD0";
+
+gpio27.$name                   = "DI_LDO_1V2_FAULTN";
+gpio27.useMcuDomainPeripherals = false;
+gpio27.GPIO.$assign            = "GPIO1";
+gpio27.GPIO.gpioPin.$assign    = "RGMII2_RD1";
+
+gpio28.$name                   = "DI_TFT_ER_DET";
+gpio28.useMcuDomainPeripherals = false;
+gpio28.GPIO.$assign            = "GPIO1";
+gpio28.GPIO.gpioPin.$assign    = "MMC1_SDCD";
+
+gpio29.$name                    = "DO_MCU_RESETSTAZ";
+gpio29.pinDir                   = "OUTPUT";
+gpio29.MCU_GPIO.$assign         = "MCU_GPIO0";
+gpio29.MCU_GPIO.gpioPin.$assign = "MCU_RESETSTATz";
+
+gpio30.$name                   = "DO_VPP_EN";
+gpio30.pinDir                  = "OUTPUT";
+gpio30.useMcuDomainPeripherals = false;
+gpio30.GPIO.$assign            = "GPIO0";
+gpio30.GPIO.gpioPin.rx         = false;
+gpio30.GPIO.gpioPin.$assign    = "VOUT0_DATA2";
+
+gpio31.$name                   = "DO_MD_GNSS_BOOT_EN";
+gpio31.pinDir                  = "OUTPUT";
+gpio31.useMcuDomainPeripherals = false;
+gpio31.GPIO.$assign            = "GPIO0";
+gpio31.GPIO.gpioPin.rx         = false;
+gpio31.GPIO.gpioPin.$assign    = "VOUT0_DATA3";
+
+gpio32.$name                   = "DO_MD_GNSS_RESETP";
+gpio32.pinDir                  = "OUTPUT";
+gpio32.useMcuDomainPeripherals = false;
+gpio32.GPIO.$assign            = "GPIO0";
+gpio32.GPIO.gpioPin.rx         = false;
+gpio32.GPIO.gpioPin.$assign    = "VOUT0_DATA5";
+
+gpio33.$name                   = "DO_MD_GNSS_PWR_EN";
+gpio33.pinDir                  = "OUTPUT";
+gpio33.useMcuDomainPeripherals = false;
+gpio33.GPIO.$assign            = "GPIO0";
+gpio33.GPIO.gpioPin.rx         = false;
+gpio33.GPIO.gpioPin.$assign    = "VOUT0_DATA6";
+
+gpio34.$name                   = "DO_BLU_OPAMP_PWR_EN";
+gpio34.pinDir                  = "OUTPUT";
+gpio34.useMcuDomainPeripherals = false;
+gpio34.GPIO.$assign            = "GPIO0";
+gpio34.GPIO.gpioPin.rx         = false;
+gpio34.GPIO.gpioPin.$assign    = "VOUT0_DATA9";
+
+gpio35.$name                   = "DO_BLU_DWALED_EN";
+gpio35.pinDir                  = "OUTPUT";
+gpio35.useMcuDomainPeripherals = false;
+gpio35.GPIO.gpioPin.rx         = false;
+gpio35.GPIO.gpioPin.$assign    = "VOUT0_DATA15";
+
+gpio36.$name                   = "DO_TCON_BYPASS_MODE";
+gpio36.pinDir                  = "OUTPUT";
+gpio36.useMcuDomainPeripherals = false;
+gpio36.GPIO.$assign            = "GPIO0";
+gpio36.GPIO.gpioPin.rx         = false;
+gpio36.GPIO.gpioPin.$assign    = "VOUT0_HSYNC";
+
+gpio37.$name                   = "DO_TCON_BYPASS_SEL0";
+gpio37.pinDir                  = "OUTPUT";
+gpio37.useMcuDomainPeripherals = false;
+gpio37.GPIO.$assign            = "GPIO0";
+gpio37.GPIO.gpioPin.rx         = false;
+gpio37.GPIO.gpioPin.$assign    = "VOUT0_DE";
+
+gpio38.$name                   = "DO_TCON_BYPASS_SEL1";
+gpio38.pinDir                  = "OUTPUT";
+gpio38.useMcuDomainPeripherals = false;
+gpio38.GPIO.$assign            = "GPIO0";
+gpio38.GPIO.gpioPin.rx         = false;
+gpio38.GPIO.gpioPin.$assign    = "VOUT0_VSYNC";
+
+gpio39.$name                   = "DO_SOC_FPDLINK3_PDB";
+gpio39.pinDir                  = "OUTPUT";
+gpio39.useMcuDomainPeripherals = false;
+gpio39.GPIO.$assign            = "GPIO0";
+gpio39.GPIO.gpioPin.rx         = false;
+gpio39.GPIO.gpioPin.$assign    = "MMC2_DAT1";
+
+gpio40.$name                   = "DO_SOC_FPDLINK3_INTB";
+gpio40.pinDir                  = "OUTPUT";
+gpio40.useMcuDomainPeripherals = false;
+gpio40.GPIO.$assign            = "GPIO0";
+gpio40.GPIO.gpioPin.rx         = false;
+gpio40.GPIO.gpioPin.$assign    = "MMC2_DAT0";
+
+gpio41.$name                   = "DO_SOC_FPDLINK3_BISTEN";
+gpio41.pinDir                  = "OUTPUT";
+gpio41.useMcuDomainPeripherals = false;
+gpio41.GPIO.$assign            = "GPIO0";
+gpio41.GPIO.gpioPin.rx         = false;
+gpio41.GPIO.gpioPin.$assign    = "MMC2_CMD";
+
+gpio42.pinDir                  = "OUTPUT";
+gpio42.useMcuDomainPeripherals = false;
+gpio42.$name                   = "DO_EN_BUCK_FALD";
+gpio42.GPIO.$assign            = "GPIO1";
+gpio42.GPIO.gpioPin.rx         = false;
+
+gpio43.$name                   = "DO_MCU_AMUX_S1";
+gpio43.useMcuDomainPeripherals = false;
+gpio43.pinDir                  = "OUTPUT";
+gpio43.GPIO.$assign            = "GPIO1";
+gpio43.GPIO.gpioPin.rx         = false;
+gpio43.GPIO.gpioPin.$assign    = "MCASP0_AFSX";
+
+gpio44.$name                   = "DO_MCU_AMUX_S0";
+gpio44.pinDir                  = "OUTPUT";
+gpio44.useMcuDomainPeripherals = false;
+gpio44.GPIO.$assign            = "GPIO1";
+gpio44.GPIO.gpioPin.rx         = false;
+gpio44.GPIO.gpioPin.$assign    = "MCASP0_AFSR";
+
+gpio45.$name                   = "DESER_SPI1_DO";
+gpio45.pinDir                  = "OUTPUT";
+gpio45.useMcuDomainPeripherals = false;
+gpio45.GPIO.$assign            = "GPIO1";
+gpio45.GPIO.gpioPin.rx         = false;
+gpio45.GPIO.gpioPin.$assign    = "MMC1_DAT3";
+
+gpio46.$name                   = "DO_SOC_TCON_GRBN";
+gpio46.pinDir                  = "OUTPUT";
+gpio46.useMcuDomainPeripherals = false;
+gpio46.GPIO.$assign            = "GPIO1";
+gpio46.GPIO.gpioPin.rx         = false;
+gpio46.GPIO.gpioPin.$assign    = "MMC1_DAT1";
+
+gpio47.$name                   = "DO_TFT_CSB";
+gpio47.pinDir                  = "OUTPUT";
+gpio47.useMcuDomainPeripherals = false;
+gpio47.GPIO.$assign            = "GPIO1";
+gpio47.GPIO.gpioPin.rx         = false;
+gpio47.GPIO.gpioPin.$assign    = "MMC1_SDWP";
+
+gpio48.$name                    = "DO_TFT_BL_EN";
+gpio48.pinDir                   = "OUTPUT";
+gpio48.MCU_GPIO.$assign         = "MCU_GPIO0";
+gpio48.MCU_GPIO.gpioPin.rx      = false;
+gpio48.MCU_GPIO.gpioPin.$assign = "WKUP_CLKOUT0";
+
+gpio49.$name = "CONFIG_GPIO1";
+
+gpio50.$name                    = "CONFIG_GPIO2";
+gpio50.MCU_GPIO.gpioPin.rx      = false;
+gpio50.MCU_GPIO.gpioPin.$assign = "WKUP_I2C0_SCL";
+
+gpio51.$name                    = "CONFIG_GPIO3";
+gpio51.MCU_GPIO.gpioPin.$assign = "MCU_MCAN1_TX";
+
+i2c1.$name               = "CONFIG_I2C0";
+i2c1.MCU_I2C.$assign     = "MCU_I2C0";
+i2c1.MCU_I2C.SCL.$assign = "MCU_I2C0_SCL";
+i2c1.MCU_I2C.SDA.$assign = "MCU_I2C0_SDA";
+i2c1.I2C_child.$name     = "drivers_i2c_v0_i2c_v0_template0";
+
+i2c2.$name                   = "CONFIG_I2C1";
+i2c2.useMcuDomainPeripherals = false;
+i2c2.I2C_child.$name         = "drivers_i2c_v0_i2c_v0_template1";
+i2c2.I2C.$assign             = "I2C3";
+i2c2.I2C.SCL.$assign         = "UART0_CTSn";
+i2c2.I2C.SDA.$assign         = "UART0_RTSn";
+
+i2c3.$name                   = "CONFIG_I2C3";
+i2c3.useMcuDomainPeripherals = false;
+i2c3.I2C_child.$name         = "drivers_i2c_v0_i2c_v0_template2";
+i2c3.I2C.$assign             = "I2C1";
+
+mcspi1.$name                           = "CONFIG_MCSPI0";
+mcspi1.mcspiChannel[0].$name           = "CONFIG_MCSPI_CH0";
+mcspi1.mcspiChannel[0].MCU_CSn.$assign = "MCU_SPI0_CS1";
+
+mcspi2.$name                   = "CONFIG_MCSPI1";
+mcspi2.useMcuDomainPeripherals = false;
+mcspi2.pinMode                 = 3;
+mcspi2.mcspiChannel[0].$name   = "CONFIG_MCSPI_CH1";
+mcspi2.SPI.$assign             = "SPI2";
+
+mcspi3.$name                       = "CONFIG_MCSPI2";
+mcspi3.useMcuDomainPeripherals     = false;
+mcspi3.mcspiChannel[0].$name       = "CONFIG_MCSPI_CH2";
+mcspi3.mcspiChannel[0].CSn.$assign = "SPI0_CS1";
+mcspi3.SPI.$assign                 = "SPI0";
+mcspi3.SPI.CLK.$assign             = "SPI0_CLK";
+mcspi3.SPI.D0.$assign              = "SPI0_D0";
+mcspi3.SPI.D1.$assign              = "SPI0_D1";
+
+uart1.$name                = "CONFIG_UART0";
+uart1.MCU_UART.$assign     = "MCU_USART0";
+uart1.MCU_UART.RXD.$assign = "MCU_UART0_RXD";
+uart1.MCU_UART.TXD.$assign = "MCU_UART0_TXD";
+
+uart2.$name                      = "CONFIG_UART1";
+uart2.useMcuDomainPeripherals    = false;
+uart2.useWakeupDomainPeripherals = true;
+uart2.WKUP_UART.$assign          = "WKUP_USART0";
+uart2.WKUP_UART.RXD.$assign      = "WKUP_UART0_RXD";
+uart2.WKUP_UART.TXD.$assign      = "WKUP_UART0_TXD";
+
+debug_log.enableLogZoneError   = false;
+debug_log.enableLogZoneWarning = false;
+debug_log.enableCssLog         = false;
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+gpio2.GPIO.$suggestSolution              = "GPIO1";
+gpio3.GPIO.$suggestSolution              = "GPIO1";
+gpio5.GPIO.$suggestSolution              = "GPIO0";
+gpio6.GPIO.$suggestSolution              = "GPIO1";
+gpio8.GPIO.$suggestSolution              = "GPIO1";
+gpio9.MCU_GPIO.$suggestSolution          = "MCU_GPIO0";
+gpio10.MCU_GPIO.$suggestSolution         = "MCU_GPIO0";
+gpio11.GPIO.$suggestSolution             = "GPIO0";
+gpio16.MCU_GPIO.$suggestSolution         = "MCU_GPIO0";
+gpio35.GPIO.$suggestSolution             = "GPIO0";
+gpio42.GPIO.gpioPin.$suggestSolution     = "RGMII2_TD3";
+gpio49.MCU_GPIO.$suggestSolution         = "MCU_GPIO0";
+gpio49.MCU_GPIO.gpioPin.$suggestSolution = "MCU_SPI0_CS0";
+gpio50.MCU_GPIO.$suggestSolution         = "MCU_GPIO0";
+gpio51.MCU_GPIO.$suggestSolution         = "MCU_GPIO0";
+i2c3.I2C.SCL.$suggestSolution            = "I2C1_SCL";
+i2c3.I2C.SDA.$suggestSolution            = "I2C1_SDA";
+mcspi1.MCU_SPI.$suggestSolution          = "MCU_SPI0";
+mcspi1.MCU_SPI.CLK.$suggestSolution      = "MCU_SPI0_CLK";
+mcspi1.MCU_SPI.D0.$suggestSolution       = "MCU_SPI0_D0";
+mcspi1.MCU_SPI.D1.$suggestSolution       = "MCU_SPI0_D1";
+mcspi2.SPI.CLK.$suggestSolution          = "MCASP0_ACLKR";
+mcspi2.SPI.D0.$suggestSolution           = "MCASP0_AXR3";
+mcspi2.SPI.D1.$suggestSolution           = "MCASP0_AXR2";

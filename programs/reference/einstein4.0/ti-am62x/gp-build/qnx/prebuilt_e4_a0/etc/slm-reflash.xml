@@ -1,0 +1,29 @@
+<SLM:system>
+	<!-- Basic Services -->
+	<SLM:component name="pipe">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /sbin/pipe</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/pipe</SLM:waitfor>
+	</SLM:component>
+	<!-- Basic Drivers -->
+	<SLM:component name="devc-seromap">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /sbin/devc-seromap -e -F 0x02800000,210</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/ser1</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="devb-sdmmc-am65x">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F /sbin/devb-sdmmc-am65x qnx6 trim=enable cam cache,ra=128k:4096k,memory=/memory/below4G/ram/sysram,maxio=256,disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@  disk name=emmc sdmmc partitions=on,pwroff_notify=short sdio addr=0x0fa10000,irq=165,emmc,bs=sscfg=0x8000 disk name=emmc,naming=0#@</SLM:args>
+        <SLM:waitfor wait="pathname">/dev/emmc0</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="devf-j7-ospi">
+		<SLM:command>on</SLM:command>
+		<SLM:args>-R 0x0F /sbin/devf-j7-ospi -s soc=rclk=200000000:base=0xfc40000:clk=25000000:rdelay=4</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/fs0</SLM:waitfor>
+	</SLM:component>
+	<SLM:component name="io-usb-otg">
+		<SLM:command>on</SLM:command>
+        <SLM:args>-R 0x0F io-usb-otg -d dwc3-xhci ioport=0x31000000,irq=220</SLM:args>
+		<SLM:waitfor wait="pathname">/dev/usb/io-usb-otg</SLM:waitfor>
+	</SLM:component>
+</SLM:system>

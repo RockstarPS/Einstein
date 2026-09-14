@@ -1,0 +1,21 @@
+[Unit]
+Description=UCL proxy VMF appliation
+After=vmf.service power_mgr.service
+Wants=vmf.service
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+DefaultDependencies=no
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/usr/bin/ucl_proxy_vmf
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=10
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=sysinit.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=Health manager - Watchdog Proxy
+After=vmf.service dlt-daemon.service dlt-system.service ucl_proxy_vmf.service power_mgr.service display_mgr.service hmi-app.service safeHmi.service
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH"
+ExecStartPre=/bin/sleep 10
+ExecStart=/system/usr/bin/wdg_proxy
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=mulit-user.target

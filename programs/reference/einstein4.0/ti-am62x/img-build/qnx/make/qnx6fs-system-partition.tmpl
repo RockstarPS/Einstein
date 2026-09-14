@@ -1,0 +1,85 @@
+
+### System Partition Build File
+###
+### [2022] Visteon Corporation
+### All Rights Reserved.
+
+#ifdef SECURE_FS
+[num_sectors=258048]
+#else
+[num_sectors=262144]
+#endif
+
+[uid=0 gid=0 perms=0777 dperms=0777]
+
+###########################################################################
+## Create Required Directories
+###########################################################################
+[type=dir] /bin
+[type=dir] /etc
+[type=dir] /etc/system/config/audio
+[type=dir] /etc/system/config/wave
+[type=dir] /lib
+[type=dir] /lib/dll
+[type=dir] /usr
+[type=dir] /usr/bin
+[type=dir] /usr/lib
+[type=dir] /usr/sbin
+[type=dir] /sbin
+
+##Initial version of QNX SDP 8.0 does not include an audio framework.
+##include "qnx.audio.build"
+##include "qnx.audiotest.build"
+
+#include "qnx.img.build"
+#include "qnx.network.build"
+#include "qnx.usb.build"
+
+#include "vc.dlt.build"
+#include "vc.meetapp.build"
+
+###########################################################################
+## Temporary files
+###########################################################################
+
+###########################################################################
+## VCapture Libraries API and test
+###########################################################################
+## Capture Libraries
+[perms=0777 search=${QNX_TARGET}/${PLATFORM}/usr/lib]            /usr/lib/libz.so.2=libz.so.2
+
+###########################################################################
+## Configuration Files
+###########################################################################
+/etc/services = {
+telnet      23/tcp
+vncserv     5900/tcp
+}
+
+/etc/inetd.conf = {
+telnet  stream tcp nowait root  /system/usr/sbin/telnetd in.telnetd
+vncserv stream tcp nowait root  /system/sbin/vncserv     in.vncserv -i -d 0 -v 2 -e zrle -k -s j32v_ed1b -n 1
+}
+
+[uid=0 gid=0 perms=0644] /etc/passwd = {
+root:x:0:0:Superuser:/root:/bin/sh
+qnxuser:x:1000:1000:QNX User:/home/qnxuser:/bin/sh
+}
+
+# Enabled Username/Password: root/root, qnxuser/qnxuser
+[uid=0 gid=0 perms=0600] /etc/shadow = {
+root:@S@NKlWES1quMp1wmqugkUSnFEpPGn58kIs4wQOgDDNs06vimR+bbGPUKM+9P6jbFUzo3Rm+Qe5MS+17xKhwaeJEg==@Mjg5ZTJiMTM0YTRjYTE2ZGFjMDdhZTFlY2NlMDVmNmE=:1468494669:0:0
+qnxuser:@S@HZERXjgixvb3157FFeraShhvTVw+10ccUtVUVZbi0fUwpzlzBZFw5gHiFd1XHKit8D39Whe749XAY8fV4P5ANQ==@Y2ZlOTg3M2RhNTM4Y2M2ODY0OWZhODdiNDRkMmU5Nzg=:1468488235:0:0
+}
+
+[uid=0 gid=0 perms=0644] /etc/group = {
+root:x:0:root
+qnxuser:x:qnxuser
+}
+
+## REVISION HISTORY
+# Version: 1.0
+# Description: Initial Version
+# Author: Karthik Shanmugam
+# Date: 20220629
+

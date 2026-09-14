@@ -1,0 +1,216 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+
+ * @endverbatim
+ * @file        SafeNvM_Cfg.c
+ * @details     Generated
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2025
+ *
+ */
+
+ #ifndef SAFENVM_CFG_C_
+ #define SAFENVM_CFG_C_
+
+ #define RTE_MICROSAR_PIM_EXPORT
+ /*****************************************************************************
+ *                            Include files                                   *
+ ******************************************************************************/
+#include "Std_Types.h"
+#include "SafeNvM_Cfg.h"
+#include "Det.h"
+#include "Rte_Type.h"
+//#include "Rte_SafeNvM.h"
+#include "NvM.h"
+
+#include "Rte_MemAbstract_Stub_Safe.h"
+#  undef RTE_APPLICATION_HEADER_FILE
+#include "Rte_NvM.h"
+
+
+#define SAFENVM_SEC_CODE_START
+#define SAFENVM_CORE_CONST_SEC_START
+#define SAFENVM_CORE_DATA_SEC_START
+#define SAFENVM_CORE_BSS_SEC_START
+
+#include "MemMap.h"
+
+
+/*****************************************************************************
+*                                 Local Variable Decalarion                  *
+******************************************************************************/
+//Declare here local ASIL RAM buffer used by SafeNvM
+static NV_Data_BsConst_Illumination SafeRAMbuffer;
+static uint8 SafeNvM_AsilData_Status = 0;
+
+
+/*****************************************************************************
+*                                 Configuration                               *
+******************************************************************************/
+
+extern const NV_Data_BsConst_Illumination Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_ROM_NVBlockDescriptor_BsConst_Illumination;
+extern NV_Data_BsConst_Illumination Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination;
+extern NV_Data_BsConst_Illumination_Copy1 Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_Copy1;
+extern NV_Data_BsConst_Illumination_Copy2 Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_Copy2;
+extern void EcumExt_SafeNvM_TriggerDataCompare(void);
+
+extern void MemAbstractMdl_NotifyJobEnd_BsConst_Illumination(NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult);
+
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Original(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy1(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy2(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_TriggerDataCompare(void);
+
+
+const NvMSafeBlockConfigType NvMSafe_Blockconfig[NUM_OF_SAFE_NVM_BLKS] = 
+{
+  { /* Safe Block 0*/
+    .NvM_BlockId_Original = (uint16)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_BsConst_Illumination,
+    .NvM_BlockId_Copy1 = (uint16)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_BsConst_Illumination_Copy1,
+    .NvM_BlockId_Copy2 = (uint16)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_BsConst_Illumination_Copy2,
+    .NvM_BlockSize = 52U,
+    .DefaultRomPtr = (const uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_ROM_NVBlockDescriptor_BsConst_Illumination,
+    .NvmRamMirrorBuf_OriginalPtr = (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination,
+    .NvmRamMirrorBuf_Copy1Ptr = (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_Copy1,
+    .NvmRamMirrorBuf_Copy2Ptr = (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_BsConst_Illumination_Copy2,
+    .AsilCopyPtr = (uint8*)&SafeRAMbuffer, //also to be decalred here
+    .SafeNvM_Write_Asil_ElementsPtr = SafeNvM_AsilRam_CopyTo_RteSafeRam,
+    .SafeNvM_MemAbstract_JobEnd_Notify = MemAbstractMdl_NotifyJobEnd_BsConst_Illumination
+  }
+};
+
+/*****************************************************************************
+*                             FUNCTIONS                                       *
+******************************************************************************/
+
+
+void SafeNvM_AsilRam_CopyTo_RteSafeRam(void)
+{
+  NV_Data_BsConst_Illumination * pAsilRamCopy = NvMSafe_Blockconfig[0].AsilCopyPtr;
+
+  (void)Rte_Write_BsConst_BsConst_Illumination_ReservedByte_Value(pAsilRamCopy->BsConst_BsConst_Illumination_ReservedByte);
+  (void)Rte_Write_BsConst_Compensation_Line_Shift_b_Value(pAsilRamCopy->BsConst_Compensation_Line_Shift_b);
+  (void)Rte_Write_BsConst_Compensation_Line_Slope_m_Value(pAsilRamCopy->BsConst_Compensation_Line_Slope_m);
+  (void)Rte_Write_BsConst_Derating_Backlight_Disable_Value(pAsilRamCopy->BsConst_Derating_Backlight_Disable);
+  (void)Rte_Write_BsConst_Display_Illum_Max_Level_Safe_Value(pAsilRamCopy->BsConst_Display_Illum_Max_Level);
+  (void)Rte_Write_BsConst_Lookup_Curve_HotSpot_Coef_X_Value(pAsilRamCopy->BsConst_Lookup_Curve_HotSpot_Coef_X);
+  (void)Rte_Write_BsConst_Lookup_Curve_HotSpot_Coef_Y_Value(pAsilRamCopy->BsConst_Lookup_Curve_HotSpot_Coef_Y);
+  (void)Rte_Write_BsConst_PCB_Temperature_Sensor_Conv_Value(pAsilRamCopy->BsConst_PCB_Temperature_Sensor_Conv);
+  (void)Rte_Write_BsConst_PWM_boost_bypass_duty_Value(pAsilRamCopy->BsConst_PWM_boost_bypass_duty);
+  (void)Rte_Write_BsConst_Temp_Threshold_Hysteresis_Derating_Value(pAsilRamCopy->BsConst_Temp_Threshold_Hysteresis_Derating);
+  (void)Rte_Write_BsConst_Temperature_Sensor_Conv_Value(pAsilRamCopy->BsConst_Temperature_Sensor_Conv);
+
+  SafeNvM_AsilData_Status = 1u;
+}
+
+
+
+void OnDre_SafeNvM_Illumination(void)
+{
+  NV_Data_BsConst_Illumination * pAsilRamCopy = NvMSafe_Blockconfig[0].AsilCopyPtr;
+  if(SafeNvM_AsilData_Status == 0u)
+  {
+      (void)Rte_Read_BsConst_Compensation_Line_Shift_b_Value(&pAsilRamCopy->BsConst_Compensation_Line_Shift_b);
+      (void)Rte_Read_BsConst_Compensation_Line_Slope_m_Value(&pAsilRamCopy->BsConst_Compensation_Line_Slope_m);
+      (void)Rte_Read_BsConst_Derating_Backlight_Disable_Value(&pAsilRamCopy->BsConst_Derating_Backlight_Disable);
+      (void)Rte_Read_BsConst_Display_Illum_Max_Level_Safe_Value(&pAsilRamCopy->BsConst_Display_Illum_Max_Level);
+      (void)Rte_Read_BsConst_Lookup_Curve_HotSpot_Coef_X_Value(&pAsilRamCopy->BsConst_Lookup_Curve_HotSpot_Coef_X);
+      (void)Rte_Read_BsConst_Lookup_Curve_HotSpot_Coef_Y_Value(&pAsilRamCopy->BsConst_Lookup_Curve_HotSpot_Coef_Y);
+      (void)Rte_Read_BsConst_PCB_Temperature_Sensor_Conv_Value(&pAsilRamCopy->BsConst_PCB_Temperature_Sensor_Conv);
+      (void)Rte_Read_BsConst_PWM_boost_bypass_duty_Value(&pAsilRamCopy->BsConst_PWM_boost_bypass_duty);
+      (void)Rte_Read_BsConst_Temp_Threshold_Hysteresis_Derating_Value(&pAsilRamCopy->BsConst_Temp_Threshold_Hysteresis_Derating);
+      (void)Rte_Read_BsConst_Temperature_Sensor_Conv_Value(&pAsilRamCopy->BsConst_Temperature_Sensor_Conv);
+      (void)SafeNvM_SetWriteBlockReq(0);
+  }
+  else
+  {
+    SafeNvM_AsilData_Status = 0u;
+  }
+}
+
+void EcumExt_SafeNvM_TriggerDataCompare(void)
+{
+  (void)OsTrustedCall_SafeNvM_TriggerDataCompare();
+}
+
+void MemAbstractMdl_Safe_NotifyJobEnd_BsConst_Illumination( NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Original(0, ServiceId, JobResult);
+}
+
+void MemAbstractMdl_Safe_NotifyJobEnd_BsConst_Illumination_Copy1( NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy1(0, ServiceId, JobResult);
+}
+
+void MemAbstractMdl_Safe_NotifyJobEnd_BsConst_Illumination_Copy2(NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy2(0, ServiceId, JobResult);
+}
+
+void MemAbstract_Stub_Safe(void)
+{
+}
+
+void SafeNvM_Det_ReportError(uint8 ApiId, uint8 ErrorId)
+{
+    (void)Det_ReportError(5000U,0x01, ApiId, ErrorId);
+}
+
+void SafeNvMErrorHook(void)
+{
+  /*Do Nothing*/
+}
+
+#define SAFENVM_SEC_CODE_END
+#define SAFENVM_CORE_CONST_SEC_END
+#define SAFENVM_CORE_DATA_SEC_END
+#define SAFENVM_CORE_BSS_SEC_END
+
+#include "MemMap.h"
+
+
+#endif
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*----------------------------------------------------------------------------
+REVISION HISTORY
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :  12-May-2025
+By                :  MSAVARIY
+Traceability      : https://visteon.atlassian.net/browse/PE4TI29141-8071
+Change Description: Initial Triple Buffer Platform solution Implementation
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :  28-May-2025
+By                :  MSAVARIY
+Traceability      : https://visteon.atlassian.net/browse/PE4TI29141-8584
+Change Description: Design update and review fix
+-----------------------------------------------------------------------------*/

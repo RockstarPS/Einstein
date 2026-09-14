@@ -1,0 +1,475 @@
+
+[   18.030691] audit: type=1006 audit(1651168170.900:10): pid=1177 uid=0 old-auid=4294967295 auid=0 tty=(none) old-ses=4294967295 ses=3 res=1
+[   18.050456] audit: type=1300 audit(1651168170.900:10): arch=c00000b7 syscall=64 success=yes exit=1 a0=8 a1=ffffe5babf08 a2=1 a3=ffff8a571020 items=0 ppid=1 pid=1177 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=3 comm="(systemd)" exe="/lib/systemd/systemd" key=(null)
+[   18.079454] audit: type=1327 audit(1651168170.900:10): proctitle="(systemd)"
+[   18.103114] audit: type=1334 audit(1651168170.972:11): prog-id=11 op=LOAD
+[   18.111894] audit: type=1300 audit(1651168170.972:11): arch=c00000b7 syscall=280 success=yes exit=8 a0=5 a1=ffffd86fd0f0 a2=78 a3=0 items=0 ppid=1 pid=1177 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=3 comm="systemd" exe="/lib/systemd/systemd" key=(null)
+[   18.137788] audit: type=1327 audit(1651168170.972:11): proctitle="(systemd)"
+[   18.145093] audit: type=1334 audit(1651168170.972:12): prog-id=11 op=UNLOAD
+[   18.152255] audit: type=1334 audit(1651168170.972:13): prog-id=12 op=LOAD
+[   18.159197] audit: type=1300 audit(1651168170.972:13): arch=c00000b7 syscall=280 success=yes exit=8 a0=5 a1=ffffd86fd190 a2=78 a3=0 items=0 ppid=1 pid=1177 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=3 comm="systemd" exe="/lib/systemd/systemd" key=(null)
+[   18.185423] audit: type=1327 audit(1651168170.972:13): proctitle="(systemd)"
+root@am62pxx-bmw-mic:~# 
+root@am62pxx-bmw-mic:~# 
+root@am62pxx-bmw-mic:~# 
+root@am62pxx-bmw-mic:~# 
+root@am62pxx-bmw-mic:~# 
+root@am62pxx-bmw-mic:~# cd ../..
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# [   23.731139] 8021q: 802.1Q VLAN Support v1.8
+[   23.736792] 8021q: adding VLAN 0 to HW filter on device eth0
+
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# fuser /dev/dri/card0
+1 435 443 830 
+root@am62pxx-bmw-mic:/# kill 435 443 830
+root@am62pxx-bmw-mic:/# [   61.222700] kauditd_printk_skb: 1 callbacks suppressed
+[   61.222718] audit: type=1334 audit(1651168214.092:15): prog-id=13 op=LOAD
+[   61.234793] audit: type=1334 audit(1651168214.100:16): prog-id=14 op=LOAD
+[   61.242229] audit: type=1334 audit(1651168214.100:17): prog-id=7 op=UNLOAD
+[   61.249986] audit: type=1334 audit(1651168214.100:18): prog-id=8 op=UNLOAD
+
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# kill 435 443 830fuser /dev/dri/card0
+root@am62pxx-bmw-mic:/# fuser /dev/dri/card0
+root@am62pxx-bmw-mic:/# fuser /dev/dri/card0
+root@am62pxx-bmw-mic:/# /system/bin/dlt-receive -a localhost |grep meet &
+[1] 1359
+root@am62pxx-bmw-mic:/# 2022/04/28 17:50:29.157695      68938 000 ECU1 MEET MEET log info V 8 [(546|546)  meet_component.cpp : 53 : onInit :  MEET::onInit]
+2022/04/28 17:50:29.157769      68946 001 ECU1 MEET MEET log info V 8 [(546|546)  meet_component.cpp : 85 : onStart :  MEET::onStart]
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1360
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+
+**************************************STA RED*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF0000
+vmf_sender: Build Time: 2020-10-14 13:08:08
+2022/04/28 17:51:25.449703    1324042 002 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 255]
+2022/04/28 17:51:25.449903    1324045 003 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:51:25.449944    1324046 004 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:51:25.449971    1324047 000 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:51:25.449995    1324047 001 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:51:25.450020    1324047 002 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:51:25.450076    1324049 003 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 390 : init_screen_window :  Acquired master control over DRM device.]
+2022/04/28 17:51:25.482570    1324373 004 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 425 : init_screen_window :  GBM device created successfully.:]
+2022/04/28 17:51:25.482654    1324375 005 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 439 : init_screen_window :  EGL display obtained]
+2022/04/28 17:51:25.485674    1324404 006 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 452 : init_screen_window :  EGL initialized successfully:]
+2022/04/28 17:51:25.485760    1324406 007 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 465 : init_screen_window :  EGL config chosen:]
+2022/04/28 17:51:25.501477    1324562 008 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 483 : init_screen_window :  EGL context created.:]
+2022/04/28 17:51:25.501590    1324562 009 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 496 : init_screen_window :  GBM surface created]
+2022/04/28 17:51:25.501618    1324564 010 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 509 : init_screen_window :  EGL surface created.]
+2022/04/28 17:51:25.505192    1324599 011 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 529 : init_screen_window :  EGL context made current.]
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 1 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 ff 0 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:51:25.505303    1324600 012 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:51:25.525272    1324795 013 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:51:25.525372    1324800 005 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:51:25.525400    1324801 006 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF0000root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1366
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF0000root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF0000root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF000000000000000000FF
+vmf_sender: Build Time: 2020-10-14 13:08:08
+2022/04/28 17:53:01.768046    2287227 007 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 0]
+2022/04/28 17:53:01.768164    2287228 008 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:53:01.768194    2287228 009 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:53:01.768219    2287229 014 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:53:01.768244    2287229 015 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:53:01.768268    2287229 016 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:53:01.768343    2287230 017 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 2 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 0 ff 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:53:01.768371    2287230 018 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+2022/04/28 17:53:01.782183    2287365 019 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:53:01.782266    2287367 010 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:53:01.782297    2287367 011 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+
+**************************************STA GREEN*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FF00root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1372
+root@am62pxx-bmw-mic:/# vmf_listener: Build Time: 2020-10-14 13:08:08
+
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FF00  FFFF00
+vmf_sender: Build Time: 2020-10-14 13:08:08
+2022/04/28 17:53:57.385596    2843389 012 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 0]
+2022/04/28 17:53:57.385765    2843390 013 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 3 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 0 0 ff 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:53:57.385797    2843390 014 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:53:57.390969    2843390 020 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:53:57.391088    2843391 021 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:53:57.391162    2843391 022 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:53:57.391191    2843391 023 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:53:57.391215    2843392 024 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+2022/04/28 17:53:57.391261    2843432 025 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:53:57.391288    2843434 015 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:53:57.391315    2843434 016 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+
+**************************************STA BLUE*******************************************************
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD0303000000FF  0000FFFF00                                                       vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FF00root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1381
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FF00  000FFFFFF
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 4 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+2022/04/28 17:55:23.169326    3701227 017 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 255]
+2022/04/28 17:55:23.169518    3701229 018 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:55:23.169549    3701229 019 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:55:23.169574    3701229 026 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:55:23.176233    3701230 027 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:55:23.176348    3701230 028 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:55:23.176375    3701230 029 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:55:23.176405    3701230 030 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+2022/04/28 17:55:23.176430    3701292 031 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:55:23.176456    3701299 020 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:55:23.176483    3701300 021 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 ff ff 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+
+
+**************************************STA YELLOW*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FFFF00root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1387
+root@am62pxx-bmw-mic:/# vmf_listener: Build Time: 2020-10-14 13:08:08
+
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FFFF00  FFFFFFFFF00
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 5 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 0 ff ff 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:56:19.341383    4262947 022 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 0]
+2022/04/28 17:56:19.341510    4262948 023 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:56:19.341541    4262948 024 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:56:19.346767    4262948 032 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:56:19.346860    4262949 033 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:56:19.346889    4262949 034 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:56:19.346914    4262949 035 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:56:19.346940    4262950 036 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+2022/04/28 17:56:19.347953    4263028 037 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:56:19.348029    4263030 025 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:56:19.348084    4263030 026 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+
+**************************************STA CYAN*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FFFFroot@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1393
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD03030000FFFFFF0000FF
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 6 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+2022/04/28 17:57:21.300119    4882547 027 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 255]
+2022/04/28 17:57:21.300237    4882549 028 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:57:21.300265    4882549 029 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:57:21.300292    4882549 038 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:57:21.300317    4882549 039 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:57:21.300341    4882550 040 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:57:21.300365    4882550 041 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:57:21.300390    4882550 042 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 ff 0 ff 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:57:21.313687    4882621 043 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:57:21.314136    4882623 030 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:57:21.314185    4882623 031 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+
+**************************************STA PINK*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF00FFroot@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1399
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FF00FFFFFFFF
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 7 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 ff ff ff 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:58:12.253593    5392069 032 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 255]
+2022/04/28 17:58:12.253765    5392070 033 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:58:12.253804    5392070 034 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:58:12.253829    5392071 044 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:58:12.253899    5392071 045 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:58:12.253926    5392071 046 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:58:12.253950    5392071 047 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:58:12.253974    5392072 048 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+2022/04/28 17:58:12.262093    5392168 049 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:58:12.262194    5392170 035 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:58:12.262226    5392171 036 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+
+**************************************STA WHITE*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FFFFFFroot@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1405
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FFFFFF      000000
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 8 0 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+2022/04/28 17:58:49.965584    5769189 037 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 0]
+2022/04/28 17:58:49.965765    5769190 038 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 17:58:49.965826    5769190 039 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 17:58:49.965884    5769190 050 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 17:58:49.965912    5769191 051 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 17:58:49.965937    5769191 052 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 682 : tftFullColorControl :  display full colour test]
+2022/04/28 17:58:49.965961    5769191 053 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 656 : display_full_colour_test :  Screen init successs]
+2022/04/28 17:58:49.965986    5769191 054 ECU1 MEET BMW- log error V 8 [(546|565)  meet_application_handler.cpp : 547 : colour_control :  Release buffer]
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 3 0 0 0 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 17:58:49.983846    5769327 055 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 665 : display_full_colour_test :  Colour control done]
+2022/04/28 17:58:49.984344    5769328 040 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 17:58:49.984397    5769329 041 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+root@am62pxx-bmw-mic:/# 
+root@am62pxx-bmw-mic:/# 
+
+
+**************************************STA BLACK*******************************************************
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD0303000000001root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1414
+vmf_listener: Build Time: 2020-10-14 13:08:08
+root@am62pxx-bmw-mic:/# 
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+**************************************ResetTOdefault*******************************************************
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD010300000000root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD030300FFFFFF      0000001
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b 9 ff 3 0 3 e fd 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 1 3 0 0 0 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 18:00:29.576174    6765308 042 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 3 the value is 0]
+2022/04/28 18:00:29.576284    6765310 043 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 18:00:29.576314    6765310 044 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 18:00:29.576343    6765310 056 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 18:00:29.576368    6765311 057 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 18:00:29.576393    6765312 045 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 18:00:29.576419    6765312 046 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+
+root@am62pxx-bmw-mic:/# vmf_sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD010300000000root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &
+[2] 1420
+root@am62pxx-bmw-mic:/# vmf_listener: Build Time: 2020-10-14 13:08:08
+
+
+
+SET VMF TRACER SEVERITY FOR 'VMF Ping' to <=73 !!!
+
+
+**************************************Incorrect Length*******************************************************
+root@am62pxx-bmw-mic:/# vmf_listener -g 136 -c 1 &sender -g 134 -e 2 -c 1 -l 10 -f 00000EFD010300000000303200000000  
+vmf_sender: Build Time: 2020-10-14 13:08:08
+VMF_Receiver0 Received 1 Messages of 
+GID = 136 
+EID = 0 
+Length = 261(50) 
+Payload = b a 13 4 0 3 e fd 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Exiting VMF_Receiver 0 ...
+vmf_listener: ID==0 -- start transmission to tracer
+#############################################
+VMF_Sender: 1 Msgs Sent with 
+GID = 134 
+EID = 2
+Length = 10(10)
+Data = 0 0 e fd 3 2 0 0 0 0 
+VMF_Sender 0 Exiting...
+#############################################
+[2]+  Done                    vmf_listener -g 136 -c 1
+root@am62pxx-bmw-mic:/# 2022/04/28 18:01:04.872130    7118267 047 ECU1 MEET MEET log verbose V 13 [(546|568)  meet_component.cpp : 139 : onReceiveDiagIOCtrlRequest :   IO Control DID  Received:   64782 Length of Did is 2 the value is 0]
+2022/04/28 18:01:04.872229    7118268 048 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 295 : diagParseRequest :  semaphore unblocked]
+2022/04/28 18:01:04.872257    7118269 049 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 304 : diagParseRequest :  requests handled in diag parse request: ]
+2022/04/28 18:01:04.872283    7118269 058 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 94 : processDiagRcv :  processing diag request]
+2022/04/28 18:01:04.872308    7118269 059 ECU1 MEET BMW- log info V 8 [(546|565)  meet_application_handler.cpp : 166 : IOCtrl_DIDHandler :  Ioctrl Handler]
+2022/04/28 18:01:04.872332    7118270 060 ECU1 MEET BMW- log error V 9 [(546|565)  meet_application_handler.cpp : 694 : tftFullColorControl :  Wrong Payload length 2]
+2022/04/28 18:01:04.872359    7118271 050 ECU1 MEET MEET log verbose V 9 [(546|565)  meet_component.cpp : 390 : SendDiagReponse :  Response Send for DId Id 64782]
+2022/04/28 18:01:04.872384    7118271 051 ECU1 MEET MEET log info V 8 [(546|565)  meet_component.cpp : 313 : diagParseRequest :  sent data to meet handler]
+

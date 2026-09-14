@@ -1,0 +1,131 @@
+{  
+   "unicast":"10.221.10.3",
+   "logging":{  
+      "level":"trace",
+      "console":"true",
+      "file":{  
+         "enable":"false"
+      },
+      "dlt":"false",
+   	  "statistics":"true"
+   },
+   "performance-measurement": {
+		"enable":"true",
+		"client":"true",
+		"server":"false",
+		"interval":60
+   },	
+   "applications":[ 
+      {  
+         "name":"cli_someip_msg_sender_receiver",
+         "id":"0x5555"
+      },
+      {
+         "name":"ExtAudioManager",
+         "id":"0x5556"
+      },
+      {
+         "name":"ExtAudioManagerJava",
+         "id":"0x1515"
+      },
+      {
+         "name":"SmartcoreUpdateClient",
+         "id":"0xAAAA"
+      },
+      {
+         "name" : "TunerVsomeIp",
+         "id" : "0x2121"
+      },
+      {
+         "name":"usbVsomeipServer",
+         "id":"0xBBBB"
+      },
+	  {
+          "name" : "vehicle-hal-someip",
+          "id" : "0x9999"
+      },
+      {
+            "name" : "Cluster_Rendering_Service",
+            "id" : "0x8777"  
+      },
+      {
+          "name": "PersistencyController",
+          "id":   "0x8888"
+      },
+      {
+          "name" : "AM_PersistencyClient",
+           "id" : "0x2222"
+      },
+      {
+          "name":"TimeSyncClient",
+          "id":"0x5557"
+      },
+      {
+          "name":"HealthManager",
+          "id":"0x5558"
+      },
+      {
+          "name" : "vdebug-service-someip",
+           "id" : "0x7777"
+      },
+      {
+           "name" : "SomeipPerfTestClient",
+           "id" : "0x5559"
+      },
+      {
+           "name" : "AM_VIPAudioClient",
+           "id" : "0x4451"
+      },
+      {
+           "name" : "TransportProtocolVsomeIp",
+           "id" : "0x2122"
+      }
+   ],
+   "services" :
+   [
+		{
+			"service" : "0xa0",
+			"instance" : "0x1",
+			"reliable" : {
+				"port" : "30537",
+				"enable-magic-cookies" : "true"
+			},
+			"events" : [
+				{
+					"event" : "9001",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				},
+				{
+					"event" : "9002",
+					"is_field" : "true",
+					"update-cycle" : 2000
+				}
+			],
+			"eventgroups" : [
+				{
+					"eventgroup" : "0x5555",
+					"events" : [
+						"9001",
+						"9002"
+					]
+				}
+			]
+		}
+   ],
+   "routing":"vsomeipd",
+   "service-discovery":{  
+      "enable":"true",
+      "multicast":"224.224.224.245",
+      "port":"30490",
+      "protocol":"udp",
+      "initial_delay_min":"10",
+      "initial_delay_max":"100",
+      "cyclic_offer_delay":"10000",
+      "request_response_delay":"1500",
+      "mode" : "unicast",
+		"unicast" : [
+			"10.221.10.1"
+		]
+   }
+}

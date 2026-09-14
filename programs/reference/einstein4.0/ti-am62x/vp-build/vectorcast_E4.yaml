@@ -1,0 +1,56 @@
+# VectorCAST Generator CLI config.
+#
+# Run with the packaged exe:
+#   vectorcast-cli.exe --config docs\vectorcast-cli.example.yaml --stage run
+# Or in development:
+#   npm run vectorcast:generate -- --config docs\vectorcast-cli.example.yaml --stage import
+#
+# Relative paths resolve against this file's directory. snake_case and camelCase keys
+# are both accepted. Every unit under `sources:` produces its own VectorCAST package
+# under <output.directory>\<unit-name>\.
+#
+# How far each unit is taken is controlled by --stage (CLI) or `stage:` below:
+#   generate  Produce the VectorCAST package files only (no VectorCAST needed).   [default]
+#   import    Also build the environment and import the generated tests.
+#   run       Also execute the tests and export the management/coverage reports.
+# import/run invoke the generated run_vectorcast_environment.ps1 and need a VectorCAST
+# install (clicast.exe): set vcast_dir below, --vcast-dir, or VECTORCAST_DIR (default C:\VCAST).
+
+# Optional ELF and MAP for symbol/address resolution. If `elf` is omitted or unreadable,
+# generation falls back to source-only analysis.
+#elf: /home/visteon/workspace/IC/Toyota/MY26/7XXD_7XNEW_/programs/toyota/my2026/7xxd/out/VP/7XXD_B4/debug/7XXD_VP_CM7/7XXD_VP_CM7.elf
+#map: /home/visteon/workspace/IC/Toyota/MY26/7XXD_7XNEW_/programs/toyota/my2026/7xxd/out/VP/7XXD_B4/debug/7XXD_VP_CM7/7XXD_VP_CM7.map
+
+# stage: generate          # generate | import | run  (overridden by --stage)
+# vcast_dir: C:\VCAST      # VectorCAST install dir for import/run (overridden by --vcast-dir)
+# hardware_target: M7      # optional; CLI/ELF analysis defaults to M7
+# execution_mode: test     # optional; CLI defaults to test
+
+# Build evidence shared by every source unit below. For generation, the CLI only
+# needs the project root and the real build.ninja. It derives source/build roots
+# from workspace_root, resolves object entries through Ninja, and uses bundled
+# pcpp/clang/objdump helpers; no local GHS or WSL toolchain setting is required.
+build:
+  workspace_root: /home/sgopal1/am62p/platform_am62p
+  ninja_file: /home/sgopal1/am62p/platform_am62p/programs/reference/einstein4.0/ti-am62x/out/VP_Platform/EINSTEIN_4_0_A1/release/build.ninja
+
+output:
+  directory: /mnt/c/vcast_toolgeneration
+# One entry per C source unit. Like the UI, the CLI always generates EVERY function in
+# the unit; there is no per-function selection. Prefer the build.ninja object. The CLI
+# resolves the source path from Ninja; use source/source_file_name only to disambiguate.
+sources:
+  - object: FltM.c.obj
+  - object: FltM_Service_E4.c.obj
+  - object: FltM_Soc.c.obj
+  - object: FltM_Soc_Ppu.c.obj
+  - object: FltM_Soc_Pok.c.obj
+  - object: FltM_Soc_Ecc.c.obj
+  - object: FltM_Soc_Dcc.c.obj
+  - object: FltM_Soc_FlsIntegrity.c.obj
+  - object: FltM_Soc_Irq.c.obj
+
+
+
+
+          

@@ -1,0 +1,20 @@
+[Unit]
+Description=meet_app
+After=vmf.service ucl_proxy_vmf.service health_mgr.service
+Requires=vmf.service ucl_proxy_vmf.service
+
+ConditionKernelCommandLine=|BOOT_MODE=PRI
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+Environment=DRM_DEVICE=/dev/dri/card0
+ExecStart=/system/usr/bin/meet_app
+Restart=always
+StartLimitInterval=10min
+StartLimitBurst=11
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
