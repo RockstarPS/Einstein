@@ -1,0 +1,10 @@
+[Unit]
+Description=Health Test application 08
+After=vmf.service dlt-daemon.service ucl_proxy_vmf.service
+Wants=vmf.service dlt-daemon.service ucl_proxy_vmf.service
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/wdg_proxy_test_08
+Restart=no

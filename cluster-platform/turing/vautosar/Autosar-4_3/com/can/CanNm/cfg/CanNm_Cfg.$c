@@ -1,0 +1,84 @@
+/********************************************************************************************************************
+|   File Name   : CanNm_Lcfg.c
+|
+|   Description : This file provides the link time configuration parameters for the AUTOSAR CAN NM module 
+|--------------------------------------------------------------------------------------------------------------------
+|               C O P Y R I G H T
+|--------------------------------------------------------------------------------------------------------------------
+| Copyright (c) 2019 by Visteon Corporation.       All rights reserved.
+|
+| NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+| Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+| its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+| or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+| in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+| under all copyright laws to protect this work as a published work, when appropriate.
+| Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+| without the written authorization of Visteon Corporation.
+|--------------------------------------------------------------------------------------------------------------------
+|               A U T H O R   I D E N T I T Y
+|--------------------------------------------------------------------------------------------------------------------
+| Initials     Name                      Company
+| --------     ---------------------     -------------------------------------
+| EA            Ashok Elavarasu          Visteon Corporation
+|--------------------------------------------------------------------------------------------------------------------
+|               R E V I S I O N   H I S T O R Y
+|--------------------------------------------------------------------------------------------------------------------
+| Date        Version   Author  Description
+| ----------  --------  ------  -------------------------------------------------------------------------------------
+| 2020-03-17  00.00.02  EA     Basic Funcitionality Realisation
+| 2019-12-05  00.00.01  MA     Initial Version
+|*******************************************************************************************************************/
+/* Includes */
+#include "CanNm.h"
+#include "CanIf_Cfg.h"
+#include "CanNm_Cfg.h"
+ 
+/*! @brief It defines the mapping between the NM channel and CanNM channel */
+const NetworkHandleType CanNM_NmToCanNmChannelMapping[CANNM_NM_NUM_OF_CHANNELS] =
+{
+    CANNM_INVALID_CHANNEL,
+    0U
+};
+
+/*! @brief Defines the PDU configuration for the CANNM channel */
+const CanNM_ChannelPduConfigType CanNM_ChannelPduConfig[CANNM_NUM_OF_CHANNELS] = 
+{
+    {
+        2U,
+        CANNM_PDU_IC_NMPDU,
+        CANIF_PDU_IC_NMPDU,
+        8U,
+        CANNM_PDU_NM_COORD_NMPDU,
+        CANIF_PDU_NM_COORD_NMPDU
+    }
+};
+
+/*! @brief Defines the channel specific configuration parameter of the CanNm. */
+const CanNm_ChannelConfigType CanNm_ChannelConfig[CANNM_NUM_OF_CHANNELS] = 
+{
+    /* {NmChannelRef ,RepeatMessageTime ,TimeoutTime ,WaitBusSleepTime ,ImmediateNmCycleTime ,
+        ImmediateNmTransmissionsCount ,RetryFirstMessageRequest ,PduCbvPosition ,PduNidPosition , UnusedDataByteVal ,
+        ActiveWakeupBitEnabled ,MsgCycleOffset ,MsgCycleTime ,MsgTimeoutTime ,MsgReducedTime ,BusLoadReductionActive ,
+        NodeId ,RemoteSleepIndTime} */
+    {
+        1U,
+        5000U,
+        8000U,
+        1000U,
+        10U,
+        2U,
+        FALSE,
+        CANNM_PDU_BYTE_1,
+        CANNM_PDU_BYTE_0,
+        0xFFU,
+        TRUE,
+        0U,
+        1000U,
+        500U,
+        100U,  //verify
+        TRUE,
+        0x32U,  //verify
+        3000U
+    }
+};

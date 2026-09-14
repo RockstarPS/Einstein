@@ -1,0 +1,78 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file ComXf_Ft.c
+*    @ingroup ComXfConfiguration
+*    @brief This is ComXf integration stub file for functional testing.
+********************************************************************************************************************/
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "ComXf.h"
+#include "ComXf_Lcfg.h"
+/********************************************************************************************************************
+* #! PRIVATE MACRO DEFINITIONS                                                                                      *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+* #! PRIVATE TYPE DEFINITIONS                                                                                       *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+* #! PRIVATE VARIABLE AND CONSTANT DECLARATION                                                                      *
+********************************************************************************************************************/
+static volatile int ComXf_testVar = 0;
+/********************************************************************************************************************
+* #! PRIVATE FUNCTION PROTOTYPES                                                                                    *
+********************************************************************************************************************/
+void ComXf_Test(void);
+/********************************************************************************************************************
+* #! PUBLIC VARIABLES                                                                                               *
+********************************************************************************************************************/
+void ComXf_Test(void)
+{
+    static uint8 MsgBuffer[8]={0,0,0,0,0,0,0,0};
+    static Rte_SignalGroup1Type Rte_SignalGroup1={.Sig1 = 1U, .Sig2 = 1U};
+    static uint32 MsgBufferLength=8U;
+    static Std_VersionInfoType Std_VersionInfo={0};
+    switch(ComXf_testVar)
+    {
+        case 0:
+            ComXf_Init(NULL_PTR);
+            ComXf_LocalInit();
+            ComXf_testVar = 0xffu;
+            break;
+
+        case 1:
+            ComXf_Signal1SRInterface1(&MsgBuffer[0],&MsgBufferLength,Rte_SignalGroup1);
+            break;
+        
+        case 2:
+            ComXf_Inv_Signal1SRInterface1(&MsgBuffer[0],MsgBufferLength,&Rte_SignalGroup1);
+            break;
+        
+        case 3:
+            ComXf_GetVersionInfo(&Std_VersionInfo);
+            break;
+
+        default:
+            break;
+    }
+    
+}
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

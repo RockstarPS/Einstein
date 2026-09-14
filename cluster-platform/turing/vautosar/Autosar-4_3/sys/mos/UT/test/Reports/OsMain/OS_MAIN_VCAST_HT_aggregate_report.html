@@ -1,0 +1,1091 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><body bgcolor="#FFFFFF"><div><span style="font-family:Arial;font-size:16pt;color:#000000;"><strong>Aggregate Coverage Report</strong></span></div><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Configuration&nbsp;Data</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#EEEEEE"><td><strong>Environment&nbsp;Name:</strong></td><td>OS_MAIN_VCAST_HT</td></tr><tr bgcolor="#EEEEEE"><td><strong>Date&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>11&nbsp;AUG&nbsp;2025</td></tr><tr bgcolor="#EEEEEE"><td><strong>Time&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>11:48:53&nbsp;AM</td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Aggregate&nbsp;Coverage</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><strong>Code&nbsp;Coverage&nbsp;for&nbsp;Unit:&nbsp;OsMain</strong></td></tr><tr><td align="left"><pre><span>--&nbsp;Coverage&nbsp;Type:&nbsp;ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D
+</span><span>--&nbsp;Unit:&nbsp;OsMain
+</span><span>--&nbsp;Test&nbsp;Case:&nbsp;Aggregate
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@verbatim
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONFIDENTIAL&nbsp;VISTEON&nbsp;CORPORATION
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;an&nbsp;unpublished&nbsp;work&nbsp;of&nbsp;authorship,&nbsp;which&nbsp;contains&nbsp;trade
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secrets,&nbsp;created&nbsp;in&nbsp;2013.&nbsp;Visteon&nbsp;Corporation&nbsp;owns&nbsp;all&nbsp;rights&nbsp;to
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;work&nbsp;and&nbsp;intends&nbsp;to&nbsp;maintain&nbsp;it&nbsp;in&nbsp;confidence&nbsp;to&nbsp;preserve
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;its&nbsp;trade&nbsp;secret&nbsp;status.&nbsp;Visteon&nbsp;Corporation&nbsp;reserves&nbsp;the&nbsp;right,
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;under&nbsp;the&nbsp;copyright&nbsp;laws&nbsp;of&nbsp;the&nbsp;United&nbsp;States&nbsp;or&nbsp;those&nbsp;of&nbsp;any
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other&nbsp;country&nbsp;that&nbsp;may&nbsp;have&nbsp;jurisdiction,&nbsp;to&nbsp;protect&nbsp;this&nbsp;work
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;an&nbsp;unpublished&nbsp;work,&nbsp;in&nbsp;the&nbsp;event&nbsp;of&nbsp;an&nbsp;inadvertent&nbsp;or
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deliberate&nbsp;unauthorized&nbsp;publication.&nbsp;Visteon&nbsp;Corporation&nbsp;also
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reserves&nbsp;its&nbsp;rights&nbsp;under&nbsp;all&nbsp;copyright&nbsp;laws&nbsp;to&nbsp;protect&nbsp;this
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;work&nbsp;as&nbsp;a&nbsp;published&nbsp;work,&nbsp;when&nbsp;appropriate.&nbsp;Those&nbsp;having&nbsp;access
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;this&nbsp;work&nbsp;may&nbsp;not&nbsp;copy&nbsp;it,&nbsp;use&nbsp;it,&nbsp;modify&nbsp;it&nbsp;or&nbsp;disclose&nbsp;the
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;information&nbsp;contained&nbsp;in&nbsp;it&nbsp;without&nbsp;the&nbsp;written&nbsp;authorization
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;Visteon&nbsp;Corporation.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@endverbatim
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsMain.c
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@details&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;Implements&nbsp;the&nbsp;Events&nbsp;concepts&nbsp;of&nbsp;Autosar&nbsp;4.2.1&lt;/b&gt;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@note
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compiler&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;Independant&nbsp;\n
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Target&nbsp;Hw&nbsp;&nbsp;&nbsp;:&nbsp;Independent
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@copyright&nbsp;&nbsp;&nbsp;Visteon&nbsp;(c)&nbsp;2021
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/SYS/MOS/SRC/includes/OsMain.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/OS/CPU/ARM/cortex7/OsPrivate.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_HooksCfg.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/SYS/MOS/SRC/includes/OsMemProtection.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/mos/AssertLib.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/SYS/MOS/SRC/includes/OsMetrics.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*RAM*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Local&nbsp;variables&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParamType&nbsp;OsCtrlParam;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;osIntSP;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;AccessType&nbsp;OsPrvCheckObjAccessRights&nbsp;(&nbsp;OsObjConfigType&nbsp;*&nbsp;pObj,&nbsp;MemoryStartAddressType&nbsp;Address,&nbsp;MemorySizeType&nbsp;Size);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;AccessType&nbsp;OsCheckObjAccessRights&nbsp;(&nbsp;OsMPUAccessGroupConfigType&nbsp;*&nbsp;pAccessConfig,&nbsp;MemoryStartAddressType&nbsp;Address,&nbsp;MemorySizeType&nbsp;Size);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;This&nbsp;function&nbsp;is&nbsp;called&nbsp;by&nbsp;the&nbsp;system&nbsp;to&nbsp;get&nbsp;the&nbsp;current&nbsp;context
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@name&nbsp;Os_GetContext
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;Context&nbsp;of&nbsp;the&nbsp;Os
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@author&nbsp;ssukuma1
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osuint16&nbsp;Os_GetContext&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osuint16&nbsp;Context;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Enter&nbsp;Critical&nbsp;Sction
+</span><span style="color:#009900;">1&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Os_GetContext
+</span><span style="color:#009900;">1&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvEnterCriticalSection();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Get&nbsp;the&nbsp;current&nbsp;context
+</span><span style="color:#009900;">1&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Context&nbsp;=&nbsp;OsCtrlParam.CurrentContext;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Exit&nbsp;Critical&nbsp;Sction
+</span><span style="color:#009900;">1&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvExitCriticalSection();
+</span><span style="color:#009900;">1&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Context;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;This&nbsp;function&nbsp;is&nbsp;called&nbsp;by&nbsp;the&nbsp;system&nbsp;to&nbsp;set&nbsp;the&nbsp;current&nbsp;context
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@name&nbsp;Os_SetContext
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;Context
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;StatusType
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@author&nbsp;ssukuma1
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StatusType&nbsp;Os_SetContext&nbsp;(osuint16&nbsp;Context)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Os_SetContext
+</span><span style="color:#009900;">2&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StatusType&nbsp;Result&nbsp;=&nbsp;(0x00U);
+</span><span style="color:#009900;">2&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">2&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;Context&nbsp;&lt;&nbsp;0x1001)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.CurrentContext&nbsp;=&nbsp;Context;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result&nbsp;=&nbsp;(0x01U);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Result;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;ShutdownOS&nbsp;-&nbsp;The&nbsp;user&nbsp;can&nbsp;call&nbsp;this&nbsp;system&nbsp;service&nbsp;to&nbsp;abort&nbsp;the&nbsp;overall&nbsp;system
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;Error
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;StatusType
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osShutdownOS&nbsp;(StatusType&nbsp;Error)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">3&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp;&nbsp;&nbsp;&nbsp;osShutdownOS
+</span><span style="color:#0000FF;">3&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)Error;
+</span><span style="color:#0000FF;">3&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void&nbsp;*)0);&nbsp;/*MISRA&nbsp;RULE&nbsp;4.9&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#0000FF;">3&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osDisableAllInterrupts();&nbsp;//&nbsp;Disable&nbsp;all&nbsp;interrupts
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;No&nbsp;come&nbsp;back&nbsp;here&nbsp;since&nbsp;osShutdownOS&nbsp;is&nbsp;called.&nbsp;*/
+</span><span style="color:#0000FF;">3&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(!0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">3&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;//&nbsp;Do&nbsp;nothing,&nbsp;wait&nbsp;for&nbsp;watchdog&nbsp;reset
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;GetISRId&nbsp;-&nbsp;This&nbsp;service&nbsp;returns&nbsp;the&nbsp;identifier&nbsp;of&nbsp;the&nbsp;currently&nbsp;executing&nbsp;ISR
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;ISRType
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISRType&nbsp;OsGetISRId&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">4&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetISRId
+</span><span style="color:#009900;">4&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISRType&nbsp;ISRId&nbsp;=&nbsp;0xFFFFFFFFUL;
+</span><span style="color:#009900;">4&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSuspendAllInterrupts();
+</span><span style="color:#009900;">4&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">4&nbsp;3.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;Os_GetContext()&nbsp;==&nbsp;(uint16)0x0002)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">4&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISRId&nbsp;=&nbsp;OsCtrlParam.ActiveISRId;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">4&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osResumeAllInterrupts();
+</span><span style="color:#009900;">4&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(ISRId);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsMainInitObjRef&nbsp;-&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;pObj
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsMainInitObjRef(OsObjConfigRefType&nbsp;pObj)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Setup&nbsp;the&nbsp;OsCtrlParam&nbsp;with&nbsp;ActiveTaskIndex&nbsp;environments
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Enter&nbsp;Critical&nbsp;Sction
+</span><span style="color:#009900;">5&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsMainInitObjRef
+</span><span style="color:#009900;">5&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvEnterCriticalSection();
+</span><span style="color:#009900;">5&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">5&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;((void&nbsp;*)0)&nbsp;!=&nbsp;pObj)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">5&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.pActiveObjRef&nbsp;=&nbsp;pObj;
+</span><span style="color:#009900;">5&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.pLastObjRef&nbsp;=&nbsp;pObj;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Exit&nbsp;Critical&nbsp;Sction
+</span><span style="color:#009900;">5&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvExitCriticalSection();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsPrvSetActiveParam&nbsp;-&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;pCurrObjRef
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@attention&nbsp;This&nbsp;API&nbsp;should&nbsp;be&nbsp;called&nbsp;within&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvSetActiveParam(OsObjConfigRefType&nbsp;pCurrObjRef)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Setup&nbsp;the&nbsp;OsCtrlParam&nbsp;with&nbsp;ActiveTaskIndex&nbsp;environments&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Interrupts&nbsp;are&nbsp;disabled&nbsp;before&nbsp;entering&nbsp;this&nbsp;API&nbsp;*/
+</span><span style="color:#009900;">6&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetActiveParam
+</span><span style="color:#009900;">6&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.pLastObjRef&nbsp;=&nbsp;OsCtrlParam.pActiveObjRef;
+</span><span style="color:#009900;">6&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.pActiveObjRef&nbsp;=&nbsp;pCurrObjRef;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsPrvSetTaskActiveParam&nbsp;-&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@attention&nbsp;&nbsp;&nbsp;This&nbsp;API&nbsp;should&nbsp;be&nbsp;called&nbsp;within&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvSetTaskActiveParam(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">7&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetTaskActiveParam
+</span><span style="color:#009900;">7&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TaskType&nbsp;TaskId&nbsp;=&nbsp;OsCtrlParam.ActiveTaskIndex;
+</span><span style="color:#009900;">7&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">7&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;TaskId&nbsp;&lt;&nbsp;21U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">7&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsObjConfigRefType&nbsp;pCurrObjRef&nbsp;=&nbsp;TcbTaskRefConfig[TaskId]-&gt;pObjRef;
+</span><span style="color:#009900;">7&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetActiveParam(pCurrObjRef);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">7&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsPrvSetIsrActiveParam&nbsp;-&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@attention&nbsp;&nbsp;&nbsp;This&nbsp;API&nbsp;should&nbsp;be&nbsp;called&nbsp;within&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@details&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;API&nbsp;is&nbsp;called&nbsp;when&nbsp;an&nbsp;ISR&nbsp;is&nbsp;entered
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvSetIsrActiveParam(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">8&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetIsrActiveParam
+</span><span style="color:#009900;">8&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISRType&nbsp;IsrId&nbsp;=&nbsp;OsCtrlParam.ActiveISRId;
+</span><span style="color:#009900;">8&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">8&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;IsrId&nbsp;&lt;&nbsp;16U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">8&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsObjConfigRefType&nbsp;pCurrObjRef&nbsp;=&nbsp;OsIsrRefConfig[IsrId]-&gt;pObjRef;
+</span><span style="color:#009900;">8&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetActiveParam(pCurrObjRef);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">8&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsPrvSetAlarmActiveParam&nbsp;-&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@attention&nbsp;&nbsp;&nbsp;This&nbsp;API&nbsp;should&nbsp;be&nbsp;called&nbsp;within&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AccessLevelType&nbsp;OsPrvGetCurrAppAccessLevel(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">9&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvGetCurrAppAccessLevel
+</span><span style="color:#009900;">9&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(OsCtrlParam.pActiveObjRef-&gt;pAppRef-&gt;AccessLevel);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@brief&nbsp;&nbsp;Private&nbsp;Os&nbsp;API&nbsp;to&nbsp;Enter&nbsp;Critical&nbsp;Section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@name&nbsp;OsPrvEnterCriticalSection
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@return&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@details&nbsp;This&nbsp;API&nbsp;is&nbsp;called&nbsp;by&nbsp;the&nbsp;system&nbsp;to&nbsp;enter&nbsp;the&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@author&nbsp;ssukuma1
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvEnterCriticalSection&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">10&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvEnterCriticalSection
+</span><span style="color:#009900;">10&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSuspendAllInterrupts();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@brief&nbsp;Private&nbsp;Os&nbsp;API&nbsp;to&nbsp;Exit&nbsp;Critical&nbsp;Section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@name&nbsp;OsPrvExitCriticalSection
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@return&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@details&nbsp;This&nbsp;API&nbsp;is&nbsp;called&nbsp;by&nbsp;the&nbsp;system&nbsp;to&nbsp;exit&nbsp;the&nbsp;critical&nbsp;section
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@author&nbsp;ssukuma1
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvExitCriticalSection&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">11&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvExitCriticalSection
+</span><span style="color:#009900;">11&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osResumeAllInterrupts();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@brief&nbsp;&nbsp;Private&nbsp;Os&nbsp;APi&nbsp;to&nbsp;get&nbsp;Dynamic&nbsp;Os&nbsp;Appication&nbsp;Reference.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@param&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@return&nbsp;OsAppConfigRefType&nbsp;-&nbsp;Reference&nbsp;to&nbsp;Current&nbsp;Dynamic&nbsp;OS&nbsp;App&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsAppConfigRefType&nbsp;OsPrvGetDynApp(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Get&nbsp;the&nbsp;Dynamic&nbsp;App&nbsp;Reference,&nbsp;validation&nbsp;of&nbsp;the&nbsp;AppId&nbsp;is&nbsp;not&nbsp;required
+</span><span style="color:#009900;">12&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvGetDynApp
+</span><span style="color:#009900;">12&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsAppConfigType&nbsp;*&nbsp;pDynAppConst&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">12&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsAppConfigRefType&nbsp;pCurrApp&nbsp;=&nbsp;OsGetCurrentApplication();
+</span><span style="color:#009900;">12&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">12&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;pCurrApp&nbsp;!=&nbsp;((void&nbsp;*)0)){
+</span><span style="color:#009900;">12&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pDynAppConst&nbsp;=&nbsp;OsAppRefListDyn[pCurrApp-&gt;AppId];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">12&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;pDynAppConst;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@brief&nbsp;Private&nbsp;Os&nbsp;APi&nbsp;to&nbsp;get&nbsp;Dynamic&nbsp;Os&nbsp;Appication&nbsp;Reference.&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;@param&nbsp;pDynApp&nbsp;-&nbsp;Current&nbsp;Dynamic&nbsp;OS&nbsp;App&nbsp;Reference
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsPrvSetDynApp(OsAppConfigRefType&nbsp;pDynApp)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsPrvSetDynApp
+</span><span style="color:#009900;">13&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsAppConfigRefType&nbsp;pCurrApp&nbsp;=&nbsp;OsGetCurrentApplication();
+</span><span style="color:#009900;">13&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">13&nbsp;2.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;pCurrApp&nbsp;!=&nbsp;((void&nbsp;*)0))
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsAppRefListDyn[pCurrApp-&gt;AppId]&nbsp;=&nbsp;pDynApp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;GetTaskStackUsage&nbsp;-&nbsp;This&nbsp;function&nbsp;outputs&nbsp;the&nbsp;stack&nbsp;usage&nbsp;of&nbsp;a&nbsp;task.&nbsp;This&nbsp;function&nbsp;outputs&nbsp;the&nbsp;stack&nbsp;usage&nbsp;of&nbsp;a&nbsp;task&nbsp;decrementing&nbsp;stack.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;TaskId
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;osStackUsageType
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackUsageType&nbsp;osGetTaskStackUsage&nbsp;(TaskType&nbsp;TaskId)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">14&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osGetTaskStackUsage
+</span><span style="color:#009900;">14&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackPtr&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">14&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackStart&nbsp;=&nbsp;((void&nbsp;*)0);&nbsp;/*MISRA&nbsp;RULE&nbsp;8.13&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">14&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackEnd&nbsp;=&nbsp;((void&nbsp;*)0);&nbsp;/*MISRA&nbsp;RULE&nbsp;8.13&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">14&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackUsageType&nbsp;stackUsage&nbsp;=&nbsp;0;
+</span><span style="color:#009900;">14&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">14&nbsp;5.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;TaskId&nbsp;&gt;=&nbsp;21U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">14&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSysErrAssert();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">14&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;=&nbsp;TcbTaskRefConfig[TaskId]-&gt;TaskStackStartAddress&nbsp;-&nbsp;1;/*MISRA&nbsp;RULE&nbsp;18.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">14&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackEnd&nbsp;=&nbsp;(osStackPtrType)((osStackDataType)stackPtr&nbsp;-&nbsp;TcbTaskRefConfig[TaskId]-&gt;TaskStackSize);&nbsp;/*MISRA&nbsp;RULE&nbsp;11.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">14&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackStart&nbsp;=&nbsp;stackPtr;
+</span><span style="color:#009900;">14&nbsp;10&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(
+</span><span style="color:#009900;">14&nbsp;10.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;&gt;&nbsp;stackEnd)&nbsp;/*MISRA&nbsp;RULE&nbsp;18.3&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">14&nbsp;11&nbsp;&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#0000FF;">14&nbsp;11.1&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*stackPtr&nbsp;==&nbsp;(osStackDataType)0xaaaaaaaaUL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">14&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">14&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr--;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">14&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackUsage&nbsp;=&nbsp;((osStackUsageType)((stackStart&nbsp;-&nbsp;stackPtr)&nbsp;*&nbsp;sizeof(osStackDataType)));
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">14&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;stackUsage;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;GetISRStackUsage&nbsp;-&nbsp;This&nbsp;function&nbsp;outputs&nbsp;the&nbsp;stack&nbsp;usage&nbsp;of&nbsp;a&nbsp;ISR.&nbsp;The&nbsp;functionality&nbsp;stands&nbsp;good&nbsp;only&nbsp;for&nbsp;Mcu&nbsp;has&nbsp;a&nbsp;decrementing&nbsp;stack.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;ISRId
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;osStackUsageType
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackUsageType&nbsp;osGetISRStackUsage&nbsp;(ISRType&nbsp;ISRId)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">15&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osGetISRStackUsage
+</span><span style="color:#009900;">15&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackPtr&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">15&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackStart&nbsp;=&nbsp;((void&nbsp;*)0);&nbsp;/*MISRA&nbsp;RULE&nbsp;8.13&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">15&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackEnd&nbsp;=&nbsp;((void&nbsp;*)0);&nbsp;/*MISRA&nbsp;RULE&nbsp;8.13&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">15&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackUsageType&nbsp;stackUsage&nbsp;=&nbsp;0;
+</span><span style="color:#009900;">15&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">15&nbsp;5.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;ISRId&nbsp;&gt;=&nbsp;16)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">15&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSysErrAssert();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">15&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;=&nbsp;IsrStackConfig[ISRId]&nbsp;-&nbsp;1;/*MISRA&nbsp;RULE&nbsp;18.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">15&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackEnd&nbsp;=&nbsp;(osStackPtrType)((osStackDataType)stackPtr&nbsp;-&nbsp;IsrStackSize[ISRId]);&nbsp;/*MISRA&nbsp;RULE&nbsp;11.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">15&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackStart&nbsp;=&nbsp;stackPtr;
+</span><span style="color:#009900;">15&nbsp;10&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(
+</span><span style="color:#009900;">15&nbsp;10.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;&gt;&nbsp;stackEnd)&nbsp;/*MISRA&nbsp;RULE&nbsp;18.3&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">15&nbsp;11&nbsp;&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#0000FF;">15&nbsp;11.1&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*stackPtr&nbsp;==&nbsp;(osStackDataType)0xaaaaaaaaUL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">15&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">15&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr--;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">15&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackUsage&nbsp;=&nbsp;((osStackUsageType)((stackStart&nbsp;-&nbsp;stackPtr)&nbsp;*&nbsp;sizeof(osStackDataType)));&nbsp;/*MISRA&nbsp;RULE&nbsp;10.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">15&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;stackUsage;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;CheckTaskStackOverflow&nbsp;-&nbsp;This&nbsp;function&nbsp;checks&nbsp;the&nbsp;stack&nbsp;overflow&nbsp;of&nbsp;a&nbsp;task.&nbsp;This&nbsp;function&nbsp;checks&nbsp;the&nbsp;stack&nbsp;overflow&nbsp;of&nbsp;a&nbsp;task.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;TaskId
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osCheckTaskStackOverflow&nbsp;(TaskType&nbsp;TaskId)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osCheckTaskStackOverflow
+</span><span style="color:#009900;">16&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackPtr&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">16&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackEnd&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">16&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">16&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;TaskId&nbsp;&gt;=&nbsp;21U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSysErrAssert();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;=&nbsp;TcbTaskRefConfig[TaskId]-&gt;TaskStackStartAddress;
+</span><span style="color:#009900;">16&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackEnd&nbsp;=&nbsp;(osStackPtrType)((osStackDataType)stackPtr&nbsp;-&nbsp;TcbTaskRefConfig[TaskId]-&gt;TaskStackSize);&nbsp;/*MISRA&nbsp;RULE&nbsp;11.4&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#009900;">16&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">16&nbsp;7.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(stackEnd)&nbsp;!=&nbsp;(osStackDataType)0xaaaaaaaaUL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*stackEnd&nbsp;=&nbsp;(osStackDataType)0xaaaaaaaaUL;
+</span><span style="color:#009900;">16&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMemProtectionFault();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;CheckISRStackOverflow&nbsp;-&nbsp;This&nbsp;function&nbsp;checks&nbsp;the&nbsp;stack&nbsp;overflow&nbsp;of&nbsp;a&nbsp;ISR.&nbsp;Triggers&nbsp;a&nbsp;osMemProtectionFault&nbsp;if&nbsp;overflow&nbsp;detects.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;ISRId
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osCheckISRStackOverflow&nbsp;(ISRType&nbsp;ISRId)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">17&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osCheckISRStackOverflow
+</span><span style="color:#009900;">17&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackPtr&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">17&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osStackPtrType&nbsp;stackEnd&nbsp;=&nbsp;((void&nbsp;*)0);
+</span><span style="color:#009900;">17&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">17&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;ISRId&nbsp;&gt;=&nbsp;16)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">17&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSysErrAssert();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">17&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackPtr&nbsp;=&nbsp;IsrStackConfig[ISRId];
+</span><span style="color:#009900;">17&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stackEnd&nbsp;=&nbsp;(osStackPtrType)((osStackDataType)stackPtr&nbsp;-&nbsp;IsrStackSize[ISRId]);
+</span><span style="color:#009900;">17&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">17&nbsp;7.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*(stackEnd)&nbsp;!=&nbsp;(osStackDataType)0xaaaaaaaaUL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">17&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*stackEnd&nbsp;=&nbsp;(osStackDataType)0xaaaaaaaaUL;
+</span><span style="color:#009900;">17&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMemProtectionFault();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;EnableAllInterrupts&nbsp;-&nbsp;Refer&nbsp;@osEnableGlobalInterruptAsm
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osEnableAllInterrupts&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Clear&nbsp;IntSaveDisableRequestCounter&nbsp;and&nbsp;IntSaveStatus&nbsp;as&nbsp;interrupts&nbsp;are&nbsp;enabled&nbsp;globally&nbsp;*/
+</span><span style="color:#009900;">18&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osEnableAllInterrupts
+</span><span style="color:#009900;">18&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">18&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveStatus&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">18&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osEnableGlobalInterruptAsm();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;DisableAllInterrupts&nbsp;-&nbsp;Refer&nbsp;@osDisableGlobalInterruptAsm
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osDisableAllInterrupts&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">19&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osDisableAllInterrupts
+</span><span style="color:#009900;">19&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osDisableGlobalInterruptAsm();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;SuspendAllInterrupts&nbsp;-&nbsp;This&nbsp;service&nbsp;saves&nbsp;the&nbsp;recognition&nbsp;status&nbsp;of&nbsp;all&nbsp;interrupts&nbsp;and&nbsp;disables&nbsp;all&nbsp;interrupts&nbsp;for&nbsp;which&nbsp;the&nbsp;hardware&nbsp;supports&nbsp;disabling.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osSuspendAllInterrupts&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">20&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osSuspendAllInterrupts
+</span><span style="color:#009900;">20&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">20&nbsp;1.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter&nbsp;&gt;&nbsp;50uL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">20&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osSysInternalErrAssert();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">20&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">20&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter&nbsp;==&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">20&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveStatus&nbsp;=&nbsp;osSuspendInterruptsAsm();
+</span><span style="color:#009900;">20&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStartHook();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">20&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter++;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;ResumeAllInterrupts&nbsp;-&nbsp;This&nbsp;service&nbsp;restores&nbsp;the&nbsp;recognition&nbsp;status&nbsp;of&nbsp;all&nbsp;interrupts&nbsp;saved&nbsp;by&nbsp;the&nbsp;SuspendAllInterrupts&nbsp;service.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osResumeAllInterrupts&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">21&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osResumeAllInterrupts
+</span><span style="color:#009900;">21&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">21&nbsp;1.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">21&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter--;
+</span><span style="color:#009900;">21&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">21&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.IntSaveDisableRequestCounter&nbsp;==&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">21&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStopHook();
+</span><span style="color:#009900;">21&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osResumeInterruptsAsm(OsCtrlParam.IntSaveStatus);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;SuspendOsInterrupts&nbsp;-&nbsp;This&nbsp;service&nbsp;saves&nbsp;the&nbsp;recognition&nbsp;status&nbsp;of&nbsp;interrupts&nbsp;of&nbsp;category&nbsp;2&nbsp;and&nbsp;disables&nbsp;the&nbsp;recognition&nbsp;of&nbsp;these&nbsp;interrupts.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osSuspendOsInterrupts&nbsp;(void)&nbsp;/*MISRA&nbsp;RULE&nbsp;8.7&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">22&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osSuspendOsInterrupts
+</span><span style="color:#009900;">22&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">22&nbsp;1.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter&nbsp;&gt;&nbsp;50uL)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//some&nbsp;error
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">22&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#0000FF;">22&nbsp;2.1&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter&nbsp;==&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">22&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((*((volatile&nbsp;osuint32*)(0xE000E010U)))&amp;=~(1uL&lt;&lt;1));&nbsp;/*MISRA&nbsp;RULE&nbsp;4.9&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#0000FF;">22&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStartHook();&nbsp;/*MISRA&nbsp;RULE&nbsp;2.2&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">22&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter++;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;ResumeOsInterrupts&nbsp;-&nbsp;This&nbsp;service&nbsp;restores&nbsp;the&nbsp;recognition&nbsp;status&nbsp;of&nbsp;interrupts&nbsp;saved&nbsp;by&nbsp;the&nbsp;SuspendOSInterrupts&nbsp;service
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osResumeOsInterrupts&nbsp;(void)&nbsp;/*MISRA&nbsp;RULE&nbsp;8.7&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">23&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osResumeOsInterrupts
+</span><span style="color:#009900;">23&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">23&nbsp;1.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">23&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter--;
+</span><span style="color:#0000FF;">23&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#0000FF;">23&nbsp;3.1&nbsp;&nbsp;(A)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsCtrlParam.OsIntSaveDisableRequestCounter&nbsp;==&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">23&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStopHook();&nbsp;/*MISRA&nbsp;RULE&nbsp;2.2&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span style="color:#0000FF;">23&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((*((volatile&nbsp;osuint32*)(0xE000E010U)))|=(1uL&lt;&lt;1));&nbsp;/*MISRA&nbsp;RULE&nbsp;4.9&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;CheckInterruptsEnabled&nbsp;-&nbsp;&nbsp;Service&nbsp;to&nbsp;check&nbsp;if&nbsp;Global&nbsp;Interrupt&nbsp;is&nbsp;enabled
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;osbool
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osbool&nbsp;osCheckInterruptsEnabled&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">24&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osCheckInterruptsEnabled
+</span><span style="color:#009900;">24&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osbool&nbsp;Ret&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">24&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;Ret&nbsp;=&nbsp;(
+</span><span style="color:#009900;">24&nbsp;2.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;(osGetBASEPRI()&nbsp;&amp;&nbsp;0x20UL)&nbsp;==&nbsp;0U);
+</span><span style="color:#009900;">24&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Ret;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;GetVersionInfo&nbsp;-&nbsp;&nbsp;Service&nbsp;to&nbsp;return&nbsp;version&nbsp;info&nbsp;of&nbsp;the&nbsp;module
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;VersionInfo
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Os_GetVersionInfo(Std_VersionInfoType*&nbsp;VersionInfo)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">25&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Os_GetVersionInfo
+</span><span style="color:#009900;">25&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">25&nbsp;1.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;((void&nbsp;*)0)&nbsp;!=&nbsp;VersionInfo)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">25&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VersionInfo-&gt;vendorID&nbsp;=&nbsp;(uint16)0x0033u;
+</span><span style="color:#009900;">25&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VersionInfo-&gt;moduleID&nbsp;=&nbsp;(uint16)0x0001u;
+</span><span style="color:#009900;">25&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VersionInfo-&gt;sw_major_version&nbsp;=&nbsp;(uint8)0x01u;
+</span><span style="color:#009900;">25&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VersionInfo-&gt;sw_minor_version&nbsp;=&nbsp;(uint8)0x01u;
+</span><span style="color:#009900;">25&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VersionInfo-&gt;sw_patch_version&nbsp;=&nbsp;(uint8)0x47u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISRType&nbsp;osGetISRID(void)&nbsp;/*MISRA&nbsp;RULE&nbsp;4.5&nbsp;VIOLATION:&nbsp;This&nbsp;is&nbsp;the&nbsp;reason&nbsp;why&nbsp;the&nbsp;MISRA&nbsp;rule&nbsp;could&nbsp;not&nbsp;be&nbsp;followed&nbsp;in&nbsp;this&nbsp;special&nbsp;case*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">26&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osGetISRID
+</span><span style="color:#009900;">26&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;0;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;osTaskStartHook&nbsp;-&nbsp;&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osTaskStartHook&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">27&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osTaskStartHook
+</span><span style="color:#009900;">27&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UserPreTaskHook();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;osTaskResumeHook&nbsp;-&nbsp;&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osTaskResumeHook&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">28&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osTaskResumeHook
+</span><span style="color:#009900;">28&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UserPreTaskHook();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;osTaskStopHook&nbsp;-&nbsp;&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osTaskStopHook&nbsp;(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">29&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osTaskStopHook
+</span><span style="color:#009900;">29&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UserPostTaskHook();
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;osCriticalSectionStartHook&nbsp;-&nbsp;&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osCriticalSectionStartHook(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">30&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStartHook
+</span><span style="color:#009900;">30&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void&nbsp;*)0);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;osCriticalSectionStopHook&nbsp;-&nbsp;&nbsp;Internal&nbsp;Function
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;osCriticalSectionStopHook(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">31&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;osCriticalSectionStopHook
+</span><span style="color:#009900;">31&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((void&nbsp;*)0);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;-------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;each&nbsp;change&nbsp;to&nbsp;this&nbsp;file,&nbsp;be&nbsp;sure&nbsp;to&nbsp;record:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;who&nbsp;made&nbsp;the&nbsp;change&nbsp;and&nbsp;when&nbsp;the&nbsp;change&nbsp;was&nbsp;made&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;why&nbsp;the&nbsp;change&nbsp;was&nbsp;made&nbsp;and&nbsp;the&nbsp;intended&nbsp;result&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Following&nbsp;block&nbsp;needs&nbsp;to&nbsp;be&nbsp;repeated&nbsp;for&nbsp;each&nbsp;change&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;In&nbsp;the&nbsp;traceability&nbsp;column&nbsp;we&nbsp;need&nbsp;to&nbsp;trace&nbsp;back&nbsp;to&nbsp;the&nbsp;Design&nbsp;Doc.&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;the&nbsp;initial&nbsp;version&nbsp;it&nbsp;is&nbsp;traced&nbsp;to&nbsp;the&nbsp;Design&nbsp;Document&nbsp;section.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;further&nbsp;changes&nbsp;it&nbsp;shall&nbsp;trace&nbsp;to&nbsp;the&nbsp;source&nbsp;of&nbsp;the&nbsp;change&nbsp;which&nbsp;may&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;SPSS/SCR/Defect&nbsp;details(Defect&nbsp;may&nbsp;be&nbsp;Testing/validation&nbsp;defect)/Any&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other&nbsp;reason&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;-------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;-------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;20-Jun-2016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssukuma1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Initial&nbsp;version.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;-------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;13-Aug-2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssebast1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Added&nbsp;support&nbsp;for&nbsp;ISR&nbsp;stack&nbsp;usage&nbsp;and&nbsp;Task/ISR&nbsp;Stack&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Overflow&nbsp;Detection.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;09-Dec-2019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssukuma1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1393561&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Added&nbsp;supporting&nbsp;Function&nbsp;osCheckInterruptsEnabled&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;16-Jan-2020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssukuma1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;718485&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;MISRA&nbsp;Warning&nbsp;fix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;18-Aug-2020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssukuma1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;966911&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;MISRA&nbsp;Warning&nbsp;fix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:23-Sep-2021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;praj1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1449970&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;OSTrsuedCall&nbsp;nested&nbsp;call&nbsp;defect&nbsp;fix&nbsp;&nbsp;&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;8-Oct-2021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;vrusstar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1464024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Review&nbsp;and&nbsp;fix&nbsp;of&nbsp;high&nbsp;Coverity&nbsp;issues&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;13-May-2022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;eganesan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1648619&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Coverity&nbsp;&amp;&nbsp;Misra&nbsp;Medium&nbsp;Warning&nbsp;Fix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;27-May-2022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;eganesan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1672091&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Bsw&nbsp;general&nbsp;requirements&nbsp;supported&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;09-June-2022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;eganesan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1679233&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Coverity&nbsp;&amp;&nbsp;Misra&nbsp;Low&nbsp;Warning&nbsp;Fix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;09-Apr-2024&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;ssukuma1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Traceability&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;PE4TI29141-2219&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Compiler&nbsp;Abstraction&nbsp;&amp;&nbsp;BSW&nbsp;General&nbsp;Requirements&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**/
+</span><span>TEST&nbsp;COVERAGE&nbsp;SUMMARY
+</span><span>
+</span><span>
+</span><span>&nbsp;137&nbsp;of&nbsp;137&nbsp;Lines&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span><span>&nbsp;140&nbsp;of&nbsp;140&nbsp;Branches&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>MC/DC&nbsp;Condition&nbsp;Tables</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;Os_SetContext</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 74
+Actual Expression is: Context &lt; 0x1001
+Condition "a" (Ca) is: Context &lt; 0x1001
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsGetISRId</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 114
+Actual Expression is: Os_GetContext() == (uint16)0x2
+Condition "a" (Ca) is: Os_GetContext() == (uint16)0x2
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsMainInitObjRef</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 135
+Actual Expression is: (void *)0 != pObj
+Condition "a" (Ca) is: (void *)0 != pObj
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsPrvSetTaskActiveParam</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 168
+Actual Expression is: TaskId &lt; 21U
+Condition "a" (Ca) is: TaskId &lt; 21U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsPrvSetIsrActiveParam</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 190
+Actual Expression is: IsrId &lt; (16U)
+Condition "a" (Ca) is: IsrId &lt; (16U)
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsPrvGetDynApp</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 249
+Actual Expression is: pCurrApp != (void *)0
+Condition "a" (Ca) is: pCurrApp != (void *)0
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;OsPrvSetDynApp</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 264
+Actual Expression is: pCurrApp != (void *)0
+Condition "a" (Ca) is: pCurrApp != (void *)0
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetTaskStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 287
+Actual Expression is: TaskId &gt;= 21U
+Condition "a" (Ca) is: TaskId &gt;= 21U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetTaskStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;10</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 297
+Actual Expression is: stackPtr &gt; stackEnd
+Condition "a" (Ca) is: stackPtr &gt; stackEnd
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetTaskStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;11</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 300
+Actual Expression is: *stackPtr == (osStackDataType)0xaaaaaaaaUL
+Condition "a" (Ca) is: *stackPtr == (osStackDataType)0xaaaaaaaaUL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|A1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied by analysis (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetISRStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 324
+Actual Expression is: ISRId &gt;= (16)
+Condition "a" (Ca) is: ISRId &gt;= (16)
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetISRStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;10</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 334
+Actual Expression is: stackPtr &gt; stackEnd
+Condition "a" (Ca) is: stackPtr &gt; stackEnd
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osGetISRStackUsage</strong><br><strong>Condition:&nbsp;#&nbsp;11</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 337
+Actual Expression is: *stackPtr == (osStackDataType)0xaaaaaaaaUL
+Condition "a" (Ca) is: *stackPtr == (osStackDataType)0xaaaaaaaaUL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|A1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied by analysis (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osCheckTaskStackOverflow</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 360
+Actual Expression is: TaskId &gt;= 21U
+Condition "a" (Ca) is: TaskId &gt;= 21U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osCheckTaskStackOverflow</strong><br><strong>Condition:&nbsp;#&nbsp;7</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 369
+Actual Expression is: *stackEnd != (osStackDataType)0xaaaaaaaaUL
+Condition "a" (Ca) is: *stackEnd != (osStackDataType)0xaaaaaaaaUL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osCheckISRStackOverflow</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 389
+Actual Expression is: ISRId &gt;= (16)
+Condition "a" (Ca) is: ISRId &gt;= (16)
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osCheckISRStackOverflow</strong><br><strong>Condition:&nbsp;#&nbsp;7</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 398
+Actual Expression is: *stackEnd != (osStackDataType)0xaaaaaaaaUL
+Condition "a" (Ca) is: *stackEnd != (osStackDataType)0xaaaaaaaaUL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osSuspendAllInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 443
+Actual Expression is: OsCtrlParam.IntSaveDisableRequestCounter &gt; 50UL
+Condition "a" (Ca) is: OsCtrlParam.IntSaveDisableRequestCounter &gt; 50UL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osSuspendAllInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 450
+Actual Expression is: OsCtrlParam.IntSaveDisableRequestCounter == 0U
+Condition "a" (Ca) is: OsCtrlParam.IntSaveDisableRequestCounter == 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osResumeAllInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 469
+Actual Expression is: OsCtrlParam.IntSaveDisableRequestCounter != 0U
+Condition "a" (Ca) is: OsCtrlParam.IntSaveDisableRequestCounter != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osResumeAllInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 473
+Actual Expression is: OsCtrlParam.IntSaveDisableRequestCounter == 0U
+Condition "a" (Ca) is: OsCtrlParam.IntSaveDisableRequestCounter == 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osSuspendOsInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 491
+Actual Expression is: OsCtrlParam.OsIntSaveDisableRequestCounter &gt; 50UL
+Condition "a" (Ca) is: OsCtrlParam.OsIntSaveDisableRequestCounter &gt; 50UL
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osSuspendOsInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 498
+Actual Expression is: OsCtrlParam.OsIntSaveDisableRequestCounter == 0U
+Condition "a" (Ca) is: OsCtrlParam.OsIntSaveDisableRequestCounter == 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|A1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied by analysis (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osResumeOsInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 517
+Actual Expression is: OsCtrlParam.OsIntSaveDisableRequestCounter != 0U
+Condition "a" (Ca) is: OsCtrlParam.OsIntSaveDisableRequestCounter != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osResumeOsInterrupts</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 521
+Actual Expression is: OsCtrlParam.OsIntSaveDisableRequestCounter == 0U
+Condition "a" (Ca) is: OsCtrlParam.OsIntSaveDisableRequestCounter == 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|A1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied by analysis (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;osCheckInterruptsEnabled</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 540
+Actual Expression is: (osGetBASEPRI() &amp; 0x20UL) == (0U)
+Condition "a" (Ca) is: (osGetBASEPRI() &amp; 0x20UL) == (0U)
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMain</strong><br><strong>Subprogram:&nbsp;Os_GetVersionInfo</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 554
+Actual Expression is: (void *)0 != VersionInfo
+Condition "a" (Ca) is: (void *)0 != VersionInfo
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Metrics</strong></span></td></tr><tr bgcolor="#94A5C6"><td align="left">ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D</td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td bgcolor="#CCD8EE"><strong>Unit</strong></td><td bgcolor="#CCD8EE"><strong>Subprogram</strong></td><td bgcolor="#CCD8EE"><strong>Complexity</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Coverage</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Calls</strong></td><td bgcolor="#CCD8EE"><strong>Statements</strong></td><td bgcolor="#CCD8EE"><strong>Branches</strong></td><td bgcolor="#CCD8EE"><strong>Pairs</strong></td></tr><tr bgcolor="#EEEEEE"><td>OsMain</td><td>Os_GetContext</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">4&nbsp;/&nbsp;4&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Os_SetContext</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osShutdownOS</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;/&nbsp;5&nbsp;(100%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;2&nbsp;(100%)</em></td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;/&nbsp;5&nbsp;(0%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;/&nbsp;2&nbsp;(0%)</em></td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsGetISRId</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td><td bgcolor="#CCFFCC">6&nbsp;/&nbsp;6&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsMainInitObjRef</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvSetActiveParam</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvSetTaskActiveParam</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvSetIsrActiveParam</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvGetCurrAppAccessLevel</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvEnterCriticalSection</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvExitCriticalSection</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvGetDynApp</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsPrvSetDynApp</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">4&nbsp;/&nbsp;4&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osGetTaskStackUsage</td><td align="right">4</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">15&nbsp;/&nbsp;15&nbsp;(100%)</td><td bgcolor="#CCFFCC">13&nbsp;/&nbsp;13&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;15&nbsp;(6%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;13&nbsp;(15%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;3&nbsp;(33%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;14&nbsp;/&nbsp;15&nbsp;(93%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;/&nbsp;13&nbsp;(84%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;3&nbsp;(66%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osGetISRStackUsage</td><td align="right">4</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">15&nbsp;/&nbsp;15&nbsp;(100%)</td><td bgcolor="#CCFFCC">13&nbsp;/&nbsp;13&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;15&nbsp;(6%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;13&nbsp;(15%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;3&nbsp;(33%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;14&nbsp;/&nbsp;15&nbsp;(93%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;/&nbsp;13&nbsp;(84%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;3&nbsp;(66%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osCheckTaskStackOverflow</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osCheckISRStackOverflow</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osEnableAllInterrupts</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osDisableAllInterrupts</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osSuspendAllInterrupts</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td><td bgcolor="#CCFFCC">6&nbsp;/&nbsp;6&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osResumeAllInterrupts</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osSuspendOsInterrupts</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;5&nbsp;(40%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;9&nbsp;(22%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;2&nbsp;(50%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;5&nbsp;(60%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;/&nbsp;9&nbsp;(77%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;2&nbsp;(50%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osResumeOsInterrupts</td><td align="right">3</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#FFCCCC">0&nbsp;/&nbsp;1&nbsp;(0%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">9&nbsp;/&nbsp;9&nbsp;(100%)</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;5&nbsp;(40%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;9&nbsp;(22%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;2&nbsp;(50%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;5&nbsp;(60%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;/&nbsp;9&nbsp;(77%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;2&nbsp;(50%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osCheckInterruptsEnabled</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Os_GetVersionInfo</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">6&nbsp;/&nbsp;6&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osGetISRID</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osTaskStartHook</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osTaskResumeHook</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osTaskStopHook</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osCriticalSectionStartHook</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>osCriticalSectionStopHook</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>TOTALS</strong></td><td><strong>31</strong></td><td align="right"><strong>58</strong></td><td bgcolor="#CCFFCC"><strong>31&nbsp;/&nbsp;31&nbsp;(100%)</strong></td><td bgcolor="#FFFFCC"><strong>30&nbsp;/&nbsp;33&nbsp;(90%)</strong></td><td bgcolor="#CCFFCC"><strong>137&nbsp;/&nbsp;137&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>140&nbsp;/&nbsp;140&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>27&nbsp;/&nbsp;27&nbsp;(100%)</strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;/&nbsp;137&nbsp;(8%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;/&nbsp;140&nbsp;(7%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;/&nbsp;27&nbsp;(14%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;126&nbsp;/&nbsp;137&nbsp;(91%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;130&nbsp;/&nbsp;140&nbsp;(92%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;23&nbsp;/&nbsp;27&nbsp;(85%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>GRAND&nbsp;TOTALS</strong></td><td><strong>31</strong></td><td align="right"><strong>58</strong></td><td bgcolor="#CCFFCC"><strong>31&nbsp;/&nbsp;31&nbsp;(100%)</strong></td><td bgcolor="#FFFFCC"><strong>30&nbsp;/&nbsp;33&nbsp;(90%)</strong></td><td bgcolor="#CCFFCC"><strong>137&nbsp;/&nbsp;137&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>140&nbsp;/&nbsp;140&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>27&nbsp;/&nbsp;27&nbsp;(100%)</strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;/&nbsp;137&nbsp;(8%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;10&nbsp;/&nbsp;140&nbsp;(7%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;/&nbsp;27&nbsp;(14%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;126&nbsp;/&nbsp;137&nbsp;(91%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;130&nbsp;/&nbsp;140&nbsp;(92%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;23&nbsp;/&nbsp;27&nbsp;(85%)</em></strong></td></tr></table></td></tr></table></body></html>

@@ -1,0 +1,117 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2012. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  Eep24xx_Cfg.h
+Module Short Name:  Eep24xx_Cfg.h
+VOBName          :  
+Author           :  
+Description      :  Generated File
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef EEP24XX_CFG_H
+#define EEP24XX_CFG_H
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Std_Types.h"
+#include "Os.h"
+#include "Ea_Cbk.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+#define EEP_NUMBER_OF_DEVICES_SUPPORTED    1
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+
+/*---------------  Eep24xx Critical Sections Macro  ------------------------*/
+#define EEP24XX_ENTER_CRITICAL_SECTION()   SuspendAllInterrupts()
+#define EEP24XX_EXIT_CRITICAL_SECTION()    ResumeAllInterrupts()
+
+
+/*---------------  Eep24xx User Callback Configurations Macro  -----------------*/
+#define EEP24XX_JOB_END_NOTIFICATION     Ea_JobEndNotification
+#define EEP24XX_JOB_ERROR_NOTIFICATION   Ea_JobErrorNotification
+
+/*---------------  EEPROM Development Error Reporting Macro  -----------------*/
+#define EEP24XX_REPORT_ERROR(API_ID, ErrorCode)
+
+/*---------------  EEPROM Device specific Configurations  Macro  -----------------*/
+
+#define EEP24XX_TOTAL_MEM_SIZE              16384u        // Update total memory size
+
+//I2c24xxEepDrv internal buffer configurations - total buffer size is 17(16data bytes + 1 address byte). So data starts from 1st index of buffer.
+#define EEP24XX_MAX_BUFFER_SIZE             34u
+#define EEP24XX_ADDRESS_BUFFER_MAX_SIZE     2u
+
+//EEPROM Type Selection
+#define BIG_EEPROM                          1   //Covers EEPROM size for 32K
+#define SMALL_EEPROM                        2   //Covers EEPROM size from 4K to 16K
+
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+typedef uint16  Eep24xx_AddressType;
+typedef uint16  Eep24xx_LengthType;
+
+typedef struct
+{
+    uint8  ReadSequenceId;
+    uint8  WriteSequenceId;
+    uint8  ReadChannel;
+    uint8  WriteChannel;
+    uint8  ChipType;
+    uint8  SlaveAddress;
+    uint8  EraseValue;
+    uint8  ReadBlockSize;
+    uint8  WriteBlockSize;
+    uint8  ChipPageSize;
+    uint8  BufferSize;
+    uint8  AddressBufferSize;
+    uint8  BuffStartDataIndex;
+    uint16 MemorySize;
+    uint16 BaseAddress;
+    uint16 DevTimeOut_ms;
+}Eep_DeviceConfigType;
+
+
+extern const Eep_DeviceConfigType Eep_DeviceConfig[EEP_NUMBER_OF_DEVICES_SUPPORTED];
+
+#endif    /* */
+/* end of file */
+/****************************************************************
+Created Time: 4/12/2021 4:57:50 PM
+****************************************************************/

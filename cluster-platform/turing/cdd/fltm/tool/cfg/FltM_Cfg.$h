@@ -1,0 +1,102 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+ * @endverbatim
+ * @file        FltM_Cfg.h
+ * @details     <b> Fault Manager  </b>
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2025
+ *
+ */
+#ifndef FLTM_CFG_H_
+#define FLTM_CFG_H_
+
+
+
+#include "Std_Types.h"
+#include "FltM_Types.h"       // Common FltM type definitions
+#include "Dlt.h"              // DLT basic types
+#include "RstM.h"             // RstM_ResetType and RstM_ResetLogType
+#include "Rte_Type.h"       // RTE types for integration
+
+/*
+ * User Configuration:
+ *  - FLTM_MAX_NUM_FAULTS: Number of fault entries (sample value)
+ *  - FLTM_NUMBER_OF_DLT_LOGINFO: Number of DLT log info entries (sample value)
+ */
+#define FLTM_MAX_NUM_FAULTS         2U
+#define FLTM_NUMBER_OF_DLT_LOGINFO  2U
+
+// Function pointer typedef for safe action handlers
+// Accepts a pointer to RstM_ResetLogType and returns Std_ReturnType.
+typedef Std_ReturnType (*FltM_ActionFunctionType)(FltM_FaultIdType FaultId);
+
+/**
+ * @brief Internal DLT log metadata without log level (common across faults)
+ */
+typedef struct {
+    Dlt_SessionIDType SessionId; /**< DLT session identifier */
+    Dlt_MessageArgumentCount argCount;  /**< Number of arguments in the log message */
+    Dlt_MessageOptionsType   options;   /**< Log message options */
+    Dlt_ApplicationIDType    appId;     /**< Application identifier for the message */
+    Dlt_ContextIDType        contextId; /**< Context identifier for the message */
+} FltM_Dlt_MessageLogInfoType;
+
+/**
+ * @brief Fault Manager configuration entry
+ *
+ * Defines handling and reporting policy for a specific fault ID.
+ */
+typedef struct {
+    FltM_FaultIdType          FaultId;                   /**< Unique fault identifier */
+    Dlt_MessageLogLevelType   FltMLogLevel;              /**< DLT log level for trace output */
+    uint16                    DltLogInfoIndex;           /**< Index into FltM_DltLogInfoMap */
+    RstM_ResetType            RstM_ResetRequestType;     /**< Reset type for final safe action */
+    uint8                     FirstSafeActionThreshold;  /**< Detections before first safe action */
+    uint8                     FinalSafeActionThreshold;  /**< Repetitions before final safe action */
+    FltM_ActionFunctionType   FltM_FirstSafeAction;      /**< Handler for first safe action */
+    FltM_ActionFunctionType   FltM_FinalSafeAction;      /**< Handler for final safe action */
+    boolean                   LogDtc;                      /**< True or False to log DTC */
+    Dem_EventIdType           DemEventId;                /**< DEM event ID for DTC reporting */
+} FltM_FaultConfigType;
+
+/* Extern declarations: user must define these in FltM_Cfg.c */
+extern const FltM_FaultConfigType    FltM_FaultConfig[FLTM_MAX_NUM_FAULTS];
+extern const FltM_Dlt_MessageLogInfoType  FltM_Dlt_MessageLogInfo[FLTM_NUMBER_OF_DLT_LOGINFO];
+
+extern void FltM_Det_ReportError(uint8 ApiId, uint8 ErrorId);
+
+#endif /* FLTM_CFG_H_ */
+
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*----------------------------------------------------------------------------
+REVISION HISTORY
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :  
+By                :  
+Traceability      : 
+Change Description: 
+-----------------------------------------------------------------------------*/

@@ -1,0 +1,108 @@
+[    0.467172]~DLT~90137~INFO     ~Switched to buffer state for socket connections.
+[    0.506172]~DLT~90137~INFO     ~Activate connection type: 5
+[    0.520172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:QSYC [-1 -> 4] [-1 -> 0]
+[    0.521172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:QSLA [-1 -> 4] [-1 -> 0]
+[    0.529172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:SRCN [-1 -> 4] [-1 -> 0]
+[    0.530172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:SLM  [-1 -> 4] [-1 -> 0]
+[    0.538172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:UCL  [-1 -> 4] [-1 -> 0]
+[    0.539172]~DLT~90137~NOTICE   ~Send log-level to context: QSYM:RESM [-1 -> 4] [-1 -> 0]
+[    0.851172]~DLT~90141~NOTICE   ~Logging (re-)enabled!
+[    0.851172]~DLT~90137~INFO     ~Activate connection type: 5
+[    0.857172]~DLT~90137~NOTICE   ~Send log-level to context: RESM:RESC [-1 -> 4] [-1 -> 0]
+[    0.866172]~DLT~90137~NOTICE   ~Send log-level to context: RESM:RESC [-1 -> 4] [-1 -> 0]
+
+
+pi@RPI-BENCH-1:~/tools $ python ./switch_mode.py -m flash
+Switch to flash mode
+pi@RPI-BENCH-1:~/tools $ python ./flash_file.py container-reflash-bx755_ed1.bin
+Switch to flash mode
+
+Start UUU tool
+uuu (Universal Update Utility) for nxp imx chips -- libuuu_1.4.43-4-g9aff92a
+
+Success 1    Failure 0
+
+
+1:13     2/ 2 [Done                                  ] SDPS: done
+
+
+Waiting for flash to complete
+pi@RPI-BENCH-1:~/tools $ 
+pi@RPI-BENCH-1:~/tools $ python ./switch_mode.py -m normal
+Switch to normal mode
+
+pi@RPI-BENCH-1:~/tools $ ps -a
+  PID TTY          TIME CMD
+ 2757 pts/1    00:00:02 python
+ 3157 pts/1    00:00:00 ps
+
+pi@RPI-BENCH-1:~/tools $ python ./collect_startup_metrics.py
+
+pi@RPI-BENCH-1:~/tools $ python ./collect_startup_metrics.py
+Collecting metrics...
+59.8359107971   +Load
+71.9330310822   CAN Message Received
+187.147855759   -Load
+212.962865829   +Startup
+458.80484581    -Startup
+470.989942551   Welcome to QNX700 on the NXP i.MX8DX Ford BX755 ED1 Board (ARM Cortex-A35)
+493.964910507   No security policy configured, type IDs will be ignored
+555.964910507   Jan 01 00:00:00.062                          slm.3                 slog      0  [START] dumper - pid 24586 (810000)
+1334.16295052   Display Backlight ON
+578.964910507   Jan 01 00:00:00.085                          slm.3                 slog      0  [START] screen - pid 36876 (810000)
+609.964910507   Jan 01 00:00:00.116                          slm.3                 slog      0  [START] vmf - pid 61459 (810000)
+634.964910507   Jan 01 00:00:00.141                          slm.3                 slog      0  [START] power_mgr - pid 69649 (810000)
+641.964910507   Jan 01 00:00:00.148                          slm.3                 slog      0  [START] ucl_proxy_vmf - pid 69652 (810000)
+694.964910507   Jan 01 00:00:00.201                   screen.36876                 slog    300  screen: server is ready
+697.964910507   Jan 01 00:00:00.204                          slm.3                 slog      0  [START] resmgr_display - pid 77845 (810000)
+718.964910507   Jan 01 00:00:00.225                          slm.3                 slog      0  [START] display_mgr - pid 81942 (810000)
+757.964910507   Jan 01 00:00:00.264                          slm.3                 slog      0  [START] hmi - pid 86039 (810000)
+831.964910507   Jan 01 00:00:00.338            ucl_proxy_vmf.69652              UCL_Log      0  Inst 0 PeerReady: Link UP
+981.964910507   Jan 01 00:00:00.488              display_mgr.81942          display_mgr      0  [DM][DM][Info] (81942|6) display_manager_component.cpp:522 :seqncrFsm: X: STATE_DISP_ON - EVT_SYS_STATE_UP
+
+pi@RPI-BENCH-1:~/tools $ python power_on.py &
+[3] 3182
+[2]   Terminated              python power_on.py
+pi@RPI-BENCH-1:~/tools $ python ./power_on.py &
+[4] 3187
+
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $ python ./power_on.py &
+[5] 3418
+pi@RPI-BENCH-1:~/tools $ sudo ./setup_network.sh
+device br0 already exists; can't create bridge with the same name
+interface usb0 does not exist!
+device eth0 is already a member of a bridge; can't enslave it to bridge br0.
+pi@RPI-BENCH-1:~/tools $ pidin a
+-bash: pidin: command not found
+pi@RPI-BENCH-1:~/tools $ ps -a
+  PID TTY          TIME CMD
+ 3182 pts/1    00:00:04 python
+ 3187 pts/1    00:00:04 python
+ 3418 pts/1    00:00:00 python
+ 3440 pts/1    00:00:00 ps
+pi@RPI-BENCH-1:~/tools $ python3 webcam.py &
+[6] 3443
+pi@RPI-BENCH-1:~/tools $ 192.168.137.5 - - [20/Oct/2020 20:46:13] "GET /index.html HTTP/1.1" 200 -
+192.168.137.5 - - [20/Oct/2020 20:46:13] "GET /stream.mjpg HTTP/1.1" 200 -
+kill 3182
+pi@RPI-BENCH-1:~/tools $ kill 3187
+[3]   Terminated              python power_on.py
+pi@RPI-BENCH-1:~/tools $
+[4]   Terminated              python ./power_on.py
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $ ps -a
+  PID TTY          TIME CMD
+ 3418 pts/1    00:00:00 python
+ 3443 pts/1    00:00:02 python3
+ 3455 pts/1    00:00:00 ps
+pi@RPI-BENCH-1:~/tools $ python ./switch_mode.py -m normal
+Switch to normal mode
+pi@RPI-BENCH-1:~/tools $ sudo ./setup_network.sh
+device br0 already exists; can't create bridge with the same name
+device eth0 is already a member of a bridge; can't enslave it to bridge br0.
+pi@RPI-BENCH-1:~/tools $
+pi@RPI-BENCH-1:~/tools $

@@ -1,0 +1,179 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file EthTrcv_Cfg.h
+*    @ingroup EthTrcvConfiguration
+*    @brief This is EthTrcv Pre-compile time configuration header file. It contains definitions of pre-compile time 
+*    configuration parameters for the EthTrcv module.
+*    @defgroup EthTrcvConfiguration
+*    @brief This contains the configuration files for the EthTrcv module.
+********************************************************************************************************************/
+#ifndef ETHTRCV_CFG_H
+#define ETHTRCV_CFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "EthTrcv_Types.h"
+
+/********************************************************************************************************************
+*  #! Precompile Configuration                                                                                      *
+********************************************************************************************************************/
+/*! @brief  Switches the development error detection and notification on or off.
+    true: detection and notification is enabled.
+    false: detection and notification is disabled. */
+#define ETHTRCV_DEV_ERROR_DETECT                    STD_ON
+/*! @brief  Enables / Disables EthTrcv_GetBaudRate API */
+#define ETHTRCV_GET_BAUD_RATE_API                   STD_ON 
+/*! @brief  Enables / Disables EthTrcvGetDuplexModeApi API */
+#define ETHTRCV_GET_DUPLEX_MODE_API                 STD_ON 
+/*! @brief  Enables / Disables EthTrcvGetLinkStateApi API */
+#define ETHTRCV_GET_LINK_STATE_API                  STD_ON
+/*! @brief  Enables / Disables EthTrcvGetTransceiverModeApi API */
+#define ETHTRCV_GET_TRANSCEIVER_MODE_API            STD_ON
+/*! @brief  Enables / Disables EthTrcvGetTransceiverWakeupModeApi API */
+#define ETHTRCV_GET_TRANSCEIVER_WAKEUP_MODE_API     STD_ON    
+/*! @brief  Enables / Disables EthTrcvSetTransceiverModeApi API */
+#define ETHTRCV_SET_TRANSCEIVER_MODE_API            STD_ON   
+/*! @brief  Enables / Disables EthTrcvStartAutoNegotiationApi API */
+#define ETHTRCV_START_AUTO_NEGOTIATION_API          STD_ON 
+/*! @brief  Enables / Disables EthTrcvVersionInfoApi API */
+#define ETHTRCV_VERSION_INFO_API                    STD_ON 
+/*! @brief  Enables / Disables EthTrcvVersionInfoApiMacro API */
+#define ETHTRCV_VERSION_INFO_API_MACRO              STD_ON 
+/*! @brief Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.*/ 
+#define ETHTRCV_INDEX                               0U  
+/*! @brief Specifies the period of main function EthTrcv_MainFunction in milliseconds.*/ 
+#define ETHTRCV_MAIN_FUNCTION_PERIOD                10U            
+/*! @brief Specifies the Maximum number of transecivers supported */ 
+#define ETHTRCV_MAX_TRCVS_SUPPORTED                 1U            
+/*! @brief Specifies the EthTrcvWakeUpSupport as Wake up by interrupt  */
+#define ETHTRCV_WAKEUP_BY_INTERRUPT                 0U            
+/*! @brief Specifies the EthTrcvWakeUpSupport as Wake up by polling  */
+#define ETHTRCV_WAKEUP_BY_POLLING                   1U   
+/*! @brief Specifies the EthTrcvWakeUpSupport as Wake up is not supported  */
+#define ETHTRCV_WAKEUP_NOT_SUPPORTED                2U  
+/*! @brief Configures wake-up to polling or interrupt or to not used/not supported. In case no wake up is supported 
+    by the hardware, the BSWMD pre-configuration shall be set to ETHTRCV_WAKEUP_NOT_SUPPORTED. */
+#define ETHTRCV_WAKEUP_SUPPORT                      ETHTRCV_WAKEUP_NOT_SUPPORTED   
+/********************************************************************************************************************
+*  #! EthTrcv Internal feature support                                                                                *
+********************************************************************************************************************/
+/*! @brief Defines the dummy macro */
+#ifndef ETHTRCV_DUMMY_STATEMENT
+#define ETHTRCV_DUMMY_STATEMENT(v)
+#endif
+/*******************************************************************************************************************
+*  #! EthTrcv module configuration                                                                                   *
+*******************************************************************************************************************/
+/*! @brief Enables/Disables the production error detection via DEM */
+#define ETHTRCV_DEM_ERROR_DETECT                    STD_OFF
+/********************************************************************************************************************
+*  #! SW and AUTOSAR Version Macros                                                                                 *
+********************************************************************************************************************/
+/* Software Version */
+/*! @brief Defines the EthTrcv configuration software Major version */
+#define ETHTRCV_CFG_SW_MAJOR_VERSION                1u
+/*! @brief Defines the EthTrcv configuration software Minor version */
+#define ETHTRCV_CFG_SW_MINOR_VERSION                0u
+/*! @brief Defines the EthTrcv configuration software Patch version */
+#define ETHTRCV_CFG_SW_PATCH_VERSION                0u
+/* Autosar Release */
+/*! @brief Defines the AUTOSAR Release Major version supported by ComM configuration  */
+#define ETHTRCV_CFG_AR_RELEASE_MAJOR_VERSION        4u
+/*! @brief Defines the AUTOSAR Release Minor version supported by ComM configuration  */
+#define ETHTRCV_CFG_AR_RELEASE_MINOR_VERSION        3u
+/*! @brief Defines the AUTOSAR Release patch version supported by ComM configuration  */
+#define ETHTRCV_CFG_AR_RELEASE_REVISION_VERSION     1u
+
+/********************************************************************************************************************
+* #! EthTrcv types                                                                                                    *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/*! @brief Specifies the connection negotiation of the Ethernet transceiver link as Automatic Negotiation. */
+#define ETHTRCV_CONN_NEG_AUTO                       0u
+/*! @brief Specifies the connection negotiation of the Ethernet transceiver link as Master */
+#define ETHTRCV_CONN_NEG_MASTER                     1u
+/*! @brief Specifies the connection negotiation of the Ethernet transceiver link as Slave */
+#define ETHTRCV_CONN_NEG_SLAVE                      2u
+/*! @brief Specifies the type for connection negotiation of the Ethernet transceiver */
+typedef uint8 EthTrcv_ConnNegType;
+
+/*! @brief Specifies the physical layer type link as BaseT physcial layer (10BaseT, 1000BaseT, 1000BaseT) */
+#define ETHTRCV_PHYS_LAYER_TYPE_BASE_T              0u
+/*! @brief Specifies the physical layer type link as BroadR-Reach physical layer */
+#define ETHTRCV_PHYS_LAYER_TYPE_BROADR_REACH        1u
+/*! @brief Specifies the physical layer type of the Ethernet transceiver link. */
+typedef uint8 EthTrcv_PhysLayerType;
+
+#if (ETHTRCV_WAKEUP_SUPPORT != ETHTRCV_WAKEUP_NOT_SUPPORTED)
+/*! @brief Defines the function type for User defined EthTrcv WakeUp Callout>. Indicates an wake-up request for the
+    specified Ethernet Transceiver. Can be used to trigger integrator code that initiates a remote wake-up. */
+typedef P2FUNC(void,ETHTRCV_APPL_CODE,EthTrcv_WakeUpCalloutFuncType)( uint8 CtrlIdx, Eth_BufIdxType BufIdx );
+
+/*! @brief the mapping of wake up reasons to wake up sources. */
+typedef struct
+{
+    /*! @brief This parameter defines the transceiver wake up reasons. */
+    EthTrcv_WakeupReasonType    EthTrcvWakeupReason;
+    /*! @brief This parameter defines the the wake-up source defined in EcuM. */
+    EcuM_WakeupSourceType       EcuMWakeupSourceId;
+}EthTrcv_WakeupMapType;
+#endif
+
+/*! @brief Configuration type of the individual transceiver */
+typedef struct
+{
+    /*! @brief Specifies if Auto-Negotiation is enabled (TRUE) or disabled (FALSE) for determination of the Ethernet 
+        transceiver speed. */
+    boolean                         EthTrcvAutoNegotiationEnabled;
+    /*! @brief Specifies the controller used for MII access to the transceiver. 0 .. 255 */
+    uint8                           EthTrcvCtrlIdx;
+    /*! @brief Specifies the instance ID of the configured transceiver.*/
+    uint8                           EthTrcvIdx;
+    /*! @brief Specifies the transceiver index used for MII access to the transceiver.*/
+    uint8                           EthTrcvMiiIdx;
+    /*! @brief  Num of Trcv configured */
+    uint8                           EthTrcvTotalTrcvCount;
+    /*! @brief Specifies the connection negotiation of the Ethernet transceiver link. */
+    EthTrcv_ConnNegType             EthTrcvConnNegType;
+    /*! @brief Specifies the duplex mode of the Ethernet transceiver link if Auto-Negotiation is disabled. 
+        This parameter is ignored if Auto-Negotiation is enabled. */
+    EthTrcv_DuplexModeType          EthTrcvDuplexMode;
+    /*! @brief Specifies the physical layer type of the Ethernet transceiver link. */
+    EthTrcv_PhysLayerType           EthTrcvPhysLayerType;  
+    /*! @brief Specifies the speed of the Ethernet transceiver link in [MBit/s]. If AutoNegotiation is enabled this is 
+        the maximum speed advertised for Auto-Negotiation. */
+    EthTrcv_BaudRateType            EthTrcvSpeed;
+    #if (ETHTRCV_WAKEUP_SUPPORT != ETHTRCV_WAKEUP_NOT_SUPPORTED)
+    /*! @brief Defines the Reference to the IcuChannel to enable/disable the interrupts for wakeups. */
+    Icu_ChannelType                 EthTrcvIcuChannelId;
+    /*! @brief Defines the wakeup callout function name. */
+    EthTrcv_WakeUpCalloutFuncType   pEthTrcvWakeUpCalloutFunc;
+    /*! @brief the mapping of wake up reasons to wake up sources. At least one container is needed if 
+        EthTrcvWakeUpSupport is not ETHTRCV_WAKEUP_NOT_SUPPORTED. */
+    EthTrcv_WakeupMapType           *pEthTrcvWakeupMap;
+    #endif
+    #if (ETHTRCV_DEM_ERROR_DETECT == STD_ON)
+    /*! the references to DemEventParameter elements which shall be invoked using the API Dem_ReportErrorStatus API 
+        in case the corresponding error occurs */
+    Dem_EventIdType                 DemEventParameterId;
+    #endif
+}EthTrcv_ConfigType;
+
+#endif /* ETHTRCV_CFG_H */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

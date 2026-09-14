@@ -1,0 +1,164 @@
+//
+// VISTEON CORPORATION CONFIDENTIAL
+// ________________________________
+//
+// [2017] Visteon Corporation
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+
+#ifndef DK_RUNTIME_FIFOSERDES_H
+#define DK_RUNTIME_FIFOSERDES_H
+
+#include <iostream>
+#include <queue>
+#include <mutex>
+
+#include "dk_logger.h"
+#include "dk_runtime_msgserdes.h"
+#include "dk_runtime_msgcmn.h"
+
+LOG_IMPORT_CONTEXT ( gRTELogContext );
+
+namespace dk
+{
+namespace runtime
+{
+namespace core
+{
+class FifoSerializer : protected std::queue<MsgSerializer *>
+{
+    public:
+        FifoSerializer ( const uint32_t maxCount )
+        {
+            mMaxCount = maxCount;
+        }
+
+        virtual ~FifoSerializer()
+        {
+        }
+
+        void push ( MsgSerializer *const pMsgSer )
+        {
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( pMsgSer != nullptr )
+            {
+                if ( pMsgSer->isValid() )
+                {
+                    queue::push ( pMsgSer );
+                }
+                else
+                {
+                    std::cerr << "<<Invalid message>>\n";
+                }
+            }
+        }
+
+        void push ( const mid_t msgId, const uint8_t *pDdata, uint32_t length )
+        {
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( ( pDdata != nullptr ) && ( length > 0U ) && ( size() < mMaxCount ) )
+            {
+                MsgSerializer *pMsgSer = new MsgSerializer ( msgId, 0U, pDdata, length );
+                queue::push ( pMsgSer );
+            }
+        }
+
+        MsgSerializer *pull()
+        {
+            MsgSerializer *pMsgSer = nullptr;
+
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( size() > 0U )
+            {
+                pMsgSer = queue::front();
+                queue::pop();
+            }
+
+            return pMsgSer;
+        }
+
+    protected:
+        uint32_t mMaxCount;
+        std::mutex mMutex;
+};
+
+class FifoDeserializer : protected std::queue<MsgDeserializer *>
+{
+    public:
+        FifoDeserializer ( const uint32_t maxCount )
+        {
+            mMaxCount = maxCount;
+        }
+
+        virtual ~FifoDeserializer()
+        {
+        }
+
+        void push ( MsgDeserializer *const pMsgDes )
+        {
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( pMsgDes != nullptr )
+            {
+                if ( pMsgDes->isValid() )
+                {
+                    queue::push ( pMsgDes );
+                }
+                else
+                {
+                    LOGE ( &gRTELogContext, "<<Invalid message>>" );
+                }
+            }
+        }
+
+        void push ( const mid_t msgId, const uint8_t senderId, const uint8_t msgCnt, const uint8_t *pDdata, uint32_t length )
+        {
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( ( pDdata != nullptr ) && ( length > 0U ) && ( size() < mMaxCount ) )
+            {
+                MsgDeserializer *pMsgDes = new MsgDeserializer ( msgId, senderId, msgCnt, pDdata, length );
+                queue::push ( pMsgDes );
+            }
+        }
+
+        void push ( MsgDeserializer &pMsgDes )
+        {
+            push ( pMsgDes.mMsgId, pMsgDes.mSenderId, pMsgDes.mMsgCnt, ( pMsgDes.getData() ), ( pMsgDes.getSize() ) );
+        }
+
+        MsgDeserializer *pull()
+        {
+            MsgDeserializer *pMsgDes = nullptr;
+
+            std::lock_guard<std::mutex> guard ( mMutex );
+
+            if ( size() > 0u )
+            {
+                pMsgDes = queue::front();
+                queue::pop();
+            }
+
+            return pMsgDes;
+        }
+
+    protected:
+        uint32_t mMaxCount;
+        std::mutex mMutex;
+};
+} // namespace core
+} // namespace runtime
+} // namespace dk
+#endif // DK_RUNTIME_FIFOSERDES_H

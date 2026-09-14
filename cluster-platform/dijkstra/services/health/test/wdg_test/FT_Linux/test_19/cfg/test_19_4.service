@@ -1,0 +1,15 @@
+[Unit]
+Description=Test application 19_4
+PartOf=test_19_1.service
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_05 19 10
+WatchdogSec=1
+Restart=always
+StartLimitBurst=3
+StartLimitInterval=5min
+
+StandardOutput=journal
+StandardError=journal

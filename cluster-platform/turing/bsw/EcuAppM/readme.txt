@@ -1,0 +1,1 @@
+vconfigurator and ecuappm-callouts folders should be moved to program specific path

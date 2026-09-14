@@ -1,0 +1,6 @@
+#ifndef FIREWALL_CONFIG
+#define FIREWALL_CONFIG
+
+#define NUM_FIREWALLS	10U
+
+#endif

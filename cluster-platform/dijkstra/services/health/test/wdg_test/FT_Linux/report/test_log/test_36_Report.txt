@@ -1,0 +1,98 @@
+root@am62pxx-7xxd-b@19:03:/system/usr/bin/wdg_test_FT# ./testcase36_multiprocess_monitor.sh
+------------------------------------------------------------------
+----- Testcase 36 - Graceful Stop / No Fatal ---------------------
+  Configuration:
+        (1). Restart action - no / manual
+        (2). Watchdog - enabled
+        (3). Service stopped gracefully using systemctl stop
+
+  Expected behaviour:
+        Fatal Error Notification : No
+        Process Restart         : No
+        Service State          : inactive
+------------------------------------------------------------------
+[>] Starting test_18_1.service ...
+[+] test_18_1.service started successfully.
+[>] Starting test_18_2.service ...
+[+] test_18_2.service started successfully.
+[>] Starting test_18_3.service ...
+[+] test_18_3.service started successfully.
+[>] Starting test_18_4.service ...
+[+] test_18_4.service started successfully.
+[>] Starting test_18_5.service ...
+[+] test_18_5.service started successfully.
+[>] Starting wdg_proxy_test_18.service ...
+[+] wdg_proxy_test_18.service started successfully.
+-----------------------------------------------
+--- Graceful Stop Test ------------------------
+-----------------------------------------------
+[!] Stopping test_18_4.service using systemctl stop ...
+-----------------------------------------------
+--- Service Status ----------------------------
+-----------------------------------------------
+* test_18_4.service - Test application 18_4
+     Loaded: loaded (/usr/lib/systemd/system/test_18_4.service; static)
+     Active: inactive (dead)
+
+May 29 18:56:54 am62pxx-7xxd-b test_05[1852]: Test Case 18: calling connect()
+May 29 18:57:02 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_4...
+May 29 18:57:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Deactivated successfully.
+May 29 18:57:02 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_4.
+May 29 19:03:59 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 19:03:59 am62pxx-7xxd-b test_05[2950]: Start - Test Case: 18, sleep time 10
+May 29 19:03:59 am62pxx-7xxd-b test_05[2950]: Test Case 18: calling connect()
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_4...
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: test_18_4.service: Deactivated successfully.
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_4.
+[+] test_18_4.service is inactive as expected
+-----------------------------------------------
+--- Recent Journal Entries --------------------
+-----------------------------------------------
+May 29 19:03:59 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 19:03:59 am62pxx-7xxd-b test_05[2950]: Start - Test Case: 18, sleep time 10
+May 29 19:03:59 am62pxx-7xxd-b test_05[2950]: Test Case 18: calling connect()
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_4...
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: test_18_4.service: Deactivated successfully.
+May 29 19:04:06 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_4.
+-----------------------------------------------
+--- Capturing DLT Logs for 5 sec ---
+-----------------------------------------------
+2025/05/29 19:04:09.172194    9477541 034 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:09.372101    9479541 035 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:09.572064    9481540 036 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:09.772427    9483544 037 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:09.972178    9485540 038 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:10.172487    9487542 039 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:10.372294    9489540 040 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:10.572158    9491539 041 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:10.772339    9493542 042 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:10.972137    9495540 043 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:11.172401    9497542 044 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:11.372160    9499540 045 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:11.572034    9501539 046 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:11.772697    9503546 047 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:11.975248    9505540 048 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:12.172874    9507548 049 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:12.372297    9509542 050 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:12.572247    9511540 051 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:12.772315    9513542 052 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:12.972168    9515540 053 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:13.172168    9517540 054 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:13.372211    9519541 055 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:13.572060    9521540 056 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:13.772257    9523541 057 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 19:04:13.972179    9525541 058 ECU1 WP-- WP - log info V 8 [(2970|2970)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+
+Expected Result:
+ - No fatal error should be reported
+ - Service should remain stopped
+ - No unwanted restart
+[!] Stopping test_18_1.service ...
+[!] Stopping test_18_2.service ...
+[!] Stopping test_18_3.service ...
+[!] Stopping test_18_5.service ...
+[!] Stopping wdg_proxy_test_18.service ...
+------------------------------------------------
+--- Test Complete ------------------------------
+------------------------------------------------
+root@am62pxx-7xxd-b@19:04:/system/usr/bin/wdg_test_FT#

@@ -1,0 +1,241 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file XCP_common_v1_1.a2l
+*    @ingroup XcpConfiguration
+*    @brief This is a2l file that contains the configuration parameters that are specific for XCP common parameters.
+********************************************************************************************************************/
+
+/********************************************* start of XCP common parameters **************************************/
+/********************************************* start of PROTOCOL_LAYER *********************************************/
+/begin PROTOCOL_LAYER 
+    0x0101                                  /* XCP protocol layer version 1.1 */
+    2000                                    /* T1 [ms] */
+    10000                                   /* T2 [ms] */
+    2000                                    /* T3 [ms] */
+    2000                                    /* T4 [ms] */
+    2000                                    /* T5 [ms] */
+    2000                                    /* T6 [ms] */
+    2000                                    /* T7 [ms] */
+    8                                       /* MAX_CTO */
+    8                                       /* MAX_DTO */
+    BYTE_ORDER_MSB_FIRST                    /* Byte order */
+    ADDRESS_GRANULARITY_BYTE                /* Address granularity */
+    OPTIONAL_CMD GET_COMM_MODE_INFO         /* optional command 0xFB supported by the slave */
+    OPTIONAL_CMD GET_ID                     /* optional command 0xFA supported by the slave */                            
+    OPTIONAL_CMD SET_REQUEST                /* optional command 0xF9 supported by the slave */                
+    OPTIONAL_CMD GET_SEED                   /* optional command 0xF8 supported by the slave */            
+    OPTIONAL_CMD UNLOCK                     /* optional command 0xF7 supported by the slave */        
+    OPTIONAL_CMD SET_MTA                    /* optional command 0xF6 supported by the slave */            
+    OPTIONAL_CMD UPLOAD                     /* optional command 0xF5 supported by the slave */        
+    OPTIONAL_CMD SHORT_UPLOAD               /* optional command 0xF4 supported by the slave */                
+    OPTIONAL_CMD BUILD_CHECKSUM             /* optional command 0xF3 supported by the slave */                
+    OPTIONAL_CMD TRANSPORT_LAYER_CMD        /* optional command 0xF2 supported by the slave */                        
+    OPTIONAL_CMD USER_CMD                   /* optional command 0xF1 supported by the slave */            
+    OPTIONAL_CMD DOWNLOAD                   /* optional command 0xF0 supported by the slave */            
+    OPTIONAL_CMD DOWNLOAD_NEXT              /* optional command 0xEF supported by the slave */                
+    OPTIONAL_CMD DOWNLOAD_MAX               /* optional command 0xEE supported by the slave */                
+    OPTIONAL_CMD SHORT_DOWNLOAD             /* optional command 0xED supported by the slave */                
+    OPTIONAL_CMD MODIFY_BITS                /* optional command 0xEC supported by the slave */                
+    OPTIONAL_CMD SET_CAL_PAGE               /* optional command 0xEB supported by the slave */                
+    OPTIONAL_CMD GET_CAL_PAGE               /* optional command 0xEA supported by the slave */                
+    OPTIONAL_CMD GET_PAG_PROCESSOR_INFO     /* optional command 0xE9 supported by the slave */                        
+    OPTIONAL_CMD GET_SEGMENT_INFO           /* optional command 0xE8 supported by the slave */                    
+    OPTIONAL_CMD GET_PAGE_INFO              /* optional command 0xE7 supported by the slave */                
+    OPTIONAL_CMD SET_SEGMENT_MODE           /* optional command 0xE6 supported by the slave */                    
+    OPTIONAL_CMD GET_SEGMENT_MODE           /* optional command 0xE5 supported by the slave */                    
+    OPTIONAL_CMD COPY_CAL_PAGE              /* optional command 0xE4 supported by the slave */                
+    OPTIONAL_CMD CLEAR_DAQ_LIST             /* optional command 0xE3 supported by the slave */                
+    OPTIONAL_CMD SET_DAQ_PTR                /* optional command 0xE2 supported by the slave */                
+    OPTIONAL_CMD WRITE_DAQ                  /* optional command 0xE1 supported by the slave */            
+    OPTIONAL_CMD SET_DAQ_LIST_MODE          /* optional command 0xE0 supported by the slave */                    
+    OPTIONAL_CMD GET_DAQ_LIST_MODE          /* optional command 0xDF supported by the slave */                    
+    OPTIONAL_CMD START_STOP_DAQ_LIST        /* optional command 0xDE supported by the slave */                        
+    OPTIONAL_CMD START_STOP_SYNCH           /* optional command 0xDD supported by the slave */                    
+    OPTIONAL_CMD GET_DAQ_CLOCK              /* optional command 0xDC supported by the slave */                
+    OPTIONAL_CMD READ_DAQ                   /* optional command 0xDB supported by the slave */            
+    OPTIONAL_CMD GET_DAQ_PROCESSOR_INFO     /* optional command 0xDA supported by the slave */                        
+    OPTIONAL_CMD GET_DAQ_RESOLUTION_INFO    /* optional command 0xD9 supported by the slave */                            
+    OPTIONAL_CMD GET_DAQ_LIST_INFO          /* optional command 0xD8 supported by the slave */                    
+    OPTIONAL_CMD GET_DAQ_EVENT_INFO         /* optional command 0xD7 supported by the slave */                    
+    OPTIONAL_CMD FREE_DAQ                   /* optional command 0xD6 supported by the slave */            
+    OPTIONAL_CMD ALLOC_DAQ                  /* optional command 0xD5 supported by the slave */            
+    OPTIONAL_CMD ALLOC_ODT                  /* optional command 0xD4 supported by the slave */            
+    OPTIONAL_CMD ALLOC_ODT_ENTRY            /* optional command 0xD3 supported by the slave */                    
+    OPTIONAL_CMD PROGRAM_START              /* optional command 0xD2 supported by the slave */                
+    OPTIONAL_CMD PROGRAM_CLEAR              /* optional command 0xD1 supported by the slave */                
+    OPTIONAL_CMD PROGRAM                    /* optional command 0xD0 supported by the slave */            
+    OPTIONAL_CMD PROGRAM_RESET              /* optional command 0xCF supported by the slave */                
+    OPTIONAL_CMD GET_PGM_PROCESSOR_INFO     /* optional command 0xCE supported by the slave */                        
+    OPTIONAL_CMD GET_SECTOR_INFO            /* optional command 0xCD supported by the slave */                    
+    OPTIONAL_CMD PROGRAM_PREPARE            /* optional command 0xCC supported by the slave */                    
+    OPTIONAL_CMD PROGRAM_FORMAT             /* optional command 0xCB supported by the slave */                
+    OPTIONAL_CMD PROGRAM_NEXT               /* optional command 0xCA supported by the slave */                
+    OPTIONAL_CMD PROGRAM_MAX                /* optional command 0xC9 supported by the slave */                
+    OPTIONAL_CMD PROGRAM_VERIFY             /* optional command 0xC8 supported by the slave */  
+    COMMUNICATION_MODE_SUPPORTED BLOCK SLAVE MASTER 0x0A 0x02 /* Slave Block Mode supported */
+    SEED_AND_KEY_EXTERNAL_FUNCTION "SeedKeyFn.Dll" /*  Name of the Seed&Key function including file extension */
+/end PROTOCOL_LAYER
+/********************************************* end of PROTOCOL_LAYER **********************************************/
+
+/********************************************* start of DAQ *******************************************************/
+/begin DAQ
+    STATIC                                  /* DAQ_CONFIG_TYPE */
+    3                                       /* MAX_DAQ */
+    2                                       /* MAX_EVENT_CHANNEL */
+    1                                       /* MIN_DAQ */
+    OPTIMISATION_TYPE_DEFAULT               /* OPTIMISATION_TYPE */ 
+    ADDRESS_EXTENSION_DAQ                   /* ADDRESS_EXTENSION */ 
+    IDENTIFICATION_FIELD_TYPE_RELATIVE_BYTE /* IDENTIFICATION_FIELD */ 
+    GRANULARITY_ODT_ENTRY_SIZE_DAQ_BYTE     /* GRANULARITY_ODT_ENTRY_SIZE_DAQ */
+    2                                       /* MAX_ODT_ENTRY_SIZE_DAQ */
+    OVERLOAD_INDICATION_PID                 /* OVERLOAD_INDICATION */
+    PRESCALER_SUPPORTED
+    RESUME_SUPPORTED
+    
+    /begin STIM                                 /* STIM supported */
+        GRANULARITY_ODT_ENTRY_SIZE_STIM_BYTE    /* GRANULARITY_ODT_ENTRY_SIZE_STIM */
+        2                                       /* MAX_ODT_ENTRY_SIZE_STIM */
+        BIT_STIM_SUPPORTED                      /* bitwise stimulation */
+    /end STIM
+
+    /begin TIMESTAMP_SUPPORTED                  /* TIMESTAMP_SUPPORTED */
+        1                                       /* TIMESTAMP_TICKS */
+        NO_TIME_STAMP                           /* NO_TIME_STAMP */
+        UNIT_10MS                               /* RESOLUTION OF TIMESTAMP */
+        TIMESTAMP_FIXED                         /* TIMESTAMP_FIXED flag indicates that the Slave always will */
+                                                /* send DTO Packets in time stamped mode*/    
+    /end TIMESTAMP_SUPPORTED
+
+    PID_OFF_SUPPORTED  /* Flag in DAQ_PROPERTIES indicates that transfer of DTO Packets without Id Field is possible.*/
+    
+    /**************************************** start of DAQ_LIST ****************************************************/
+    /begin DAQ_LIST                             /* DAQ_LIST          */
+        0                                       /* DAQ_LIST_NUMBER */
+        DAQ_LIST_TYPE DAQ                       /* DIRECTION = DAQ only */
+        MAX_ODT 2                               /* MAX_ODT         */
+        MAX_ODT_ENTRIES 2                       /* MAX_ODT_ENTRIES */
+        FIRST_PID   0                           /*  FIRST_PID for this DAQ_LIST */
+        EVENT_FIXED                             /* this DAQ_LIST always in this event */
+        
+        /begin PREDEFINED                       /* predefined DAQ_LIST */
+            /begin ODT
+                0                               /* ODT number */
+                ODT_ENTRY 0 0x4000 0x00 0x01 0xFF   
+                ODT_ENTRY 1 0x4001 0x00 0x01 0xFF
+            /end  ODT
+        /end PREDEFINED
+    /end DAQ_LIST
+    /**************************************** end of DAQ_LIST ******************************************************/
+
+    /**************************************** start of EVENT *******************************************************/
+    /begin EVENT                                /* EVENT */
+        "10_ms_task"                            /* EVENT_CHANNEL_NAME       */
+        "10_ms"                                 /* EVENT_CHANNEL_SHORT_NAME */
+        0                                       /* EVENT_CHANNEL_NUMBER     */
+        DAQ                                     /* only DAQ_LISTs with DIRECTION = DAQ */   
+        2                                       /* MAX_DAQ_LIST */
+        10                                      /* TIME_CYCLE   */
+        6                                       /* TIME_UNIT    */
+        0                                       /* PRIORITY     */
+    /end EVENT
+    /***************************************** end of EVENT *******************************************************/
+/end DAQ
+/********************************************* end of DAQ **********************************************************/
+
+/********************************************* start of DAQ_EVENT **************************************************/
+/begin DAQ_EVENT
+    /***************************************** start of FIXED_EVENT_LIST *******************************************/
+    FIXED_EVENT_LIST 
+    EVENT 3                                     /*  EVENT_CHANNEL_NUMBER */
+    EVENT 2                                     /*  EVENT_CHANNEL_NUMBER */
+    /***************************************** end of FIXED_EVENT_LIST ********************************************/
+    
+    /***************************************** start of VARIABLE_EVENT_LIST ***************************************/
+    VARIABLE
+    /begin AVAILABLE_EVENT_LIST                 /* AVAILABLE_EVENT_LIST */
+        EVENT 4
+        EVENT 5
+    /end AVAILABLE_EVENT_LIST
+
+    /begin DEFAULT_EVENT_LIST                 /* DEFAULT_EVENT_LIST */
+        EVENT 4
+        EVENT 5
+    /end DEFAULT_EVENT_LIST
+
+    /***************************************** end of VARIABLE_EVENT_LIST *****************************************/    
+/end DAQ_EVENT
+/********************************************* end of DAQ_EVENT ***************************************************/
+
+/********************************************* start of PAG *******************************************************/
+/begin PAG                                  /* PAG supported, at MODULE */
+    1                                       /* MAX_SEGMENTS */
+    FREEZE_SUPPORTED                        /* FREEZE_SUPPORTED */
+/end PAG
+/********************************************* end of PAG ********************************************************/
+
+/********************************************* start of PGM ******************************************************/
+/begin PGM                                  /* PGM supported, at MODULE                 */
+    PGM_MODE_ABSOLUTE                       
+    1                                       /* MAX_SECTORS                              */
+    8                                       /* MAX_CTO_PGM                              */
+    /begin SECTOR                           /* SECTOR                                   */
+        "sector 1"                          /* SECTOR_NAME                              */
+        0                                   /* SECTOR_NUMBER                            */
+        0x000000                            /* Address                                  */
+        0x2000                              /* Length                                   */
+        1                                   /* Erase number CLEAR_SEQUENCE_NUMBER       */
+        2                                   /* Program number PROGRAM_SEQUENCE_NUMBER   */
+        0                                   /* Programming method                       */
+    /end SECTOR
+
+    COMMUNICATION_MODE_SUPPORTED BLOCK SLAVE MASTER 10 2
+/end PGM
+/********************************************* end of PGM ********************************************************/
+
+/********************************************* start of SEGMENT **************************************************/
+/begin SEGMENT
+    0                                       /* SEGMENT_NUMBER segment logical number    */
+    2                                       /* number of pages                          */
+    0                                       /* ADDRESS_EXTENSION                        */
+    0                                       /* COMPRESSION_METHOD                       */
+    0                                       /* ENCRYPTION_METHOD                        */
+
+    /begin CHECKSUM                         /* CHECKSUM */
+        XCP_USER_DEFINED                    /* checksum type */
+        MAX_BLOCK_SIZE 256                  /* maximum block size for checksum calculation */
+        EXTERNAL_FUNCTION "checksum.dll"    /* Name of the Checksum function including file extension without path */
+    /end CHECKSUM
+
+    /begin PAGE                                 /* PAGES for this SEGMENT */
+        0                                       /* PAGE_NUMBER            */
+        ECU_ACCESS_WITHOUT_XCP_ONLY             /* ECU_ACCESS_TYPE */
+        XCP_READ_ACCESS_NOT_ALLOWED             /* XCP_READ_ACCESS_TYPE */
+        XCP_WRITE_ACCESS_NOT_ALLOWED            /* XCP_WRITE_ACCESS_TYPE */
+        INIT_SEGMENT 0                          /* references segment that initialises this page */    
+    /end PAGE
+
+    /begin ADDRESS_MAPPING                      /* multiple possible   */
+        0x04000                                 /* source address      */    
+        0x14000                                 /* destination address */ 
+        0x100                                   /* length              */
+    /end ADDRESS_MAPPING
+
+    PGM_VERIFY  0x1234                          /* verification value for PGM */
+
+/end SEGMENT
+/********************************************* end of SEGMENT ****************************************************/
+
+/********************************************* end of XCP common parameters ****************************************/

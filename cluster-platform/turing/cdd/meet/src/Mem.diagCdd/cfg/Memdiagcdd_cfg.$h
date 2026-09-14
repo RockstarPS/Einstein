@@ -1,0 +1,523 @@
+/*===================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**===================================================================================================================
+**
+** Name:           Memdiagcdd_cfg.h
+**
+** Description:    contains configurable parameters for Memory services
+**                
+**
+**====================================================================================================================*/
+#ifndef MEMDIAGCDD_CFG_H
+#define MEMDIAGCDD_CFG_H
+
+/*====================================================================================================================
+** INCLUDE FILES
+**===================================================================================================================*/
+#include "MemLib.h"
+#include "Memdiagcdd.h"
+#include "Mgrdiagcdd.h"
+#include "Mgrdiagcdd_cfg.h"
+/*====================================================================================================================
+**   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+#define NORMAL_SESSION 					(uint8)0x00U
+#define CANWAKEUP_SESSION 				(uint8)0x02U
+#define UNDEFINED_SESSION 				(uint8)0x03U
+#define MEET_ENTRY_DISABLE_SESSION		(uint8)0x0FU
+
+/* NV block Configuration*/
+#define PROGRAM_NVM_FROM_ROM_LIMITED_BLOCK
+#define NUMBER_OF_NVBLOCKS 			(uint8)59 /*configure total number of valid NV Blocks*/
+#ifdef PROGRAM_NVM_FROM_ROM_LIMITED_BLOCK
+#define NUMBER_OF_LIMITED_NVBLOCKS	(uint8)59
+#endif
+
+/*Hyperflash Configuration*/
+#define NUMBER_OF_HYPER_FLASH 			(uint8)0x1
+//#define HYPER_FLASH_CHKSUM_TEST_FOR_ALL	1// It should be enabled if Checksum test for All(NAND,NOR,VIP and GIP)
+
+/*Routine control type configuration*/
+/* Configure 1 for Routine type 1, 2 for Routine type 2 and 3 for Routine type 3*/
+#define NVMACCESSBYBLOCKRCTYPE 					(uint8)2
+#define HYPERFLASHCHKSUMRCTYPE					(uint8)2//When the value equal to 3, Data[DATA_BYTE_0] only update,When the value equal to 4 Data[DATA_BYTE_0 to DATA_BYTE_3] will update.
+#define MEMWRITETESTRCTYPE						(uint8)2
+#define  MEMDIAG_INT_FLASH_RCTYPE				(uint8)3
+#define  MEMDIAG_NVM_VALIDITY_CHECK_RCTYPE		(uint8)2
+#define  MEMDIAG_INT_RAM_RCTYPE		    		(uint8)3
+#define  MEMDIAG_NAND_FLASH_RCTYPE				(uint8)3
+#define  MEMDIAG_NOR_FLASH_RCTYPE				(uint8)3
+#define  MEMDIAG_DISPLAY_MICRO_ROM_RCTYPE		(uint8)3
+#define  MEMDIAG_AUTOCONFIGORVERIFY_RCTYPE 		(uint8)2
+#define  MEMDIAG_PROGRAM_NVM_FROM_ROM_RCTYPE 	(uint8)2
+#define  MEMDIAG_ODOMETER_NVM_RCTYPE 			(uint8)2
+// It should be enbaled if marker address is used in project
+#define MARKERADDRESSCHECKENABLE  				(uint8)1
+# define NUMBER_OF_LOGICAL_MARKER  				(uint8)8
+
+#define HYPERFLASH_CHECKSUM_PASSED              (uint8)2U
+#define HYPERFLASH_CHECKSUM_FAILED              (uint8)1U
+
+#ifdef SHAREDIAG_MODULE_ENABLE
+/* ShareDiag macros */
+#define SHAREDIAG_SERVICE_ENABLE_1          /* Define this if the service is enabled */
+#define SHAREDIAG_SERVICE_ENABLE_2          /* Define this if the service is enabled */
+#define SHAREDIAG_SERVICE_ENABLE_3          /* Define this if the service is enabled */
+#endif
+
+#ifdef MEMDIAG_MEMORY_VALIDITY_CHECK
+// These macros applicable for RAM test only
+#define  MEMDIAG_MAX_NUMBER_OF_RAM_BYTES_TO_BE_TEST	   25U	 	// Increasing the number of bytes to be tested will cause increase memory
+#define  MEMDIAG_MAX_NUMBER_OF_RAM_MEMORY_SETS         6U		// Increasing the number of memory sets to be undergone for RAM testwill cause increase memory
+#define  MEMDIAG_BYTE_TO_BE_WRITE_IN_RAM               0x55U	// Value of this macro should be less than or equal to 254
+#endif
+
+#if defined (MEMDIAG_MEMORY_VALIDITY_CHECK)	|| defined(NVMACCESSBYBLOCKIDRCENABLE) ||defined(NVMACCESSBYBLOCKIDREADWRITEENABLE) || defined(NVMVALIDITYCHKENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)
+#define MEMDIAG_MAX_BYTES_FOR_NVM	300U
+#define MEMDIAG_MAX_NUMBER_OF_BYTES_READ_WRITE MEMDIAG_MAX_BYTES_FOR_NVM
+#endif
+
+#ifdef MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST
+#define cROUTINE_CHECKSUMTEST   		     ((uint32)0xF11Eu)
+#define NAND_FLASH							 ((uint8)0x01u)
+#define NOR_FLASH							 ((uint8)0x02u)
+#define VIP_FLASH   						 ((uint8)0x03u)
+#define flashmemoryChksumTestStart_Length 	 ((uint8)0x01u)
+#define flashmemoryChksumTestStatus_Length 	 ((uint8)0x00u)
+#define FlashChksumTestForALl_ID 			 (uint8)0xFFu
+
+#define DISP_MICRO_CHECKSUM_ID    			 ((uint32)0xFE42u)
+#define DispMicroROMChksumStart_Length 		 ((uint8)0x01u)
+#define DispMicroROMChksumStatus_Length 	 ((uint8)0x00u)
+#endif
+
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+#define CONFIGURE 				0u
+#define VERIFY 					1u
+#define CONFIG_OR_VERIFY_LENGTH	((uint8)8u)			//assign here the data length of AutoConfigOrVerify serivce as per SRD
+#define CONFIG_WRITE_DATA_LENGTH ((uint8)0x03u)			//assign here the length of datas to be written to NVM
+#endif
+
+#ifdef MFGMODEREQENABLE
+#define NVM_WRITE_TIMEOUT_COUNT_IN_10MS 		100u			//10ms*100 =1000ms assigned
+#define MANUFMODE_NVM_WRITE_NOTIFY(ManufMode_Write_Status)		UNUSED(ManufMode_Write_Status) //Dummy assignment
+#endif
+#ifdef NVMACCESSBYADDRESSRCENABLE
+#define MEMDIAG_MAX_BYTES_READ_BY_ADDRESS (uint8)255u
+#define MEMDIAG_WRITE_PROCESS             (uint8)0u
+#define MEMDIAG_READ_PROCESS              (uint8)1u  
+#define NVMACCESSBYADDRESSRCTYPE 		  (uint8)3u     
+#endif
+/*======================================================================================================================
+** T Y P E  D E F I N I T I O N S
+**======================================================================================================================*/
+
+/*for memory write test*/
+typedef Std_ReturnType (*MemDiagFuncPtr)(uint8 *Data,uint8* ErrorCode,eMemMgrAction MemAction) ;
+
+typedef struct
+{
+	MemDiagFuncPtr pFunc;
+	eMemMgrAction pMemAction;
+} sLogicalMemOps;
+
+typedef struct
+{
+	uint8 (*MemDiag_ReadNvmBlock) (uint16 blockID,uint8* bufferptr);
+	uint8 (*MemDiag_WriteNvmBlock) (uint16 blockID,uint8* bufferptr);
+
+}MemDiag_ReadWrite_NvmBlock;
+
+typedef struct
+{
+	void (*MemDiag_Read) (uint8 *Data);
+	void (*MemDiag_Write)(uint8 Data);
+}MemDiag_ReadWrite_U8;
+
+#if defined(NVMACCESSBYBLOCKIDRCENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE) || defined(MEMDIAG_MEMORY_VALIDITY_CHECK)
+typedef struct
+{
+	Std_ReturnType (*MemDiag_JobResultRead_byBlkID) (uint16 BlkID, uint8 *JobResult);
+}MemDiag_ReadJobResultbyBlkID;
+#endif
+
+typedef struct
+{
+	Std_ReturnType (*MemDiag_Read) (uint16 *Data);
+	Std_ReturnType (*MemDiag_Write)(uint16 Data);
+	void (*MemDiag_Jobstatus)(uint8 *Data);
+}MemDiag_ReadWrite_U16;
+
+
+typedef struct
+{
+	uint32 start_marker_addr;
+	uint32 end_marker_addr;
+	uint32 start_marker_val;
+	uint32 end_marker_val;	
+}MemDiag_HyperFlashtype;
+
+
+typedef struct
+{
+    uint8 HyperFlash_ChecksumStart;
+    uint8 HyperFlash_ChecksumStop;
+    uint8 HyperFlash_ChecksumResult;
+}MemDiag_HyperFlashchecksum;
+
+typedef struct
+{
+	uint32 MemoryStartAddr;
+	uint32 MemoryEndAddr;
+}MemDiag_MemAddrType;
+
+/*typedef struct
+{
+	uint32 start_marker_addr;
+	uint32 end_marker_addr;
+	uint32 start_marker_val;
+	uint32 end_marker_val;	
+}Memdiag_IntFlashtype; */
+typedef struct
+{
+	Std_ReturnType (*MemDiag_IntFlash_ChksumStart) (void);
+	Std_ReturnType (*MemDiag_IntFlash_ChksumStop)(void);
+	Std_ReturnType (*MemDiag_IntFlash_ChksumResult)(void);
+}Memdiag_IntFlashChksumtype; 
+
+typedef struct
+{
+	Std_ReturnType (*MemDiag_HyperFlash_ChksumStart) (uint8 Data);
+	Std_ReturnType (*MemDiag_HyperFlash_ChksumStop)(uint8 Data);
+	Std_ReturnType (*MemDiag_HyperFlash_ChksumResult)(uint8 Data);
+}MemDiag_HyperFlashChksumtype;
+
+typedef struct
+{
+	Std_ReturnType (*MemDiag_NANDFlash_ChksumStart) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_NANDFlash_ChksumStop)(uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_NANDFlash_ChksumResult)(uint8 *Data,uint8 *ErrorCode);
+}Memdiag_NANDFlashChksumtype; 
+typedef struct
+{
+	Std_ReturnType (*MemDiag_NORFlash_ChksumStart) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_NORFlash_ChksumStop)(uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_NORFlash_ChksumResult)(uint8 *Data,uint8 *ErrorCode);
+}Memdiag_NORFlashChksumtype; 
+typedef struct
+{
+	Std_ReturnType (*MemDiag_DisplayMicroROM_ChksumStart) (uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_DisplayMicroROM_ChksumStop)(uint8 *Data,uint8 *ErrorCode);
+	Std_ReturnType (*MemDiag_DisplayMicroROM_ChksumResult)(uint8 *Data,uint8 *ErrorCode);
+}Memdiag_DisplayMicroROMChksumtype; 
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+typedef struct
+{
+   Std_ReturnType (*MemDiag_ValidateInput) (uint8* Data);
+   Std_ReturnType (*MemDiag_Configure)	   (uint8* Data);
+   Std_ReturnType (*MemDiag_Verify)		   (uint8* Data);   	
+   #ifndef COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM 	
+   void (*MemDiag_ReadNVMJobStatus)		   (uint8* Data); 
+   #endif
+}MemDiag_AutoConfigorVerifytype;
+#endif
+
+#ifdef PROGRAM_NVM_FROM_ROM
+typedef struct
+{
+   Std_ReturnType (*MemDiag_RestoreNVM_MappingBlkIDtoRTE) (uint8 BlockID);
+}MemDiag_ProgramNvmFromRomtype;
+
+typedef struct
+{
+Std_ReturnType (*MemDiag_WriteNVM_MappingBlkIDtoRTE) (uint8 BlockID);
+}MemDiag_ProgramNVMFromRamtype;
+#endif
+
+#if defined(MEMDIAG_ODOMETER_NVM_READWRITE) || defined(MEMDIAG_ODOMETER_NVM_ROUTINE)
+typedef struct
+{
+   Std_ReturnType (*MemDiag_Odo_Read) (uint32 *Data);
+   Std_ReturnType (*MemDiag_Odo_Write) (uint32 Data);
+}MemDiag_ReadWrite_Odometer;
+#endif
+
+/*=====================================================================================================================
+*  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**===================================================================================================================*/
+/*Valid NVM Block IDs configuration*/
+#if defined(NVMACCESSBYBLOCKIDREADWRITEENABLE) || defined (NVMACCESSBYBLOCKIDRCENABLE) || defined (NVMVALIDITYCHKENABLE) || defined(MEMDIAG_MEMORY_VALIDITY_CHECK) || defined(PROGRAM_NVM_FROM_ROM)
+extern const uint8 Valid_NVBlocks[NUMBER_OF_NVBLOCKS];
+#ifdef PROGRAM_NVM_FROM_ROM_LIMITED_BLOCK
+extern const uint8 ProgramNVMfromROM_ValidBlock[NUMBER_OF_LIMITED_NVBLOCKS];
+#endif
+extern const MemDiag_ReadWrite_NvmBlock NvmBlockConfig;
+#endif
+
+#if defined(MEMDIAG_ODOMETER_NVM_READWRITE) || defined(MEMDIAG_ODOMETER_NVM_ROUTINE)
+extern const MemDiag_ReadWrite_Odometer OdometerRW;
+#define MEET_ODO_MAX_VALUE		(uint32)0xFFFFFFFFU
+#endif
+
+#ifdef SHAREDIAG_MODULE_ENABLE
+
+#ifdef SHAREDIAG_SERVICE_ENABLE_1          /* Define this if the service is enabled */
+Std_ReturnType Read_Diag_FD12(uint8* Data,uint8* Length);
+Std_ReturnType Write_Diag_FD12(uint8* Data,uint8* Length);
+#endif
+
+#ifdef SHAREDIAG_SERVICE_ENABLE_2          /* Define this if the service is enabled */
+Std_ReturnType Read_Diag_FD49(uint8* Data,uint8* Length);
+Std_ReturnType Write_Diag_FD49(uint8* Data,uint8* Length);
+#endif
+
+#ifdef SHAREDIAG_SERVICE_ENABLE_3          /* Define this if the service is enabled */
+Std_ReturnType Read_Diag_FD45(uint8* Data,uint8* Length);
+Std_ReturnType Write_Diag_FD45(uint8* Data,uint8* Length);
+#endif
+
+#endif
+#ifdef MEMWRITETESTENABLE
+extern const sLogicalMemOps MemTestLogicalMarker[NUMBER_OF_LOGICAL_MARKER]; /* Function table supported for memory Write Test */
+extern const MemDiag_MemAddrType MemDiag_MemAddrConfig[];
+#endif
+
+extern const MemDiag_ReadWrite_U8 MemDiagNvmJobResult_U8;
+
+#if defined(NVMACCESSBYBLOCKIDRCENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE) || defined(MEMDIAG_MEMORY_VALIDITY_CHECK)
+extern const MemDiag_ReadJobResultbyBlkID MemDiagNvmBlkJobResult;
+#endif
+#ifdef MFGMODEREQENABLE
+extern const MemDiag_ReadWrite_U16 MfgModeReqConfig_U16;
+#ifdef MFGMODESTATUS
+Std_ReturnType ManufMode_Status_Check(EMeetModeStatus *CurrentMode);
+#endif
+
+#endif
+
+#if defined(HYPERFLASHCHKSUMTSTENABLE) || defined (MEMDIAG_MEMORY_VALIDITY_CHECK)
+#ifdef MARKERADDRESSCHECKENABLE
+extern const MemDiag_HyperFlashtype MemDiag_HyperFlashConfig[NUMBER_OF_HYPER_FLASH];
+#else
+extern const MemDiag_HyperFlashChksumtype MemDiag_HyperFlashChksumConfig;
+#endif
+#endif
+
+#if defined (MEMDIAG_MEMORY_VALIDITY_CHECK) || defined( MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST)
+extern const Memdiag_IntFlashChksumtype Memdiag_IntFlashConfig;
+#endif
+
+#ifdef MEMDIAG_MEMORY_VALIDITY_CHECK
+extern const MemDiag_MemAddrType Memdiag_RAMConfig[MEMDIAG_MAX_NUMBER_OF_RAM_MEMORY_SETS]; // supports Hyper RAM and TCRAM 
+#endif
+
+#ifdef MEMDIAG_MEMORY_READ_WRITE_BY_ADDRESS
+extern const MemDiag_MemAddrType MemDiag_MemAddrRWConfig[];
+#endif
+
+
+#ifdef MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST
+extern const Memdiag_NANDFlashChksumtype Memdiag_NANDFlashConfig;
+extern const Memdiag_NORFlashChksumtype Memdiag_NORFlashConfig;
+extern const Memdiag_DisplayMicroROMChksumtype Memdiag_DispMicroROMConfig;
+#endif
+
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+extern const MemDiag_AutoConfigorVerifytype MemDiag_ConfigorVerify;
+extern uint8 NVMwriteBuffer[CONFIG_WRITE_DATA_LENGTH];
+#endif
+
+
+#ifdef PROGRAM_NVM_FROM_ROM
+	#ifndef PROGRAM_NVM_FROM_ROM_LIMITED_BLOCK
+		extern const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM[NUMBER_OF_NVBLOCKS];
+	#else
+		#ifdef PROGRAM_NVM_FROM_ROM_BLOCKWISE
+			extern const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM;
+		#else
+			extern const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM[NUMBER_OF_LIMITED_NVBLOCKS];
+		#endif
+#endif
+extern const MemDiag_ProgramNVMFromRamtype MemDiag_ProgNVMFromRam;
+
+#if 0
+extern VAR(NV_Data_Chimes, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Chimes;
+extern VAR(NV_Data_Config, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Config;
+extern VAR(NV_Data_Diagnostics, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Diagnostics;
+extern VAR(NV_Data_EOL, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_EOL;
+extern VAR(NV_Data_FuelGauge, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_FuelGauge;
+extern VAR(NV_Data_Illumination, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Illumination;
+extern VAR(NV_Data_IOD, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_IOD;
+extern VAR(NV_Data_Odometer, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Odometer;
+extern VAR(NV_Data_TripComputer, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_TripComputer;
+extern VAR(NV_Data_Personalization, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Personalization;
+extern VAR(NV_Data_Health_Management, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management;
+extern VAR(NV_Data_Health_Management2, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management2;
+extern VAR(NV_Data_Cybersecurity, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Cybersecurity;
+extern VAR(NV_Data_GaugeFuel, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_GaugeFuel;
+#endif
+#endif
+/*=====================================================================================================================
+*   P U B L I C
+**=====================================================================================================================*/
+
+
+/*=====================================================================================================================
+** Date              :  26/12/2022
+** CDSID             :  rsubra13
+** Traceability      :  RTC 1861099
+** Change Description:  EEPROM Read Write by Address service newly implemented.
+**====================================================================================================================*/
+/*======================================================================================================================
+**  for each change to this file, be sure to record:
+**  1.who made the change and when the change was made
+**  2.why the change was made and the intended result
+**  following block needs to be repeated for each change
+**======================================================================================================================*/
+/*   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**======================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  03/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1707104
+** Change Description:  MeetCdd Coverity-MISRA fix
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  23/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1634375
+** Change Description:  Coverity/MISRA Fix and Minor update.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1632871, 1655512, 1660171
+** Change Description:  Typedefs and macros are added to support odometer routine interfaces are added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 15/July/2021
+** CDSID             : razhakes
+** Traceability      : RTC-1401390
+** Change Description: ManufMode_Status_Check() API added
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 6/May/2021
+** CDSID             : razhakes
+** Traceability      : RTC-1291863
+** Change Description: COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM introduced and Manuf Mode service modified for SessionExit handling
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  9/11/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1365920
+** Change Description:  Odometer NVM read write service newly implemented
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/06/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC-1334319
+** Change Description:  program NVM from ROM service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/04/2019
+** CDSID             :  athiyag2
+** Traceability      :  RTC-1306675
+** Change Description:  Auto configure/verify service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  12/march/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1297724
+** Change Description:  vip - gip communication added for checkum test routine
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  26/02/2019
+** CDSID             :  dkasiman / KCHIRUVO
+** Traceability      :  RTC-1289796
+** Change Description: Support provided to read/write in NVM more than 256 bytes.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  16/10/2018
+** CDSID             :  gdhilipr
+** Traceability      :  RTC 1217469 
+** Change Description:  Memory checksum test(F11E) – VIP,GIP,NAND and NOR
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 06/10/2018
+** CDSID             : dkasiman
+** Traceability      : RTC-1211436
+** Change Description: RAM test feature added for TCRAM and HYPER RAM.User can configure 6 ranges of memory to test. 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  01/10/2018
+** CDSID             :  dkasiman/MCHANDR2
+** Traceability      :  RTC-1208647
+** Change Description: MARKERADDRESSCHECKENABLE macro introduced to use either marker validity check or checksum status. 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  25/9/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1175981
+** Change Description:  Number of bytes can be configured for Read/Write memory by address upto 256 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  11/8/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1175981
+** Change Description:  Read/Write memory by address support for TCRAM and Hyper RAM 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  13/7/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1148640
+** Change Description:  Review comments fix:Check program dependency macro renamed as Memory validity 
+                        check.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  10/7/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1148640
+** Change Description:  NVM,Internal flash and hyper flash validity check in a single Routine of 
+**                      Check program dependencies DR.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  6/6/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  comments updated
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  31/05/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  included conditional compilation of features,updated hyperflash 2, removed repeated macros
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 23/05/2018  
+** CDSID             : athiyag2
+** Traceability      : RTC 1113493
+** Change Description: Initial version - MemDiagCdd Implementation for Turing Bookshelf.
+**====================================================================================================================*/
+
+#endif
+
+

@@ -1,0 +1,683 @@
+/*****************************************************************************
+ *                                                                            *
+ *              CONFIDENTIAL VISTEON CORPORATION                              *
+ *                                                                            *
+ * This is an unpublished work of authorship, which contains trade            *
+ * secrets, created in 2017. Visteon Corporation owns all rights to           *
+ * this work and intends to maintain it in confidence to preserve             *
+ * its trade secret status. Visteon Corporation reserves the right,           *
+ * under the copyright laws of the United States or those of any              *
+ * other country that may have jurisdiction, to protect this work             *
+ * as an unpublished work, in the event of an inadvertent or                  *
+ * deliberate unauthorized publication. Visteon Corporation also              *
+ * reserves its rights under all copyright laws to protect this               *
+ * work as a published work, when appropriate. Those having access            *
+ * to this work may not copy it, use it, modify it or disclose the            *
+ * information contained in it without the written authorization              *
+ * of Visteon Corporation.                                                    *
+ *                                                                            *
+ ******************************************************************************/
+/*****************************************************************************
+ *  File Name         :  Dem_Cfg.h                                                *
+ *  Module Short Name :  ErrMgr                                               *
+ *  VOBName           :                                                       *
+ *  Author            : msavariy                                              *
+ *  Description       : This file contains the Diagnostics request and        *
+ *                       response handling functionlities.                    *
+ *                                                                            *
+ * Organization     :  Driver Information Software Section,                   *
+ *                     Visteon Software Operation                             *
+ *                     Visteon Corporation                                    *
+ *                                                                            *
+ * ---------------------------------------------------------------------------*
+ * Compiler Name    :  GHS                                                    *
+ * Target Hardware  :                                                         *
+ *                                                                            *
+ ******************************************************************************/
+#ifndef DEM_CFG_H
+#define DEM_CFG_H
+
+/*****************************************************************************
+ *                            Include files                                   *
+ ******************************************************************************/
+#include "Std_Types.h"
+#include "Dem_Types.h"
+#include "Rte_Dem_Type.h"
+
+/*****************************************************************************
+ *                                 Macro Definitions                          *
+ *----------------------------------------------------------------------------*
+ * Definition of macro shall be followed by a comment that explains the       *
+ * purpose of the macro.                                                      *
+ ******************************************************************************/
+#define DEM_VENDOR_ID          0x33
+
+/* Frame Work compilation purpose */
+#define DemConf_DemOperationCycle_DemOperationCycle_IgnitionOnOff   0U
+#define DemConf_DemOperationCycle_DemOperationCycle_WakeupSleep   1U
+
+/* For compile */
+#define DemConf_DemEventParameter_IOHWAB_E_UNDERVOLTAGE   0
+#define DemConf_DemEventParameter_IOHWAB_E_OVERVOLTAGE    0
+
+#define Dem_Cfg_Num_Of_CBGetFdc 0U
+#define Dem_Cfg_Num_Of_OpCycle  2U
+
+#define Dem_Cfg_Num_Of_EnCon    2U
+
+#define Dem_Cfg_Num_Of_StrCon   2U
+
+#define Dem_Cfg_Num_Of_EnConGroup   2u
+#define Dem_Cfg_Num_Of_CBClrEvtAlwd 0u
+#define Dem_Cfg_Num_Of_StrConGroup  2u
+
+#define Dem_Cfg_Num_Of_DTC      72U
+#define Dem_Cfg_Num_Of_Event    (Dem_Cfg_Num_Of_DTC+1)
+
+#define Dem_Cfg_Num_Of_DebounceTable  5U
+
+#define Dem_Cfg_Num_Of_Clients    2u
+
+#define DEM_USERDEFINED_MEMORY_SUPPORT         STD_OFF
+
+/*Event Memory Set - Total No. of Memory sets configured DemMirrorMemory + DemPrimaryMemory + DemUserDefinedMemory*/
+// DemMirrorMemory ?? : TBD
+#define Dem_Cfg_Num_Of_EventMemorySet      2u // DemPrimaryMemory + DemUserDefinedMemory
+
+/***  DEM NVM   ***/
+
+#define Dem_Cfg_Mem_Entry_Start             0U
+#define Dem_Cfg_Mem_Admin_Index             0U
+#define Dem_Cfg_Mem_Status_Index            1U
+#define Dem_Cfg_Mem_Primary_Entry_Start   	2U
+#define Dem_Cfg_Mem_Total_Primary_Entry 	  10U
+#define Dem_Cfg_Mem_Total_Secondary_Entry 	0U
+#define Dem_Cfg_Mem_Primary_Entry_Stop  	(Dem_Cfg_Mem_Total_Primary_Entry + 2)
+#define Dem_Cfg_Mem_UserDefined_Entry_Start (Dem_Cfg_Mem_Primary_Entry_Stop)
+#define Dem_Cfg_Mem_Total_Entry      		(Dem_Cfg_Mem_Total_Primary_Entry + Dem_Cfg_Mem_Total_Secondary_Entry + 2U)
+
+
+#define DEM_USE_NVM                STD_ON
+/*
+ * DEM => DCM
+ */
+
+#define DemTriggerDcmReports                  STD_ON
+#define SeveritySuppotEnabled                 STD_ON
+#define DEM_CFG_SUPPORT_EVENTAVAILABLE        STD_OFF
+
+/*************  Dem_General Configuration ************************************/
+
+#define DemDtcStatusAvailabilityMask_Def   0x99
+#define DemDtcStatusAvailabilityMask_Fota  0xAF
+#define DIAG_SESSION_FOTA                  0x42u
+
+/***  DemClearDTCBehavior ***/
+#define DEM_CLRRESP_NONVOLATILE_FINISH    FALSE
+#define DEM_CLRRESP_NONVOLATILE_TRIGGER   FALSE
+#define DEM_CLRRESP_VOLATILE              TRUE
+
+/***  DemClearDTCLimitation  ***/
+
+#define DEM_ALL_SUPPORTED_DTCS           TRUE
+#define DEM_ONLY_CLEAR_ALL_DTCS          FALSE
+
+/***  ***/
+
+#define DemDebounceCounterBasedSupport   TRUE
+#define DemDebounceTimeBasedSupport      TRUE
+
+#define DemDevErrorDetect                TRUE
+#define DemDevAdditionalCoverityChecks   TRUE
+
+#define DemDtcStatusAvailabilityMask     0x3B 
+#if (SeveritySuppotEnabled)
+#define DemDTCSeverityMask               0xE0
+#endif
+
+#define DemMaxNumberFreezeFrameRecords    0x00
+#if (DemMaxNumberFreezeFrameRecords > 0)
+#define DemMaxLengthFreezeFrameData       0x32
+#define DemMaxNumberFreezeFrameDIDPerFF   0x05
+#define DemMaxNumberFreezeFrameDID        0x05
+#endif
+#define DemFreezeFrameEventID             STD_ON
+
+#define DEM_NUM_OF_EXTENDEDRECORD         0x00
+#if ((DEM_NUM_OF_EXTENDEDRECORD > 0) || (DemMaxNumberFreezeFrameRecords > 0))
+#define DEM_MAX_LENGTH_OF_EXTENDEDRECORD        2
+#define DEM_MAX_NUM_OF_EXT_DATA_RECORD          1  //Max No of EXt Record Data in one DTC
+#define DEM_NUM_OF_EXTENDEDRECORD_COMBINATION   1
+#define DEM_NUM_OF_INTERNALRECORDDATA           1
+#define DEM_NUM_OF_EXTERNALRECORDDATA           1
+#define DEM_CFG_EXTRECDATA_COUNTER_2BYTES       STD_ON
+#define DEM_CFG_EXTRECDATA_EVENT_2BYTES         STD_ON
+#define DEM_AGING_DOWNCTR_ENABLED               STD_OFF
+#endif
+
+#define DemEventMemoryEntryStorageTrigger DEM_TRIGGER_ON_TEST_FAILED
+
+#define DemStatusBitHandlingTestFailedSinceLastClear DEM_STATUS_BIT_NORMAL
+/***  DemOccurrenceCounterProcessing  ***/
+#define DEM_PROCESS_OCCCTR_CDTC      FALSE
+#define DEM_PROCESS_OCCCTR_TF        TRUE
+
+#define DEM_OCCURRENCE_COUNTER_THRESHOLD  255U
+
+/***  ***/
+#define DemTriggerMonitorInitBeforeClearOk  TRUE
+
+#define DEM_APP_CLIENT      1U
+
+/*ECUC_Dem_00778*/
+
+#define DemTypeOfFreezeFrameRecordNumeration   DEM_FF_RECNUM_CALCULATED
+
+/*
+ *  Dem Operation Cycle ID's
+ */
+#define Dem_CfgDemOperationCycle_Ignition          0U
+#define Dem_CfgDemOperationCycle_Aging             1U
+#define Dem_CfgDemOperationCycle_Profile3          2U
+#define Dem_CfgDemOperationCycle_Profile4          3U
+
+//ssukuma1: macros requried by RH850 MCALs hardcoded below for compilation
+//Dem macros - these are required by rh850 mcal gen
+#define DemConf_DemEventParameter_DemEventParameter_001 1
+#define DemConf_DemEventParameter_DemEventParameter0    2
+#define DemConf_DemEventParameter_DemEventParameter1    1
+#define DemConf_DemEventParameter_DemEventParameter2    2
+#define DemConf_DemEventParameter_DemEventParameter3    3
+#define DemConf_DemEventParameter_DemEventParameter4    4
+#define DemConf_DemEventParameter_DemEventParameter5    5
+#define DemConf_DemEventParameter_DemEventParameter6    6
+#define DemConf_DemEventParameter_DemEventParameter7    7
+#define DemConf_DemEventParameter_DemEventParameter8    8
+#define DemConf_DemEventParameter_DemEventParameter9    9
+#define DemConf_DemEventParameter_DemEventParameter10  10
+#define DemConf_DemEventParameter_DemEventParameter11  11
+#define DemConf_DemEventParameter_DemEventParameter12  12
+#define DemConf_DemEventParameter_DemEventParameter13  13
+#define DemConf_DemEventParameter_DemEventParameter14  14
+#define DemConf_DemEventParameter_DemEventParameter15  15
+#define DemConf_DemEventParameter_DemEventParameter16  16
+#define DemConf_DemEventParameter_DemEventParameter17  17
+#define DemConf_DemEventParameter_DemEventParameter18  18
+#define DemConf_DemEventParameter_DemEventParameter19  19
+#define DemConf_DemEventParameter_DemEventParameter20  20
+#define DemConf_DemEventParameter_DemEventParameter21  21
+#define DemConf_DemEventParameter_DemEventParameter22  22
+#define DemConf_DemEventParameter_DemEventParameter23  23
+#define DemConf_DemEventParameter_DemEventParameter24  24
+#define DemConf_DemEventParameter_DemEventParameter25  25
+#define DemConf_DemEventParameter_DemEventParameter26  26
+#define DemConf_DemEventParameter_DemEventParameter27  27
+#define DemConf_DemEventParameter_DemEventParameter28  28
+#define DemConf_DemEventParameter_DemEventParameter29  29
+#define DemConf_DemEventParameter_DemEventParameter30  30
+#define DemConf_DemEventParameter_DemEventParameter31  31
+#define DemConf_DemEventParameter_DemEventParameter32  32
+#define DemConf_DemEventParameter_DemEventParameter33  33
+#define DemConf_DemEventParameter_DemEventParameter34  34
+#define DemConf_DemEventParameter_DemEventParameter35  35 
+#define DemConf_DemEventParameter_DemEventParameter36  36
+#define DemConf_DemEventParameter_DemEventParameter37  37
+#define DemConf_DemEventParameter_DemEventParameter38  38
+#define DemConf_DemEventParameter_DemEventParameter39  39
+#define DemConf_DemEventParameter_DemEventParameter40  40
+#define DemConf_DemEventParameter_DemEventParameter41  41
+#define DemConf_DemEventParameter_DemEventParameter42  42
+#define DemConf_DemEventParameter_DemEventParameter43  43
+#define DemConf_DemEventParameter_DemEventParameter44  44
+#define DemConf_DemEventParameter_DemEventParameter45  45
+#define DemConf_DemEventParameter_DemEventParameter46  46
+#define DemConf_DemEventParameter_DemEventParameter47  47
+#define DemConf_DemEventParameter_DemEventParameter48  48
+#define DemConf_DemEventParameter_DemEventParameter49  49
+#define DemConf_DemEventParameter_DemEventParameter50  50
+#define DemConf_DemEventParameter_DemEventParameter51  51
+#define DemConf_DemEventParameter_DemEventParameter52  52
+#define DemConf_DemEventParameter_DemEventParameter53  53
+#define DemConf_DemEventParameter_DemEventParameter54  54
+#define DemConf_DemEventParameter_DemEventParameter55  55
+#define DemConf_DemEventParameter_DemEventParameter56  56
+#define DemConf_DemEventParameter_DemEventParameter57  57
+#define DemConf_DemEventParameter_DemEventParameter58  58
+#define DemConf_DemEventParameter_DemEventParameter59  59
+#define DemConf_DemEventParameter_DemEventParameter60  60
+#define DemConf_DemEventParameter_DemEventParameter61  61
+#define DemConf_DemEventParameter_DemEventParameter62  62
+#define DemConf_DemEventParameter_DemEventParameter63  63
+#define DemConf_DemEventParameter_DemEventParameter64  64
+#define DemConf_DemEventParameter_DemEventParameter65  65
+#define DemConf_DemEventParameter_DemEventParameter66  66
+#define DemConf_DemEventParameter_DemEventParameter67  67
+#define DemConf_DemEventParameter_DemEventParameter68  68
+#define DemConf_DemEventParameter_DemEventParameter69  69
+#define DemConf_DemEventParameter_DemEventParameter70  70
+#define DemConf_DemEventParameter_DemEventParameter71  71
+#define DemConf_DemEventParameter_DemEventParameter72  72 
+
+#define DemConf_DemEventParameter_RAMTST_E_RAM_FAILURE      9
+
+#define DemConf_DemEventParameter_RAMTST_E_ECC_FAILED        10
+
+
+#define DIO_WRITE_PORT_EVENT_ID              11
+#define DIO_WRITE_CHANNEL_EVENT_ID           12
+#define CAN_E_HARDWARE_ERROR                 13
+#define SPI_E_HARDWARE_ERROR                 14
+#define GPT_E_HARDWARE_ERROR                 15
+
+//MACRO FOR dtc NUMBER DEFINITION
+#define DTC_NUMBER_BCAN_TRX_FAULT        (0x00FFFFFFUL)
+#define DTC_NUMBER_00000001              (0x00000001UL)
+#define DTC_NUMBER_00000002              (0x00000002UL)
+#define DTC_NUMBER_00000003              (0x00000003UL)
+#define DTC_NUMBER_00000004              (0x00000004UL)
+#define DTC_NUMBER_00000005              (0x00000005UL)
+#define DTC_NUMBER_00000006              (0x00000006UL)
+#define DTC_NUMBER_00000007              (0x00000007UL)
+#define DTC_NUMBER_00000008              (0x00000008UL)
+#define DTC_NUMBER_00000009              (0x00000009UL)
+
+ /*  Event IDs [symbolic name value] - sorted by name.
+     See Dem_Cfg_EventTable[] for this list sorted by Ids.  */ 
+/*MACRO FOR dtc NUMBER DEFINITION*/
+#define DTC_NUMBER_BCAN_TRX_FAULT_Event_ID  0U
+#define DTC_NUMBER_00000001_EventParameter   1U
+#define DTC_NUMBER_00000002_EventParameter   2U
+#define DTC_NUMBER_00000003_EventParameter   3U
+#define DTC_NUMBER_00000004_EventParameter   4U
+#define DTC_NUMBER_00000005_EventParameter   5U
+#define DTC_NUMBER_00000006_EventParameter   6U
+#define DTC_NUMBER_00000007_EventParameter   7U
+
+#define DemConf_DemEventParameter_CDD_IPC_E_HARDWARE_ERROR     (65512U)
+#define DemConf_DemEventParameter_WDG_E_DISABLE_REJECTED       (65515U)
+#define DemConf_DemEventParameter_WDG_E_MODE_FAILED            (65514U)
+
+extern Std_ReturnType DemExt_Read41Data(Dem_EventIdType Event, uint8* pDTCLayoutData);
+
+/*****************************************************************************
+ *                                Globally  accessed Variable Declarations    *
+ *----------------------------------------------------------------------------*
+ * Declaration shall be followed by a comment that gives the following info.  *
+ * about the variable.                                                        *
+ * purpose, critical section, unit, and resolution                            *
+ ******************************************************************************/
+
+typedef struct
+{
+  uint32 TimeStamp;
+  uint16 EventId;
+  uint16 AgingCounter;
+  uint16 OccurrenceCounter;
+  uint16 FirstFailedCount;
+  uint16 LastFailedCount;
+#if (DemMaxNumberFreezeFrameRecords >0)
+  uint8 SnapshotData[DemMaxNumberFreezeFrameRecords][DemMaxLengthFreezeFrameData];
+  uint8 SnahpshotHeader;
+#endif
+#if (DEM_NUM_OF_EXTENDEDRECORD > 0)
+  uint8 ExtendedDataRecord[DEM_NUM_OF_EXTENDEDRECORD][DEM_MAX_LENGTH_OF_EXTENDEDRECORD+1U]; /*Added 1 so index 0 will point to update status*/
+#endif
+uint8 EventMemoryOrigin;
+uint8 EventMemoryEntryCounter;
+} Dem_Cfg_PrimaryMemEntryType;
+
+typedef struct
+{
+  uint16 FirstFailedEvent;
+  uint16 FirstConfirmedEvent;
+  uint16 RecentFailedEvent;
+  uint16 RecentConfirmedEvent;
+  uint8 EventStatus[Dem_Cfg_Num_Of_Event];
+  boolean MemoryOverflow[Dem_Cfg_Num_Of_EventMemorySet];
+} Dem_Cfg_UdsStatusDataType;
+
+typedef struct
+{
+  uint16 ImplementationVersion;
+  uint16 ConfigurationId;
+  uint16 CycleCounter[ 2];
+  uint8  MemoryOverflow;
+} Dem_Cfg_AdminDataType;
+
+typedef struct
+{
+  uint16 Counter[Dem_Cfg_Num_Of_OpCycle];
+  uint8 MagicFlag;
+} Dem_Cfg_OpCycleType;
+
+typedef struct
+{
+  uint8 Id;
+  uint8 Type;
+  boolean AutoStart;
+  boolean AutoStop;
+} Dem_Cfg_OpCycleStateType;
+
+typedef struct
+{
+  boolean Status;
+} Dem_Cfg_EnableConditionType;
+
+typedef struct
+{
+  uint16 Mask;
+} Dem_Cfg_EnableConditionGroupType;
+
+typedef struct
+{
+  boolean Status;
+} Dem_Cfg_StorageConditionType;
+
+typedef struct
+{
+  uint16 Mask;
+} Dem_Cfg_StorageConditionGroupType;
+
+/*typedef struct
+ {
+   uint16 Number;
+ } Dem_Cfg_NvRamBlockIdType;*/
+
+typedef uint16 Dem_Cfg_NvRamBlockIdType;
+
+typedef struct
+{
+  uint32 Value;
+  uint8 AttrbsRef;
+  uint8 Sess_Ref;
+#if (SeveritySuppotEnabled)
+  Dem_DTCSeverityType Severity;
+  uint8 DTCFunctionalUnit; 
+#endif
+} Dem_Cfg_DTCType;
+
+typedef struct
+{
+  uint8 AgingThershold;
+  uint8 AgingOpCycleRef;
+  uint8 ExtDataRecordContainerRef;
+  #if(DemTypeofFreezeFrameRecordNumeration != DEM_FF_RECNUM_CALCULATED)
+  uint8 FreezeFrameRecNumClassRef;
+  #else
+  uint8 FreezeFrameClassRef;
+  #endif
+  boolean ImmediateNvStorageAllowed;
+  boolean AgingAllowed;
+  boolean ExtDataRecordSupported; /* Enable - TRUE, Disable - False */
+  boolean FreezeFrameRecordSupported; /* Enable - TRUE, Disable - False */
+  boolean WIR_Supported;/* Enable - TRUE, Disable - False */
+} Dem_Cfg_DTCAttributesType;
+
+typedef struct
+{
+  Std_ReturnType (*DemCallbackGetFdc)(sint8* Fdc);
+}Dem_Cfg_CallBackGetFdcType;
+
+typedef struct
+{
+  Dem_ClientFunctionalityType DemClientFunctionality;
+  uint8 DemClientId;
+  boolean DemClientUsesRTE;
+} Dem_Cfg_ClientType;
+
+typedef struct
+{
+  Std_ReturnType (*DemCallbackInitMForE)(Dem_InitMonitorReasonType Reason);
+  Dem_EventIdType Id;
+  uint8 EventKind;
+  uint8 FailureCycleCounterThershold;
+  uint8 DebounceTableRef;
+  uint8 OpCycleRef;
+  uint8 DTCTableRef;
+  Dem_DTCOriginType DemOrigin;
+  uint8 EnableConditionGroupRef;
+  uint8 StorageConditionGroupRef;
+  uint8 CallBackGetFdcRef;
+  boolean AvailableStatus;
+  uint8 CBClearEventAllowed;
+  uint8 Priority;
+} Dem_Cfg_EventParameterType;
+
+typedef struct
+{
+  sint16 FailedThershold;
+  sint16 PassedThershold;
+  sint16 FailedTimeThershold;
+  sint16 PassedTimeThershold;
+  sint8 DecStepSize;
+  sint8 IncStepSize;
+  sint16 JumpUpValue;
+  sint16 JumpDownValue;
+  uint8 AlgoClass;
+  boolean JumpUp;
+  boolean JumpDown;
+  boolean behavior;
+} Dem_Cfg_DebounceTableType;
+
+#if (DemMaxNumberFreezeFrameRecords > 0)
+
+typedef struct
+{
+  uint16 Did;
+  uint8 ExternalDataElementClassRef;
+}DemDidClassType;
+
+typedef struct
+{
+  uint8 NoOfDid;
+  uint8 DidClassRef[DemMaxNumberFreezeFrameDIDPerFF];
+}DemFreezeFrameClassType;
+
+#if(DemTypeofFreezeFrameRecordNumeration != DEM_FF_RECNUM_CALCULATED)
+typedef struct
+{
+  uint8 Number;
+  uint8 Trigger;
+  uint8 Update;
+  uint8 FreezeFrameClassRef;
+}DemFreezeFrameRecordClassType;
+
+typedef struct
+{
+  uint8 MaxNumberFreezeFrameRecords;
+  uint8 FreezeFrameRecordClassRef[DemMaxNumberFreezeFrameRecords];
+}DemFreezeFrameRecNumClassType;
+#endif
+#endif
+
+
+#if ((DEM_NUM_OF_EXTENDEDRECORD > 0) || (DemMaxNumberFreezeFrameRecords > 0))
+typedef enum
+{
+    DEM_UPDATE_RECORD_NO, DEM_UPDATE_RECORD_YES,
+} DemExtendedDataRecordUpdateType;
+#endif
+
+#if (DEM_NUM_OF_EXTENDEDRECORD > 0)
+typedef enum
+{
+    InternalDataElementClass, ExternalDataElementClass,
+} DemDataType;
+
+typedef enum
+{
+    DEM_EXTENDED_DATA_INIT = 0x0,
+    DEM_EXTENDED_DTC_PRIORITY = 0x1,
+    DEM_EXTENDED_MEM_OVERFLOW = 0x2,
+    DEM_EXTENDED_DATA_OCCCNTR = 0x4,
+    DEM_EXTENDED_DATA_AGINGCNTR = 0x8,
+    DEM_EXTENDED_DATA_CYCLES_SINCE_LAST_FAILED = 0x10,
+    DEM_EXTENDED_DATA_CYCLES_SINCE_FIRST_FAILED = 0x20,
+    DEM_EXTENDED_DATA_CYCLES_SINCE_FIRST_FAILED_EVENT = 0x40,
+    DEM_EXTENDED_DATA_CYCLES_SINCE_FIRST_CONFIRMED_EVENT = 0x80,
+    DEM_EXTENDED_DATA_RECENT_FAILED_EVENT = 0x100,
+    RECENT_CONFIRMED_EVENT = 0x200,
+    DEM_EXTENDED_DATA_OPERATION_CYCLES_COUNTER = 0x400,
+    DEM_EXTENDED_DATA_FDC = 0x800
+} DemIntDataElementType;
+
+typedef struct
+{
+    uint8 DemExtendedDataRecordNumber;
+    uint8 DemExtendedDataRecordTrigger; /* DEM_TRIGGER_ON_CONFIRMED = 0x03, DEM_TRIGGER_ON_FDC_THRESHOLD = 0x01,
+                                           DEM_TRIGGER_ON_MIRROR    = 0x05, DEM_TRIGGER_ON_PASSED        = 0x04,
+                                           DEM_TRIGGER_ON_PENDING   = 0x02, DEM_TRIGGER_ON_TEST_FAILED   = 0x00 */
+    uint8 DemExtendedDataClassRef;
+    DemExtendedDataRecordUpdateType DemExtendedDataRecordUpdate;
+    boolean DemDataElementEnable; /* Enable - TRUE, Disable - False */
+} DemExtendedDataRecordClassType;
+
+typedef struct
+{
+    uint8 NoOfExtdataRecord;
+    uint8 DemExtendedDataRecordClassTypeRef[DEM_MAX_NUM_OF_EXT_DATA_RECORD];
+} DemExtDataRecordContainerType;
+
+typedef struct
+{
+    uint8 DemDataElementRef;
+    DemDataType DemDataElementType;
+} DemExtendedDataClassType;
+
+typedef struct
+{
+    uint8 DemIntDataElementDataSize;
+    DemIntDataElementType DemInternalDataElement;
+} DemInternalDataElementClassType;
+#endif
+
+typedef struct
+{
+  Std_ReturnType (*CBClearEventAllowedFunc)(boolean* ClearEventAllowed);
+}Dem_Cfg_CBClearEventAllowedType;
+
+
+#if ((DEM_NUM_OF_EXTENDEDRECORD > 0) || (DemMaxNumberFreezeFrameRecords > 0))
+typedef struct
+{
+  uint8 DemDataElementDataSize;
+#if (DemFreezeFrameEventID == STD_ON)
+  Std_ReturnType (*DemDataElementReadFnc)(Dem_EventIdType EventId, uint8 *ExternalDataRecord);
+#else
+  Std_ReturnType (*DemDataElementReadFnc)(uint8 *ExternalDataRecord);
+#endif
+} DemExternalDataElementClassType;
+#endif
+
+extern const Dem_Cfg_UdsStatusDataType Dem_Cfg_StatusDataInit;
+extern const Dem_Cfg_OpCycleType Dem_Cfg_OpCycleInit;
+extern const Dem_Cfg_PrimaryMemEntryType Dem_MemoryEntryInit;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_0;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_1;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_2;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_3;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_4;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_5;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_6;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_7;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_8;
+extern Dem_Cfg_PrimaryMemEntryType Dem_PrimaryEntry_9;
+
+extern const uint8* Dem_Cfg_MemPtr[Dem_Cfg_Mem_Total_Entry];
+#if (DEM_USE_NVM == STD_ON) 
+extern const Dem_Cfg_NvRamBlockIdType Dem_Cfg_Memory_BlockId[Dem_Cfg_Mem_Total_Entry];
+#endif
+
+extern Dem_Cfg_UdsStatusDataType Dem_Cfg_StatusData;
+extern Dem_Cfg_AdminDataType Dem_Cfg_AdminData;
+extern Dem_Cfg_OpCycleType Dem_Cfg_OpCycle;
+
+extern const Dem_Cfg_OpCycleStateType Dem_Cfg_OpCycleState[Dem_Cfg_Num_Of_OpCycle];
+
+extern const Dem_Cfg_EnableConditionType Dem_Cfg_EnableCondition[Dem_Cfg_Num_Of_EnCon];
+extern const Dem_Cfg_StorageConditionType Dem_Cfg_StorageCondition[Dem_Cfg_Num_Of_StrCon];
+
+extern const Dem_Cfg_EnableConditionGroupType Dem_Cfg_EnableConditionGroup[Dem_Cfg_Num_Of_EnConGroup];
+extern const Dem_Cfg_StorageConditionGroupType Dem_Cfg_StorageConditionGroup[Dem_Cfg_Num_Of_StrConGroup];
+
+/***  DTC  ***/
+extern const Dem_Cfg_DTCType Dem_Cfg_DTC[Dem_Cfg_Num_Of_DTC + 1];
+extern const Dem_Cfg_DTCAttributesType Dem_Cfg_DTCAttributes[Dem_Cfg_Num_Of_DTC + 1];
+
+/*** Event  ***/
+extern const Dem_Cfg_CallBackGetFdcType Dem_Cfg_CallBackGetFdc[Dem_Cfg_Num_Of_CBGetFdc];
+extern const Dem_Cfg_EventParameterType Dem_Cfg_EventParameter[Dem_Cfg_Num_Of_Event];
+extern const Dem_Cfg_DebounceTableType Dem_Cfg_DebounceTable[Dem_Cfg_Num_Of_DebounceTable];
+
+extern const Dem_Cfg_ClientType Dem_Cfg_Client[Dem_Cfg_Num_Of_Clients];
+
+#if (DemMaxNumberFreezeFrameRecords > 0)
+
+extern const DemDidClassType DemDidClass[DemMaxNumberFreezeFrameDID];
+extern const DemFreezeFrameClassType DemFreezeFrameClass[DemMaxNumberFreezeFrameRecords];
+#if(DemTypeofFreezeFrameRecordNumeration != DEM_FF_RECNUM_CALCULATED)
+extern const DemFreezeFrameRecordClassType DemFreezeFrameRecordClass[DemMaxNumberFreezeFrameRecords];
+extern const DemFreezeFrameRecNumClassType DemFreezeFrameRecNumClass[DemMaxNumberFreezeFrameRecords];
+#endif
+#endif
+
+#if (DEM_NUM_OF_EXTENDEDRECORD > 0)
+extern const DemExtDataRecordContainerType Dem_Cfg_ExtDataRecordContainer[DEM_NUM_OF_EXTENDEDRECORD_COMBINATION];
+extern const DemExtendedDataRecordClassType Dem_Cfg_ExtRecordParameter[DEM_NUM_OF_EXTENDEDRECORD];
+extern const DemExtendedDataClassType Dem_Cfg_ExtDataClass[DEM_NUM_OF_EXTENDEDRECORD];
+extern const DemInternalDataElementClassType Dem_Cfg_InternalExtDataElement[DEM_NUM_OF_INTERNALRECORDDATA];
+#endif
+#if ((DEM_NUM_OF_EXTENDEDRECORD > 0) || (DemMaxNumberFreezeFrameRecords > 0))
+extern const DemExternalDataElementClassType Dem_Cfg_ExternalExtDataElement[DEM_NUM_OF_EXTERNALRECORDDATA];
+#endif
+
+extern const Dem_Cfg_CBClearEventAllowedType Dem_Cfg_CBClearEvent[Dem_Cfg_Num_Of_CBClrEvtAlwd];
+/*****************************************************************************
+ *                                 Locally used Variable Declarations         *
+ *----------------------------------------------------------------------------*
+ * Declaration shall be followed by a comment that gives the following info.  *
+ * about the variable.                                                        *
+ * purpose, critical section, unit, and resolution                            *
+ ******************************************************************************/
+
+/*****************************************************************************
+ *                   Functions                                                *
+ ******************************************************************************/
+extern void Dem_ClearDTC_Reset_Init(void);
+extern void Dem_EnterCriticalSection(void);
+extern void Dem_ExitCriticalSection(void);
+extern void Dem_Det_Error_register(uint8 p1, uint8 p2);
+
+#endif
+/*****************************************************************************
+ *     End of File
+ *
+ *******************************************************************************/
+/****************************************************************************
+ *   for each change to this file, be sure to record:                        *
+ *      1.  who made the change and when the change was made                 *
+ *      2.  why the change was made and the intended result                  *
+ *   Following block needs to be repeated for each change                    *
+ *****************************************************************************/
+/**-------------------------------------------------------------------------*/
+/*Date              : 07-Mar-2017                                            */
+/*Version           :                                                       */
+/*By                : msavariy                                              */
+/*Traceability      :                                                       */
+/*Change Description: Data design And Framework , Initial Version */
+/*--------------------------------------------------------------------------*/
+/**-------------------------------------------------------------------------*/
+/*Date              : 29-Aug-2020                                           */
+/*Version           :                                                       */
+/*By                : bbaskara                                              */
+/*Traceability      : Rtc#1029668                                           */
+/*Change Description: 0x19 0x06 service design changes                      */
+/*--------------------------------------------------------------------------*/
+/**-------------------------------------------------------------------------*/
+/*Date              : 18-Jan-2022                                           */
+/*Version           :                                                       */
+/*By                : iiliev1                                               */
+/*Traceability      : Rtc#1560389                                           */
+/*Change Description: DCM and DEM Autosar 4.2.2 Migration                   */
+/*--------------------------------------------------------------------------*/
+

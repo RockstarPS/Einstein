@@ -1,0 +1,95 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file XCP_on_CAN_v1_3.a2l
+*    @ingroup XcpOnCanConfiguration
+*    @brief This is a2l file that contains the configuration parameters that are specific for XCP on CAN that 
+*    supports CAN-FD.
+********************************************************************************************************************/
+
+/********************************************* start of CAN ********************************************************/
+
+/begin XCP_ON_CAN
+  
+    0x0103                              /* XCP on CAN version 1.3 */
+  
+    CAN_ID_BROADCAST  0x0100            /* Broadcast */
+                                        /* Bit31= 1: extended identifier */
+                                        /* Bit30= 1: CAN-FD identifier */
+
+    CAN_ID_MASTER     0x0200            /* CMD/STIM CAN-ID , master -> slave */
+                                        /* Bit31= 1: extended identifier */
+                                        /* Bit30= 1: CAN-FD identifier */
+  
+    CAN_ID_MASTER_INCREMENTAL           /* master uses range of CAN-IDs */
+
+    CAN_ID_SLAVE 0x0300                 /* RES/ERR/EV/SERV/DAQ , slave  -> master */
+                                        /* Bit31= 1: extended identifier */
+                                        /* Bit30= 1: CAN-FD identifier */
+
+    CAN_ID_GET_DAQ_CLOCK_MULTICAST 0x400    /* Only to be used for GET_DAQ_CLOCK_MULTICAST */
+                                            /* master -> slaves */
+                                            /* Bit31= 1: extended identifier */
+                                            /* Bit30= 1: CAN-FD identifier */
+
+    BAUDRATE 500000                     /* BAUDRATE [Hz] */
+
+    SAMPLE_POINT 75                     /* sample point */
+
+    SAMPLE_RATE SINGLE                  /* 1 sample per bit */
+
+    BTL_CYCLES  16                      /* slots per bit time */
+
+    SJW 2                               /* length synchr. segment */
+
+    SYNC_EDGE SINGLE                    /* on falling edge only */ 
+
+    MAX_DLC_REQUIRED                    /* master to slave frames always to have DLC = MAX_DLC = 8 */
+
+    /begin DAQ_LIST_CAN_ID              /* At IF_DATA DAQ */
+        0x0000                          /* reference to DAQ_LIST_NUMBER 0 */
+        FIXED 0x310                     /* DAQ_LIST_NUMBER 0 to be updated on on this fixed CAN_ID */
+    /end DAQ_LIST_CAN_ID
+
+    /begin DAQ_LIST_CAN_ID              /* At IF_DATA DAQ */
+        0x0000                          /* reference to EVENT_NUMBER 0 */
+        FIXED 0x310                     /* EVENT_NUMBER 0 to be updated on on the fixed CAN_ID */
+    /end DAQ_LIST_CAN_ID
+
+    MAX_BUS_LOAD 80                     /* maximum available bus load in percent */
+
+    /begin CAN_FD
+        MAX_DLC 64                      /* Maximum dlc supported */
+
+        CAN_FD_DATA_TRANSFER_BAUDRATE   /* BAUDRATE [Hz] */
+
+        SAMPLE_POINT                    /* sample point receiver */
+
+        BTL_CYCLES                      /* BTL_CYCLES */
+
+        SJW                             /* length synchr. segment  */
+
+        SYNC_EDGE   SINGLE              /* on falling edge only */
+
+        MAX_DLC_REQUIRED                /*  master to slave frames always to have DLC = MAX_DLC for CAN-FD */
+
+        SECONDARY_SAMPLE_POINT          /* secondary sample point */
+
+        TRANSCEIVER_DELAY_COMPENSATION  OFF /* transceiver delay compensation status */
+    /end CAN_FD
+
+/end XCP_ON_CAN
+
+/********************************************* end of CAN ********************************************************/

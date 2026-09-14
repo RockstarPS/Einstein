@@ -1,0 +1,52 @@
+root@am62pxx-7xxd-b@19:15:/system/usr/bin/wdg_test_FT# ./testcase07_no_restart_wdg.sh
+------------------------------------------------------------------
+----- Test Case 7 - Restart type: no restart ---------------------
+  Cause of termination:
+        Watchdog timeout (keep-alive ping not received)
+
+  Expected behavior:
+        The process shall not be restarted.
+
+  Error Notification Fatal (Yes/No): Yes
+  Process Restart (Yes/No): No
+  [*] Configuration:
+        Restart=no
+        WatchdogSec=1
+------------------------------------------------------------------
+[>] Starting test_02.service...
+[+] test_02.service started successfully.
+[>] Starting wdg_proxy_test_02.service...
+Error: Failed to start wdg_proxy_test_02.service.
+.......................................................
+Test: trigger watchdog timeout by stopping keep-alive (via signal 35)
+       Waiting for watchdog timeout
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_02.service (PID: 4514)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 19:16:04 am62pxx-7xxd-b systemd[1]: Started Test application 02.
+May 29 19:16:04 am62pxx-7xxd-b test_02[4514]: Start - Test Case: 2, sleep time 10
+May 29 19:16:04 am62pxx-7xxd-b test_02[4514]: Test Case 2: calling connect()
+May 29 19:16:06 am62pxx-7xxd-b test_02[4514]: Interrupt signal (35) received.
+May 29 19:16:06 am62pxx-7xxd-b test_02[4514]: Test case 2: calling start()
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Watchdog timeout (limit 1s)!
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Killing process 4514 (test_02) with signal SIGABRT.
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: State 'stop-watchdog' timed out. Killing.
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Killing process 4514 (test_02) with signal SIGKILL.
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Killing process 4515 (dlt_housekeeper) with signal SIGKILL.
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Killing process 4516 (n/a) with signal SIGKILL.
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Main process exited, code=killed, status=9/KILL
+May 29 19:16:08 am62pxx-7xxd-b systemd[1]: test_02.service: Failed with result 'watchdog'.
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/29 19:16:08.457081   16668732 219 ECU1 SYS- JOUR log fatal V 4 [2025/05/29 19:16:08.308000 test_02[4514]: Emergency: ANOM_ABEND auid=4294967295 uid=0 gid=0 ses=4294967295 pid=4514 comm="test_02" exe="/system/usr/bin/wdg_test_FT/test_02" sig=6 res=1]
+2025/05/29 19:16:08.457127   16668730 221 ECU1 SYS- JOUR log info V 4 [2025/05/29 19:16:08.312600 kernel: Notice: audit: type=1701 audit(1748546168.308:16): auid=4294967295 uid=0 gid=0 ses=4294967295 pid=4514 comm="test_02" exe="/system/usr/bin/wdg_test_FT/test_02" sig=6 res=1]
+2025/05/29 19:16:08.457256   16668765 222 ECU1 SYS- JOUR log info V 4 [2025/05/29 19:16:08.312543 klogd[289]: Notice: [ 1666.873086] audit: type=1701 audit(1748546168.308:16): auid=4294967295 uid=0 gid=0 ses=4294967295 pid=4514 comm="test_02" exe="/system/usr/bin/wdg_test_FT/test_02" sig=6 res=1]
+-----------------------------------------------
+[*] Checking status: test_02.service
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_02.service
+--- Test complete. DLT logging stopped. ---
+******************************************************

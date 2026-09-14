@@ -1,0 +1,161 @@
+
+#  pidin a | grep resmgr_dio
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0xE828FFFE -b0x5D090000 -m0xF9980084 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x01C281FF -b0x5D0C0000 -m0x1FF8007F -b0x5D0D0000 -m0x00000200
+  340000 grep resmgr_dio
+#
+  
+# set_dir_out 6
+Start: set_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=131087 _=/usr/sbin/set_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=131087 _=/usr/sbin/set_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: set_dir_out
+#
+#
+# slog2info | grep dio
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 1 bytes, data: 6
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_export:1425 CExport is successful for the pin 6 & status is : 0
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1250 Bank Number for DIO pin 6 is 0
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1272 Channel Number for DIO pin 6 is 28
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_io_write:678 dio_data_extract success
+Jan 01 00:00:58.123               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+#
+# read_dir_out 6
+Start: read_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=163855 _=/usr/sbin/read_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=163855 _=/usr/sbin/read_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Direction of pin 6 is 1
+Return value is :0
+Exit: read_dir_out
+
+
+# dio_set_pin 6
+Start: dio_set_pin
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=180239 _=/usr/sbin/dio_set_pin
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=180239 _=/usr/sbin/dio_set_pin ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: dio_set_pin
+
+# read_pin_value1 6
+Start: read_pin_value1
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=188431 _=/usr/sbin/read_pin_value1
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=188431 _=/usr/sbin/read_pin_value1 ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Value of pin 6 is 1
+Return value is :0
+Exit: read_pin_value1
+# gles3-gears &
+[1] 196623
+
+#
+# slog2info | grep dio
+Jan 01 00:00:00.076                          slm.3                 slog      0  process_find_next(160) - current:resmgr_dio, action:devc-sermx8, d:NO D
+Jan 01 00:00:00.076                          slm.3                 slog      0  process_activity: retry got new component resmgr_dio
+Jan 01 00:00:00.082                          slm.3                 slog      0  [START] resmgr_dio - pid 28686 (810000)
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log*     0  main:129 Starting DIO Resmgr dio_rm
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 0 is 35439004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 0 is 3543a000
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 1 is 3543b004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 1 is 3543c000
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 2 is 3543d004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 2 is 3543e000
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 3 is 3543f004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 3 is 35440000
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 4 is 35441004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 4 is 35442000
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:79 Mapped address of banks for DIR 5 is 35443004
+Jan 01 00:00:00.092               ResMgr_DIO.28686              dio_log      0  dio_hw_init:89 Mapped address of banks for DATA 5 is 35444000
+Jan 01 00:00:00.092                          slm.3                 slog      0  [WAIT]  resmgr_dio - No error (810000)
+Jan 01 00:00:00.092                          slm.3                 slog      0  process_find_next(160) - current:vpu-decoder, action:resmgr_dio, d:NO D
+Jan 01 00:00:00.093               ResMgr_DIO.28686              dio_log      0  dio_setup_timer:1413 Timer started Successfully
+Jan 01 00:00:00.093               ResMgr_DIO.28686              dio_log      0  dio_init:317 Dispatch allocation done
+Jan 01 00:00:00.094               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.095               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 3 bytes, data: 16
+Jan 01 00:00:00.095               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 16 & status is : 0
+Jan 01 00:00:00.095               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 16 is 0
+Jan 01 00:00:00.095               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 16 is 21
+Jan 01 00:00:00.095               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.098                          slm.3                 slog      0  [WAIT]  resmgr_dio - No error (870000)
+Jan 01 00:00:00.106               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.106               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 4 bytes, data: out
+Jan 01 00:00:00.108               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.108               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 1
+Jan 01 00:00:00.109               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.109               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 3 bytes, data: 19
+Jan 01 00:00:00.110               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 19 & status is : 0
+Jan 01 00:00:00.110               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 19 is 0
+Jan 01 00:00:00.110               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 19 is 30
+Jan 01 00:00:00.110               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.126               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.126               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 4 bytes, data: out
+Jan 01 00:00:00.128               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.131               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 1
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 3 bytes, data: 28
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 28 & status is : 0
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 28 is 1
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 28 is 28
+Jan 01 00:00:00.133               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.150               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.150               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 4 bytes, data: out
+Jan 01 00:00:00.152               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.152               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 1
+Jan 01 00:00:00.152               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.152               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 3 bytes, data: 31
+Jan 01 00:00:00.153               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 31 & status is : 0
+Jan 01 00:00:00.153               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 31 is 1
+Jan 01 00:00:00.153               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 31 is 31
+Jan 01 00:00:00.153               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.157          devb_sdmmc_mx8x.73747                 slog   1800  sdio_cd:  insertion path 0, cd state 0x1
+Jan 01 00:00:00.160               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.160               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 4 bytes, data: out
+Jan 01 00:00:00.160               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1067 unknown devctl command status is 89
+Jan 01 00:00:00.160               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 1
+Jan 01 00:00:00.973               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 29
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 29 & status is : 0
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 29 is 1
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 29 is 29
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:935 direction 1 write using devctl is successful and status is 0
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 30
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 30 & status is : 0
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 30 is 1
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 30 is 30
+Jan 01 00:00:00.974               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:935 direction 1 write using devctl is successful and status is 0
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 32
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 32 & status is : 0
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 32 is 2
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 32 is 0
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:935 direction 0 write using devctl is successful and status is 0
+Jan 01 00:00:00.975               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 27
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_export:1465 CExport is successful for the pin 27 & status is : 0
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1282 Bank Number for DIO pin 27 is 1
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_data_extract:1306 Channel Number for DIO pin 27 is 27
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_write:713 dio_data_extract success
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:935 direction 0 write using devctl is successful and status is 0
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 29
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_write:719 GPIO Pin already exported
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1014 Value 0 write using devctl is successful and status is 0
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 30
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_write:719 GPIO Pin already exported
+Jan 01 00:00:00.976               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1014 Value 0 write using devctl is successful and status is 0
+Jan 01 00:00:01.077               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 29
+Jan 01 00:00:01.077               ResMgr_DIO.28686              dio_log      0  dio_io_write:719 GPIO Pin already exported
+Jan 01 00:00:01.077               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1014 Value 1 write using devctl is successful and status is 0
+Jan 01 00:00:01.078               ResMgr_DIO.28686              dio_log      0  dio_io_write:674 got write of 2 bytes, data: 30
+Jan 01 00:00:01.078               ResMgr_DIO.28686              dio_log      0  dio_io_write:719 GPIO Pin already exported
+Jan 01 00:00:01.078               ResMgr_DIO.28686              dio_log      0  dio_io_devctl:1014 Value 1 write using devctl is successful and status is 0
+Jan 01 00:00:02.484               wdg_proxy.204828            wdg_proxy      0  [WP][WP][Info] (204828|1) wdg_proxy.c:714 :WdgProxy_Attach: 

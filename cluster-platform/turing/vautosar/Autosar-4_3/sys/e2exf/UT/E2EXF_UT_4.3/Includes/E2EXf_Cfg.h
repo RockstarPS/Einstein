@@ -1,0 +1,236 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2020. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  E2EXF_CFG_H                                          *
+*  Module Short Name :  E2EXF_CFG_H                                          *
+*  Description       :                                                       *
+*                                                                            *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS Multi                                              *
+* Target Hardware  :  Platform Independent                                   *
+*                                                                            *
+******************************************************************************/
+/*This file contains the sample APIs that perform protect and check functionality*/
+
+#ifndef E2EXF_CFG_H
+#define E2EXF_CFG_H
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Std_Types.h"
+#include "E2E_UserProfile.h"
+#include "E2E_P01.h"
+#include "E2E_P02.h"
+#include "E2E_P04.h"
+#include "E2E_P05.h"
+#include "E2E_P06.h"
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+#define E2EXF_8BITCHECKSUM_FUNCTION_COUNT      1u
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+typedef struct{
+        E2E_UserProfile8BitCheckSumProtectStateType *Protect_StatePtr;
+        E2E_UserProfile8BitCheckSumCheckStateType *Check_StatePtr;
+} E2EXF_8BitCheckSum_StateTypeRef;
+
+extern E2EXF_8BitCheckSum_StateTypeRef E2EXF_8BitCheckSum_StateRef[E2EXF_8BITCHECKSUM_FUNCTION_COUNT];
+
+typedef struct{
+        E2E_P02ProtectStateType *Protect_StatePtr;
+        E2E_P02CheckStateType *Check_StatePtr;
+} E2EXF_StateTypeRef;
+
+
+#define E2EXF_FUNCTION_COUNT 68
+
+// extern E2EXF_StateTypeRef E2EXF_StateRef[E2EXF_FUNCTION_COUNT];
+
+
+extern uint8 E2EXf_UserProfile039Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile094Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile14ATrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile158Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile17CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile183Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile184Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1A3Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1A4Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1ABTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1B0Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile06CD5554Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile06CD5557Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1C2Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1C8Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1D0Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1DCTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1E1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1EDTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile221Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile223Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile22CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile22FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile232Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile255Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile262Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile296Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile2F1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile305Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile309Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile30CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile310Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile31BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile320Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile324Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile326Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile328Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile32FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile33DTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile33FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile340Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile341Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile358Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile35ETrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile374Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile37BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile37FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile384Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile388Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile392Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile395Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile396Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile3A1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile0F31AA57Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile3D7Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile405Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile40CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile432Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile445Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile454Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile45ATrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile45BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile467Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile468Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile510Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile516Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile53DTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_UserProfile1A45AA51Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_UserProfile039Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile094Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile14ATrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile158Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile17CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile183Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile184Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1A3Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1A4Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1ABTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1B0Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile06CD5554Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile06CD5557Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1C2Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1C8Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1D0Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1DCTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1E1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1EDTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile221Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile223Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile22CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile22FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile232Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile255Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile262Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile296Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile2F1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile305Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile309Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile30CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile310Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile31BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile320Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile324Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile326Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile328Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile32FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile33DTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile33FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile340Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile341Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile358Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile35ETrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile374Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile37BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile37FTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile384Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile388Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile392Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile395Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile396Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile3A1Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile0F31AA57Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile3D7Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile405Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile40CTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile432Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile445Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile454Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile45ATrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile45BTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile467Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile468Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile510Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile516Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile53DTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+extern uint8 E2EXf_Inv_UserProfile1A45AA51Trans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_FirstTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_FirstTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_SecondTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_SecondTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_ThirdTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_ThirdTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_FourthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_FourthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_FifthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+
+extern uint8 E2EXf_Inv_FifthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength);
+#endif

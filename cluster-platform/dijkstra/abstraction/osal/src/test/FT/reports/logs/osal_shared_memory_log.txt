@@ -1,0 +1,68 @@
+# /system/usr/bin/OSAL_FT/osal_shared_memory/shm_create &
+[1] 3317794
+shm_creator test started..!
+
+testing create() and size() API's :
+************************************************************************
+creating 2-blk shared memory - SHM_BLK total size: 2x4096
+shm_creator memory block created with size : 8192 KB
+************************************************************************
+pointer allocated to shared memory from shm_creator
+writing data to shared memory from shm_creator
+shm_creator : Shared memory created..
+shm_creator : Wrote text Text by shm_creator.c to shared memory
+shm_creator : Sleeping for 20 seconds.  While this program is sleeping
+shm_creator : run 'shm_user'
+# /system/usr/bin/OSAL_FT/osal_shared_memory/shm_user 1
+starting shm_user test ..!
+************************************************************************
+testing open() API without a defined size:
+It expected to return total size(8192 KB)
+
+shm_user opened the shared memory block - SHM_BLK
+shm_user shared memory size - SHM_BLK : 8192
+************************************************************************
+shm_user : shared memory - SHM_BLK contains : Text by shm_creator.c
+Closes the mapping of shared memory block
+Remove (unlink) the name of the shared memory block.
+exiting from shm_user test..!
+# Closes the mapping of shared memory block
+Remove (unlink) the name of the shared memory block.
+exiting from shm_creator
+
+[1] + Done                 /system/usr/bin/OSAL_FT/osal_shared_memory/shm_
+# bg
+ksh: bg: %%: no such job
+# /system/usr/bin/OSAL_FT/osal_shared_memory/shm_create &
+[1] 3334178
+shm_creator test started..!
+
+testing create() and size() API's :
+************************************************************************
+creating 2-blk shared memory - SHM_BLK total size: 2x4096
+shm_creator memory block created with size : 8192 KB
+************************************************************************
+pointer allocated to shared memory from shm_creator
+writing data to shared memory from shm_creator
+shm_creator : Shared memory created..
+shm_creator : Wrote text Text by shm_creator.c to shared memory
+shm_creator : Sleeping for 20 seconds.  While this program is sleeping
+shm_creator : run 'shm_user'
+# /system/usr/bin/OSAL_FT/osal_shared_memory/shm_user 2
+starting shm_user test ..!
+************************************************************************
+testing open() API with defined size 1-block(4096 KB):
+It expected to return 4096 KB
+
+memory block opened
+shm_user shared memory size - SHM_BLK : 4096
+************************************************************************
+shm_user : shared memory - SHM_BLK contains : Text by shm_creator.c
+Closes the mapping of shared memory block
+Remove (unlink) the name of the shared memory block.
+exiting from shm_user test..!
+# Closes the mapping of shared memory block
+Remove (unlink) the name of the shared memory block.
+exiting from shm_creator
+
+[1] + Done                 /system/usr/bin/OSAL_FT/osal_shared_memory/shm_

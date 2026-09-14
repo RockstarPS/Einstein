@@ -1,0 +1,49 @@
+
+# pidin a | grep resmgr_dio
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0xE828FFFE -b0x5D090000 -m0xF9980084 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x01C281FF -b0x5D0C0000 -m0x1FF8007F -b0x5D0D0000 -m0x00000200
+  438304 grep resmgr_dio
+# set_dir_out 29
+Start: set_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=573455 _=/usr/sbin/set_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=573455 _=/usr/sbin/set_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: set_dir_out
+#
+#
+# slog2info | grep ResMgr_DIO
+Jan 01 00:42:15.279               ResMgr_DIO.32781              dio_log*     0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:42:15.279               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:42:15.279               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:983 Value 0 write using devctl is successful and status is 0
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:983 Value 0 write using devctl is successful and status is 0
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:42:50.975               ResMgr_DIO.32781              dio_log      0  dio_read_channel:132 In Read Channel : bitstatus is 0
+Jan 01 00:46:50.717               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:46:50.717               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:46:50.717               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+# slog2info -c
+# test
+test    dio_set_pin  dio_set_pin0  read_pin_value1  read_pin_value0  set_dir_out  set_dir_in  read_dir_in  read_dir_out
+# read_dir_out 29
+Start: read_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=606223 _=/usr/sbin/read_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=606223 _=/usr/sbin/read_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Direction of pin 29 is 1
+Return value is :0
+Exit: read_dir_out
+# slog2info | grep ResMgr_DIO
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log*     0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:47:11.454               ResMgr_DIO.32781              dio_log      0  dio_get_dir:106 bitstatus is 1
+#

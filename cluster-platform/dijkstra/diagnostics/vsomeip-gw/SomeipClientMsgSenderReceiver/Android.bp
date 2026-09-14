@@ -1,0 +1,21 @@
+cc_binary{
+	name: "cli_someip_msg_sender_receiver",
+	vendor: true,
+	srcs: [
+	"src/MessageBroker.cpp",
+	"src/MessageDbParser.cpp",
+	"src/MessageSender.cpp",
+	"src/MsgSenderReceiverHelper.cpp",
+	"src/MsgSenderReceiverMain.cpp",
+	
+	],
+
+	include_dirs: [
+		"vendor/visteon/external/runTimeInfra_components/vsomeip-gw/SomeipClientMsgSenderReceiver/inc",
+		"vendor/visteon/external/runTimeInfra_components/someip-gen/VmfSomeipMsgConfig/MsgConfig/inc",
+
+	],
+
+	shared_libs: ["libvsomeip"],
+	static_libs: ["libMsgConfig"],
+}

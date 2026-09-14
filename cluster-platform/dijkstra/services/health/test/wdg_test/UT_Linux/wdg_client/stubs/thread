@@ -1,0 +1,22 @@
+#ifndef STUB_THREAD
+#define STUB_THREAD
+
+#include <chrono>
+
+namespace std
+{
+	class thread
+	{
+		public:
+			thread(void (*task)());
+			~thread();
+            int native_handle();
+	};
+    
+    namespace this_thread
+    {
+		void sleep_until(std::chrono::steady_clock::time_point& __atime);
+	}
+}
+
+#endif

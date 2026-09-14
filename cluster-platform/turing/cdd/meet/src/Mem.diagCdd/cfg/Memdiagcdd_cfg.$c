@@ -1,0 +1,1933 @@
+/*=================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==================================================================================================================
+**
+** Name:           Memdiagcdd_cfg.c
+**
+** Description:    contains configurable functions to call RTE /API for each service
+**                 
+**
+**===================================================================================================================*/
+
+#ifndef MEMDIAGCDD_CFG_C
+#define MEMDIAGCDD_CFG_C
+
+/*====================================================================================================================
+**                 I N C L U D E   F I L E S
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+#include "Mgrdiagcdd.h"
+#include "Memdiagcdd_cfg.h"
+#include "Rte_CMeetCdd.h"
+#include "NvM.h"
+#include "Rte_Type.h"
+/*====================================================================================================================
+**   I N T E R N A L   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+/*=====================================================================================================================
+**  T Y P E    D E C L A R A T I O N S 
+**====================================================================================================================*/
+#if defined (NVMACCESSBYBLOCKIDREADWRITEENABLE) || defined (NVMACCESSBYBLOCKIDRCENABLE) || defined (NVMVALIDITYCHKENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)  || defined(MEMDIAG_MEMORY_VALIDITY_CHECK)
+
+static uint8  MemDiag_NvmBlock_Read(uint16 blockID,uint8* bufferptr);
+static uint8  MemDiag_NvmBlock_Write(uint16 blockID,uint8* bufferptr);
+#endif
+
+#ifdef MFGMODEREQENABLE
+static Std_ReturnType MemDiag_MfgModeReq_GetNVM(uint16 *Data);
+static Std_ReturnType MemDiag_MfgModeReq_SetNVM(uint16 Data);
+static void MemDiag_MfgModeReq_GetJobResult(uint8 *JobStatus);
+#endif
+
+#if defined(HYPERFLASHCHKSUMTSTENABLE) || defined( MEMDIAG_MEMORY_VALIDITY_CHECK)
+#ifdef MARKERADDRESSCHECKENABLE
+#else
+static Std_ReturnType MemDiag_HyperFlash_ChecksumStart(uint8 FlashID);
+static Std_ReturnType MemDiag_HyperFlash_ChecksumStop(uint8 FlashID);
+static Std_ReturnType MemDiag_HyperFlash_ChecksumResult(uint8 FlashID);
+#endif
+#endif
+#if defined( MEMDIAG_MEMORY_VALIDITY_CHECK) || defined( MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST)
+static Std_ReturnType MemDiag_IntFlash_ChecksumStart(void);
+static Std_ReturnType MemDiag_IntFlash_ChecksumStop(void);
+static Std_ReturnType MemDiag_IntFlash_ChecksumResult(void);
+#endif
+
+#ifdef MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST
+static Std_ReturnType MemDiag_NANDFlash_ChecksumStart(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_NANDFlash_ChecksumStop(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_NANDFlash_ChecksumResult(uint8 *Data,uint8 *ErrorCode);
+
+static Std_ReturnType MemDiag_NORFlash_ChecksumStart(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_NORFlash_ChecksumStop(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_NORFlash_ChecksumResult(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumStart(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumStop(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumResult(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+static void MemDiag_Nvm_JobResult_Read(uint8 *JobStatus);
+static void MemDiag_Nvm_JobResult_Write(uint8 JobStatus);
+#if defined(NVMACCESSBYBLOCKIDRCENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)
+static Std_ReturnType MemDiag_NvmBlk_JobResult_Read(uint16 BlkID, uint8 *JobStatus);
+#endif
+
+#if defined(MEMDIAG_ODOMETER_NVM_READWRITE) || defined(MEMDIAG_ODOMETER_NVM_ROUTINE)
+static Std_ReturnType MemDiag_Odometer_Read(uint32 *Data);
+static Std_ReturnType MemDiag_Odometer_Write(uint32 Data);
+#endif
+
+#ifdef NVMACCESSBYADDRESSRCENABLE
+static Std_ReturnType MemDiag_Data_Read_By_Address(uint8 *Data);
+static Std_ReturnType MemDiag_Data_Write_By_Address(uint8 *Data);
+static void MemDiag_ReadWrite_JobResult(uint8 *Data);
+#endif
+
+#ifdef MEET_GIP_ENABLED
+static GIPDataRquestState Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+#endif
+
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+static Std_ReturnType MemDiag_ValidateInputData(uint8 *Data);
+static Std_ReturnType MemDiag_ConfigurePartNum (uint8 *Data);
+static Std_ReturnType MemDiag_VerifyPartNum (uint8 *Data);
+#ifndef COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM
+void MemDiag_EprmJmp_NVMJobStatusRead (uint8 *JobStatus);
+#endif
+#endif
+
+#ifdef PROGRAM_NVM_FROM_ROM
+static Std_ReturnType MemDiag_RestoreNVM_Mapping_BLKIDtoRTEpointer_Blk(uint8 BlockID);
+static Std_ReturnType MemDiag_WriteNVM_Mapping_BLKIDtoRTEpointer(uint8 BlockID);
+#endif
+/*=====================================================================================================================
+**  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**====================================================================================================================*/
+#if defined (NVMACCESSBYBLOCKIDREADWRITEENABLE) || defined (NVMACCESSBYBLOCKIDRCENABLE) || defined (NVMVALIDITYCHKENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE) || defined(MEMDIAG_MEMORY_VALIDITY_CHECK)
+/*First two config block, retention blocks and EOL_Data1_VAR(As manufacturing mode gets affected) is not considered.*/
+const uint8 Valid_NVBlocks[NUMBER_OF_NVBLOCKS]={
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_INTERNAL_CONFIG_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_1_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_2_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_3_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_4_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_9,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_10,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_11,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_12,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_13,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_14,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_15,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_16,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_17,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_VISTEON_CONFIG,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_VEH_IDENTIFIERS,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ECU_IDENTIFIERS,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_INTERNAL_STATUS_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_9,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FEATURE_CODE,
+}; /*configure valid NV Block IDs here*/
+
+/*This is used when manuf mode and cybersecurity data needs to be excluded when ProgramNvMfromROM*/
+const uint8 ProgramNVMfromROM_ValidBlock[NUMBER_OF_LIMITED_NVBLOCKS]={
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_INTERNAL_CONFIG_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_1_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_2_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_3_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_RESERVED_4_CONST,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_9,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_10,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_11,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_12,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_13,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_14,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_15,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_16,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_DATA_17,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SERVICE_REMINDER_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FUEL_INTERNAL_STATUS_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_VISTEON_CONFIG,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ODOMETER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_VEH_IDENTIFIERS,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_ECU_IDENTIFIERS,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_INTERNAL_STATUS_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_4,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_5,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_6,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_7,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_8,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_TRIP_COMPUTER_9,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_SETTINGS_CONFIG_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_1,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_2,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_WIFI_PERSIST_BLOCK_3,
+	(uint8)NvMConf_NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_FEATURE_CODE,
+};
+const MemDiag_ReadWrite_NvmBlock NvmBlockConfig = 
+{
+    &MemDiag_NvmBlock_Read,&MemDiag_NvmBlock_Write,
+};
+
+#endif
+
+#ifdef NVMACCESSBYADDRESSRCENABLE
+const MemDiag_ReadWrite_Data MemDiagDataReadWrite_U8 =
+{
+	&MemDiag_Data_Read_By_Address,
+	&MemDiag_Data_Write_By_Address,
+	&MemDiag_ReadWrite_JobResult,
+};
+#endif
+
+#if defined(MEMDIAG_ODOMETER_NVM_READWRITE) || defined(MEMDIAG_ODOMETER_NVM_ROUTINE)
+const MemDiag_ReadWrite_Odometer OdometerRW = 
+{
+    &MemDiag_Odometer_Read,&MemDiag_Odometer_Write,
+};
+#endif
+
+
+#ifdef MEMWRITETESTENABLE
+/* Function table supported for memory Write Test */
+const sLogicalMemOps MemTestLogicalMarker[] =
+{
+        {MemDiag_MemWritingTest_Start,eMEMMGR_TCRAM_MEM_TEST},
+        {0 , eMEMMGR_INACTIVE},
+        {0 , eMEMMGR_INACTIVE},
+        {0 , eMEMMGR_INACTIVE},
+        {0 , eMEMMGR_INACTIVE},
+        {0 , eMEMMGR_INACTIVE},
+        {0 , eMEMMGR_INACTIVE},
+        {MemDiag_MemWritingTest_Start, eMEMMGR_HYPERRAM_MEM_TEST},
+};
+
+/*Memory Start and End Address Configuration*/
+/* these address and size taken from standalone_romrun.ld file*/
+const MemDiag_MemAddrType MemDiag_MemAddrConfig[]=
+{
+	{0x0U,0x40U}, /*TCRAM Start Address ,TCRAM End Address*/
+	{0x90100000U,0x90800000U}, /*HyperRAM Start Address, HyperRAM End Address*/
+};
+
+#endif
+
+const MemDiag_ReadWrite_U8 MemDiagNvmJobResult_U8=
+{
+    &MemDiag_Nvm_JobResult_Read,&MemDiag_Nvm_JobResult_Write,
+};
+
+#if defined(NVMACCESSBYBLOCKIDRCENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)
+const MemDiag_ReadJobResultbyBlkID MemDiagNvmBlkJobResult=
+{
+    &MemDiag_NvmBlk_JobResult_Read,
+};
+#endif
+#ifdef MFGMODEREQENABLE
+const MemDiag_ReadWrite_U16 MfgModeReqConfig_U16=
+{
+    &MemDiag_MfgModeReq_GetNVM,&MemDiag_MfgModeReq_SetNVM,&MemDiag_MfgModeReq_GetJobResult,
+	
+};
+#endif
+
+#if defined(HYPERFLASHCHKSUMTSTENABLE) || defined( MEMDIAG_MEMORY_VALIDITY_CHECK)
+#ifdef MARKERADDRESSCHECKENABLE
+/*Hyperflash Configuration*/
+/* these address and size taken from standalone_romrun.ld file*/
+const MemDiag_HyperFlashtype MemDiag_HyperFlashConfig[NUMBER_OF_HYPER_FLASH] =
+{
+    {0x60000000UL,0x63FFFFFCUL,0xAA55AA55UL,0xAA55AA55UL},
+};
+#else
+const MemDiag_HyperFlashChksumtype MemDiag_HyperFlashChksumConfig = 
+{
+  &MemDiag_HyperFlash_ChecksumStart,&MemDiag_HyperFlash_ChecksumStop,MemDiag_HyperFlash_ChecksumResult,
+};
+
+#endif
+#endif
+
+#if defined (MEMDIAG_MEMORY_VALIDITY_CHECK) || defined( MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST)
+const Memdiag_IntFlashChksumtype Memdiag_IntFlashConfig = 
+{
+  &MemDiag_IntFlash_ChecksumStart,&MemDiag_IntFlash_ChecksumStop,MemDiag_IntFlash_ChecksumResult,
+};
+#endif
+#ifdef MEMDIAG_MEMORY_VALIDITY_CHECK
+
+const MemDiag_MemAddrType Memdiag_RAMConfig[MEMDIAG_MAX_NUMBER_OF_RAM_MEMORY_SETS] = 
+{
+{0x0000000U,0x00000043U},
+{0x0006000U,0x00008000U},
+{0x000C000U,0x0000F000U},
+{0x94000000U,0x94000043U},
+{0x94002000U,0x94002043U},
+{0x94004000U,0x94004043U},
+}; // supports Hyper RAM and TCRAM 
+
+#endif
+
+#ifdef MEMDIAG_MEMORY_READ_WRITE_BY_ADDRESS
+const MemDiag_MemAddrType MemDiag_MemAddrRWConfig[]=
+{
+	{0x0U,0x100U}, /*TCRAM Start Address ,TCRAM End Address*/
+	{0x94000000U,0x940FFFFFU}, /*HyperRAM Start Address, HyperRAM End Address*/
+};
+#endif
+
+#if defined( MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST)
+const Memdiag_NANDFlashChksumtype Memdiag_NANDFlashConfig = 
+{
+  &MemDiag_NANDFlash_ChecksumStart,&MemDiag_NANDFlash_ChecksumStop,MemDiag_NANDFlash_ChecksumResult,
+};
+const Memdiag_NORFlashChksumtype Memdiag_NORFlashConfig = 
+{
+  &MemDiag_NORFlash_ChecksumStart,&MemDiag_NORFlash_ChecksumStop,MemDiag_NORFlash_ChecksumResult,
+};
+const Memdiag_DisplayMicroROMChksumtype Memdiag_DispMicroROMConfig = 
+{
+  &MemDiag_DispMicroROM_ChecksumStart,&MemDiag_DispMicroROM_ChecksumStop,MemDiag_DispMicroROM_ChecksumResult,
+};
+#endif
+
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+const MemDiag_AutoConfigorVerifytype MemDiag_ConfigorVerify=
+{
+	&MemDiag_ValidateInputData,&MemDiag_ConfigurePartNum,&MemDiag_VerifyPartNum,
+    #ifndef COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM 
+    &MemDiag_EprmJmp_NVMJobStatusRead,
+    #endif
+};
+
+uint8 NVMwriteBuffer[CONFIG_WRITE_DATA_LENGTH] = {0,0,0}; 	//by default 0's
+
+#endif
+
+#ifdef PROGRAM_NVM_FROM_ROM
+	#ifndef PROGRAM_NVM_FROM_ROM_LIMITED_BLOCK
+		const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM[NUMBER_OF_NVBLOCKS] =
+	#else
+		#ifdef PROGRAM_NVM_FROM_ROM_BLOCKWISE
+			const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM =
+		#else
+			const MemDiag_ProgramNvmFromRomtype MemDiag_ProgNVMfromROM[NUMBER_OF_LIMITED_NVBLOCKS] =
+		#endif
+#endif
+{
+	&MemDiag_RestoreNVM_Mapping_BLKIDtoRTEpointer_Blk,
+};
+
+const MemDiag_ProgramNVMFromRamtype MemDiag_ProgNVMFromRam =
+{
+   &MemDiag_WriteNVM_Mapping_BLKIDtoRTEpointer, 
+};
+#endif
+
+#ifdef NVMACCESSBYADDRESSRCENABLE
+static uint8 MemDiag_Data_ReadWrite_JobResult = (uint8)MEMIF_JOB_CANCELED;
+static uint8 NVM_RCRead_Data_By_Address[MEMDIAG_MAX_BYTES_READ_BY_ADDRESS];
+#endif
+/*=====================================================================================================================
+**  PRIVATE
+**====================================================================================================================*/
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NvmBlock_Read
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read the data in a given NVM block
+**                      
+** Invocation       :  Memdiagcdd 
+**
+** Inputs           :  BlockID: ID of a NVM block
+**                     bufferptr:buffer to read the data
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+
+#if defined (NVMACCESSBYBLOCKIDREADWRITEENABLE) || defined(NVMACCESSBYBLOCKIDRCENABLE) || defined (NVMVALIDITYCHKENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)|| defined(MEMDIAG_MEMORY_VALIDITY_CHECK)
+/*NVM read and write by block id*/
+static uint8 MemDiag_NvmBlock_Read(uint16 blockID, uint8* bufferptr)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	//ret = Rte_Call_rp_CS_NvMExt_ReadBlock_NvMExt_ReadBlock(blockID, bufferptr);
+
+    return ret;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NvmBlock_Write
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to write the data in a given NVM block
+**                      
+** Invocation       :  Memdiagcdd 
+**
+** Inputs           :  BlockID: ID of a NVM block
+                       bufferptr:buffer to read the data
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static uint8 MemDiag_NvmBlock_Write(uint16 blockID, uint8* bufferptr)
+{
+	Std_ReturnType ret = E_OK;
+
+	//ret = Rte_Call_rp_CS_NvMExt_WriteBlock_NvMExt_WriteBlock(blockID, bufferptr);
+
+    return ret;
+} 
+#endif
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_Nvm_JobResult_Read
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read NVM job status
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[Out]:NVM job status
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static void MemDiag_Nvm_JobResult_Read(uint8* JobStatus)
+{
+	UNUSED(JobStatus);  //dummy to avoid compiler warning
+
+	/*ADD RTE here only if COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM is enabled*/
+	// Rte_Read_MeetCdd_rpNvmJobStatus_Nvm_Meet_Read_Write_Job_Status(JobStatus);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_Nvm_JobResult_Write
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to write NVM job status
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:NVM job status
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static void MemDiag_Nvm_JobResult_Write(uint8 JobStatus)
+{
+	UNUSED(JobStatus);  //dummy to avoid compiler warning
+
+	/*ADD RTE here only if COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM is enabled*/
+	// Rte_Write_MeetCdd_ppNvmJobStatus_Nvm_Meet_Read_Write_Job_Status(JobStatus);
+}  
+
+#if defined(NVMACCESSBYBLOCKIDRCENABLE) || defined(EXTNVMACCESSBYBLOCKIDREADWRITEENABLE)
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NvmBlk_JobResult_Read
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read NVM job status of an NVM Block
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:BlockID, Data[Out]:NVM job status of the block
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_NvmBlk_JobResult_Read(uint16 BlkID, uint8* JobStatus)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	//ret = Rte_Call_rp_CS_NvmExt_GetErrorStatus_NvMExt_GetErrorStatus(BlkID, JobStatus);
+
+    return ret;
+}
+#endif
+#ifdef MFGMODEREQENABLE
+/*=====================================================================================================================
+** Function Name    :  MemDiag_MfgModeReq_GetNVM
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read manufacturing mode request
+**                      
+** Invocation       :  Mem.diagcdd , Function:Memdiag_ManufacturingModeRequested_Read
+**
+** Inputs           :  Data[Out]:manufacturing mode request
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section :  Yes/No
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_MfgModeReq_GetNVM(uint16 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	//ret = Rte_Call_rp_CS_MemAbsGet_Get_NVM_EOL_Mfg_Mode_Entry(Data);
+
+    return ret;
+}
+/*=====================================================================================================================
+** Function Name    :  MemDiag_MfgModeRequest_Write
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to write manufacturing mode request
+**                      
+** Invocation       :  Mem.diagcdd , Function:Memdiag_ManufacturingModeRequested_Write
+**
+** Inputs           :  Data[In]:manufacturing mode request
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section :  Yes/No
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_MfgModeReq_SetNVM(uint16 Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	
+	//(void) Rte_Call_rp_CS_MemAbsSet_Set_NVM_EOL_Mfg_Mode_Entry(Data);
+
+	return ret;
+}
+/*=====================================================================================================================
+** Function Name    :  MemDiag_MfgModeReq_GetJobResult
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read manuf mode NVM job status
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[Out]:NVM job status
+**
+** Outputs          :  NA
+**
+** Critical Section :  Yes/No
+**====================================================================================================================*/
+static void MemDiag_MfgModeReq_GetJobResult(uint8 *JobStatus)
+{
+   //(void) Rte_Read_CMeetCdd_rp_SR_JobStatus_JobStatus_NVM_EOL_Mfg_Mode_Entry(JobStatus);
+}
+
+#ifdef MFGMODESTATUS
+/*=====================================================================================================================
+** Function Name    :  ManufMode_Status_Check
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read manuf mode status check
+**
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  CurrentMode
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section :  Yes/No
+**====================================================================================================================*/
+Std_ReturnType ManufMode_Status_Check(EMeetModeStatus *CurrentMode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+    //case1: if Manuf mode is based on Mfg NVM Flag
+    uint16 MfgFlag_data_u16 = DIDZERO;
+	
+	//Read MANUF_FLAG from NVM
+	ret = MfgModeReqConfig_U16.MemDiag_Read(&MfgFlag_data_u16);	
+
+	//Compare whether Manuf_Flag NVM data equals 0x52AE
+	if(MEET_NVM_FLAG == MfgFlag_data_u16)
+    {
+		*CurrentMode = eManufModeActive;
+	}
+	else
+	{
+		*CurrentMode = eManufModeInActive;
+	}
+
+//	  //case2: if Manuf Mode based on Manufacturing Session
+//    uint8 CurrentSession_u8[1] = {0xFF};
+//    //Read Current Session
+//    (void) Rte_Read_rp_SR_DiagSession_DiagSessionData(CurrentSession_u8);
+//    //if currently in NVMsecuredSession(@Manuf sesion) consider as in Manuf mode
+//    if(eNVM == *CurrentSession_u8)
+//    {
+//		*CurrentMode = eManufModeActive;
+//	  }
+//	  else
+//	  {
+//		*CurrentMode = eManufModeInActive;
+//	  }
+
+    return ret;
+}
+#endif
+
+#endif
+#if defined(HYPERFLASHCHKSUMTSTENABLE) || defined( MEMDIAG_MEMORY_VALIDITY_CHECK)
+
+#ifdef MARKERADDRESSCHECKENABLE
+#else
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_HyperFlash_ChecksumStart
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read hyper flash checksum start routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStart/Memdiag_HyperflashChecksumTest_RCStart
+**
+** Inputs           :  Data[In]:flashID(0/1)
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_HyperFlash_ChecksumStart(uint8 FlashID)
+{
+     return eROUTINE_INPROGRESS; // need to be Replaced by CRE API
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_HyperFlash_ChecksumStop
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read hyper flash checksum stop routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStop/Memdiag_HyperflashChecksumTest_RCStop
+**
+** Inputs           :  Data[In]:flashID(0/1)
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_HyperFlash_ChecksumStop(uint8 FlashID)
+{
+     return eROUTINE_STOPPED;  // need to be Replaced by CRE  API
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_HyperFlash_ChecksumResult
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read hyper flash checksum status routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStatus/Memdiag_HyperflashChecksumTest_RCStatus
+**
+** Inputs           :  Data[In]:flashID(0/1)
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_HyperFlash_ChecksumResult(uint8 FlashID)
+{
+    return eROUTINE_FINISH_OK;  // need to be Replaced by CRE API
+}
+
+#endif
+#endif
+#if defined( MEMDIAG_MEMORY_VALIDITY_CHECK) || defined(MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST)
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_IntFlash_ChecksumStart
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum start routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStart
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_IntFlash_ChecksumStart(void)
+{
+     return ((Std_ReturnType)eROUTINE_INPROGRESS); // need to be Replaced by CRE API // Misra Mchandr2
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_IntFlash_ChecksumStop
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum stop routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStop
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_IntFlash_ChecksumStop(void)
+{
+     return ((Std_ReturnType)eROUTINE_STOPPED);  // need to be Replaced by CRE  API //Misra Mchandr2
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_IntFlash_ChecksumResult
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum result routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStatus
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1                
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_IntFlash_ChecksumResult(void)
+{
+    return ((Std_ReturnType)eROUTINE_FINISH_NOK);  // need to be Replaced by CRE API  // Misra Mchandr2
+}
+
+#endif
+#ifdef MEMDIAG_VIP_GIP_MEMORY_CHECKSUM_TEST
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NANDFlash_ChecksumStart
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum start routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStart
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_NANDFlash_ChecksumStart(uint8 *Data,uint8 *ErrorCode)
+{
+
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+    Std_ReturnType Data_idx;
+    DiagReqType DiagReq;
+
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = flashmemoryChksumTestStart_Length+1;
+    DiagReq.DataP[0] = MGRDIAGCDD_ROC_START_ACTION;
+    for(Data_idx=1;Data_idx < DiagReq.LengthP;Data_idx++)
+    {
+       DiagReq.DataP[Data_idx] = Data[Data_idx];
+    }
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;		
+
+
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NANDFlash_ChecksumStop
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum stop routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStop
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_NANDFlash_ChecksumStop(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = 1;
+    DiagReq.DataP[0] = MGRDIAGCDD_ROC_STOP_ACTION;
+                    
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;  
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NANDFlash_ChecksumResult
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum result routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStatus
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1                
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_NANDFlash_ChecksumResult(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+	 Std_ReturnType ret = E_NOT_OK;
+
+#ifdef MEET_GIP_ENABLED
+	 DiagReqType DiagReq;
+   // Std_ReturnType Data_idx;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = flashmemoryChksumTestStatus_Length+1;
+	DiagReq.DataP[0] = MGRDIAGCDD_ROC_RESULTS_ACTION;
+   /* for(Data_idx=1;Data_idx < DiagReq.LengthP;Data_idx++)
+    {
+        DiagReq.DataP[Data_idx] = Data[Data_idx];
+    }
+	*/	
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;  
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_NORFlash_ChecksumStart
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum start routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStart
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_NORFlash_ChecksumStart(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	#ifdef MEET_GIP_ENABLED
+
+    DiagReqType DiagReq;
+
+    Std_ReturnType Data_idx;
+
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = flashmemoryChksumTestStart_Length+1;
+    DiagReq.DataP[0] = MGRDIAGCDD_ROC_START_ACTION;
+    for(Data_idx=1;Data_idx < DiagReq.LengthP;Data_idx++)
+    {
+        DiagReq.DataP[Data_idx] = Data[Data_idx];
+    }
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;		
+
+
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :   MemDiag_NORFlash_ChecksumStop
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum stop routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStop
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_NORFlash_ChecksumStop(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = 1;
+    DiagReq.DataP[0] = MGRDIAGCDD_ROC_STOP_ACTION;
+                    
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+     }
+#endif
+     return ret;  
+}
+/*=====================================================================================================================
+**
+** Function Name    : MemDiag_NORFlash_ChecksumResult
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read internal flash checksum result routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStatus
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1                
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_NORFlash_ChecksumResult(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    //Std_ReturnType Data_idx;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = cROUTINE_CHECKSUMTEST;
+    DiagReq.LengthP = flashmemoryChksumTestStatus_Length+1;
+	DiagReq.DataP[0] = MGRDIAGCDD_ROC_RESULTS_ACTION;
+	/*
+    for(Data_idx=1;Data_idx < DiagReq.LengthP;Data_idx++)
+    {
+        DiagReq.DataP[Data_idx] = Data[Data_idx];
+    }*/				
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+     }
+#endif
+     return ret;  
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_DispMicroROM_ChecksumStart
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read DispMicroROM checksum start routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStart
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumStart(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+
+#ifdef MEET_GIP_ENABLED
+    uint8 idx;
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = DISP_MICRO_CHECKSUM_ID;
+    DiagReq.LengthP = DispMicroROMChksumStart_Length+1U;
+    DiagReq.DataP[0] = ERoutineType_Start;
+    for(idx = 0;idx < DiagReq.LengthP;idx++)
+    {
+       DiagReq.DataP[idx+1U] = Data[idx];
+    }
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;		
+
+
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_DispMicroROM_ChecksumStop
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read DispMicroROM checksum stop routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStop
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumStop(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = DISP_MICRO_CHECKSUM_ID;
+    DiagReq.LengthP = 1;
+    DiagReq.DataP[0] = ERoutineType_Stop;
+                    
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+            /*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;  
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_DispMicroROM_ChecksumResult
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read DispMicroROM checksum result routine status
+**
+** Invocation       :  Mem.diagcdd , Function:Memdiag_Memory_Validity_Check_RCStatus
+**
+** Inputs           :  Data[In]:none
+**
+** Outputs          :    	ROUTINE_INACTIVE - 0x00
+                            ROUTINE_INPROGRESS - 0x1                
+                            ROUTINE_FINISH_OK - 0x02
+                            ROUTINE_FINISH_NOK - 0x03
+                            ROUTINE_STOPPED - 0x04
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_DispMicroROM_ChecksumResult(uint8 *Data,uint8 *ErrorCode)
+{
+	UNUSED(Data);
+
+    Std_ReturnType ret = E_NOT_OK;
+#ifdef MEET_GIP_ENABLED
+    DiagReqType DiagReq;
+   // Std_ReturnType Data_idx;
+    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+    DiagReq.ServiceId = DISP_MICRO_CHECKSUM_ID;
+    DiagReq.LengthP = DispMicroROMChksumStatus_Length;
+	DiagReq.DataP[0] = ERoutineType_QueryResults;
+   /* for(Data_idx=1;Data_idx < DiagReq.LengthP;Data_idx++)
+    {
+        DiagReq.DataP[Data_idx] = Data[Data_idx];
+    }
+	*/	
+    switch(Memdiag_GIPDataReqState)
+    {
+        case eGIP_InitiateRequest:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            Memdiag_GIPDataReqState = eGIP_WaitForResponse;
+            break;
+        case eGIP_WaitForResponse:
+            ret = Meet_Process_Gip_Diag_Request(Memdiag_GIPDataReqState, &DiagReq, ErrorCode);
+            if(ret != DCM_E_PENDING)
+            {
+                Memdiag_GIPDataReqState = eGIP_InitiateRequest;
+            }
+            break;
+        default:
+        	/*No action required in default case*/
+            break;
+    }
+#endif
+    return ret;  
+}
+
+#endif
+#ifdef AUTO_CONFIGURE_OR_VERIFY
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_EprmJmp_NVMJobStatusRead
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read NVM job status of corresponding block element
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[Out]:NVM job status
+**
+** Outputs          :  NA
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+void MemDiag_EprmJmp_NVMJobStatusRead(uint8* JobStatus)
+{
+   //Rte_Read_rp_SR_JobStatus_JobStatus_eprmjmp(JobStatus);
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_ValidateInputData
+**
+** Visibility       :  Private 
+**
+** Description      :  checks if the input contains only valid characters
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:prefix and suffix characters of Visteon part number
+**
+** Outputs          :  E_OK:Success
+**					   E_NOT_OK:Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_ValidateInputData(uint8 *Data)
+{
+	Std_ReturnType Ret = E_NOT_OK;
+	uint8 idx;
+
+	 for(idx=1;idx < CONFIG_OR_VERIFY_LENGTH;idx++)
+	 {
+		  if((Data[idx]>=0x30u && Data[idx]<=0x39u) ||  //ASCII 0 to 9
+		     (Data[idx]>=0x41u && Data[idx]<=0x5Au) ||  //ASCII A to Z
+			 (Data[idx]==0u)						  ||
+			 (Data[idx]==0xFFu))
+			 {
+				 Ret=E_OK;
+			 }
+			 else
+			 {
+				Ret = E_NOT_OK;
+				
+				break;
+			}  
+	 }
+	 
+	 /* CRE need to assign NVMwriteBuffer here with respect to variant */
+	return Ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_ConfigurePartNum
+**
+** Visibility       :  Private 
+**
+** Description      :  writes the part number prefix and suffix to NVM
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:prefix and suffix characters of Visteon part number
+**
+** Outputs          :  E_OK:Success
+**					   E_NOT_OK:Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_ConfigurePartNum (uint8 *Data)
+{
+	
+	Std_ReturnType ret = E_NOT_OK;
+	//ret = Rte_Call_rpMfgModNvmReadWriteRequest_SetNV_ProductVisteonPartNum(Data);
+
+	/*add RTE  */
+	return ret;
+	
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_ConfigurePartNum
+**
+** Visibility       :  Private 
+**
+** Description      :  Reads the part number prefix and suffix from NVM
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:prefix and suffix characters of Visteon part number
+**
+** Outputs          :  E_OK:Success
+**					   E_NOT_OK:Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType MemDiag_VerifyPartNum (uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	//ret = Rte_Call_rpMfgModNvmReadWriteRequest_GetNV_ProductVisteonPartNum(Data);
+	/*add RTE */
+	return ret;
+}
+#endif
+
+#ifdef PROGRAM_NVM_FROM_ROM
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_RestoreNVM_Mapping_BLKIDtoRTEpointer
+**
+** Visibility       :  Private 
+**
+** Description      :  Map the NVM block to corresponing RTE to write from ROM to RAM
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:Block ID
+**
+** Outputs          :  E_OK:Success
+**					   E_NOT_OK:Fail
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_RestoreNVM_Mapping_BLKIDtoRTEpointer_Blk(uint8 BlockID)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	if(BlockID < NVM_NUM_OF_BLOCKS)
+	{
+		ret = NvM_RestoreBlockDefaults(BlockID, NvM_BlockConfig[BlockID].RamBlockDataAddress);
+	}
+
+	return ret;
+}
+
+//static Std_ReturnType MemDiag_RestoreNVM_Mapping_BLKIDtoRTEpointer_Blk14(uint8 BlockID)
+//{
+//	 Std_ReturnType ret = E_NOT_OK;
+//
+//   ret = NvM_RestoreBlockDefaults(BlockID,&Rte_NvBlockSwComponentType_NVBlockDescriptor_DiagDID400);
+//   return ret;
+//
+//}
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_WriteNVM_Mapping_BLKIDtoRTEpointer
+**
+** Visibility       :  Private 
+**
+** Description      :  Map the NVM block to corresponing RTE to write from RAM to NVM
+**                      
+** Invocation       :  Mem.diagcdd
+**
+** Inputs           :  Data[In]:Block ID
+**
+** Outputs          :  E_OK:Success
+**					   E_NOT_OK:Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_WriteNVM_Mapping_BLKIDtoRTEpointer(uint8 BlockID)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	//ret = Rte_Call_rp_CS_NvMExt_WriteBlock_NvMExt_WriteBlock(BlockID, NULL_PTR);
+
+	return ret;
+}
+#endif
+
+#if defined(MEMDIAG_ODOMETER_NVM_READWRITE) || defined(MEMDIAG_ODOMETER_NVM_ROUTINE)
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_OdometerRequest_Read
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read Odometer value from NVM
+**                      
+** Invocation       :  Mem.diagcdd , Function:Memdiag_OdometerNVMRead
+**
+** Inputs           :  Data[Out]:Odometer value
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_Odometer_Read(uint32 *Data)
+{
+   Std_ReturnType ret = E_OK;
+
+   /*Nothing to read as per requirement*/
+
+   return ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_Odometer_Write
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to write Odometer value in NVM
+**                      
+** Invocation       :  Mem.diagcdd , Function:MemDiag_Odometer_Write
+**
+** Inputs           :  Data[In]:Odometer value
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_Odometer_Write(uint32 Data)
+{
+	UNUSED(Data);
+	Std_ReturnType ret = E_NOT_OK;
+
+	//ret = Rte_Call_rp_Odo_reset_reset_mainOdo();
+
+	return ret;
+}
+#endif
+
+#ifdef NVMACCESSBYADDRESSRCENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_Data_Read_By_Address
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to read Data from NVM
+**                      
+** Invocation       :  Mem.diagcdd , Function:MemDiag_Data_Read_By_Address
+**
+** Inputs           :  Data[Out]: NVM Data
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_Data_Read_By_Address(uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	uint32 EepromAddress = 0U;
+	uint16 Length = 0U;
+	
+	EepromAddress = (uint32)((Data[DATA_BYTE_1] << 16U | Data[DATA_BYTE_2] << 8U | Data[DATA_BYTE_3]) & 0xFFFFFFFF);
+	Length = (uint16)(Data[DATA_BYTE_4] & 0xFFFF);
+	
+	MemLib_MemSet(NVM_RCRead_Data_By_Address,0U,MEMDIAG_MAX_BYTES_READ_BY_ADDRESS); /*Clear the buffer*/
+	ret = NvMExt_ReadAddress(EepromAddress, &NVM_RCRead_Data_By_Address[0], Length);
+	
+	if(ret == E_OK)
+	{
+		Data[DATA_BYTE_0] = (uint8)eROUTINE_INPROGRESS; /* Cluster ACK = 1*/
+		MemDiag_Data_ReadWrite_JobResult = (uint8)MEMIF_JOB_PENDING;
+	}
+	else
+	{
+		Data[DATA_BYTE_0] = (uint8)eROUTINE_FINISH_NOK; /* Cluster NACK = 0*/
+		MemDiag_Data_ReadWrite_JobResult = (uint8)MEMIF_JOB_FAILED;
+	}
+	
+	return E_OK;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_Data_Write_By_Address
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to write Data in NVM
+**                      
+** Invocation       :  Mem.diagcdd , Function:MemDiag_Data_Write_By_Address
+**
+** Inputs           :  Data[In]: NVM Data
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType MemDiag_Data_Write_By_Address(uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	uint32 EepromAddress = 0U;
+	uint16 Length = 0U;
+	uint8* DataBufferPtr;
+	
+	EepromAddress = (uint32)((Data[DATA_BYTE_1] << 16U | Data[DATA_BYTE_2] << 8U | Data[DATA_BYTE_3]) & 0xFFFFFFFF);
+	Length = (uint16)(Data[DATA_BYTE_4] & 0xFFFF);
+	
+    ret = NvMExt_WriteAddress(EepromAddress, &Data[DATA_BYTE_5], Length);
+	
+	if(ret == E_OK)
+	{
+		Data[DATA_BYTE_0] = (uint8)eROUTINE_INPROGRESS; /* Cluster ACK = 1*/
+		MemDiag_Data_ReadWrite_JobResult = (uint8)MEMIF_JOB_PENDING;
+	}
+	else
+	{
+		Data[DATA_BYTE_0] = (uint8)eROUTINE_FINISH_NOK; /* Cluster NACK = 0*/
+		MemDiag_Data_ReadWrite_JobResult = (uint8)MEMIF_JOB_FAILED;
+	}
+	
+	return E_OK;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Meet_EepromJobCompleted
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to NVM Data Read Write JOB status
+**                      
+** Invocation       :  Mem.diagcdd , Function:Meet_EepromJobCompleted
+**
+** Inputs           :  Data[In]: NVM Data Read Write JOB status
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+void Meet_EepromJobCompleted(uint8* JobResult)
+{
+	MemDiag_Data_ReadWrite_JobResult = *JobResult;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  MemDiag_ReadWrite_JobResult
+**
+** Visibility       :  Private 
+**
+** Description      :  calls API to NVM Data Read Write JOB status
+**                      
+** Invocation       :  Mem.diagcdd , Function:MemDiag_ReadWrite_JobResult
+**
+** Inputs           :  Data[In]: NVM Data Read Write JOB status
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static void MemDiag_ReadWrite_JobResult(uint8* Data)
+{
+	switch(MemDiag_Data_ReadWrite_JobResult)
+	{
+		case MEMIF_JOB_OK:
+			if(Data[DATA_BYTE_0] != MEMDIAG_WRITE_PROCESS)
+			{
+				MemLib_MemCpy(&Data[DATA_BYTE_1],&NVM_RCRead_Data_By_Address[0],MEMDIAG_MAX_BYTES_READ_BY_ADDRESS);
+			}
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_FINISH_OK;
+			break;
+		case MEMIF_JOB_FAILED:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_FINISH_NOK;
+			break;
+		case MEMIF_JOB_PENDING:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_INPROGRESS;
+			break;
+		case MEMIF_JOB_CANCELED:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_STOPPED;
+			break;
+		case MEMIF_BLOCK_INCONSISTENT:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_STOPPED;
+			break;
+		case MEMIF_BLOCK_INVALID:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_STOPPED;
+			break;
+			
+		default:
+			Data[DATA_BYTE_0] = (uint8)eROUTINE_STOPPED;
+			break;
+	}
+}
+#endif
+
+/*=====================================================================================================================
+**  for each change to this file, be sure to record:                     
+**  1.  who made the change and when the change was made                 
+**  2.  why the change was made and the intended result                
+**  Following block needs to be repeated for each change
+**====================================================================================================================*/
+/*=====================================================================================================================
+**   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason  
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  17/03/2023
+** CDSID             :  rsubra13
+** Traceability      :  RTC 1951466
+** Change Description:  EEPROM Read/Write by address Response updated.                                                           
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  26/12/2022
+** CDSID             :  rsubra13
+** Traceability      :  RTC 1861099
+** Change Description:  EEPROM Read Write by Address service newly implemented.
+**====================================================================================================================*/
+
+/*=====================================================================================================================
+** Date              :  24/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1744046
+** Change Description:  Misra fix and minor code clean up
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  03/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1707104
+** Change Description:  MeetCdd Coverity-MISRA fix
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  23/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1634375
+** Change Description:  Coverity/MISRA Fix and Minor update.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1632871, 1655512, 1660171
+** Change Description:  Config interfaces are added to support odometer routine interfaces are added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 15/July/2021
+** CDSID             : razhakes
+** Traceability      : RTC-1401390
+** Change Description: ManufMode_Status_Check() API added
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 6/May/2021
+** CDSID             : razhakes
+** Traceability      : RTC-1291863
+** Change Description: COMMON_JOBSTATUS_RTE_VAR_FOR_FULL_NVM introduced and Manuf Mode service modified for SessionExit handling
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  9/11/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1365920
+** Change Description:  Odometer NVM read write service newly implemented
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/06/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC-1334319
+** Change Description:  program NVM from ROM service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/04/2019
+** CDSID             :  athiyag2
+** Traceability      :  RTC-1331232
+** Change Description:  Auto configure/verify service added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  12/march/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1297724
+** Change Description:  vip - gip communication added for checkum test routine
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  11/1/2019
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1262820 
+** Change Description:  Hyperflash checksum routine updated
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/10/2018
+** CDSID             :  gdhilipr
+** Traceability      :  RTC 1217469 
+** Change Description:  Memory checksum test(F11E)  VIP,GIP,NAND and NOR
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 06/10/2018
+** CDSID             : dkasiman
+** Traceability      : RTC-1211436
+** Change Description: RAM test feature added for TCRAM and HYPER RAM.User can configure 6 ranges of memory to test. 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  01/10/2018
+** CDSID             :  dkasiman/MCHANDR2
+** Traceability      :  RTC-1208647
+** Change Description: MARKERADDRESSCHECKENABLE macro introduced to use either marker validity check or checksum status. 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  21/1/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC-1262817
+** Change Description:  Hyperflash Checksum Test vip- gip communication some functions and macro's are added
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  11/8/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1175981
+** Change Description:  Read/Write memory by address support for TCRAM and Hyper RAM 
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  13/7/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1148640
+** Change Description:  Review comments fix:Check program dependency macro renamed as Memory validity 
+                        check.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  10/7/2018
+** CDSID             :  dkasiman
+** Traceability      :  RTC-1148640
+** Change Description:  NVM,Internal flash and hyper flash validity check in a single Routine of 
+**                      Check program dependencies DR.
+**====================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  6/6/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  comments updated
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  31/05/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  included conditional compilation of features,updated hyperflash 2
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 23/05/2018  
+** CDSID             : athiyag2
+** Traceability      : RTC 1113493
+** Change Description: Initial version - MemDiagCdd Implementation for Turing Bookshelf.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 17/02/2020
+** CDSID             : razhakes
+** Traceability      : RTC 1173442
+** Change Description: Auto config or verify - variant value updated
+**====================================================================================================================*/
+#endif

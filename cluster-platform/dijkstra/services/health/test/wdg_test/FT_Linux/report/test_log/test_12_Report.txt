@@ -1,0 +1,71 @@
+root@am62pxx-7xxd-b@23:59:/system/usr/bin/wdg_test_FT# ./testcase12_restart_on_success.sh
+------------------------------------------------------------------
+----- Test Case 12 - Restart type: on-success --------------------
+Cause of termination:
+    (1) Clean exit (code 0)
+    (2) Clean signals: SIGHUP, SIGINT, SIGTERM, SIGPIPE
+    (3) Exit statuses defined in SuccessExitStatus
+
+Expected behavior: Process should restart
+Error notification (Fatal): No
+Process restart: Yes
+[*] Configuration:
+    Restart=on-success
+    SuccessExitStatus=255 SIGABRT
+------------------------------------------------------------------
+[>] Starting test_07.service...
+[+] test_07.service started successfully.
+[>] Starting wdg_proxy_test_07.service...
+[+] wdg_proxy_test_07.service started successfully.
+.......................................................
+   Test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_07.service (PID: 46217)...
+.......................................................
+   Test with clean signal (SIGHUP)
+.......................................................
+[!] Sending signal 1 (SIGHUP) to test_07.service (PID: 46239)...
+.......................................................
+   Test with exit status 255
+.......................................................
+[!] Sending signal 36 (SIGRTMIN+2) to test_07.service (PID: 46247)...
+-----------------------------------------------
+Recent journal entries:
+-----------------------------------------------
+May 29 23:59:28 am62pxx-7xxd-b systemd[1]: Started Test application 07.
+May 29 23:59:28 am62pxx-7xxd-b test_07[46217]: Start - Test Case: 7
+May 29 23:59:28 am62pxx-7xxd-b test_07[46217]: SIG MIN: 34
+May 29 23:59:28 am62pxx-7xxd-b test_07[46217]: SIG MAX: 64
+May 29 23:59:32 am62pxx-7xxd-b test_07[46217]: Interrupt signal (35) received.
+May 29 23:59:33 am62pxx-7xxd-b test_07[46217]: Exit - Test case: 7
+May 29 23:59:33 am62pxx-7xxd-b systemd[1]: test_07.service: Deactivated successfully.
+May 29 23:59:33 am62pxx-7xxd-b systemd[1]: test_07.service: Scheduled restart job, restart counter is at 1.
+May 29 23:59:33 am62pxx-7xxd-b systemd[1]: Started Test application 07.
+May 29 23:59:33 am62pxx-7xxd-b test_07[46239]: Start - Test Case: 7
+May 29 23:59:33 am62pxx-7xxd-b test_07[46239]: SIG MIN: 34
+May 29 23:59:33 am62pxx-7xxd-b test_07[46239]: SIG MAX: 64
+May 29 23:59:34 am62pxx-7xxd-b systemd[1]: test_07.service: Deactivated successfully.
+May 29 23:59:34 am62pxx-7xxd-b systemd[1]: test_07.service: Scheduled restart job, restart counter is at 2.
+May 29 23:59:34 am62pxx-7xxd-b systemd[1]: Started Test application 07.
+May 29 23:59:34 am62pxx-7xxd-b test_07[46247]: Start - Test Case: 7
+May 29 23:59:34 am62pxx-7xxd-b test_07[46247]: SIG MIN: 34
+May 29 23:59:34 am62pxx-7xxd-b test_07[46247]: SIG MAX: 64
+May 29 23:59:36 am62pxx-7xxd-b test_07[46247]: Interrupt signal (36) received.
+May 29 23:59:36 am62pxx-7xxd-b test_07[46247]: Exit - Test case: 7
+May 29 23:59:36 am62pxx-7xxd-b systemd[1]: test_07.service: Deactivated successfully.
+May 29 23:59:37 am62pxx-7xxd-b systemd[1]: test_07.service: Scheduled restart job, restart counter is at 3.
+May 29 23:59:37 am62pxx-7xxd-b systemd[1]: Started Test application 07.
+May 29 23:59:37 am62pxx-7xxd-b test_07[46256]: Start - Test Case: 7
+May 29 23:59:37 am62pxx-7xxd-b test_07[46256]: SIG MIN: 34
+May 29 23:59:37 am62pxx-7xxd-b test_07[46256]: SIG MAX: 64
+-----------------------------------------------
+Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+-----------------------------------------------
+[*] Checking status: test_07.service
+[!] test_07.service is running. Stopping for a clean test...
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_07.service
+[!] wdg_proxy_test_07.service is running. Stopping for a clean test...
+--- Test complete. DLT logging stopped. ---
+******************************************************

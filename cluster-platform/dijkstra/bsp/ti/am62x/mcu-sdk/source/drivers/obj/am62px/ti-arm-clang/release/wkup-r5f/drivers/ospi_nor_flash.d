@@ -1,0 +1,20 @@
+obj/am62px/ti-arm-clang/release/wkup-r5f/drivers//ospi_nor_flash.obj: \
+  ospi/v0/ospi_nor_flash.c \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/ospi.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/soc_config.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/soc_config.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/ospi/v0/ospi.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/SystemP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/DebugP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/HwiP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/SemaphoreP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/csl_types.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr_ospi.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/ospi/v0/cslr_ospi.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/ospi/v0/ospi_tuning/ospi_tuning_algo/algo_v1/ospi_phy_tuning.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/ospi/v0/vtm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/tistdtypes.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/csl_utils.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr64.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/ClockP.h

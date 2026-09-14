@@ -1,0 +1,283 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2013. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  OsInternal.h                                         *
+*  Module Short Name :  mOS internal header for OsAsm                        *
+*  Description       :  external declarations (only for system internal use) *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS (stringent relation with macros  populated below)  *
+* Target Hardware  :  RH850                                                  *
+*                                                                            *
+******************************************************************************/
+#ifndef OS_INTERNAL_H
+#define OS_INTERNAL_H
+
+/*---------------------------------------------------------------**
+** This file would be a generated file for architecture specific **
+**---------------------------------------------------------------*/
+#define osqStack1
+#define osqStack2
+#define osqStack3
+
+#include "osStacks.h"
+#include "intvect.h"
+
+#define OS_NO_COMMON_STACK_FOR_TASKS
+
+#define INVALID_TASK        0xFF
+#define INVALID_PRIORITY    0xFF
+
+#define TASK_NONPREEMPTIVE      0
+#define TASK_PREEMPTIVE         1
+
+#define ALARM_CALLBACK_ACTION       1
+#define ALARM_ACTIVATE_TASK_ACTION  2
+#define ALARM_SET_EVENT_ACTION      3
+
+#define OsNumberOfStack             3
+
+#define osOffsetOfActiveTaskIndex           0
+#define osOffsetOfRequestedTaskIndex        1
+#define osOffsetOfActiveTaskPriority        2
+#define osOffsetOfRequestedTaskPriority     3
+#define osOffsetOfTaskPriorityBits          4
+#define osOffsetOfRequestScheduler          6
+#define osOffsetOfLockDispatcher            7
+#define osOffsetOfIntSaveDisableRequestCounter        8
+#define osOffsetOfIntSaveStatus                       9
+
+
+#define osOffsetOfTaskState                 0
+#define osOffsetOfStackAddress              2  //as stack address is a osuint16, compiler inserts padding for TaskState
+//#define osSizeOfTaskParamStructure          4
+
+
+
+
+#define osOffsetOfTaskStartAddress          0
+#define osOffsetOfTaskStackStartAddress     4
+#define osOffsetOfTaskStackSize             6
+#define osOffsetOfTaskPriority              8
+#define osOffsetOfTaskCategory              9
+//#define osSizeOfTcbConfigStructure          10
+
+
+#define osdSystemStackStartAddress          osdSystemStack_c0_TOP
+#define osdSystemStackEndAddress            osdSystemStack_c0_BOT
+
+#define osStackStartAddressOfIdleTask       osdSystemStackStartAddress
+#define osStackEndAddressofIdleTask         osdSystemStackEndAddress
+
+
+#define osStackSizeOfNonPreemptiveTask      sizeof(osSystemStack)
+
+#define osdStackCheck                       1
+#define osdStackUsageMeasurement            1
+#define osdStackCheckPattern                0xaaaaaaaaUL
+
+#define osdUsedSystemTimer
+
+#define OsCounter_0                         ((CounterType) 0)
+#define osSystemSWCounter                   OsCounter_0
+#define SystemTimer                         OsCounter_0
+#define ScheduleTableTimer                  OsCounter_1
+
+#define OSMAXALLOWEDVALUE                   (0xffffffffUL)
+
+
+#define osdSysCallTableMax                  2
+
+
+
+#define OS_NS2TICKS_OsCounter_0(x) ( ((TickType)(((((PhysicalTimeType)(x))) + ( 1000000UL  / 2 )) / 1000000UL ))) /*	valid range for x: 0..4294467295	*/
+#define OS_US2TICKS_OsCounter_0(x) ( ((TickType)(((((PhysicalTimeType)(x))) + ( 1000UL  / 2 )) / 1000UL ))) /*	valid range for x: 0..4294966795	*/
+#define OS_MS2TICKS_OsCounter_0(x) ( ((TickType)(((((PhysicalTimeType)(x))))))) /*	valid range for x: 0..2147483647	*/
+#define OS_SEC2TICKS_OsCounter_0(x) ( ((TickType)(((((PhysicalTimeType)(x)) * 1000UL ))))) /*	valid range for x: 0..2147483	*/
+#define OS_TICKS2NS_OsCounter_0(x) ( ((PhysicalTimeType)(((((PhysicalTimeType)(x)) * 1000000UL ))))) /*	valid range for x: 0..4294	*/
+#define OS_TICKS2US_OsCounter_0(x) ( ((PhysicalTimeType)(((((PhysicalTimeType)(x)) * 1000UL ))))) /*	valid range for x: 0..4294967	*/
+#define OS_TICKS2MS_OsCounter_0(x) ( ((PhysicalTimeType)(((((PhysicalTimeType)(x))))))) /*	valid range for x: 0..4294967295	*/
+#define OS_TICKS2SEC_OsCounter_0(x) ( ((PhysicalTimeType)(((((PhysicalTimeType)(x))) + ( 1000UL  / 2 )) / 1000UL ))) /*	valid range for x: 0..4294966795	*/
+#define osSaveDisableInt(x)                 (x=osSuspendInterruptsAsm())
+
+#define osRestoreEnableInt(x)               if(x==0){ osEnableGlobalInterruptAsm(); }
+
+#define OS_ARCH_INITIALIZE()                osIntArchInitialize();
+
+#define OS_ARCH_SETUP_INTERRUPTS()          osSetupAndEnableConfiguredInterrupts();
+
+#define osIntStartOS(x)                     osStartOSasm()
+
+
+#define osDisableLevel()       __asm("   di ; globally disable interrupts"); \
+
+#define osEnableLevel()        __asm("   ei ; globally enable interrupts")
+
+
+#define osIntIsrCallHook()                  /* acknowledge the interrupt */
+
+#define osdOSTMBaseAddr   0xFFEC0000UL
+
+#define osdOSTM_CMP(x)     (*((volatile osuint32*)(osdOSTMBaseAddr+0x00UL+(0x1000UL*(x))))) /* compare value          */
+#define osdOSTM_CNT(x)     (*((volatile osuint32*)(osdOSTMBaseAddr+0x04UL+(0x1000UL*(x))))) /* current count          */
+#define osdOSTM_TO(x)      (*((volatile osuint8* )(osdOSTMBaseAddr+0x08UL+(0x1000UL*(x))))) /* output register        */
+#define osdOSTM_TOE(x)     (*((volatile osuint8* )(osdOSTMBaseAddr+0x0CUL+(0x1000UL*(x))))) /* output enable register */
+#define osdOSTM_TE(x)      (*((volatile osuint8* )(osdOSTMBaseAddr+0x10UL+(0x1000UL*(x))))) /* count enable status register */
+#define osdOSTM_TS(x)      (*((volatile osuint8* )(osdOSTMBaseAddr+0x14UL+(0x1000UL*(x))))) /* count start trigger    */
+#define osdOSTM_TT(x)      (*((volatile osuint8* )(osdOSTMBaseAddr+0x18UL+(0x1000UL*(x))))) /* count stop trigger     */
+#define osdOSTM_CTL(x)     (*((volatile osuint8* )(osdOSTMBaseAddr+0x20UL+(0x1000UL*(x))))) /* control register       */
+
+
+/* IUNIT */
+#define     osSYSREG_EIPC(x)             osSetSysReg(  0 , 0 , x)
+#define     osSYSREG_EIPSW(x)            osSetSysReg(  1 , 0 , x)
+#define     osSYSREG_FEPC(x)             osSetSysReg(  2 , 0 , x)
+#define     osSYSREG_FEPSW(x)            osSetSysReg(  3 , 0 , x)
+#define     osSYSREG_PSW(x)              osSetSysReg(  5 , 0 , x)
+#define     osSYSREG_FPSR(x)             osSetSysReg(  6 , 0 , x)
+#define     osSYSREG_FPEPC(x)            osSetSysReg(  7 , 0 , x)
+#define     osSYSREG_FPST(x)             osSetSysReg(  8 , 0 , x)
+#define     osSYSREG_FPCC(x)             osSetSysReg(  9 , 0 , x)
+#define     osSYSREG_FPCFG(x)            osSetSysReg(  10  , 0 , x)
+#define     osSYSREG_FPEC(x)             osSetSysReg(  11  , 0 , x)
+#define     osSYSREG_EIIC(x)             osSetSysReg(  13  , 0 , x)
+#define     osSYSREG_FEIC(x)             osSetSysReg(  14  , 0 , x)
+#define     osSYSREG_CTPC(x)             osSetSysReg(  16  , 0 , x)
+#define     osSYSREG_CTPSW(x)            osSetSysReg(  17  , 0 , x)
+#define     osSYSREG_CTBP(x)             osSetSysReg(  20  , 0 , x)
+#define     osSYSREG_EIWR(x)             osSetSysReg(  28  , 0 , x)
+#define     osSYSREG_FEWR(x)             osSetSysReg(  29  , 0 , x)
+#define     osSYSREG_MCFG0(x)            osSetSysReg(  0 , 1 , x)
+#define     osSYSREG_RBASE(x)            osSetSysReg(  2 , 1 , x)
+#define     osSYSREG_EBASE(x)            osSetSysReg(  3 , 1 , x)
+#define     osSYSREG_INTBP(x)            osSetSysReg(  4 , 1 , x)
+#define     osSYSREG_MCTL(x)             osSetSysReg(  5 , 1 , x)
+#define     osSYSREG_PID(x)              osSetSysReg(  6 , 1 , x)
+#define     osSYSREG_SCCFG(x)            osSetSysReg(  11  , 1 , x)
+#define     osSYSREG_SCBP(x)             osSetSysReg(  12  , 1 , x)
+#define     osSYSREG_HTCFG0(x)           osSetSysReg(  0 , 2 , x)
+#define     osSYSREG_MEA(x)              osSetSysReg(  6 , 2 , x)
+#define     osSYSREG_ASID(x)             osSetSysReg(  7 , 2 , x)
+#define     osSYSREG_MEI(x)              osSetSysReg(  8 , 2 , x)
+
+#define osdICRBASE0                      0xFFFF9000UL
+#define osdICRBASE1                      0xFFFFA040UL
+
+#define     osINTC1_EIC(x)               (*(volatile osuint16*)(osdICRBASE0 + (x*2)))
+#define     osINTC2_EIC(x)               (*(volatile osuint16*)(osdICRBASE1 + (x*2)))
+
+
+asm void osSetSysReg(osuint32 regID, osuint32 groupID, osuint32 value)
+{
+%con regID %con groupID %con value
+   mov    value, r11                -- r11 = value
+   ldsr   r11, regID, groupID       -- SPR = r11
+%con regID %con groupID %reg value
+   ldsr   value, regID, groupID     -- SPR = value
+%error
+}
+
+asm osuint32 osGetPSW(void) /* PRQA S 1503 */
+{                           /* PRQA S 3406 */
+   stsr   PSW, r10  -- r10 = PSW
+}
+
+
+
+#define OsSysCallVectorTable    osSysCallTable_c0
+
+
+#define osdBootROM_Unlock()     (osEXCFG_UNLOCK=0xACC5B007UL)
+#define osdBootROM_Lock()       (osEXCFG_UNLOCK=0xB007ECF6UL)
+#define osdBootROM_isLocked()   ((osEXCFG_CNFG & 1)!=0)
+#define osdBootROM_SwitchSets() (osEXCFG_CNFG = (1UL<<8))
+
+#define osHandlesAllIsr         0       //not required for now
+
+#define osdNeedCI707_00027_Workaround   0
+
+#define osdARMModeUser       0x10UL
+#define osdARMModeFIQ        0x11UL
+#define osdARMModeIRQ        0x12UL
+#define osdARMModeSupervisor 0x13UL
+#define osdARMModeAbort      0x17UL
+#define osdARMModeUndefInstr 0x1BUL
+#define osdARMModeSystem     0xFBUL
+
+
+#define osdReloadValue 0xbb7f
+
+
+#define osAssignStack(stack)    ((osStackDataType*)((&(stack)[0])+(sizeof(stack)/sizeof((stack)[0]))))
+#define osBottomOfStack(stack)  ((osStackDataType*)(stack))
+
+
+
+extern void osStartArchTimer (void);
+extern void osIntArchInitialize (void);
+extern void osSetupAndEnableConfiguredInterrupts (void);
+
+
+extern void osSetupExceptionStacks (void);
+
+osuint32 osGetCPSR(void);
+extern void osSetBitsARMCoreSCTLR(osuint32 BitsToSet);
+extern void osEnableNMIandAborts(void);
+
+#pragma ghs startdata
+#pragma alignvar(16)
+extern const osuint32 osSysCallTable_c0[osdSysCallTableMax];
+#pragma ghs enddata
+
+extern const osVoidFunctionType osIRQTable[osdNumberOfIRQs];
+
+#pragma ghs startdata
+extern osuint32 osIrqVecTab[];
+extern osuint32 osExceptionVectorTab[];
+#pragma ghs enddata
+
+extern const osIntPrioType osIRQPrioTable[osdNumberOfConfiguredIRQs+1];
+
+
+
+#define osIsGlobalEnabled()    ((osGetPSW()&(1UL<<5))==0)
+/* #define osIsNMIEnabled()       ((osGetCPSR()&(1UL<<6))==0) */
+/* #define osGetMode()            (osGetCPSR()&(0x1FUL))      */
+
+
+#define osdNumberOfAppModes 1
+#define OSDEFAULTAPPMODE 1
+
+
+
+/* Applications */
+#define OsApplication 0
+#define osSystemApplicationCore0 1
+
+#define OsResource ((ResourceType)0)
+
+
+
+
+#endif

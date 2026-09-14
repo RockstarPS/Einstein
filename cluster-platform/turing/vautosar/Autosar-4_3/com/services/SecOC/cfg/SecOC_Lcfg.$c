@@ -1,0 +1,385 @@
+/*******************************************************************************
+ * Copyright (C) 2025 Visteon Corporation., Ltd.
+ * All rights reserved.
+ *
+ * NOTICE: This is an unpublished work of authorship, which contains trade
+ * secrets. Visteon Corporation owns all rights to this work and intends to
+ * maintain it in confidence to preserve its trade secret status.
+ * Visteon Corporation reserves the right, under the copyright laws of the
+ * United States or those of any other country that may have jurisdiction,
+ * to protect this work as an unpublished work, in the event of an inadvertent
+ * or deliberate unauthorized publication. Visteon Corporation also reserves its
+ * rights under all copyright laws to protect this work as a published work,
+ * when appropriate. Those having access to this work may not copy it, use it,
+ * modify it, or disclose the information contained in it without the written
+ * authorization of Visteon Corporation.
+/*******************************************************************************
+********************************************************************************
+**                                                                            **
+**  FILENAME         : SecOC_Lcfg.c                                           **
+**                                                                            **
+**  Created on       : July - 2025                                            **
+**  Author           : cvenkata                                               **
+**  Vendor           :                                                        **
+**  DESCRIPTION      :                                                        **
+**                                                                            **
+**  SPECIFICATION(S) : AUTOSAR CP Release 4.3.1                               **
+**                                                                            **
+*******************************************************************************/
+
+#ifndef SECOC_LCFG_C
+#define SECOC_LCFG_C
+
+/******************************************************************************/
+/**                                INCULDES                                  **/
+/******************************************************************************/
+
+#include "SecOC_Cfg.h"
+#include "SecOC_Lcfg.h"
+
+
+/******************************************************************************/
+/**                                BUFFERS                                   **/
+/******************************************************************************/
+
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store
+ * the Authentic I-PDU and the outgoing Secured I-PDU */
+/* [SWS_SecOC_00146] The SecOC module shall provide separate buffers for the
+ * Authentic I-PDU and the Secured I-PDU. */
+/* [SWS_SecOC_00058] */
+/* direct */
+
+boolean SecOC_SameBufferInUseSts[SECOC_TOTAL_PDU_NUM];
+
+uint8 SecOC_AuthenticPduBuffer[SECOC_AUTHPDU_MAX_LENGTH];
+uint8 SecOC_SecuredPduBuffer[SECOC_SECUREPDU_MAX_LENGTH];
+uint8 SecOC_ColAuthenticPduBuffer[SECOC_COLAUTHPDU_MAX_LENGTH];
+uint8 SecOC_CryptographicPduBuffer[SECOC_CRYPTOPDU_MAX_LENGTH];
+
+uint8 SecOC_RxSecuredPduBuffer[SECOC_SECUREPDU_MAX_LENGTH];
+uint8 SecOC_RxColAuthenticPduBuffer[SECOC_COLAUTHPDU_MAX_LENGTH];
+uint8 SecOC_RxCryptographicPduBuffer[SECOC_CRYPTOPDU_MAX_LENGTH];
+
+uint8 SecOC_RxQueueBuffer[140];
+
+uint8 SecOC_TxSecuredPduBuffer[SECOC_TX_SECUREDPDUBUFFER_MAX_LENGTH];
+uint8 SecOC_TxAuthenticPduBuffer[SECOC_AUTHPDU_MAX_LENGTH];
+uint8 SecOC_TxCryptographicPduBuffer[SECOC_CRYPTOPDU_MAX_LENGTH];
+uint8 SecOC_TxColAuthenticPduBuffer[SECOC_COLAUTHPDU_MAX_LENGTH];
+
+boolean SecOC_IgnoreVerificationResult[SECOC_TOTAL_PDU_NUM];
+
+/******************************************************************************/
+/**                     SECOC CONTAINER CONFIGURATIONS                       **/
+/******************************************************************************/
+
+const SecOC_SameBufferPduCollectionType SecOC_SameBufferPduCollection[SECOC_TOTAL_PDU_NUM] =
+{
+	{
+    	SECOC_BUFFER_LENGTH,
+		SecOC_SameBufferInUseSts,
+		SECOC_AUTHPDU_MAX_LENGTH,
+		SecOC_AuthenticPduBuffer,
+		SECOC_SECUREPDU_MAX_LENGTH,
+		SecOC_SecuredPduBuffer,
+		SECOC_COLAUTHPDU_MAX_LENGTH,
+		SecOC_ColAuthenticPduBuffer,
+		SECOC_CRYPTOPDU_MAX_LENGTH,
+		SecOC_CryptographicPduBuffer
+	},
+	{
+		SECOC_BUFFER_LENGTH,
+		SecOC_SameBufferInUseSts,
+		SECOC_AUTHPDU_MAX_LENGTH,
+		SecOC_AuthenticPduBuffer,
+		SECOC_SECUREPDU_MAX_LENGTH,
+		SecOC_SecuredPduBuffer,
+		SECOC_COLAUTHPDU_MAX_LENGTH,
+		SecOC_ColAuthenticPduBuffer,
+		SECOC_CRYPTOPDU_MAX_LENGTH,
+		SecOC_CryptographicPduBuffer
+	}
+};
+
+const SecOC_RxSecuredPduType SecOC_RxSecuredPdu[SECOC_RX_PDU_NUM] =
+{
+    0,
+    0,
+	0,
+    TRUE,
+    FALSE,
+	8,
+	16,
+	SecOC_RxSecuredPduBuffer
+};
+
+const SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu[SECOC_RX_PDU_NUM] =
+{
+	0,
+	0,
+	0,
+	FALSE,
+	8,
+	16,
+	SecOC_RxColAuthenticPduBuffer
+};
+
+const SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu[SECOC_RX_PDU_NUM] =
+{
+	0,
+	0,
+	FALSE,
+	8,
+	16,
+	SecOC_RxCryptographicPduBuffer
+};
+
+const SecOC_UseMessageLinkType SecOC_UseMessageLink[SECOC_TX_PDU_NUM] =
+{
+	4,
+	0
+};
+
+
+const SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection[SECOC_RX_PDU_NUM] =
+{
+    FALSE,
+    SecOC_RxAuthenticPdu,
+    &SecOC_RxCryptographicPdu[0],
+    &SecOC_UseMessageLink[0]
+};
+
+const SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[SECOC_RX_PDU_NUM] =
+{
+	&SecOC_RxSecuredPdu,
+	&SecOC_RxSecuredPduCollection
+};
+
+const SecOC_CsmJobType SecOC_CsmJob[SECOC_RX_PDU_NUM] =
+{
+	0,
+	SECOC_CRYPTO_PROCESSING_ASYNC,
+	SECOC_CSMMAC
+};
+
+const SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[SECOC_RX_PDU_NUM] =
+{
+	1,
+	SECOC_IFPDU,
+	8
+};
+
+const SecOC_RxPduSecuredAreaType SecOC_RxPduSecuredArea[SECOC_RX_PDU_NUM] =
+{
+    4,
+    0
+};
+
+const SecOC_RxPduProcessingType SecOC_RxPduProcessing[SECOC_RX_PDU_NUM] =
+{
+	4,
+	8,
+	2,
+	2,
+	28,
+	277,
+	0,
+	48,
+	4,
+	SECOC_REJECT,
+	1,
+	SecOC_RxQueueBuffer,
+	FALSE,
+	SECOC_NONE,
+	&SecOC_CsmJob,
+	&SecOC_SameBufferPduCollection,
+	&SecOC_RxAuthenticPduLayer,
+	&SecOC_RxPduSecuredArea,
+	&SecOC_RxSecuredPduLayer,
+	8,
+	SecOC_AuthenticPduBuffer,
+	2
+};
+
+/*---------------------------------------------------------------------------
+**                      SecOC_TxAuthenticPduLayerType                      **
+**-------------------------------------------------------------------------**
+    SecOCPduType;
+    SecOCTxAuthenticLayerPduId;
+    SecOCTxPduRAsUpLayerId;
+-----------------------------------------------------------------------------*/
+const SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[SECOC_TX_PDU_NUM] =
+{
+	SECOC_IFPDU,
+	1,
+	1
+};
+
+/*---------------------------------------------------------------------------
+**                      SecOC_TxPduSecuredAreaType                         **
+**-------------------------------------------------------------------------**
+    SecOCSecuredTxPduLength;
+    SecOCSecuredTxPduOffset;
+-----------------------------------------------------------------------------*/
+const SecOC_TxPduSecuredAreaType SecOC_TxPduSecuredArea[SECOC_TX_PDU_NUM] =
+{
+	4,
+	0
+};
+
+/*---------------------------------------------------------------------------
+**                      SecOC_TxSecuredPduType                             **
+**-------------------------------------------------------------------------**
+    SecOCAuthPduHeaderLength;
+    SecOCTxSecuredLayerPduId;
+    SecOCTxPduRAsLowerLayerId;
+    SecOCTxSecuredPduBuffLength;
+    SecOCTxSecuredPduBufferRef;
+-----------------------------------------------------------------------------*/
+const SecOC_TxSecuredPduType SecOC_TxSecuredPdu[SECOC_TX_PDU_NUM] =
+{
+	4,
+	1,
+	1,
+	4,
+	SecOC_TxSecuredPduBuffer
+};
+
+/*---------------------------------------------------------------------------
+**                      SecOC_TxAuthenticPduType                           **
+**-------------------------------------------------------------------------**
+    SecOCAuthPduHeaderLength;
+    SecOCTxAuthenticPduId;
+    SecOCTxPduRAsLowerLayerId;
+    SecOCTxColAuthenticPduBuffLength;
+    SecOCTxColAuthenticPduBufferRef;
+-----------------------------------------------------------------------------*/
+const SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu[SECOC_TX_PDU_NUM] =
+{
+	0,
+	1,
+	1,
+	16,
+	SecOC_TxColAuthenticPduBuffer
+};
+
+/*---------------------------------------------------------------------------
+**                  SecOC_TxCryptographicPduType                           **
+**-------------------------------------------------------------------------**
+    SecOCTxCryptographicPduId;
+    SecOCTxPduRAsLowerLayerId;
+    SecOCTxCryptographicPduBuffLength;
+    SecOCTxCryptographicPduBufferRef;
+-----------------------------------------------------------------------------*/
+const SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu[SECOC_TX_PDU_NUM] =
+{
+	1,
+	1,
+	16,
+	SecOC_TxCryptographicPduBuffer
+};
+
+/*---------------------------------------------------------------------------
+**                  SecOC_TxSecuredPduCollectionType                       **
+**-------------------------------------------------------------------------**
+    SecOCTxAuthenticPdu;
+    SecOCTxCryptographicPdu;
+    SecOCUseMessageLink;
+-----------------------------------------------------------------------------*/
+const SecOC_TxSecuredPduCollectionType SecOC_TxSecuredPduCollection[SECOC_TX_PDU_NUM] =
+{
+	&SecOC_TxAuthenticPdu,
+	&SecOC_TxCryptographicPdu,
+	&SecOC_UseMessageLink
+};
+
+/*---------------------------------------------------------------------------
+**                  SecOC_TxSecuredPduLayerType                            **
+**-------------------------------------------------------------------------**
+    SecOCTxSecuredPdu;
+    SecOCTxSecuredPduCollection;
+-----------------------------------------------------------------------------*/
+const SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[SECOC_TX_PDU_NUM] =
+{
+	&SecOC_TxSecuredPdu,
+	&SecOC_TxSecuredPduCollection
+};
+
+/*---------------------------------------------------------------------------
+**                       SecOC_TxPduProcessingType                         **
+**-------------------------------------------------------------------------**
+    SecOCAuthenticationBuildAttempts;
+    SecOCAuthInfoTxLength;
+    SecOCDataId;
+    SecOCFreshnessValueId;
+    SecOCFreshnessValueLength;
+    SecOCFreshnessValueTxLength;
+    SecOCProvideTxTruncatedFreshnessValue;
+    SecOCUseTxConfirmation;
+    SecOCSameBufferPduRef;
+    SecOCTxAuthServiceConfigRef;
+    SecOCTxAuthenticPduLayer;
+    SecOCTxPduSecuredArea;
+    SecOCTxSecuredPduLayer;
+    SecOCAuthenticPduBuffLength;
+    SecOCAuthenticPduBufferRef;
+    uint16 SecOCAuthFrsInfoLength;
+-----------------------------------------------------------------------------*/
+const SecOC_TxPduProcessingType SecOC_TxPduProcessing[SECOC_TX_PDU_NUM] =
+{
+	2,
+	28,
+	589,
+	1,
+	48,
+	4,
+	FALSE,
+	TRUE,
+	&SecOC_SameBufferPduCollection,
+	&SecOC_CsmJob,
+	&SecOC_TxAuthenticPduLayer,
+	&SecOC_TxPduSecuredArea,
+	&SecOC_TxSecuredPduLayer,
+	8,
+	SecOC_AuthenticPduBuffer,
+	2
+};
+
+/*---------------------------------------------------------------------------
+**        SecOC_VerificationStatusCalloutType - Function Pointer           **
+**-------------------------------------------------------------------------*/
+const SecOC_VerificationStatusCalloutType SecOC_VerificationStatusCallout =
+{
+	NULL_PTR   /* Verification status callout function pointer */
+};
+
+/*---------------------------------------------------------------------------
+**                             SecOC_ConfigType                            **
+**-------------------------------------------------------------------------**
+    SecOCRxPduProcessing;
+    SecOCSameBufferPduCollection;
+    SecOCTxPduProcessing;
+    SecOCVerificationStatusCallout;
+    SecOCIgnoreVerificationResultRef;
+-----------------------------------------------------------------------------*/
+const SecOC_ConfigType SecOC_ConfigData =
+{
+    SecOC_RxPduProcessing,
+	SecOC_SameBufferPduCollection,
+	SecOC_TxPduProcessing,
+	&SecOC_VerificationStatusCallout,
+	SecOC_IgnoreVerificationResult
+};
+
+/*******************************************************************************
+**                      Revision  History                                     **
+*******************************************************************************/
+/*---------------------------------------------------------------------------
+Date              : 27/Jul/2025
+By                : cvenkata
+Traceability      : DICVA-19595
+Change Description: SecOC module - Initial development.
+-----------------------------------------------------------------------------*/
+
+
+#endif

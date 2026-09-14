@@ -1,0 +1,177 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+
+ * @endverbatim
+ * @file        SafeNvM_Cfg.c
+ * @details     Generated
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2025
+ *
+ */
+
+ #ifndef SAFENVM_CFG_C_
+ #define SAFENVM_CFG_C_
+
+ #define RTE_MICROSAR_PIM_EXPORT
+ /*****************************************************************************
+ *                            Include files                                   *
+ ******************************************************************************/
+#include "Std_Types.h"
+#include "SafeNvM_Cfg.h"
+#include "Det.h"
+#include "Rte_Type.h"
+#include "Rte_SafeNvM.h"
+#include "NvM.h"
+
+#include "Rte_MemAbstract_Stub_Safe.h"
+#  undef RTE_APPLICATION_HEADER_FILE
+#include "Rte_NvM.h"
+
+
+#define SAFENVM_SEC_CODE_START
+#define SAFENVM_CORE_CONST_SEC_START
+#define SAFENVM_CORE_DATA_SEC_START
+#define SAFENVM_CORE_BSS_SEC_START
+
+#include "MemMap.h"
+
+/*****************************************************************************
+*                                 Local Variable Decalarion                  *
+******************************************************************************/
+//Declare here local ASIL RAM buffer used by SafeNvM
+{% for blk1 in block1 %}
+static NV_Data_{{ blk1.Block_Name }} SafeRAMbuffer{{blk1.SNo}};
+{% if not loop.last %}{% endif %}
+{% endfor %}
+static uint8 SafeNvM_AsilData_Status = 0;
+
+/*****************************************************************************
+*                                 Configuration                               *
+******************************************************************************/
+{% for blk1 in block1 %}
+extern const NV_Data_{{ blk1.Block_Name }} {{ blk1.ROM_Default_Ptr }};
+extern NV_Data_{{ blk1.Block_Name }} {{ blk1.OriginalPtr }};
+extern NV_Data_{{ blk1.Block_Name }}_Copy1 {{ blk1.Copy1Ptr }};
+extern NV_Data_{{ blk1.Block_Name }}_Copy2 {{ blk1.Copy2Ptr }};
+
+extern void {{ blk1.MemAbstract_JobEnd_Notify }}(NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult);
+{% if not loop.last %}{% endif %}
+{% endfor %}
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Original(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy1(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy2(uint8 Arg1,uint8 Arg2,NvM_RequestResultType Arg3);
+extern void OsTrustedCall_SafeNvM_TriggerDataCompare();
+
+extern void EcumExt_SafeNvM_TriggerDataCompare(void);
+
+const NvMSafeBlockConfigType NvMSafe_Blockconfig[NUM_OF_SAFE_NVM_BLKS] =
+{
+{% for blk1 in block1 %}
+  {/* Safe Block {{blk1.SNo-1}}*/
+    .NvM_BlockId_Original = (uint16){{ blk1.BlockID_Original }},
+    .NvM_BlockId_Copy1 = (uint16){{ blk1.BlockID_Copy1 }},
+    .NvM_BlockId_Copy2 = (uint16){{ blk1.BlockID_Copy2 }},
+    .NvM_BlockSize = {{ blk1.Size }}U,
+    .DefaultRomPtr = (const uint8*)&{{ blk1.ROM_Default_Ptr }},
+    .NvmRamMirrorBuf_OriginalPtr = (uint8*)&{{ blk1.OriginalPtr }},
+    .NvmRamMirrorBuf_Copy1Ptr = (uint8*)&{{ blk1.Copy1Ptr }},
+    .NvmRamMirrorBuf_Copy2Ptr = (uint8*)&{{ blk1.Copy2Ptr }},
+    .AsilCopyPtr = (uint8*)&SafeRAMbuffer{{blk1.SNo}},
+    .SafeNvM_Write_Asil_ElementsPtr = SafeNvM_AsilRam_CopyTo_RteSafeRam{{blk1.SNo}},
+    .SafeNvM_MemAbstract_JobEnd_Notify = {{ blk1.MemAbstract_JobEnd_Notify }}
+  }{% if not loop.last %},{% endif %}
+{% endfor %}
+};
+
+/*****************************************************************************
+*                             FUNCTIONS                                       *
+******************************************************************************/
+{% for blk1 in block1 %}
+void SafeNvM_AsilRam_CopyTo_RteSafeRam{{blk1.SNo}}(void)
+{
+  NV_Data_{{blk1.Block_Name}} * pAsilRamCopy{{blk1.SNo}} = NvMSafe_Blockconfig[{{blk1.SNo-1}}].AsilCopyPtr;
+  {% for blk2 in block2 %}{% if blk1.Block_Name == blk2.BlockName %} 
+  (void)Rte_Write_{{ blk2.DataName }}_Value(pAsilRamCopy{{blk1.SNo}}->{{ blk2.DataName }});{% endif %}{% endfor %}
+  SafeNvM_AsilData_Status = {{blk1.SNo}}U;
+}
+{% endfor %}
+
+{% for blk1 in block1 %}
+void OnDre_SafeNvM_{{ blk1.Block_Name.split('_')[-1] }}(void)
+{
+  NV_Data_{{blk1.Block_Name}} * pAsilRamCopy = NvMSafe_Blockconfig[0].AsilCopyPtr;
+  if(SafeNvM_AsilData_Status == 0U)
+  {
+{% for blk2 in block2 %}{% if blk1.Block_Name == blk2.BlockName %} 
+  (void)Rte_Read_{{ blk2.DataName }}_Value(pAsilRamCopy->{{ blk2.DataName }});{% endif %}{% endfor %}
+  (void)SafeNvM_SetWriteBlockReq({{blk1.SNo-1}});
+  }
+  else
+  {
+    SafeNvM_AsilData_Status = 0U;
+  }
+}
+{% endfor %}
+void EcumExt_SafeNvM_TriggerDataCompare(void)
+{
+  (void)OsTrustedCall_SafeNvM_TriggerDataCompare();
+}
+
+{% for blk1 in block1 %}
+void {{ blk1.MemAbstract_JobEnd_Notify_function}}( NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Original(0, ServiceId, JobResult);
+}
+
+void {{ blk1.MemAbstract_JobEnd_Notify_function}}_Copy1( NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy1(0, ServiceId, JobResult);
+}
+
+void {{ blk1.MemAbstract_JobEnd_Notify_function}}_Copy2(NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+  OsTrustedCall_SafeNvM_NvM_WriteCallback_Copy2(0, ServiceId, JobResult);
+}
+{% if not loop.last %}{% endif %}{% endfor %}
+void MemAbstract_Stub_Safe(void)
+{
+}
+
+void SafeNvM_Det_ReportError(uint8 ApiId, uint8 ErrorId)
+{
+    (void)Det_ReportError(5000U,0x01, ApiId, ErrorId);
+   // while(1);
+}
+
+void SafeNvMErrorHook(void)
+{
+  /*Do Nothing*/
+}
+
+#define SAFENVM_SEC_CODE_END
+#define SAFENVM_CORE_CONST_SEC_END
+#define SAFENVM_CORE_DATA_SEC_END
+#define SAFENVM_CORE_BSS_SEC_END
+
+#include "MemMap.h"
+
+
+#endif

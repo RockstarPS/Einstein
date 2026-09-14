@@ -1,0 +1,15 @@
+# Output directory
+#BUILD_DIR = $(OPTEE_EXAMPLES_SRC)/out
+
+# Target rules
+optee-example:
+	@echo "Building OP-TEE for TI AM62x..."
+	$(MAKE) -C $(OPTEE_EXAMPLES_SRC) CROSS_COMPILE64=$(CROSS_COMPILE) PLATFORM=k3-am62px CFG_ARM64_core=y CFG_TEE_CORE_LOG_LEVEL=2 CFG_TEE_CORE_DEBUG=y
+
+# Clean build
+optee-example_clean:
+	@echo "Cleaning build..."
+	$(MAKE) -C $(OPTEE_EXAMPLES_SRC) clean
+
+# Phony targets to avoid conflicts with files
+.PHONY: all clean

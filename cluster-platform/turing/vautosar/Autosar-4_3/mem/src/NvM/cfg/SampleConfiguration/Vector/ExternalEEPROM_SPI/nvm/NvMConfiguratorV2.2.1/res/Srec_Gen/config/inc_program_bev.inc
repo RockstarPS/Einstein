@@ -1,0 +1,37 @@
+FILES_C = $(PROJECT_PATH)/src/main.c\
+        $(PROJECT_PATH)/src/Nvm_Writer.c\
+        $(PROJECT_PATH)/src/SrecMake.c\
+        $(PROJECT_PATH)/src/Nvm_BlockLengthCalc.c\
+        $(PROJECT_PATH)/src/Eep_Driver.c\
+        $(PROJECT_PATH)/src/Stubs.c\
+        $(PROJECT_PATH)/src/Dummy.c\
+        $(RTC_PRJ_PATH)/turing.bsw.crclib/src/Crc.c\
+        $(RTC_PRJ_PATH)/turing.bsw.nvmmgr/Memif/src/MemIf.c\
+        $(RTC_PRJ_PATH)/turing.bsw.nvmmgr/Ea/src/Ea.c\
+        $(RTC_PRJ_PATH)/turing.bsw.nvmmg/NvM/src/NvM.c\
+        $(RTC_PRJ_PATH)/vp.gen.2021.honda.bev.ic.bsw/bsw/nvm/Ea_Cfg.c\
+        $(RTC_PRJ_PATH)/vp.gen.2021.honda.bev.ic.bsw/bsw/nvm/MemIf_Lcfg.c\
+        $(RTC_PRJ_PATH)/vp.gen.2021.honda.bev.ic.bsw/bsw/nvm/NvM_Cfg.c\
+
+INCLUDES =-I$(RTC_PRJ_PATH)/turing.bsw.nvmmgr/Memif/src\
+        -I$(PROJECT_PATH)/inc\
+        -I$(RTC_PRJ_PATH)/turing.bsw.nvmmgr/Ea/src\
+        -I$(RTC_PRJ_PATH)/turing.bsw.nvmmgr/NvM/src\
+        -I$(RTC_PRJ_PATH)/turing.bsw.crclib/src\
+        -I$(RTC_PRJ_PATH)/cluster-platform/turing/lib/memlib/src/src\
+        -I$(RTC_PRJ_PATH)/cluster-platform/turing/fbl/oem_ford/BSW/FblAsrStubs\
+        -I$(RTC_PRJ_PATH)/cluster-platform/turing/mcal/imx8-package1/plugins/Base/include\
+        -I$(RTC_PRJ_PATH)/cluster-platform/turing/mcal/imx8-package1/plugins/Spi/include\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/vp-build/stubs/includes\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/bsw-gen/include\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/bsw-gen/bsw/nvm\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/bsw-gen/bsw/dem\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/ecumext/src/src\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/bsw-gen/bsw/crc\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/bsw-gen/bsw/os\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/vp-build/stubs\
+        -I$(RTC_PRJ_PATH)/programs/ford/my2023/s2dot8/mcal-gen/output/include\
+        -I$(PROJECT_PATH)/stubs/LIB_Cmp\
+        -I$(PROJECT_PATH)/stubs/Fee\
+        -I$(PROJECT_PATH)/inc/Dummy_includes\
+        -I$(PROJECT_PATH)/config\

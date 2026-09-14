@@ -1,0 +1,37 @@
+#
+# pidin a | grep resmgr_dio
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0xE828FFFE -b0x5D090000 -m0xF9980084 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x01C281FF -b0x5D0C0000 -m0x1FF8007F -b0x5D0D0000 -m0x00000200
+  372768 grep resmgr_dio
+#
+# set_dir_out 6
+Start: set_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=131087 _=/usr/sbin/set_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=131087 _=/usr/sbin/set_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: set_dir_out
+# slog2info | grep ResMgr_DIO
+
+Jan 01 00:00:00.082               ResMgr_DIO.32781              dio_log*     0  main:125 Starting DIO Resmgr dio_rm
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 1 bytes, data: 6
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_export:1425 CExport is successful for the pin 6 & status is : 0
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1250 Bank Number for DIO pin 6 is 0
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1272 Channel Number for DIO pin 6 is 28
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_io_write:678 dio_data_extract success
+Jan 01 00:23:49.283               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+# read_dir_out 6
+Start: read_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=155663 _=/usr/sbin/read_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=155663 _=/usr/sbin/read_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Direction of pin 6 is 1
+Return value is :0
+Exit: read_dir_out
+#
+# slog2info | grep ResMgr_DIO
+Jan 01 00:24:08.259               ResMgr_DIO.32781              dio_log      0  dio_get_dir:106 bitstatus is 1
+#

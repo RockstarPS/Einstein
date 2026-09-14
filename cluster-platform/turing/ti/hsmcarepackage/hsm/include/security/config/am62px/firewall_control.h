@@ -1,0 +1,7 @@
+#define HSM_RWCD 0x00CCFFFF
+#define NO_RWCD 0X0       /* not configurable CBA_PERMISSION_X */
+#define ALL_RWCD 0x00C3FFFF
+#define WKUP_0_R5_0_RWCD 0x00D4FFFF
+#define MCU_0_R5_0_RWCD 0x0060FFFF
+#define A53_RWCD 0x0001FFFF
+#define DM_RWCD 0x00D4FFFF

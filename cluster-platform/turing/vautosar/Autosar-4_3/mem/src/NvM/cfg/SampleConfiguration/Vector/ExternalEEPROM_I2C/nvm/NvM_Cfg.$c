@@ -1,0 +1,936 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2012. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  NvM_Cfg.c
+Module Short Name:  NvM_Cfg.c
+VOBName          :  
+Author           :  
+Description      :  Generated File
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef NVM_CFG_C
+#define NVM_CFG_C
+#define RTE_MICROSAR_PIM_EXPORT
+
+#include "Rte_Type.h"
+#include "Rte_NvM.h"
+#include "NvM_Cfg.h"
+#include "SchM_NvM.h"
+#include "EcuMExt.h"
+#include "Dem.h"
+#include "Dem_Cbk.h"
+
+
+#define NVM_CODE_SEC_START
+ #include "MemMap.h"
+
+#define NVM_DATA_SEC_START
+ #include "MemMap.h"
+
+#define NVM_CONST_SEC_START
+ #include "MemMap.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+#ifdef __ghs__
+#pragma alignvar (8)
+#endif
+uint8 NvMConfigBlock_RamBlock_au8[8];
+
+
+extern VAR(NV_Data_Sample_Block_1, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_1;
+
+extern CONST(NV_Data_Sample_Block_1, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_1_ROM_NVBlockDescriptor_Sample_Block_1;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_2, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_2;
+
+extern CONST(NV_Data_Sample_Block_2, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_2_ROM_NVBlockDescriptor_Sample_Block_2;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_3, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_3;
+
+extern CONST(NV_Data_Sample_Block_3, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_3_ROM_NVBlockDescriptor_Sample_Block_3;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_4, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_4;
+
+extern CONST(NV_Data_Sample_Block_4, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_4_ROM_NVBlockDescriptor_Sample_Block_4;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_5, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_5;
+
+extern CONST(NV_Data_Sample_Block_5, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_5_ROM_NVBlockDescriptor_Sample_Block_5;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_6, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_6;
+
+extern CONST(NV_Data_Sample_Block_6, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_6_ROM_NVBlockDescriptor_Sample_Block_6;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_7, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_7;
+
+extern CONST(NV_Data_Sample_Block_7, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_7_ROM_NVBlockDescriptor_Sample_Block_7;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_8, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_8;
+
+extern CONST(NV_Data_Sample_Block_8, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_8_ROM_NVBlockDescriptor_Sample_Block_8;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_9, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_9;
+
+extern CONST(NV_Data_Sample_Block_9, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_9_ROM_NVBlockDescriptor_Sample_Block_9;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_10, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_10;
+
+extern CONST(NV_Data_Sample_Block_10, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_10_ROM_NVBlockDescriptor_Sample_Block_10;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_11, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_11;
+
+extern CONST(NV_Data_Sample_Block_11, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_11_ROM_NVBlockDescriptor_Sample_Block_11;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_12, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_12;
+
+extern CONST(NV_Data_Sample_Block_12, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_12_ROM_NVBlockDescriptor_Sample_Block_12;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_13, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_13;
+
+extern CONST(NV_Data_Sample_Block_13, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_13_ROM_NVBlockDescriptor_Sample_Block_13;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(NV_Data_Sample_Block_14, RTE_VAR_INIT) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_14;
+
+extern CONST(NV_Data_Sample_Block_14, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_14_ROM_NVBlockDescriptor_Sample_Block_14;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14 - CallBack  */
+extern Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_AdminDataType, RTE_VAR_INIT) Dem_Cfg_AdminData;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemAdmin - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_StatusDataType, RTE_VAR_INIT) Dem_Cfg_StatusData;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemStatus - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_0;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_000 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_1;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_001 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_2;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_002 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_3;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_003 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_4;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_004 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_5;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_005 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(Dem_Cfg_PrimaryEntryType, RTE_VAR_INIT) Dem_Cfg_PrimaryEntry_6;
+
+extern CONST(Dem_Cfg_PrimaryEntryType, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Dem_Cfg_MemoryEntryInit;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_006 - CallBack  */
+extern Std_ReturnType Dem_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+
+extern VAR(uint32, RTE_VAR_INIT) Ram_Sample_SNvM_Block;
+
+extern CONST(uint32, RTE_CONST_DEFAULT_RTE_CDATA_GROUP) Rom_Sample_SNvM_Block;
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_SNvM_Block - CallBack  */
+extern Std_ReturnType Sample_SNvM_Block_NvM_JobFinished( uint8 ServiceId, NvM_RequestResultType JobResult );
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+const NvM_BlockDescriptorType NvM_BlockConfig[NVM_NUM_OF_BLOCKS+1]=
+{
+    {
+        NULL,        /*   void (*InitCallback) (void);          */                   
+        NULL,        /*   void(*SingleBlockCallback)(void);     */                   
+        NULL,        /*   uint8*    RamBlockDataAddress;        */                   
+        NULL,        /*   uint8*    RomBlockDataAddress;        */                   
+        0,           /*   uint16    NvBlockBaseNumber;          */                   
+        0,           /*   uint16    NvBlockLength;              */                   
+        0,           /*   uint16    NvRamBlockIdentifier;       */                   
+        1,           /*   uint8     BlockJobPriority;           */                   
+        0,           /*   uint8     MaxNumReadRetries;          */                   
+        0,           /*   uint8     MaxNumWriteRetries;         */                   
+        0,           /*   uint8     NvBlockNum;                 */                   
+        0,           /*   uint8     NvRamDeviceId;              */                   
+        0,           /*   uint8     RomBlockNum;                */                   
+        CRC_8,       /*   NvM_CrcEnumeration BlockCrcType;      */                   
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */    
+        0,           /*   boolean   BlockUseCrc;                */                   
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */                   
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        0,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    {
+        NULL,        /*   void (*InitCallback) (void);          */                                
+        NULL,        /*   void(*SingleBlockCallback)(void);     */                                
+        (uint8*)&NvMConfigBlock_RamBlock_au8,        /*   uint8*    RamBlockDataAddress;        */                                
+        NULL,        /*   uint8*    RomBlockDataAddress;        */                                
+        0,           /*   uint16    NvBlockBaseNumber;          */                                
+        8,          /*   uint16    NvBlockLength;              */                                
+        0,           /*   uint16    NvRamBlockIdentifier;       */                                
+        1,           /*   uint8     BlockJobPriority;           */                                
+        0,           /*   uint8     MaxNumReadRetries;          */                                
+        0,           /*   uint8     MaxNumWriteRetries;         */                                
+        0,           /*   uint8     NvBlockNum;                 */                                
+        0,           /*   uint8     NvRamDeviceId;              */                                
+        0,           /*   uint8     RomBlockNum;                */                                
+        CRC_8,       /*   NvM_CrcEnumeration BlockCrcType;      */                                
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */                 
+        0,           /*   boolean   BlockUseCrc;                */                                
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */                                
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        0,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_1,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_1_ROM_NVBlockDescriptor_Sample_Block_1,        /*   uint8*    RomBlockDataAddress;        */
+        2,           /*   uint16    NvBlockBaseNumber;          */
+        259,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_2,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_2_ROM_NVBlockDescriptor_Sample_Block_2,        /*   uint8*    RomBlockDataAddress;        */
+        4,           /*   uint16    NvBlockBaseNumber;          */
+        204,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_3,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_3_ROM_NVBlockDescriptor_Sample_Block_3,        /*   uint8*    RomBlockDataAddress;        */
+        6,           /*   uint16    NvBlockBaseNumber;          */
+        28,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_4,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_4_ROM_NVBlockDescriptor_Sample_Block_4,        /*   uint8*    RomBlockDataAddress;        */
+        8,           /*   uint16    NvBlockBaseNumber;          */
+        90,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_5,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_5_ROM_NVBlockDescriptor_Sample_Block_5,        /*   uint8*    RomBlockDataAddress;        */
+        10,           /*   uint16    NvBlockBaseNumber;          */
+        216,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_6,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_6_ROM_NVBlockDescriptor_Sample_Block_6,        /*   uint8*    RomBlockDataAddress;        */
+        12,           /*   uint16    NvBlockBaseNumber;          */
+        4,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_7,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_7_ROM_NVBlockDescriptor_Sample_Block_7,        /*   uint8*    RomBlockDataAddress;        */
+        14,           /*   uint16    NvBlockBaseNumber;          */
+        30,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_8,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_8_ROM_NVBlockDescriptor_Sample_Block_8,        /*   uint8*    RomBlockDataAddress;        */
+        16,           /*   uint16    NvBlockBaseNumber;          */
+        12,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_9,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_9_ROM_NVBlockDescriptor_Sample_Block_9,        /*   uint8*    RomBlockDataAddress;        */
+        18,           /*   uint16    NvBlockBaseNumber;          */
+        4,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_10,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_10_ROM_NVBlockDescriptor_Sample_Block_10,        /*   uint8*    RomBlockDataAddress;        */
+        20,           /*   uint16    NvBlockBaseNumber;          */
+        296,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_11,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_11_ROM_NVBlockDescriptor_Sample_Block_11,        /*   uint8*    RomBlockDataAddress;        */
+        22,           /*   uint16    NvBlockBaseNumber;          */
+        10,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_8,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_12,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_12_ROM_NVBlockDescriptor_Sample_Block_12,        /*   uint8*    RomBlockDataAddress;        */
+        24,           /*   uint16    NvBlockBaseNumber;          */
+        12,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_8,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_13,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_13_ROM_NVBlockDescriptor_Sample_Block_13,        /*   uint8*    RomBlockDataAddress;        */
+        26,           /*   uint16    NvBlockBaseNumber;          */
+        288,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_14,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rte_NvBlockSwComponentType_NVBlockDescriptor_Sample_Block_14_ROM_NVBlockDescriptor_Sample_Block_14,        /*   uint8*    RomBlockDataAddress;        */
+        28,           /*   uint16    NvBlockBaseNumber;          */
+        288,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_32,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_REDUNDANT_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemAdmin   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_AdminData,        /*   uint8*    RamBlockDataAddress;        */
+        NULL,        /*   uint8*    RomBlockDataAddress;        */
+        30,           /*   uint16    NvBlockBaseNumber;          */
+        14,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemStatus   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_StatusData,        /*   uint8*    RamBlockDataAddress;        */
+        NULL,        /*   uint8*    RomBlockDataAddress;        */
+        31,           /*   uint16    NvBlockBaseNumber;          */
+        12,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_000   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_0,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        32,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_001   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_1,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        33,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_002   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_2,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        34,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_003   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_3,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        35,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_004   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_4,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        36,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_005   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_5,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        37,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_006   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Dem_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Dem_Cfg_PrimaryEntry_6,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Dem_Cfg_MemoryEntryInit,        /*   uint8*    RomBlockDataAddress;        */
+        38,           /*   uint16    NvBlockBaseNumber;          */
+        76,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_EA,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_16,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_SNvM_Block   */
+    {
+        NULL,        /*   void (*InitCallback) (void);          */
+        Sample_SNvM_Block_NvM_JobFinished,        /*   void(*SingleBlockCallback)(void);     */
+        (uint8*)&Ram_Sample_SNvM_Block,        /*   uint8*    RamBlockDataAddress;        */
+        (uint8*)&Rom_Sample_SNvM_Block,        /*   uint8*    RomBlockDataAddress;        */
+        0,           /*   uint16    NvBlockBaseNumber;          */
+        4,          /*   uint16    NvBlockLength;              */
+        0,           /*   uint16    NvRamBlockIdentifier;       */
+        1,           /*   uint8     BlockJobPriority;           */
+        0,           /*   uint8     MaxNumReadRetries;          */
+        0,           /*   uint8     MaxNumWriteRetries;         */
+        0,           /*   uint8     NvBlockNum;                 */
+        MEMIF_SNvM,   /*   uint8     NvRamDeviceId;              */
+        0,           /*   uint8     RomBlockNum;                */
+        CRC_8,       /*   NvM_CrcEnumeration BlockCrcType;      */
+        NVM_NATIVE_BLOCK,           /*   NvM_BlockType BlockManagementType;    */
+        1,           /*   boolean   BlockUseCrc;                */
+        0,           /*   boolean   BlockUseSetRamBlockStatus;  */
+        0,           /*   boolean BlockWriteProt;               */
+        0,           /*   boolean   BswMBlockStatusInformation; */
+        0,           /*   boolean   CalcRamBlockCrc;            */
+        1,           /*   boolean   SelectBlockForReadAll;      */
+        0,           /*   boolean   SelectBlockForWriteAll;     */
+        0           /*   boolean   WriteBlockOnce;             */
+    },
+};
+/*****************************************************************************
+ *                                 Locally used Variable Declarations         *
+ *----------------------------------------------------------------------------*
+ * Declaration shall be followed by a comment that gives the following info.  *
+ * about the variable.                                                        *
+ * purpose, critical section, unit, and resolution                            *
+ ******************************************************************************/
+
+/*****************************************************************************
+ *                              Limited Scope Prototypes                      *
+ ******************************************************************************/
+
+/*****************************************************************************
+ *                   Functions                                                *
+ ******************************************************************************/
+
+extern void NvMExt_MultipleJobEndNotification(uint8 ServiceId, NvM_RequestResultType JobResult);
+void NvM_MultiBlockCallbackFunction(uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+    NvMExt_MultipleJobEndNotification(ServiceId, JobResult);
+}
+
+void NvM_EnterCriticalSection(void)
+{
+  SchM_Enter_NvM_NVM_EXCLUSIVE_AREA_0();
+}
+
+void NvM_ExitCriticalSection(void)
+{
+  SchM_Exit_NvM_NVM_EXCLUSIVE_AREA_0();
+}
+
+
+#define NVM_CONST_SEC_END
+ #include "MemMap.h"
+
+#define NVM_DATA_SEC_END
+ #include "MemMap.h"
+
+#define NVM_CODE_SEC_END
+ #include "MemMap.h"
+
+#endif    /* */
+/* end of file */
+/****************************************************************
+Created Time: 4/12/2021 4:57:50 PM
+****************************************************************/

@@ -1,0 +1,3733 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2020. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  E2EXF_CFG_H                                          *
+*  Module Short Name :  E2EXF_CFG_H                                          *
+*  Description       :                                                       *
+*                                                                            *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS Multi                                              *
+* Target Hardware  :  Platform Independent                                   *
+*                                                                            *
+******************************************************************************/
+/*This file contains the sample APIs that perform protect and check functionality*/
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+/*E2EXf can be initialised by calling the E2EXf_Init function*/
+
+#include "E2EXf_Cfg.h"
+
+#define STANDARD_FRAME_MASK_VALUE 0x8
+#define EXTENDED_FRAME_MASK_VALUE 0x20
+#define STANDARD_FRAME_MASK_INDEX  1
+#define EXTENDED_FRAME_MASK_INDEX 0
+#define E2EXF_STANDARD_MIN_LENGTH  3U
+#define E2EXF_EXTENDED_MIN_LENGTH 3U
+#define E2EXF_STANDARD_MAX_LENGTH  136U
+#define E2EXF_EXTENDED_MAX_LENGTH 136U
+
+
+E2E_UserProfile4BitCheckSumProtectStateType InputState_039;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_094;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_14A;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_158;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_17C;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_183;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_184;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1A3;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1A4;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1AB;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1B0;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1C2;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1C8;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1D0;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1DC;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1E1;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1ED;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_221;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_223;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_22C;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_22F;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_232;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_255;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_262;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_296;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_2F1;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_305;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_309;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_30C;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_310;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_31B;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_320;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_324;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_326;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_328;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_32F;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_33D;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_33F;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_340;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_341;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_358;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_35E;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_374;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_37B;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_37F;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_384;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_388;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_392;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_395;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_396;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_3A1;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_3D7;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_405;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_40C;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_432;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_445;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_454;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_45A;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_45B;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_467;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_468;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_510;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_516;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_53D;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_06CD5554;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_06CD5557;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_0F31AA57;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1A45AA51;
+
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_039;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_094;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_14A;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_158;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_17C;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_183;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_184;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1A3;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1A4;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1AB;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1B0;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1C2;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1C8;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1D0;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1DC;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1E1;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_1ED;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_221;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_223;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_22C;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_22F;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_232;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_255;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_262;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_296;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_2F1;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_305;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_309;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_30C;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_310;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_31B;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_320;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_324;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_326;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_328;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_32F;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_33D;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_33F;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_340;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_341;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_358;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_35E;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_374;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_37B;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_37F;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_384;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_388;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_392;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_395;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_396;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_3A1;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_3D7;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_405;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_40C;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_432;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_445;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_454;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_45A;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_45B;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_467;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_468;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_510;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_516;
+E2E_UserProfile4BitCheckSumCheckStateType InputStateInv_53D;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_06CD5554;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_06CD5557;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_0F31AA57;
+E2E_UserProfile4BitCheckSumProtectStateType InputState_1A45AA51;
+
+
+
+E2EXF_StateTypeRef E2EXF_StateRef[] =
+{
+        {&InputState_06CD5554,     &InputStateInv_06CD5554},
+            {&InputState_06CD5557,     &InputStateInv_06CD5557},
+            {&InputState_0F31AA57,     &InputStateInv_0F31AA57},
+            {&InputState_1A45AA51,     &InputStateInv_1A45AA51},
+            {&InputState_039,          &InputStateInv_039},
+            {&InputState_094,          &InputStateInv_094},
+            {&InputState_14A,          &InputStateInv_14A},
+            {&InputState_158,          &InputStateInv_158},
+            {&InputState_17C,          &InputStateInv_17C},
+            {&InputState_183,          &InputStateInv_183},
+            {&InputState_184,          &InputStateInv_184},
+            {&InputState_1A3,          &InputStateInv_1A3},
+            {&InputState_1A4,          &InputStateInv_1A4},
+            {&InputState_1AB,          &InputStateInv_1AB},
+            {&InputState_1B0,          &InputStateInv_1B0},
+            {&InputState_1C2,          &InputStateInv_1C2},
+            {&InputState_1C8,          &InputStateInv_1C8},
+            {&InputState_1D0,          &InputStateInv_1D0},
+            {&InputState_1DC,          &InputStateInv_1DC},
+            {&InputState_1E1,          &InputStateInv_1E1},
+            {&InputState_1ED,          &InputStateInv_1ED},
+            {&InputState_221,          &InputStateInv_221},
+            {&InputState_223,          &InputStateInv_223},
+            {&InputState_22C,          &InputStateInv_22C},
+            {&InputState_22F,          &InputStateInv_22F},
+            {&InputState_232,          &InputStateInv_232},
+            {&InputState_255,          &InputStateInv_255},
+            {&InputState_262,          &InputStateInv_262},
+            {&InputState_296,          &InputStateInv_296},
+            {&InputState_2F1,          &InputStateInv_2F1},
+            {&InputState_305,          &InputStateInv_305},
+            {&InputState_309,          &InputStateInv_309},
+            {&InputState_30C,          &InputStateInv_30C},
+            {&InputState_310,          &InputStateInv_310},
+            {&InputState_31B,          &InputStateInv_31B},
+            {&InputState_320,          &InputStateInv_320},
+            {&InputState_324,          &InputStateInv_324},
+            {&InputState_326,          &InputStateInv_326},
+            {&InputState_328,          &InputStateInv_328},
+            {&InputState_32F,          &InputStateInv_32F},
+            {&InputState_33D,          &InputStateInv_33D},
+            {&InputState_33F,          &InputStateInv_33F},
+            {&InputState_340,          &InputStateInv_340},
+            {&InputState_341,          &InputStateInv_341},
+            {&InputState_358,          &InputStateInv_358},
+            {&InputState_35E,          &InputStateInv_35E},
+            {&InputState_374,          &InputStateInv_374},
+            {&InputState_37B,          &InputStateInv_37B},
+            {&InputState_37F,          &InputStateInv_37F},
+            {&InputState_384,          &InputStateInv_384},
+            {&InputState_388,          &InputStateInv_388},
+            {&InputState_392,          &InputStateInv_392},
+            {&InputState_395,          &InputStateInv_395},
+            {&InputState_396,          &InputStateInv_396},
+            {&InputState_3A1,          &InputStateInv_3A1},
+            {&InputState_3D7,          &InputStateInv_3D7},
+            {&InputState_405,          &InputStateInv_405},
+            {&InputState_40C,          &InputStateInv_40C},
+            {&InputState_432,          &InputStateInv_432},
+            {&InputState_445,          &InputStateInv_445},
+            {&InputState_454,          &InputStateInv_454},
+            {&InputState_45A,          &InputStateInv_45A},
+            {&InputState_45B,          &InputStateInv_45B},
+            {&InputState_467,          &InputStateInv_467},
+            {&InputState_468,          &InputStateInv_468},
+            {&InputState_510,          &InputStateInv_510},
+            {&InputState_516,          &InputStateInv_516},
+            {&InputState_53D,          &InputStateInv_53D}
+};
+
+uint8 E2EXf_UserProfile06CD5554Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_06CD5554;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile06CD5557Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_06CD5557;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/ DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile0F31AA57Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_0F31AA57;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1A45AA51Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1A45AA51;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile06CD5554Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_06CD5554;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength;  index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile06CD5557Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_06CD5557;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength;  index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile0F31AA57Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_0F31AA57;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/ *bufferLength = inputBufferLength;
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1A45AA51Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1A45AA51;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_EXTENDED_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_EXTENDED_MAX_LENGTH;
+  ConfigPtr->Framtype = EXTENDED_FRAME_TYPE;
+  Data_ID_value = DataPtr[EXTENDED_FRAME_MASK_INDEX];
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] |= EXTENDED_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  DataPtr[EXTENDED_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile039Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_039;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile094Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_094;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile14ATrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_14A;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile158Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_158;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile17CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_17C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile183Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_183;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile184Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_184;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1A3Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1A3;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1A4Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1A4;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1ABTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1AB;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1B0Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1B0;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1C2Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1C2;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1C8Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1C8;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1D0Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1D0;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1DCTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1DC;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1E1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1E1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile1EDTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_1ED;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile221Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_221;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile223Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_223;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile22CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_22C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile22FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_22F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile232Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_232;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile255Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_255;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile262Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_262;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile296Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_296;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile2F1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_2F1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile305Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_305;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile309Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_309;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile30CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_30C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile310Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_310;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile31BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_31B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile320Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_320;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile324Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_324;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile326Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_326;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile328Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_328;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile32FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_32F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile33DTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_33D;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile33FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_33F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile340Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_340;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile341Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_341;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile358Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_358;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile35ETrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_35E;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile374Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_374;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile37BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_37B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile37FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_37F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile384Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_384;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile388Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_388;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile392Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_392;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile395Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_395;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile396Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_396;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile3A1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_3A1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile3D7Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_3D7;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile405Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_405;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile40CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_40C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile432Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_432;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile445Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_445;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile454Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_454;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile45ATrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_45A;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile45BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_45B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile467Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_467;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile468Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_468;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile510Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_510;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile516Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_516;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_Inv_UserProfile53DTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumCheckStateType *StatePtr = &InputStateInv_53D;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_CheckUserProfile4BitCheckSumCheck(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  /*Copy Data to output buffer*/
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile039Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_039;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile094Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_094;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile14ATrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_14A;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile158Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_158;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile17CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_17C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile183Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_183;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile184Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_184;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1A3Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1A3;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1A4Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1A4;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1ABTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1AB;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1B0Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1B0;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1C2Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1C2;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1C8Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1C8;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1D0Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1D0;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1DCTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1DC;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1E1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1E1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile1EDTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_1ED;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile221Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_221;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile223Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_223;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile22CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_22C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile22FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_22F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile232Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_232;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile255Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_255;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile262Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_262;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile296Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_296;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile2F1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_2F1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile305Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_305;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile309Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_309;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile30CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_30C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile310Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_310;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile31BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_31B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile320Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_320;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile324Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_324;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile326Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_326;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile328Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_328;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile32FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_32F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile33DTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_33D;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile33FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_33F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile340Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_340;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile341Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_341;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile358Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_358;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile35ETrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_35E;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile374Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_374;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile37BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_37B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile37FTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_37F;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile384Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_384;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile388Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_388;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile392Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_392;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile395Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_395;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile396Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_396;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile3A1Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_3A1;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile3D7Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_3D7;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile405Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_405;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile40CTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_40C;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile432Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_432;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile445Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_445;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile454Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_454;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile45ATrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_45A;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile45BTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_45B;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile467Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_467;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile468Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_468;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile510Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_510;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile516Trans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_516;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+uint8 E2EXf_UserProfile53DTrans(uint8 *buffer, uint16 *bufferLength, const uint8 *inputBuffer, uint16 inputBufferLength)
+{
+  E2E_UserProfile4BitCheckSumConfigType InputConfig;
+  E2E_UserProfile4BitCheckSumConfigType *ConfigPtr = &InputConfig;
+  E2E_UserProfile4BitCheckSumProtectStateType *StatePtr = &InputState_53D;
+  uint8 *DataPtr = buffer;
+  uint16 index = 0UL;
+  Std_ReturnType ret;
+  uint8 Data_ID_value = 0U;
+  for (index = 0UL; index < inputBufferLength; index++)
+  {
+    DataPtr[index] = inputBuffer[index];
+  }
+  ConfigPtr->MinDataLength = E2EXF_STANDARD_MIN_LENGTH;
+  ConfigPtr->MaxDataLength = E2EXF_STANDARD_MAX_LENGTH;
+  ConfigPtr->Framtype = STANDARD_FRAME_TYPE;
+  Data_ID_value = DataPtr[STANDARD_FRAME_MASK_INDEX];
+  DataPtr[STANDARD_FRAME_MASK_INDEX] |= STANDARD_FRAME_MASK_VALUE;
+  ret = E2E_ProtectUserProfile4BitCheckSumProtect(ConfigPtr, StatePtr, DataPtr, inputBufferLength);
+  /*Copy Data to output buffer*/
+  DataPtr[STANDARD_FRAME_MASK_INDEX] = Data_ID_value;
+  *bufferLength = inputBufferLength;
+  return ret;
+}
+
+uint8 E2EXf_FirstTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+	E2E_P01ConfigType a;
+	E2E_P01ConfigType* ConfigPtr = &a;
+	E2E_P01ProtectStateType b;
+	E2E_P01ProtectStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->DataLength = inputBufferLength;
+    ConfigPtr->CounterOffset = 0u;
+    ConfigPtr->DataIDNibbleOffset = 0;
+    ConfigPtr->DataID = 0x56;    
+    ConfigPtr->DataIDMode = E2E_P01_DATAID_NIBBLE;
+	
+	ret = E2E_P01Protect(ConfigPtr, StatePtr, DataPtr);
+	return ret;
+	
+}
+
+uint8 E2EXf_Inv_FirstTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+	E2E_P01ConfigType a;
+	E2E_P01ConfigType* ConfigPtr = &a;
+	E2E_P01CheckStateType b;
+	E2E_P01CheckStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->DataLength = inputBufferLength;
+    ConfigPtr->CounterOffset = 0u;
+    ConfigPtr->DataIDNibbleOffset = 0;
+    ConfigPtr->DataID = 0x56;    
+    ConfigPtr->DataIDMode = E2E_P01_DATAID_NIBBLE;
+	StatePtr->NewDataAvailable = TRUE;
+   
+	ret = E2E_P01Check(ConfigPtr, StatePtr, DataPtr);
+	
+	return ret;
+	
+}
+
+uint8 E2EXf_SecondTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P02ConfigType a;
+	E2E_P02ConfigType* ConfigPtr = &a;
+	E2E_P02ProtectStateType b;
+	E2E_P02ProtectStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->DataLength = inputBufferLength;
+	ConfigPtr->Offset = 0u;
+    
+	ret = E2E_P02Protect(ConfigPtr, StatePtr, DataPtr);
+	return ret;
+}
+
+uint8 E2EXf_Inv_SecondTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P02ConfigType a;
+	E2E_P02ConfigType* ConfigPtr = &a;
+	E2E_P02CheckStateType b;
+	E2E_P02CheckStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->DataLength = inputBufferLength;
+	StatePtr->NewDataAvailable = TRUE;
+   
+	ret = E2E_P02Check(ConfigPtr, StatePtr, DataPtr);
+	return ret;
+}
+
+uint8 E2EXf_ThirdTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P04ConfigType a;
+	E2E_P04ConfigType* ConfigPtr = &a;
+	E2E_P04ProtectStateType b;
+	E2E_P04ProtectStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x5678abcd;
+    ConfigPtr->MinDataLength = 0u;
+    ConfigPtr->MaxDataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+
+	ret = E2E_P04Protect(ConfigPtr,StatePtr, DataPtr, Length);
+	return ret;
+}
+
+uint8 E2EXf_Inv_ThirdTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P04ConfigType a;
+	E2E_P04ConfigType* ConfigPtr = &a;
+	E2E_P04CheckStateType b;
+	E2E_P04CheckStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x56;
+    ConfigPtr->MinDataLength = 0u;
+    ConfigPtr->MaxDataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+	
+	ret = E2E_P04Check(ConfigPtr, StatePtr, DataPtr, Length);
+	return ret;
+}
+
+uint8 E2EXf_FourthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P05ConfigType a;
+	E2E_P05ConfigType* ConfigPtr = &a;
+	E2E_P05ProtectStateType b;
+	E2E_P05ProtectStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x56;
+    ConfigPtr->DataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+
+	ret = E2E_P05Protect(ConfigPtr,StatePtr, DataPtr, Length);
+	return ret;
+}
+
+uint8 E2EXf_Inv_FourthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P05ConfigType a;
+	E2E_P05ConfigType* ConfigPtr = &a;
+	E2E_P05CheckStateType b;
+	E2E_P05CheckStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x56;
+    ConfigPtr->DataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+	
+	ret = E2E_P05Check(ConfigPtr, StatePtr, DataPtr, Length);
+	return ret;
+}
+
+uint8 E2EXf_FifthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P06ConfigType a;
+	E2E_P06ConfigType* ConfigPtr = &a;
+	E2E_P06ProtectStateType b;
+	E2E_P06ProtectStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x56;
+    ConfigPtr->MaxDataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+
+	ret = E2E_P06Protect(ConfigPtr,StatePtr, DataPtr, Length);
+	return ret;
+}
+
+uint8 E2EXf_Inv_FifthTrans(uint8* buffer, uint16* bufferLength, const uint8* inputBuffer, uint16 inputBufferLength)
+{
+    E2E_P06ConfigType a;
+	E2E_P06ConfigType* ConfigPtr = &a;
+	E2E_P06CheckStateType b;
+	E2E_P06CheckStateType* StatePtr = &b;
+	uint8* DataPtr = &inputBuffer;
+	Std_ReturnType ret;
+	
+	ConfigPtr->Offset = 0u;
+    ConfigPtr->DataID = 0x56;
+    ConfigPtr->MaxDataLength = inputBufferLength;
+	uint16 Length = 0x12u;
+	
+	ret = E2E_P06Check(ConfigPtr, StatePtr, DataPtr, Length);
+	return ret;
+}
+/*============================================================================
+**============================================================================
+** R E V I S I O N    N O T E S
+**============================================================================
+**
+** For each change to this file, be sure to record:
+** 1.  Who made the change and when the change was made.
+** 2.  Why the change was made and the intended result.
+**
+**===========================================================================*/
+/*E2EXf can be deinitialised by calling the E2EXf_DeInit function*/
+/*---------------------------------------------------------------------------
+Date               : 11-Sep-2020
+CDSID              : bbaskara
+Traceability       : RTC #1039071
+Change Description : Updated init function E2E Module 
+-----------------------------------------------------------------------------*/

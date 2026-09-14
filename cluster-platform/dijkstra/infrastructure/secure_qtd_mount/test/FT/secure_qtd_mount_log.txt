@@ -1,0 +1,20 @@
+==============  Test case 1 log =================
+# slog2info -b secure_qtd_mount
+Jan 01 00:01:46.549        secure_qtd_mount.716832     secure_qtd_mount*     0  [SQM][SQM][Info] (716832|1) main.c:558 :main: Usage:
+Jan 01 00:01:46.549        secure_qtd_mount.716832     secure_qtd_mount      0  [SQM][SQM][Info] (716832|1) main.c:559 :main: 	secure_fs -c <config_file>
+
+
+==============  Test case 2 log =================
+slog2info -b secure_qtd_mount
+Jan 01 00:00:00.540         secure_qtd_mount.90118     secure_qtd_mount*     0  [SQM][SQM][Info] (90118|1) main.c:534 :main: Config file /etc/qtd.conf
+Jan 01 00:00:00.541         secure_qtd_mount.90118     secure_qtd_mount      0  [SQM][SQM][Info] (90118|1) main.c:275 :mount_qtd_fs: /dev/emmc0.qtd.system_a /system /proc/boot/system_public_key.pem
+Jan 01 00:00:00.689         secure_qtd_mount.90118     secure_qtd_mount      0  [SQM][SQM][Info] (90118|1) main.c:317 :mount_fs: /dev/emmc0.qnx6.data qnx6 /data
+Jan 01 00:00:00.691         secure_qtd_mount.90118     secure_qtd_mount      0  [SQM][SQM][Info] (90118|1) main.c:317 :mount_fs: /dev/emmc0.qnx6.persist qnx6 /persist
+Jan 01 00:00:00.694         secure_qtd_mount.90118     secure_qtd_mount      0  [SQM][SQM][Info] (90118|1) main.c:317 :mount_fs: /dev/emmc0.ms.fota_cache dos /fota_cache
+
+# ls /
+bin            etc            persist        system
+data           fota_cache     proc           tmp
+dev            hmi            qtd_system     usr
+emmc           lib            sbin           var
+

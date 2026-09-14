@@ -1,0 +1,46 @@
+#ifndef STUB_THREAD
+#define STUB_THREAD
+
+#include <chrono>
+//#include <condition_variable>
+
+namespace std
+{
+	class thread
+	{
+		public:
+		#if 1
+		thread() noexcept = default;
+    // _GLIBCXX_RESOLVE_LIB_DEFECTS
+    // 2097.  packaged_task constructors should be constrained
+    thread(thread&) = delete;
+    thread(const thread&) = delete;
+
+    thread(thread&& __t);
+
+    template<typename _Callable, typename... _Args>
+      explicit 
+      thread(_Callable&& __f, _Args&&... __args)
+      {
+
+      }
+
+    ~thread();
+	void detach();
+	#endif
+	
+			//thread(void (*task)());
+			//~thread();
+            //int native_handle();
+	};
+    
+    namespace this_thread
+    {
+		//void sleep_until(std::chrono::steady_clock::time_point& __atime);
+		template<typename _Rep, typename _Period>
+        inline void sleep_for(const chrono::duration<_Rep, _Period>& __rtime) {}
+	}
+}
+
+
+#endif

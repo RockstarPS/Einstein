@@ -1,0 +1,169 @@
+#
+# isendrecv -a 0x2c -n /dev/i2c1 -l 16
+data:
+open(/dev/i2c1): No such file or directory
+#
+# isendrecv -a 0x2c -n /dev/i2c4 -l 16
+data:
+Data recvd: 60h 0h 0h 0h 0h 0h 30h 8h 0h 83h 84h 20h 0h 0h 0h 0h
+#
+# isendrecv -a 0x2c -n /dev/i2c4 -l 16
+data:
+Data recvd: 60h 0h 0h 0h 0h 0h 30h 8h 0h 83h 84h 20h 0h 0h 0h 0h
+#
+# isendrecv -a 0x2c -n /dev/i2c4 -l 16
+data:
+Data recvd: 60h 0h 0h 0h 0h 0h 30h 8h 0h 83h 84h 20h 0h 0h 0h 0h
+#
+# echo $?
+0
+#
+# isendrecv -a 0x1c -n /dev/i2c4 -l 16
+data:
+SENDRECV: Input/output error
+#
+# echo $?
+255
+#
+# slay io-usb-otg
+# start_ncm_ethernet.sh
+/system/bin/start_ncm_ethernet.sh[3]: /system/usr/bin/usb_init: cannot execute - No such file or directory
+USB is unlocked
+#
+# pfctl -d
+pf disabled
+# qconn
+# cd /tmp/
+#
+#
+# ls -al *i2c*
+-rwxrwxrwx   2 root      root          21016 Jan 01 08:32 i2c_read
+-rwxrwxrwx   2 root      root          22528 Jan 01 08:32 libdk_bspal_i2c.so.1.0.0
+#
+# ldd ./i2c_read
+./i2c_read:
+        libdk_bspal_i2c.so.1 => unable to load
+ldd:FATAL: Could not load library libdk_bspal_i2c.so.1
+#
+# ln -s -v libdk_bspal_i2c.so.1.0.0 libdk_bspal_i2c.so.1
+ln: creating symbolic link 'libdk_bspal_i2c.so.1' pointing to 'libdk_bspal_i2c.so.1.0.0'
+ln: unable to link. (libdk_bspal_i2c.so.1.0.0 or libdk_bspal_i2c.so.1): Function not implemented
+#
+# ln -sP -v libdk_bspal_i2c.so.1.0.0 libdk_bspal_i2c.so.1
+ln: creating symbolic link 'libdk_bspal_i2c.so.1' pointing to 'libdk_bspal_i2c.so.1.0.0'
+#
+# ldd ./i2c_read
+./i2c_read:
+        libdk_bspal_i2c.so.1 => /dev/shmem/libdk_bspal_i2c.so.1.0.0 (0x5140e3c000)
+        libdk_logger.so.0 => /usr/lib/libdk_logger.so.0.8.0 (0x5140e4f000)
+        libslog2.so.1 => /lib/libslog2.so.1 (0x5140e8d000)
+        libc.so.5 => /proc/boot/libc.so.5 (0x5140ea3000)
+        libgcc_s.so.1 => /proc/boot/libgcc_s.so.1 (0x5140f6a000)
+        libsocket.so.3 => /lib/libsocket.so.3 (0x5140f8e000)
+        libc++.so.1 => /proc/boot/libc++.so.1 (0x5140fde000)
+        libm.so.3 => /lib/libm.so.3 (0x51410c5000)
+        libcatalog.so.1 => /proc/boot/libcatalog.so.1 (0x5141113000)
+#
+# ./i2c_read 1 0x2c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2C][Erro] (892981|1) dk_bspal_i2c.c:128 :dk_bspal_i2c_read: unable to open() /dev/i2c1
+[I2CA][I2CR][Verb] (892981|1) main.c:29 :main: l_ret_val - 0
+#
+# ./i2c_read 4 0x2c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2CR][Verb] (901173|1) main.c:29 :main: l_ret_val - 1
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[0] - 60h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[1] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[2] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[3] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[4] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[5] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[6] - 30h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[7] - 8h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[8] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[9] - 83h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[10] - 84h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[11] - 20h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[12] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[13] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[14] - 0h
+[I2CA][I2CR][Verb] (901173|1) main.c:38 :main: l_data_U8A[15] - 0h
+#
+# ./i2c_read 4 0x2c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2CR][Verb] (909365|1) main.c:29 :main: l_ret_val - 1
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[0] - 60h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[1] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[2] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[3] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[4] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[5] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[6] - 30h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[7] - 8h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[8] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[9] - 83h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[10] - 84h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[11] - 20h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[12] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[13] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[14] - 0h
+[I2CA][I2CR][Verb] (909365|1) main.c:38 :main: l_data_U8A[15] - 0h
+#
+# ./i2c_read 4 0x2c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2CR][Verb] (917557|1) main.c:29 :main: l_ret_val - 1
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[0] - 60h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[1] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[2] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[3] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[4] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[5] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[6] - 30h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[7] - 8h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[8] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[9] - 83h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[10] - 84h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[11] - 20h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[12] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[13] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[14] - 0h
+[I2CA][I2CR][Verb] (917557|1) main.c:38 :main: l_data_U8A[15] - 0h
+#
+# ./i2c_read 4 0x1c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2C][Erro] (925749|1) dk_bspal_i2c.c:145 :dk_bspal_i2c_read: devctl() failed
+[I2CA][I2CR][Verb] (925749|1) main.c:29 :main: l_ret_val - 0
+#
+# ./i2c_read 4 0x2c 16
+[DLT] Registering AppID I2CA , i2c_read test app
+[DLT] Registering Context I2CR , i2c_read test app ctx
+[DLT] Registering Context I2C , DK BSPAL I2C CONTEXT
+[I2CA][I2CR][Verb] (933941|1) main.c:29 :main: l_ret_val - 1
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[0] - 60h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[1] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[2] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[3] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[4] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[5] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[6] - 30h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[7] - 8h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[8] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[9] - 83h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[10] - 84h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[11] - 20h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[12] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[13] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[14] - 0h
+[I2CA][I2CR][Verb] (933941|1) main.c:38 :main: l_data_U8A[15] - 0h
+#
+#

@@ -1,0 +1,107 @@
+root@am62pxx-7xxd-b@19:34:/system/usr/bin/wdg_test_FT# ./testcase28_restart_limit_time_after_expiry.sh
+------------------------------------------------------------------
+----- Test Case 28 - Restart type: always with limit (after interval expiry) -----
+  Cause of termination:
+        (1) Clean exit (code 0)
+        (2) Clean signals: SIGHUP, SIGINT, SIGTERM, or SIGPIPE
+        (3) Unclean exit (code 1)
+        (4) Unclean signals: SIGKILL, SIGSEGV
+
+  Expected behavior:
+        The process shall be restarted beyond the limit configured in StartLimitBurst,
+        if it does not crash continuously within the time defined by StartLimitInterval.
+
+  Error Notification Fatal (Yes/No): No
+  Process Restart (Yes/No): Yes
+  [*] Configuration:
+        Restart=always
+        StartLimitBurst=3
+        StartLimitInterval=5min
+------------------------------------------------------------------
+[>] Starting test_16.service...
+[+] test_16.service started successfully.
+[>] Starting wdg_proxy_test_16.service...
+[+] wdg_proxy_test_16.service started successfully.
+.......................................................
+       First test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 179074)...
+.......................................................
+       Second test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 179090)...
+-----------------------------------------------
+    Waiting for 5 minutes (StartLimitInterval)...
+-----------------------------------------------
+
+
+.......................................................
+       Third test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 179096)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 31 19:35:22 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 31 19:35:22 am62pxx-7xxd-b test_16[179074]: Start - Test Case: 16
+May 31 19:35:22 am62pxx-7xxd-b test_16[179074]: SIG MIN: 34
+May 31 19:35:22 am62pxx-7xxd-b test_16[179074]: SIG MAX: 64
+May 31 19:35:26 am62pxx-7xxd-b test_16[179074]: Interrupt signal (35) received.
+May 31 19:35:27 am62pxx-7xxd-b test_16[179074]: Exit - Test case: 16
+May 31 19:35:27 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 31 19:35:27 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 1.
+May 31 19:35:27 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 31 19:35:27 am62pxx-7xxd-b test_16[179090]: Start - Test Case: 16
+May 31 19:35:27 am62pxx-7xxd-b test_16[179090]: SIG MIN: 34
+May 31 19:35:27 am62pxx-7xxd-b test_16[179090]: SIG MAX: 64
+May 31 19:35:28 am62pxx-7xxd-b test_16[179090]: Interrupt signal (35) received.
+May 31 19:35:29 am62pxx-7xxd-b test_16[179090]: Exit - Test case: 16
+May 31 19:35:29 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 31 19:35:29 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 2.
+May 31 19:35:29 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 31 19:35:29 am62pxx-7xxd-b test_16[179096]: Start - Test Case: 16
+May 31 19:35:29 am62pxx-7xxd-b test_16[179096]: SIG MIN: 34
+May 31 19:35:29 am62pxx-7xxd-b test_16[179096]: SIG MAX: 64
+May 31 19:40:28 am62pxx-7xxd-b test_16[179096]: Interrupt signal (35) received.
+May 31 19:40:28 am62pxx-7xxd-b test_16[179096]: Exit - Test case: 16
+May 31 19:40:28 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 31 19:40:28 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 3.
+May 31 19:40:28 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 31 19:40:29 am62pxx-7xxd-b test_16[179405]: Start - Test Case: 16
+May 31 19:40:29 am62pxx-7xxd-b test_16[179405]: SIG MIN: 34
+May 31 19:40:29 am62pxx-7xxd-b test_16[179405]: SIG MAX: 64
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/31 19:40:30.979759 1759295389 108 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:31.179928 1759297390 109 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:31.379287 1759299386 110 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:31.579278 1759301388 111 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:31.779235 1759303385 112 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:31.980865 1759305390 113 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:32.179313 1759307389 114 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:32.381144 1759309388 115 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:32.579151 1759311386 116 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:32.781838 1759313389 117 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:32.981144 1759315393 118 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:33.180016 1759317389 119 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:33.380401 1759319390 120 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:33.580754 1759321387 121 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:33.782567 1759323397 122 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:33.982063 1759325392 123 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:34.181760 1759327405 124 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:34.381677 1759329409 125 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:34.582544 1759331410 126 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:34.783308 1759333415 127 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:34.981497 1759335391 128 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:35.183707 1759337414 129 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:35.382703 1759339394 130 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:35.584012 1759341410 131 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/31 19:40:35.779749 1759343389 132 ECU1 WP-- WP - log info V 8 [(431|431)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+-----------------------------------------------
+[*] Checking status: test_16.service
+[!] test_16.service is running. Stopping for a clean state...
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_16.service
+[!] wdg_proxy_test_16.service is running. Stopping for a clean state...
+--- Test complete. DLT logging stopped. ---

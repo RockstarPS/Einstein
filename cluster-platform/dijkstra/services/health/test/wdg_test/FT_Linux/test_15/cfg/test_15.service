@@ -1,0 +1,13 @@
+[Unit]
+Description=Test application 15
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_15 15 10
+WatchdogSec=1
+Restart=on-watchdog
+SuccessExitStatus=255 SIGABRT
+
+StandardOutput=journal
+StandardError=journal

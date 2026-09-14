@@ -1,0 +1,52 @@
+#ifndef METADATA_CFG_H
+#define METADATA_CFG_H
+
+#include "build_info.h"
+
+/**
+ * @def METADATA_DEV
+ * @brief Metadata device
+ */
+#ifdef FILE_META
+  #define META_DEV                                "metadata.bin"
+  #define META_A_OFFSET                           0x00000000
+  #define META_B_OFFSET                           0x00020000
+#else
+  #define META_DEV                                "/dev/emmc0"
+  #define META_A_OFFSET                           0x79800000
+  #define META_B_OFFSET                           0x79820000
+#endif
+
+#define META_SIZE                                 0x00020000
+#define META_VARIANT_ID                           0x00
+
+/**
+ * @brief List of Software part ids
+ */
+typedef uint8_t ESwPartId_t;
+#define ESwPartId_Boot                                      (0U)
+#define ESwPartId_PrimaryIFS                                (1U)
+#define ESwPartId_RecoveryIFS                               (2U)
+#define ESwPartId_M4Appl                                    (3U)
+#define ESwPartId_System                                    (4U)
+#define ESwPartId_Appl                                      (5U)
+#define ESwPartId_Asset                                     (6U)
+#define ESwPartId_Last                                      (7U)
+
+/* imageType, swPartId, swPartNum (16 bytes) imageName (64 bytes), Update Type, deviceType ( A ), devicePhyPartitionId ( A ), Start Address ( A ), deviceType ( B ), devicePhyPartitionId ( B ),  Start Address ( B ), deviceType ( Inactive ), devicePhyPartitionId ( Inactive ),  Start Address ( Inactive ), imageSize, Version - Major, Version - Minor, Version - Patch  */
+#define METADATA_CFG  \
+  { ESwImageType_BIN, ESwPartId_Boot,        { 0x00 }, "container-set-primary.bin",   EUpdateType_Single, EDeviceType_EMMC, 0, 0x00000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000,   4190208, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_IFS, ESwPartId_PrimaryIFS,  { 0x00 }, "ifs-primary.bin",             EUpdateType_Single, EDeviceType_EMMC, 2, 0x01000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000,  16777216, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_IFS, ESwPartId_RecoveryIFS, { 0x00 }, "ifs-recovery.bin",            EUpdateType_Single, EDeviceType_EMMC, 2, 0x0A000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000,  16777216, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_BIN, ESwPartId_M4Appl,      { 0x00 }, "VP_NOR.bin",                  EUpdateType_Single, EDeviceType_EMMC, 2, 0x0C000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000,   4063232, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_QTD, ESwPartId_System,      { 0x00 }, "qnx6fs-system-partition.bin", EUpdateType_Single, EDeviceType_EMMC, 2, 0x0D000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000,  67108864, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_QTD, ESwPartId_Appl,        { 0x00 }, "qnx6fs-app-partition.bin",    EUpdateType_Single, EDeviceType_EMMC, 2, 0x15000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000, 134217728, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH},\
+  { ESwImageType_QTD, ESwPartId_Asset,       { 0x00 }, "qnx6fs-asset-partition.bin",  EUpdateType_Single, EDeviceType_EMMC, 2, 0x25000000, EPartition_Last, 0, 0x00000000, EPartition_Last, 0, 0x00000000, 536870912, GP_SW_VERSION_MAJOR, GP_SW_VERSION_MINOR, GP_SW_VERSION_PATCH}
+
+/**
+ * @def META_SW_NUM_PARTS
+ * @brief size of the hardware part number string
+ */
+#define META_SW_NUM_PARTS                     (ESwPartId_Last)
+
+#endif /* METADATA_CFG_H */

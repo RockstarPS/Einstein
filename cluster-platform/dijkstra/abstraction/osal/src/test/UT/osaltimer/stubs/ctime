@@ -1,0 +1,104 @@
+/*
+ * $QNXLicenseC:
+ * Copyright 2007, 2009, QNX Software Systems. All Rights Reserved.
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
+ * for other information.
+ * $
+ */
+
+#ifndef _TIME_H_INCLUDED
+#define _TIME_H_INCLUDED
+
+#include <stdint.h>
+//#include <sys/siginfo.h>
+
+typedef int64_t			_Timet;
+typedef _Timet    time_t;
+typedef int   timer_t;
+
+#define SIGEV_THREAD			7	/* notify, notify_function, notify_attributes *///siginfo.h
+
+struct timespec {
+   long   tv_sec;
+   long     tv_nsec;
+};
+
+struct itimerspec {
+    struct timespec it_value,
+                    it_interval;
+    } ;
+
+typedef struct pthread_attr_t_ * pthread_attr_t;
+
+
+union sigval {//siginfo.h
+    int         sival_int;
+    void       *sival_ptr;
+};
+
+struct sigevent {//siginfo.h
+    int                             sigev_notify;
+    union {
+            int                     __sigev_signo;
+            int                     __sigev_coid;
+            int                     __sigev_id;
+            void                    (*__sigev_notify_function)(union sigval);
+            volatile unsigned       *__sigev_addr;
+    } __sigev_un1;
+
+# define sigev_signo                __sigev_un1.__sigev_signo
+# define sigev_coid                 __sigev_un1.__sigev_coid
+# define sigev_id                   __sigev_un1.__sigev_id
+# define sigev_notify_function      __sigev_un1.__sigev_notify_function
+# define sigev_addr                 __sigev_un1.__sigev_addr
+
+    union sigval                    sigev_value;
+
+    union {
+            struct {
+                    short           __sigev_code;
+                    short           __sigev_priority;
+            } __st;
+            pthread_attr_t          *__sigev_notify_attributes;
+            int                     __sigev_memop;
+        } __sigev_un2;
+
+# define sigev_notify_attributes    __sigev_un2.__sigev_notify_attributes
+# define sigev_code                 __sigev_un2.__st.__sigev_code
+# define sigev_priority             __sigev_un2.__st.__sigev_priority
+# define sigev_memop                __sigev_un2.__sigev_memop
+};
+
+typedef struct pthread_attr_t_ * pthread_attr_t;
+typedef struct pthread_mutex_t_ * pthread_mutex_t;
+
+/*  Clock types */
+#define CLOCK_REALTIME              0
+#define CLOCK_MONOTONIC            2
+
+
+/* Timer settime flags */
+#define TIMER_ABSTIME       0x80000000u
+#define TIMER_TOLERANCE		0x40000000u
+#define TIMER_PRECISE		0x20000000u
+
+extern "C"{
+extern int clock_gettime(unsigned char __clock_id, struct timespec *__tp);
+extern int timer_create(unsigned char __clock_id, struct sigevent *__evp, int *__timerid);
+extern int timer_delete(int __timerid);
+extern int timer_gettime(int __timerid, struct itimerspec *__value);
+extern int timer_settime(int __timerid, int __flags, const struct itimerspec *__value, struct itimerspec *__ovalue);
+
+}
+
+
+#endif

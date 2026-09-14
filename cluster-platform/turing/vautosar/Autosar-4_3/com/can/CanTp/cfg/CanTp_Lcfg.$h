@@ -1,0 +1,75 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2025 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file CanTp_Lcfg.h
+*    @ingroup CanTpConfiguration
+*    @brief This is CanTp link time configuration header file. It contains definitions of link time
+*    configuration parameters for the CanTp module.
+*    @defgroup CanTpConfiguration
+*    @brief This contains the link time configurations for the CanTp module.
+********************************************************************************************************************/
+#ifndef CANTP_LCFG_H
+#define CANTP_LCFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "CanTp_Cfg.h"
+#include "CanTp_Types.h"
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+#define CANIF_START_SEC_VAR_NO_INIT_UNSPECIFIED
+#include "MemMap.h"
+
+/*! @brief The channel connection state for the supported channels */
+extern VAR(CanTp_ChannelStateType,CANTP_VAR_NOINIT) CanTp_ChannelState[CANTP_NUM_OF_CHANNELS];
+
+#if (CANTP_CHANGE_PARAMETER_API == STD_ON)
+extern VAR(CanTp_DynamicTpParameterType,CANTP_VAR_NOINIT) CanTp_DynamicTpParameter[CANTP_NUM_OF_RX_NSDU];
+#endif
+
+#define CANIF_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+#include "MemMap.h"
+
+/*******************************************************************************************************************
+*  LINK TIME CONFIGURATION GLOBAL CONSTANT                                                                         *
+********************************************************************************************************************/
+
+#define CANIF_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+
+/*! @brief pointer to the CanTp configuration used in CanTp_Init . No PB config , hence the value is NULL_PTR  */
+extern P2CONST(CanTp_ConfigType,AUTOMATIC,CANTP_APPL_CONST) CanTp_ConfigPtr; 
+/* @brief The Lookup table for the CanTp Tx PDU Id to CanTp Tx NSDU Map */
+extern CONST(CanTp_NSduIdType,CANTP_CONFIG_DATA) CanTp_TxPduToNsduMap[CANTP_TXNSDU_PDUID_NUM_OF_PDUID];
+/*! @brief The Lookup table for the CanTp Rx PDU Id to CanTp Rx NSDU Map */
+extern CONST(CanTp_NSduIdType,CANTP_CONFIG_DATA) CanTp_RxPduToNsduMap[CANTP_RXNSDU_PDUID_NUM_OF_PDUID];
+/*! @brief The configuration table for each CAN N-SDU that the CanTp module transmit via the CanTpChannel 
+    For Timing description refer ISO 15765-2:2016(E)  section 9.8 Network layer timing */
+extern CONST(CanTp_TxNSduConfigType,CANTP_CONFIG_DATA) CanTp_TxNSduConfig[CANTP_NUM_OF_TX_NSDU];
+/*! @brief The configuration table for each CAN N-SDU that the CanTp module receives via the CanTpChannel .
+    For Timing description refer ISO 15765-2:2016(E)  section 9.8 Network layer timing */
+extern CONST(CanTp_RxNSduConfigType,CANTP_CONFIG_DATA) CanTp_RxNSduConfig[CANTP_NUM_OF_RX_NSDU];
+/*! @brief The configuration table for the supported channels */
+extern CONST(CanTp_ChannelConfigType,CANTP_CONFIG_DATA) CanTp_ChannelConfig[CANTP_NUM_OF_CHANNELS];
+
+#define CANIF_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+
+#endif /* CANTP_LCFG_H */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

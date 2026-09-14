@@ -1,0 +1,276 @@
+/*===================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**===================================================================================================================
+**
+** Name:           Resetsleepdiagcdd_cfg.h
+**
+** Description:    contains configurable parameters for Reset and Sleep services
+**                
+**
+**====================================================================================================================*/
+#ifndef RESETSLEEPDIAGCDD_CFG_H
+#define RESETSLEEPDIAGCDD_CFG_H
+
+/*====================================================================================================================
+** INCLUDE FILES
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+#include "Mgrdiagcdd.h"
+
+#if defined(SWRSTENABLE)
+#include "Mcu.h" 
+#endif
+
+/*====================================================================================================================
+**   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+#if defined(SWRSTENABLE) || defined (WDRSTENABLE)
+# define SWRSTDEBOUNCELIMIT			(uint8)9 /*Reset will occur after  ((Configured_value + 1) * task time) */
+# define WDRSTDEBOUNCELIMIT			(uint8)5 /*Reset will occur after  ((Configured_value + 1) * task time) */
+# define RSTCNTRDATALEN 			(uint8)8 /*configure the data length of "reset counters read/write service" here*/
+#endif
+
+#ifdef SLEEPMODEENABLE
+/*Routine control type configuration*/
+/* Configure 1 for Routine type 1, 2 for Routine type 2 and 3 for Routine type 3*/
+# define SLPMODEREQRCTYPE			(uint8)3
+#endif
+
+#ifdef WDRSTENABLE
+/*Routine control type configuration*/
+/* Configure 1 for Routine type 1, 2 for Routine type 2 and 3 for Routine type 3*/
+# define WDRSTRCTYPE				(uint8)2
+#endif
+
+#ifdef WDRESET_VIP_GIP_SUPPORT
+#define WATCHDOG_RST_VIP 						0x01
+#define WATCHDOG_RST_GIP 						0x02
+#define WATCHDOG_RST_VIP_AND_GIP				0x03
+#define cIOC_WatchdogRstControl      			((uint32)0xFD0A)
+#define cIOC_WatchdogRstControl_DataLength		((uint8)0x01)
+#endif
+
+#if defined(SWRSTENABLE)
+#include "Mcu.h"
+#endif
+
+#if defined(SWRSTENABLE)
+#define RESETDIAG_PERFORM_RESET	Mcu_PerformReset
+#endif
+
+#ifdef RSTCNTRREADINGENABLE
+//Reset flag register bits
+#define Reset_undef_bit      31u
+#define RVD_Reset_Bit		 30u
+#define INITX_Reset_Bit		 29u
+#define IMR_Reset_Bit		 28u
+#define LVDL1R_Reset_Bit 	 27u
+#define LVDL2R_Reset_Bit	 26u
+#define LVDH1R_Reset_Bit	 25u
+#define LVDH2R_Reset_Bit	 24u
+#define CKTOR_Reset_Bit		 23u
+#define SRSTX_Reset_Bit		 22u
+#define PRFERR_Reset_Bit	 21u
+#define SHRST_Reset_Bit	     20u
+#define CSVSCRR_Reset_Bit	 19u
+#define CSVFCRR_Reset_Bit	 18u
+#define CSVMOR_Reset_Bit	 17u
+#define CSVSOR_Reset_Bit	 16u
+#define CSVPR0_Reset_Bit	 15u
+#define CSVPR1_Reset_Bit	 14u
+#define CSVPR2_Reset_Bit	 13u
+#define CSVPR3_Reset_Bit	 12u
+#define CSVSR0_Reset_Bit	 11u
+#define CSVSR1_Reset_Bit	 10u
+#define CSVSR2_Reset_Bit	 9u
+#define CSVSR3_Reset_Bit	 8u
+#define Wakeup_Reset_bit     7u
+
+// SYSC_RSTCAUSEUR bits
+#define PONR_Bit		         0u
+#define RVD_Bit		             1u
+#define INITX_Bit                2u
+#define CKTOR_Bit                3u
+#define RSTX_Bit                 4u
+#define LVDH1R_Bit               6u
+#define LVDH2R_Bit               7u
+#define IMR_Bit                  8u
+#define SRSTX_Bit                9u
+#define PRFERR_Bit               10u
+#define HWDR_Bit                 11u
+#define SWDR_Bit                 12u
+#define SRST_Bit                 16u
+#define SHRST_Bit                20u
+#define CSVMOR_Bit               24u
+#define CSVSOR_Bit               25u
+#define CSVPR0_Bit               26u
+#define CSVSR0_Bit               27u
+#define CSVFCRR_Bit              28u
+#define CSVSCRR_Bit              29u
+#define LVDL1R_Bit               30u
+#define LVDL2R_Bit               31u
+#endif
+
+/*======================================================================================================================
+** T Y P E  D E F I N I T I O N S
+**======================================================================================================================*/
+#if defined(RSTCNTRREADINGENABLE) || defined(LOWQCURRENTENABLE)
+typedef struct{
+    Std_ReturnType (*ResetSleepDiag_Read)(uint8 *Data);
+    Std_ReturnType (*ResetSleepiag_Write)(uint8 *Data);
+}ResetSleepDiag_ReadWrite_U8;
+#endif
+
+#ifdef SLEEPMODEENABLE
+typedef struct{
+    void (*ResetSleepiag_Write)(void);
+}ResetSleepDiag_ReadWrite;
+#endif
+
+#ifdef RSTCNTRREADINGENABLE
+ typedef struct
+{
+	void (*ResetSleepDiagservice_NVMJob_Write) (uint8 JobStatus);
+	void (*ResetSleepDiagservice_NVMJob_Read) (uint8 *JobStatus);
+}ResetSleepDiag_NVM_ReadWrite;
+#endif
+
+#ifdef WDRESET_VIP_GIP_SUPPORT
+typedef struct{
+    Std_ReturnType (*WatchDogReset)(uint8 *Data, uint8 *ErrorCode);
+}WatchDogReset_control;
+#endif
+
+#ifdef RESETSLEEPDIAG_ODOMETER_RESET
+typedef struct{
+    uint8 (*ResetSleepiag_Odo)(uint8 *Data);
+}ResetSleepDiag_Odo_Rst;
+#endif
+/*=====================================================================================================================
+*  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**===================================================================================================================*/
+#ifdef RSTCNTRREADINGENABLE
+extern const ResetSleepDiag_ReadWrite_U8 RstCntrReadingConfig_U8;
+extern void Set_Rst_Cnt(void);
+#endif
+
+#ifdef WDRESET_VIP_GIP_SUPPORT
+extern const WatchDogReset_control WatchDogReset_control_Config;
+#endif
+
+#ifdef SLEEPMODEENABLE
+extern const ResetSleepDiag_ReadWrite SlpReqConfig;
+#endif
+
+#ifdef LOWQCURRENTENABLE
+extern const ResetSleepDiag_ReadWrite_U8 LowQCurrentConfig;
+#endif
+
+#ifdef RESETSLEEPDIAG_ODOMETER_RESET
+extern const ResetSleepDiag_Odo_Rst ResetSleepDiag_Odo_Reset_Config;
+#endif
+
+#ifdef RSTCNTRREADINGENABLE
+//NVM Job Status
+extern const ResetSleepDiag_NVM_ReadWrite ResetSleepDiag_NvmJobResult;
+#endif
+/*=====================================================================================================================
+*   P U B L I C
+**=====================================================================================================================*/
+
+/*======================================================================================================================
+**  for each change to this file, be sure to record:
+**  1.who made the change and when the change was made
+**  2.why the change was made and the intended result
+**  following block needs to be repeated for each change
+**======================================================================================================================*/
+/*   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**======================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  24/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1744046
+** Change Description:  Unused code are binded with the correct macros.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/05/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC 1632871, 1655512, 1660171
+** Change Description:  Typedefs and macros are updated to support Get/SetLowQCurrent interface
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  29/07/2020
+** CDSID             :  dkasiman
+** Traceability      :  RTC 969201
+** Change Description:  Callback support added for NVM write.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  11/Sept/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1368189
+** Change Description:  For Reset Control Service, other reset MACRO and condition check added
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  3/July/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1342897
+** Change Description:  Gip watchdog reset is commented
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  15/05/2019
+** CDSID             :  dkasiman
+** Traceability      :  RTC 132988
+** Change Description:  Coverity related changes added and macros related to GIP are restricted
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  11/March/2019
+** CDSID             :  razhakes
+** Traceability      :  RTC 1296902
+** Change Description:  for watchdog reset vip-gip support is added
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  18/6/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1137720
+** Change Description:  warnings fixed and removed routine control type for SW Reset
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  6/6/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  comments updated
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  31/05/2018
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1126958
+** Change Description:  included conditional compilation of features,removed unused constant,typecasted macros with uint8
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 23/05/2018  
+** CDSID             : athiyag2
+** Traceability      : RTC 1113499
+** Change Description: Initial version - ResetSleepDiagCdd Implementation for Turing Bookshelf.
+**====================================================================================================================*/
+
+#endif
+
+

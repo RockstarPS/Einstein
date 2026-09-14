@@ -1,0 +1,167 @@
+/*-------------------------------------------------------------------------------**
+**  ***************************************************************************  **
+**                                                                               **
+**                CONFIDENTIAL VISTEON CORPORATION                               **
+**                                                                               **
+**   This is an unpublished work of authorship, which contains trade             **
+**   secrets, created in 2013. Visteon Corporation owns all rights to            **
+**   this work and intends to maintain it in confidence to preserve              **
+**   its trade secret status. Visteon Corporation reserves the right,            **
+**   under the copyright laws of the United States or those of any               **
+**   other country that may have jurisdiction, to protect this work              **
+**   as an unpublished work, in the event of an inadvertent or                   **
+**   deliberate unauthorized publication. Visteon Corporation also               **
+**   reserves its rights under all copyright laws to protect this                **
+**   work as a published work, when appropriate. Those having access             **
+**   to this work may not copy it, use it, modify it or disclose the             **
+**   information contained in it without the written authorization               **
+**   of Visteon Corporation.                                                     **
+**                                                                               **
+**  ***************************************************************************  **
+**  ***************************************************************************  **
+**    File Name         :  OsInternal.c                                          **
+**    Module Short Name :  OsInternal                                            **
+**    Description       :  This file contains the implementation for the         **
+**                         architecture specific handling supporting the         **
+**                         supporting the operating system                       **
+**                                                                               **
+**   Organization     :  Driver Information Software Section,                    **
+**                       Visteon Software Operation                              **
+**                       Visteon Corporation                                     **
+**                                                                               **
+**   --------------------------------------------------------------------------  **
+**   Compiler Name    :  GHS                                                     **
+**   Target Hardware  :  RH850 Core based CPU                                      **
+**                                                                               **
+**  ***************************************************************************  **
+**-------------------------------------------------------------------------------*/
+#ifndef OS_INTERNAL_C
+#define OS_INTERNAL_C
+
+#include "OsPrivate.h"
+#include "OsInternal.h"
+#include "intvect.h"
+
+
+#pragma ghs section text      =".oscode"
+void osIntArchInitialize (void)
+{
+    osuint32 i;
+    osuint32 channel;
+    
+    /*Assuming exceptions will utilize the system stack - To check */
+    
+    /*setup interrupt controller & IRQs*/
+    osSYSREG_EBASE((osuint32)&osExceptionVectorTab);
+    osSYSREG_PSW(osGetPSW() | (osuint32)0x00008000UL);
+    osSYSREG_INTBP((osuint32)&osIrqVecTab);
+    osSYSREG_SCCFG((osuint32)3/* osdSysCallTableMax */);
+    osSYSREG_SCBP((osuint32)&OsSysCallVectorTable);
+
+    (*(volatile osuint32*)(0xFFC4C000)) = 0x07FFFFFF;
+    
+    /* Setup all IRQs */
+    for (i=0; i<osdNumberOfConfiguredIRQs; i++)
+    {
+        channel = osIRQPrioTable[i].osIPNumber;
+        if(channel < 32)
+        {
+          /*max of 16 priority levels bits 0 - 3*/
+          osINTC1_EIC(channel) = (osuint16)(0x00C0) | osIRQPrioTable[i].osIPLevel;
+          
+        }
+        else
+        {
+          /*max of 16 priority levels bits 0 - 3*/
+          channel = channel - 32;
+          osINTC2_EIC(channel) = ((osuint16)(0x00C0) | osIRQPrioTable[i].osIPLevel);
+        }
+        
+    }
+   
+}
+
+
+void osSetupAndEnableConfiguredInterrupts (void)
+{
+   osSetupConfiguredInterrupts();
+}
+
+
+void osStartArchTimer (void)
+{
+    osuint32 channel;
+    //#if osdHwTimerNeeded0_OSTM
+    osdOSTM_CTL(0) = 0x00; /* configure interval timer mode, no interrupt on timer start */
+    osdOSTM_CMP(0) = osdReloadValue; /* set the reload value */
+    //#endif
+    /*max of 16 priority levels bits 0 - 3*/
+    channel = osIRQPrioTable[0].osIPNumber;
+    channel = channel - 32;
+    osINTC2_EIC(channel) &= (osuint16)~(0x0080);
+
+    osdOSTM_TS(0)  = 0x01; /* start the timer */   
+    
+    /* No need to activate the interrupt at the IUNIT, this is already 
+      done in osInitISRs */
+
+}
+
+
+void osISRUnhandledException (void)
+{
+    while(1)
+    {
+        ;
+    }
+}
+
+void osUnhandledException (void)
+{
+    osErrorHook(E_OS_SYS_ABORT);
+}
+
+
+void osMemProtectionFault (void)
+{
+    osErrorHook(E_OS_SYS_ABORT);
+}
+
+void osDataAbortHandler (void)
+{
+    osErrorHook(E_OS_SYS_ABORT);
+}
+
+void osUnhandledDirectBranchException (void)
+{
+    osErrorHook(E_OS_SYS_ABORT);
+}
+
+#pragma ghs section text     = default
+
+#endif
+/*----------------------------------------------------------------------------------**
+**  ------------------------------------------------------------------------------- **
+**   ****************************************************************************   **
+**      for each change to this file, be sure to record:                            **
+**         1.  who made the change and when the change was made                     **
+**         2.  why the change was made and the intended result                      **
+**      Following block needs to be repeated for each change                        **
+**   ****************************************************************************   **
+**      Note: In the traceability column we need to trace back to the Design Doc.   **
+**      For the initial version it is traced to the Design Document section.        **
+**      For further changes it shall trace to the source of the change which may    **
+**      be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any     **
+**      other reason                                                                **
+**   ****************************************************************************   **
+**  ------------------------------------------------------------------------------- **
+**                                                                                  **
+**  ------------------------------------------------------------------------------- **
+**   Date              : 20-Jun-2016                                                **
+**   CDSID             : ssukuma1                                                   **
+**   Traceability      :------------                                                **
+**   RTC Version       : ------                                                     **
+**   Change Description: Initial version.                                           **
+**   ------------------------------------------------------------------------------ **
+**----------------------------------------------------------------------------------*/
+

@@ -1,0 +1,32 @@
+obj/am62px/ti-arm-clang/release/r5f/dhrystone_benchmark//dhry.obj: \
+  src/dhry.c src/dhry.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/DebugP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/TaskP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/SystemP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/ClockP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/CycleCounterP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/FreeRTOS-Plus-POSIX/include/FreeRTOS_POSIX.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/config/am62px/r5f/FreeRTOS_POSIX_portable.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/FreeRTOS-Plus-POSIX/include/portable/FreeRTOS_POSIX_portable_default.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/FreeRTOS.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/config/am62px/r5f/FreeRTOSConfig.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/projdefs.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/portable.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/deprecated_definitions.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/portable/TI_ARM_CLANG/ARM_CR5F/portmacro.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/HwiP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/mpu_wrappers.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/event_groups.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/timers.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/task.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/list.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/semphr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-Kernel/include/queue.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/FreeRTOS_POSIX/sys/types.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/FreeRTOS-Plus-POSIX/include/FreeRTOS_POSIX_types.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/FreeRTOS-Plus-POSIX/include/FreeRTOS_POSIX_internal.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/private/iot_doubly_linked_list.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/FreeRTOS_POSIX/pthread.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/FreeRTOS_POSIX/sched.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/FreeRTOS_POSIX/time.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/freertos/FreeRTOS-POSIX/include/FreeRTOS_POSIX/signal.h

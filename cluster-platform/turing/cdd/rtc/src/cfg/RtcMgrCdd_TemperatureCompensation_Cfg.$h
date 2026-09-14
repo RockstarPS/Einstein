@@ -1,0 +1,101 @@
+//---------------------------------------------------------------------------------------------------------------------
+//
+// VISTEON CORPORATION CONFIDENTIAL
+// ________________________________
+//
+// [2020] Visteon Corporation
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+//---------------------------------------------------------------------------------------------------------------------
+
+#ifndef RTCMGRCDD_TEMPERATURECOMPENSATION_CFG_H
+#define RTCMGRCDD_TEMPERATURECOMPENSATION_CFG_H
+
+#include "Std_Types.h"
+#include "IoHwAb.h"
+
+// Temperature Compensation period in min
+#define cRtcMgrCdd_TempCpmpensationPeriod               (uint8)1
+
+// Count of interpolation points
+#define cRtcMgrCdd_InterpolationPoints                  (uint8)166
+
+// Define Rtc wake up source
+#define RtcMgrCdd_WakeUpSourceRtc                       1   //ECUM_WKSOURCE_RTC
+#define RtcMgrCdd_WakeUpSourcePower                     ECUM_WKSOURCE_POWER     //ECUM_WKSOURCE_RTC
+
+// Required APIs from NvM
+#define RtcMgrCdd_ReadTempCoefficient(pData)            (*(pData) = 40, ((Std_ReturnType)E_OK))      // Rte_Read_RtcCdd_NV_RtcCalibration_K
+
+// Required API from IoHwab
+#define RtcMgrCdd_ReadAdcRawTemperature(pData, pError)  (*(pData) = 2631, *(pError) = IOHWAB_E_NO_ERROR, ((Std_ReturnType)E_OK))      //Rte_Call_tiCS_TIIoHwAb_AIn_GetVoltage
+//#define RtcMgrCdd_ReadAdcRawTemperature(pData, pError)    IoHwAb_GetAsyncRawAdc (eIO_ADC_AI_TEMP_RTC, pData, pError)
+
+// Required APIs from Rte
+#define RtcMgrCdd_EnterExclusiveArea()                  SuspendAllInterrupts()//Rte_Enter_RtcCddCompensation_ExclusiveArea();
+#define RtcMgrCdd_ExitExclusiveArea()                   ResumeAllInterrupts()//Rte_Exit_RtcCddCompensation_ExclusiveArea();
+
+// Required APIs from EcuM
+#define RtcMgrCdd_RequestRun()                          //(void)EcuM_RequestRUN(cECUM_USER_RTC)
+#define RtcMgrCdd_ReleaseRun()                          //(void)EcuM_ReleaseRUN(cECUM_USER_RTC)
+#define RtcMgrCdd_GetValidatedWakeupEvents()            EcuM_GetValidatedWakeupEvents();
+#define RtcMgrCdd_SetWakeupEvent()                      //EcuM_SetWakeupEvent(ECUM_WKSOURCE_RTC);
+
+#  ifndef IOHWAB_E_NO_ERROR
+#   define IOHWAB_E_NO_ERROR (2U)
+#  endif
+
+// Temprature interpolation values
+static const sint8 s8TempDegrees[cRtcMgrCdd_InterpolationPoints] =
+{
+    (sint8)-40, (sint8)-39, (sint8)-38, (sint8)-37, (sint8)-36, (sint8)-35, (sint8)-34, (sint8)-33, (sint8)-32, (sint8)-31,
+    (sint8)-30, (sint8)-29, (sint8)-28, (sint8)-27, (sint8)-26, (sint8)-25, (sint8)-24, (sint8)-23, (sint8)-22, (sint8)-21,
+    (sint8)-20, (sint8)-19, (sint8)-18, (sint8)-17, (sint8)-16, (sint8)-15, (sint8)-14, (sint8)-13, (sint8)-12, (sint8)-11,
+    (sint8)-10, (sint8)-9,  (sint8)-8,  (sint8)-7,  (sint8)-6,  (sint8)-5,  (sint8)-4,  (sint8)-3,  (sint8)-2,  (sint8)-1,
+    (sint8)0,   (sint8)1,   (sint8)2,   (sint8)3,   (sint8)4,   (sint8)5,   (sint8)6,   (sint8)7,   (sint8)8,   (sint8)9,
+    (sint8)10,  (sint8)11,  (sint8)12,  (sint8)13,  (sint8)14,  (sint8)15,  (sint8)16,  (sint8)17,  (sint8)18,  (sint8)19,
+    (sint8)20,  (sint8)21,  (sint8)22,  (sint8)23,  (sint8)24,  (sint8)25,  (sint8)26,  (sint8)27,  (sint8)28,  (sint8)29,
+    (sint8)30,  (sint8)31,  (sint8)32,  (sint8)33,  (sint8)34,  (sint8)35,  (sint8)36,  (sint8)37,  (sint8)38,  (sint8)39,
+    (sint8)40,  (sint8)41,  (sint8)42,  (sint8)43,  (sint8)44,  (sint8)45,  (sint8)46,  (sint8)47,  (sint8)48,  (sint8)49,
+    (sint8)50,  (sint8)51,  (sint8)52,  (sint8)53,  (sint8)54,  (sint8)55,  (sint8)56,  (sint8)57,  (sint8)58,  (sint8)59,
+    (sint8)60,  (sint8)61,  (sint8)62,  (sint8)63,  (sint8)64,  (sint8)65,  (sint8)66,  (sint8)67,  (sint8)68,  (sint8)69,
+    (sint8)70,  (sint8)71,  (sint8)72,  (sint8)73,  (sint8)74,  (sint8)75,  (sint8)76,  (sint8)77,  (sint8)78,  (sint8)79,
+    (sint8)80,  (sint8)81,  (sint8)82,  (sint8)83,  (sint8)84,  (sint8)85,  (sint8)86,  (sint8)87,  (sint8)88,  (sint8)89,
+    (sint8)90,  (sint8)91,  (sint8)92,  (sint8)93,  (sint8)94,  (sint8)95,  (sint8)96,  (sint8)97,  (sint8)98,  (sint8)99,
+    (sint8)100, (sint8)101, (sint8)102, (sint8)103, (sint8)104, (sint8)105, (sint8)106, (sint8)107, (sint8)108, (sint8)109,
+    (sint8)110, (sint8)111, (sint8)112, (sint8)113, (sint8)114, (sint8)115, (sint8)116, (sint8)117, (sint8)118, (sint8)119,
+    (sint8)120, (sint8)121, (sint8)122, (sint8)123, (sint8)124, (sint8)125
+};
+
+// ADC interpolation values
+static const uint16 u16AdcValues[cRtcMgrCdd_InterpolationPoints] =
+{
+    (uint16)1624, (uint16)1631, (uint16)1637, (uint16)1643, (uint16)1650, (uint16)1656, (uint16)1663, (uint16)1669, (uint16)1676, (uint16)1682,
+    (uint16)1689, (uint16)1695, (uint16)1702, (uint16)1708, (uint16)1715, (uint16)1721, (uint16)1728, (uint16)1734, (uint16)1741, (uint16)1748,
+    (uint16)1754, (uint16)1761, (uint16)1767, (uint16)1774, (uint16)1780, (uint16)1787, (uint16)1794, (uint16)1800, (uint16)1807, (uint16)1813,
+    (uint16)1820, (uint16)1826, (uint16)1833, (uint16)1840, (uint16)1846, (uint16)1853, (uint16)1859, (uint16)1866, (uint16)1873, (uint16)1879,
+    (uint16)1886, (uint16)1892, (uint16)1899, (uint16)1905, (uint16)1912, (uint16)1919, (uint16)1925, (uint16)1932, (uint16)1938, (uint16)1945,
+    (uint16)1951, (uint16)1958, (uint16)1964, (uint16)1971, (uint16)1977, (uint16)1984, (uint16)1990, (uint16)1997, (uint16)2003, (uint16)2010,
+    (uint16)2016, (uint16)2023, (uint16)2029, (uint16)2036, (uint16)2042, (uint16)2049, (uint16)2055, (uint16)2061, (uint16)2068, (uint16)2074,
+    (uint16)2081, (uint16)2087, (uint16)2093, (uint16)2100, (uint16)2106, (uint16)2112, (uint16)2119, (uint16)2125, (uint16)2131, (uint16)2138,
+    (uint16)2144, (uint16)2150, (uint16)2156, (uint16)2163, (uint16)2169, (uint16)2175, (uint16)2181, (uint16)2187, (uint16)2194, (uint16)2200,
+    (uint16)2206, (uint16)2212, (uint16)2218, (uint16)2224, (uint16)2231, (uint16)2237, (uint16)2243, (uint16)2249, (uint16)2255, (uint16)2261,
+    (uint16)2267, (uint16)2273, (uint16)2279, (uint16)2285, (uint16)2291, (uint16)2297, (uint16)2303, (uint16)2309, (uint16)2315, (uint16)2321,
+    (uint16)2327, (uint16)2333, (uint16)2339, (uint16)2344, (uint16)2350, (uint16)2356, (uint16)2362, (uint16)2368, (uint16)2374, (uint16)2379,
+    (uint16)2385, (uint16)2391, (uint16)2397, (uint16)2402, (uint16)2408, (uint16)2414, (uint16)2420, (uint16)2425, (uint16)2431, (uint16)2437,
+    (uint16)2442, (uint16)2448, (uint16)2453, (uint16)2459, (uint16)2465, (uint16)2470, (uint16)2476, (uint16)2481, (uint16)2487, (uint16)2492,
+    (uint16)2498, (uint16)2503, (uint16)2509, (uint16)2514, (uint16)2520, (uint16)2525, (uint16)2531, (uint16)2536, (uint16)2541, (uint16)2547,
+    (uint16)2552, (uint16)2557, (uint16)2563, (uint16)2568, (uint16)2573, (uint16)2579, (uint16)2584, (uint16)2589, (uint16)2595, (uint16)2600,
+    (uint16)2605, (uint16)2610, (uint16)2615, (uint16)2621, (uint16)2626, (uint16)2631
+};
+
+#endif /* RTCMGRCDD_TEMPERATURECOMPENSATION_CFG_H */

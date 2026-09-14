@@ -1,0 +1,1272 @@
+root@am62pxx-einstein:/home# ./dk_shutdown_c2
+start system rebooting
+[   37.353901] reboot: Restarting system
+Authentication passed
+[BOOTLOADER_PROFILE] Boot Media       : FLASH
+[BOOTLOADER_PROFILE] Boot Media Clock : 166.667 MHz
+[BOOTLOADER_PROFILE] Boot Image Size  : 164 KB
+[BOOTLOADER_PROFILE] Cores present    :
+wkup-r5f0-0
+[BOOTLOADER PROFILE] System_init                      :      39007us
+[BOOTLOADER PROFILE] App_waitForMcuPbist              :          1us
+[BOOTLOADER PROFILE] Board_init                       :          0us
+[BOOTLOADER PROFILE] Drivers_open                     :         88us
+[BOOTLOADER PROFILE] SBL Drivers_open                 :         61us
+[BOOTLOADER PROFILE] Board_driversOpen                :         10us
+[BOOTLOADER PROFILE] SBL Board_driversOpen            :         36us
+[BOOTLOADER PROFILE] App_loadSelfcoreImage            :      38122us
+[BOOTLOADER_PROFILE] SBL Total Time Taken             :      77329us
+
+Image loading done, switching to application ...
+Starting 2nd stage bootloader
+[BOOTLOADER_PROFILE] Boot Media       : FLASH
+[BOOTLOADER_PROFILE] Boot Media Clock : 166.667 MHz
+[BOOTLOADER_PROFILE] Boot Image Size  : 889 KB
+[BOOTLOADER_PROFILE] Cores present    :
+hsm-m4f0-0
+mcu-r5f0-0
+a530-0
+[BOOTLOADER PROFILE] System_init                      :       3088us
+[BOOTLOADER PROFILE] Board_init                       :          3us
+[BOOTLOADER PROFILE] FreeRtosTask Create              :        299us
+[BOOTLOADER PROFILE] Einstein E4  FreeRtosTask Create :         62us
+[BOOTLOADER PROFILE] PINS Intialised                  :          5us
+[BOOTLOADER PROFILE] SBL Drivers_open                 :        879us
+[BOOTLOADER PROFILE] SBL Board_driversOpen            :         45us
+[BOOTLOADER PROFILE] App_loadImages                   :      19795us
+[BOOTLOADER PROFILE] App_loadMCUImages                :      17063us
+[BOOTLOADER PROFILE] App_loadLinuxImages              :     176256us
+[BOOTLOADER_PROFILE] SBL Total Time Taken             :     217499us
+
+Image loading done, switching to application ...
+Starting linux and RTOS/Baremetal applications
+NOTICE:  BL31: v2.10.0(release):v2.10.0-367-g00f1ec6b87-dirty
+NOTICE:  BL31: Built : 16:09:05, Feb  9 2024
+
+U-Boot SPL 2023.04-gb0d717b732 (Dec 06 2023 - 15:11:45 +0000)
+SYSFW ABI: 3.1 (firmware rev 0x0009 '9.2.7--v09.02.07 (Kool Koala)')
+Trying to boot from SPI
+Authentication passed
+Authentication passed
+
+
+U-Boot 2023.04-ti-gf9b966c67473 (Mar 19 2024 - 20:31:40 +0000)
+
+SoC:   AM62PX SR1.0 HS-FS
+Model: Visteon AM62P5 Einstein 4.0
+DRAM:  2 GiB (effective 8 GiB)
+Core:  74 devices, 28 uclasses, devicetree: separate
+MMC:   mmc@fa10000: 0, mmc@fa00000: 1
+Loading Environment from nowhere... OK
+In:    serial@2800000
+Out:   serial@2800000
+Err:   serial@2800000
+Net:
+Warning: ethernet@8000000port@1 (eth0) using random MAC address - e6:36:dd:10:1d:2f
+eth0: ethernet@8000000port@1
+Hit any key to stop autoboot:  0
+switch to partitions #0, OK
+mmc0(part 0) is current device
+SD/MMC found on device 0
+Failed to load 'boot.scr'
+Can't set block device
+## Error: "main_cpsw0_qsgmii_phyinit" not defined
+19380736 bytes read in 134 ms (137.9 MiB/s)
+60163 bytes read in 20 ms (2.9 MiB/s)
+Working FDT set to 88000000
+## Flattened Device Tree blob at 88000000
+   Booting using the fdt blob at 0x88000000
+Working FDT set to 88000000
+   Loading Device Tree to 000000008feee000, end 000000008fffffff ... OK
+Working FDT set to 8feee000
+
+Starting kernel ...
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[    0.000000] Linux version 6.1.80-ti-g2e423244f8c0 (oe-user@oe-host) (aarch64-oe-linux-gcc (GCC) 11.4.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP PREEMPT Wed Mar 20 14:43:33 UTC 2024
+[    0.000000] Machine model: Visteon AM62P5 Einstein 4.0
+[    0.000000] earlycon: ns16550a0 at MMIO32 0x0000000002800000 (options '')
+[    0.000000] printk: bootconsole [ns16550a0] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] Reserved memory: created CMA memory pool at 0x00000009dc000000, size 576 MiB
+[    0.000000] OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000009b500000, size 3 MiB
+[    0.000000] OF: reserved mem: initialized node rtos-ipc-memory@9b500000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000009b800000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node mcu-r5fss-dma-memory-region@9b800000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000009b900000, size 15 MiB
+[    0.000000] OF: reserved mem: initialized node mcu-r5fss-memory-region@9b900000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000009c800000, size 1 MiB
+[    0.000000] OF: reserved mem: initialized node r5f-dma-memory@9c800000, compatible id shared-dma-pool
+[    0.000000] Reserved memory: created DMA memory pool at 0x000000009c900000, size 30 MiB
+[    0.000000] OF: reserved mem: initialized node r5f-memory@9c900000, compatible id shared-dma-pool
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x00000009ffffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x000000009b4fffff]
+[    0.000000]   node   0: [mem 0x000000009b500000-0x000000009e6fffff]
+[    0.000000]   node   0: [mem 0x000000009e700000-0x000000009e77ffff]
+[    0.000000]   node   0: [mem 0x000000009e780000-0x000000009fffffff]
+[    0.000000]   node   0: [mem 0x00000000a0000000-0x00000000ffffffff]
+[    0.000000]   node   0: [mem 0x0000000880000000-0x00000009ffffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x00000009ffffffff]
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] psci: SMC Calling Convention v1.4
+[    0.000000] percpu: Embedded 20 pages/cpu s41064 r8192 d32664 u81920
+[    0.000000] Detected VIPT I-cache on CPU0
+[    0.000000] CPU features: detected: GIC system register CPU interface
+[    0.000000] CPU features: detected: ARM erratum 845719
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 2064384
+[    0.000000] Kernel command line: console=ttyS2,115200n8 earlycon=ns16550a,mmio32,0x02800000 mtdparts=spi-nand0:512k(ospi_nand.tiboot3),2m(ospi_nand.tispl),4m(ospi_nand.u-boot),256k(ospi_nand.env),256k(ospi_nand.env.backup),98048k@32m(ospi_nand.rootfs),256k@130816k(ospi_nand.phypattern) root=PARTUUID=5cff2023-c9eb-4b0d-b0dd-46dc67c6b507 rw rootfstype=ext4 rootwait
+[    0.000000] Dentry cache hash table entries: 1048576 (order: 11, 8388608 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 524288 (order: 10, 4194304 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] software IO TLB: area num 4.
+[    0.000000] software IO TLB: mapped [mem 0x00000000fbfff000-0x00000000fffff000] (64MB)
+[    0.000000] Memory: 7476500K/8388608K available (11712K kernel code, 1262K rwdata, 3816K rodata, 1984K init, 438K bss, 322284K reserved, 589824K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu:     RCU event tracing is enabled.
+[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=4.
+[    0.000000]  Trampoline variant of Tasks RCU enabled.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] GICv3: GIC: Using split EOI/Deactivate mode
+[    0.000000] GICv3: 256 SPIs implemented
+[    0.000000] GICv3: 0 Extended SPIs implemented
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv3: GICv3 features: 16 PPIs
+[    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x0000000001880000
+[    0.000000] ITS [mem 0x01820000-0x0182ffff]
+[    0.000000] GIC: enabling workaround for ITS: Socionext Synquacer pre-ITS
+[    0.000000] ITS@0x0000000001820000: Devices Table too large, reduce ids 20->19
+[    0.000000] ITS@0x0000000001820000: allocated 524288 Devices @880800000 (flat, esz 8, psz 64K, shr 0)
+[    0.000000] ITS: using cache flushing for cmd queue
+[    0.000000] GICv3: using LPI property table @0x0000000880040000
+[    0.000000] GIC: using cache flushing for LPI property table
+[    0.000000] GICv3: CPU0: using allocated LPI pending table @0x0000000880050000
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] arch_timer: cp15 timer(s) running at 200.00MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0x3ffffffffffffff max_cycles: 0x2e2049d3e8, max_idle_ns: 440795210634 ns
+[    0.000001] sched_clock: 58 bits at 200MHz, resolution 5ns, wraps every 4398046511102ns
+[    0.008477] Console: colour dummy device 80x25
+[    0.013057] Calibrating delay loop (skipped), value calculated using timer frequency.. 400.00 BogoMIPS (lpj=800000)
+[    0.023725] pid_max: default: 32768 minimum: 301
+[    0.028480] LSM: Security Framework initializing
+[    0.033300] Mount-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.041058] Mountpoint-cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.050666] cblist_init_generic: Setting adjustable number of callback queues.
+[    0.058086] cblist_init_generic: Setting shift to 2 and lim to 1.
+[    0.064365] cblist_init_generic: Setting adjustable number of callback queues.
+[    0.071749] cblist_init_generic: Setting shift to 2 and lim to 1.
+[    0.078109] rcu: Hierarchical SRCU implementation.
+[    0.083009] rcu:     Max phase no-delay instances is 1000.
+[    0.088559] Platform MSI: msi-controller@1820000 domain created
+[    0.094786] PCI/MSI: /bus@f0000/interrupt-controller@1800000/msi-controller@1820000 domain created
+[    0.104151] EFI services will not be available.
+[    0.108997] smp: Bringing up secondary CPUs ...
+[    0.114184] Detected VIPT I-cache on CPU1
+[    0.114270] GICv3: CPU1: found redistributor 1 region 0:0x00000000018a0000
+[    0.114286] GICv3: CPU1: using allocated LPI pending table @0x0000000880060000
+[    0.114331] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[    0.114941] Detected VIPT I-cache on CPU2
+[    0.115008] GICv3: CPU2: found redistributor 2 region 0:0x00000000018c0000
+[    0.115021] GICv3: CPU2: using allocated LPI pending table @0x0000000880070000
+[    0.115048] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[    0.115575] Detected VIPT I-cache on CPU3
+[    0.115646] GICv3: CPU3: found redistributor 3 region 0:0x00000000018e0000
+[    0.115659] GICv3: CPU3: using allocated LPI pending table @0x0000000880080000
+[    0.115686] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[    0.115743] smp: Brought up 1 node, 4 CPUs
+[    0.195370] SMP: Total of 4 processors activated.
+[    0.200175] CPU features: detected: 32-bit EL0 Support
+[    0.205440] CPU features: detected: CRC32 instructions
+[    0.210736] CPU: All CPU(s) started at EL2
+[    0.214926] alternatives: applying system-wide alternatives
+[    0.222066] devtmpfs: initialized
+[    0.234727] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.244713] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.269898] pinctrl core: initialized pinctrl subsystem
+[    0.275784] DMI not present or invalid.
+[    0.280239] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.287246] DMA: preallocated 1024 KiB GFP_KERNEL pool for atomic allocations
+[    0.294677] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.302791] DMA: preallocated 1024 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[    0.311063] audit: initializing netlink subsys (disabled)
+[    0.316760] audit: type=2000 audit(0.216:1): state=initialized audit_enabled=0 res=1
+[    0.317166] thermal_sys: Registered thermal governor 'step_wise'
+[    0.324677] thermal_sys: Registered thermal governor 'power_allocator'
+[    0.330946] cpuidle: using governor menu
+[    0.341762] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.348769] ASID allocator initialised with 65536 entries
+[    0.365924] KASLR disabled due to lack of seed
+[    0.376621] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+[    0.383578] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+[    0.389979] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+[    0.396912] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+[    0.403313] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[    0.410244] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+[    0.416642] HugeTLB: registered 64.0 KiB page size, pre-allocated 0 pages
+[    0.423571] HugeTLB: 0 KiB vmemmap can be freed for a 64.0 KiB page
+[    0.431177] k3-chipinfo 43000014.chipid: Family:AM62PX rev:SR1.0 JTAGID[0x0bb9d02f] Detected
+[    0.440857] iommu: Default domain type: Translated
+[    0.445857] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.452285] Einstein_gpios_pins_init
+[    0.456252] SCSI subsystem initialized
+[    0.460388] usbcore: registered new interface driver usbfs
+[    0.466019] usbcore: registered new interface driver hub
+[    0.471467] usbcore: registered new device driver usb
+[    0.476954] pps_core: LinuxPPS API ver. 1 registered
+[    0.482025] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.491362] PTP clock support registered
+[    0.495477] EDAC MC: Ver: 3.0.0
+[    0.499410] omap-mailbox 29000000.mailbox: omap mailbox rev 0x66fca100
+[    0.506233] omap-mailbox 29010000.mailbox: omap mailbox rev 0x66fca100
+[    0.512950] omap-mailbox 29020000.mailbox: no available mbox devices found
+[    0.520010] omap-mailbox 29030000.mailbox: no available mbox devices found
+[    0.527329] FPGA manager framework
+[    0.530873] Advanced Linux Sound Architecture Driver Initialized.
+[    0.537887] clocksource: Switched to clocksource arch_sys_counter
+[    0.544313] VFS: Disk quotas dquot_6.6.0
+[    0.548357] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+[    0.560906] NET: Registered PF_INET protocol family
+[    0.566200] IP idents hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[    0.579129] tcp_listen_portaddr_hash hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.587951] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.595878] TCP established hash table entries: 65536 (order: 7, 524288 bytes, linear)
+[    0.604388] TCP bind hash table entries: 65536 (order: 9, 2097152 bytes, linear)
+[    0.613537] TCP: Hash tables configured (established 65536 bind 65536)
+[    0.620390] UDP hash table entries: 4096 (order: 5, 131072 bytes, linear)
+[    0.627489] UDP-Lite hash table entries: 4096 (order: 5, 131072 bytes, linear)
+[    0.635154] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.641324] RPC: Registered named UNIX socket transport module.
+[    0.647393] RPC: Registered udp transport module.
+[    0.652202] RPC: Registered tcp transport module.
+[    0.657004] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.663587] NET: Registered PF_XDP protocol family
+[    0.668490] PCI: CLS 0 bytes, default 64
+[    0.673116] hw perfevents: enabled with armv8_cortex_a53 PMU driver, 7 counters available
+[    0.682911] Initialise system trusted keyrings
+[    0.687648] workingset: timestamp_bits=46 max_order=21 bucket_order=0
+[    0.698372] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.704854] NFS: Registering the id_resolver key type
+[    0.710062] Key type id_resolver registered
+[    0.714334] Key type id_legacy registered
+[    0.718478] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    0.725325] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    0.766981] Key type asymmetric registered
+[    0.771168] Asymmetric key parser 'x509' registered
+[    0.776189] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 245)
+[    0.783866] io scheduler mq-deadline registered
+[    0.788506] io scheduler kyber registered
+[    0.795496] pinctrl-single 4084000.pinctrl: 34 pins, size 136
+[    0.801924] pinctrl-single f4000.pinctrl: 171 pins, size 684
+[    0.813823] Serial: 8250/16550 driver, 12 ports, IRQ sharing enabled
+[    0.828619] loop: module loaded
+[    0.832804] megasas: 07.719.03.00-rc1
+[    0.839337] tun: Universal TUN/TAP device driver, 1.6
+[    0.845139] VFIO - User Level meta-driver version: 0.3
+[    0.851053] usbcore: registered new interface driver usb-storage
+[    0.857687] i2c_dev: i2c /dev entries driver
+[    0.863284] sdhci: Secure Digital Host Controller Interface driver
+[    0.869616] sdhci: Copyright(c) Pierre Ossman
+[    0.874244] sdhci-pltfm: SDHCI platform and OF driver helper
+[    0.880654] ledtrig-cpu: registered to indicate activity on CPUs
+[    0.886947] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+[    0.893841] usbcore: registered new interface driver usbhid
+[    0.899537] usbhid: USB HID core driver
+[    0.904224] optee: probing for conduit method.
+[    0.908800] optee: revision 4.1 (012cdca4)
+[    0.909072] optee: dynamic shared memory is enabled
+[    0.918467] optee: initialized driver
+[    0.923544] Initializing XFRM netlink socket
+[    0.927954] NET: Registered PF_PACKET protocol family
+[    0.933180] Key type dns_resolver registered
+[    0.937890] registered taskstats version 1
+[    0.942094] Loading compiled-in X.509 certificates
+[    0.954633] ti-sci 44043000.system-controller: ABI: 3.1 (firmware rev 0x0009 '9.2.7--v09.02.07 (Kool Koala)')
+[    1.001505] omap_i2c 20000000.i2c: bus 0 rev0.12 at 400 kHz
+[    1.008494] pca953x 1-0023: supply vcc not found, using dummy regulator
+[    1.015377] pca953x 1-0023: using AI
+[    1.042025] pca953x 1-0023: failed writing register
+[    1.047157] pca953x: probe of 1-0023 failed with error -121
+[    1.052937] omap_i2c 20010000.i2c: bus 1 rev0.12 at 100 kHz
+[    1.059631] omap_i2c 20020000.i2c: bus 2 rev0.12 at 400 kHz
+[    1.065561] ti-sci-intr bus@f0000:interrupt-controller@a00000: Interrupt Router 3 domain created
+[    1.074759] ti-sci-inta 48000000.interrupt-controller: Interrupt Aggregator domain 28 created
+[    1.083721] ti-sci-inta 4e400000.interrupt-controller: Interrupt Aggregator domain 200 created
+[    1.093152] ti-udma 485c0100.dma-controller: Number of rings: 82
+[    1.101104] ti-udma 485c0100.dma-controller: Channels: 48 (bchan: 18, tchan: 12, rchan: 18)
+[    1.111837] ti-udma 485c0000.dma-controller: Number of rings: 150
+[    1.121481] ti-udma 485c0000.dma-controller: Channels: 35 (tchan: 20, rchan: 15)
+[    1.130781] ti-udma 4e230000.dma-controller: Number of rings: 6
+[    1.137232] ti-udma 4e230000.dma-controller: Channels: 6 (bchan: 0, tchan: 0, rchan: 6)
+[    1.146422] printk: console [ttyS2] disabled
+[    1.150850] 2800000.serial: ttyS2 at MMIO 0x2800000 (irq = 252, base_baud = 3000000) is a 8250
+[    1.159709] printk: console [ttyS2] enabled
+[    1.159709] printk: console [ttyS2] enabled
+[    1.168163] printk: bootconsole [ns16550a0] disabled
+[    1.168163] printk: bootconsole [ns16550a0] disabled
+[    1.180144] spi-nor spi0.0: unrecognized JEDEC id bytes: c2 81 38 c2 81 38
+[    1.225919] davinci_mdio 8000f00.mdio: davinci mdio revision 17.7, bus freq 1000000
+[    1.235492]
+ einstein board : probing  phy device
+[    1.235492]
+[    1.243239]
+ einstein phyID:2000a290
+[    1.243239]
+[    1.476655] davinci_mdio 8000f00.mdio: phy[0]: device 8000f00.mdio:00, driver TI DP83TG721CS1.0
+[    1.492069] am65-cpsw-nuss 8000000.ethernet: initializing am65 cpsw nuss version 0x6BA01903, cpsw version 0x6BA81903 Ports: 3 quirks:00000006
+[    1.504854] am65-cpsw-nuss 8000000.ethernet: initialized cpsw ale version 1.5
+[    1.511981] am65-cpsw-nuss 8000000.ethernet: ALE Table size 512
+[    1.518465] am65-cpsw-nuss 8000000.ethernet: CPTS ver 0x4e8a010d, freq:500000000, add_val:1 pps:0
+[    1.528710] am65-cpsw-nuss 8000000.ethernet: set new flow-id-base 19
+[    1.538688] mmc0: CQHCI version 5.10
+[    1.542772] Failed to get GPIO from Device Tree tft-pwr-disp:-2
+[    1.548721] Failed to get GPIO from Device Tree tft-bl-gpio:-2
+[    1.583447] mmc0: SDHCI controller on fa10000.mmc [fa10000.mmc] using ADMA 64-bit
+[    1.679458] mmc0: Command Queue Engine enabled
+[    1.683983] mmc0: new HS400 MMC card at address 0001
+[    1.690375] mmcblk0: mmc0:0001 G1M15L 29.6 GiB
+[    1.698144]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9
+[    1.704375] mmcblk0boot0: mmc0:0001 G1M15L 31.5 MiB
+[    1.710274] mmcblk0boot1: mmc0:0001 G1M15L 31.5 MiB
+[    1.716001] mmcblk0rpmb: mmc0:0001 G1M15L 4.00 MiB, chardev (240:0)
+[    1.865902] invalid GPIO -2
+[    1.868688] invalid GPIO -2
+[    2.185971] invalid GPIO -2
+[    2.233898] invalid GPIO -2
+[    2.482971] pca953x 1-0022: supply vcc not found, using dummy regulator
+[    2.490479] pca953x 1-0022: using AI
+[    2.494330] pca953x 1-0022: failed writing register
+[    2.499552] pca953x: probe of 1-0022 failed with error -121
+[    2.508894] debugfs: Directory 'pd:182' with parent 'pm_genpd' already present!
+[    2.516406] debugfs: Directory 'pd:244' with parent 'pm_genpd' already present!
+[    2.523794] debugfs: Directory 'pd:186' with parent 'pm_genpd' already present!
+[    2.532289] debugfs: Directory 'pd:182' with parent 'pm_genpd' already present!
+[    2.539622] debugfs: Directory 'pd:182' with parent 'pm_genpd' already present!
+[    2.553808] ALSA device list:
+[    2.556814]   No soundcards found.
+[    2.697608] EXT4-fs (mmcblk0p1): recovery complete
+[    2.702840] EXT4-fs (mmcblk0p1): mounted filesystem with ordered data mode. Quota mode: none.
+[    2.711431] VFS: Mounted root (ext4 filesystem) on device 179:1.
+[    2.717918] devtmpfs: mounted
+[    2.721421] Freeing unused kernel memory: 1984K
+[    2.726043] Run /sbin/init as init process
+[    2.795677] systemd[1]: System time before build time, advancing clock.
+[    2.826142] NET: Registered PF_INET6 protocol family
+[    2.832209] Segment Routing with IPv6
+[    2.835944] In-situ OAM (IOAM) with IPv6
+[    2.856377] systemd[1]: systemd 250.5+ running in system mode (+PAM -AUDIT -SELINUX -APPARMOR +IMA -SMACK +SECCOMP -GCRYPT -GNUTLS -OPENSSL +ACL +BLKID -CURL -ELFUTILS -FIDO2 -IDN2 -IDN -IPTC +KMOD -LIBCRYPTSETUP +LIBFDISK -PCRE2 -PWQUALITY -P11KIT -QRENCODE -BZIP2 -LZ4 -XZ -ZLIB +ZSTD -BPF_FRAMEWORK -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=hybrid)
+[    2.888255] systemd[1]: Detected architecture arm64.
+
+Welcome to Arago 2023.10!
+
+[    2.938878] systemd[1]: Hostname set to <am62pxx-einstein>.
+[    3.029460] systemd-sysv-generator[151]: SysV service '/etc/init.d/thermal-zone-init' lacks a native systemd unit file. Automatically generating a unit file for compatibility. Please update package to include a native systemd unit file, in order to make it more safe and robust.
+[    3.367080] systemd[1]: Configuration file /lib/systemd/system/ti-apps-launcher.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+[    3.394860] systemd[1]: Configuration file /lib/systemd/system/seva-launcher.service is marked executable. Please remove executable permission bits. Proceeding anyway.
+[    3.462811] systemd[1]: /lib/systemd/system/bt-enable.service:9: Standard output type syslog is obsolete, automatically updating to journal. Please update your unit file, and consider removing the setting altogether.
+[    3.519210] systemd[1]: /etc/systemd/system/sync-clocks.service:11: Standard output type syslog is obsolete, automatically updating to journal. Please update your unit file, and consider removing the setting altogether.
+[    3.584646] systemd[1]: Queued start job for default target Graphical Interface.
+[    3.644166] systemd[1]: Created slice Slice /system/getty.
+[  OK  ] Created slice Slice /system/getty.
+[    3.668722] systemd[1]: Created slice Slice /system/modprobe.
+[  OK  ] Created slice Slice /system/modprobe.
+[    3.693247] systemd[1]: Created slice Slice /system/serial-getty.
+[  OK  ] Created slice Slice /system/serial-getty.
+[    3.716992] systemd[1]: Created slice User and Session Slice.
+[  OK  ] Created slice User and Session Slice.
+[    3.738547] systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+[  OK  ] Started Dispatch Password …ts to Console Directory Watch.
+[    3.762464] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+[  OK  ] Started Forward Password R…uests to Wall Directory Watch.
+[    3.786982] systemd[1]: Reached target Path Units.
+[  OK  ] Reached target Path Units.
+[    3.802556] systemd[1]: Reached target Remote File Systems.
+[  OK  ] Reached target Remote File Systems.
+[    3.826230] systemd[1]: Reached target Slice Units.
+[  OK  ] Reached target Slice Units.
+[    3.842179] systemd[1]: Reached target Swaps.
+[  OK  ] Reached target Swaps.
+[    3.925839] systemd[1]: Listening on RPCbind Server Activation Socket.
+[  OK  ] Listening on RPCbind Server Activation Socket.
+[    3.950763] systemd[1]: Reached target RPC Port Mapper.
+[  OK  ] Reached target RPC Port Mapper.
+[    3.991963] systemd[1]: Listening on Process Core Dump Socket.
+[  OK  ] Listening on Process Core Dump Socket.
+[    4.015719] systemd[1]: Listening on initctl Compatibility Named Pipe.
+[  OK  ] Listening on initctl Compatibility Named Pipe.
+[    4.041578] systemd[1]: Listening on Journal Audit Socket.
+[  OK  ] Listening on Journal Audit Socket.
+[    4.064581] systemd[1]: Listening on Journal Socket (/dev/log).
+[  OK  ] Listening on Journal Socket (/dev/log).
+[    4.088691] systemd[1]: Listening on Journal Socket.
+[  OK  ] Listening on Journal Socket.
+[    4.109799] systemd[1]: Listening on Network Service Netlink Socket.
+[  OK  ] Listening on Network Service Netlink Socket.
+[    4.137271] systemd[1]: Listening on udev Control Socket.
+[  OK  ] Listening on udev Control Socket.
+[    4.160198] systemd[1]: Listening on udev Kernel Socket.
+[  OK  ] Listening on udev Kernel Socket.
+[    4.184436] systemd[1]: Listening on User Database Manager Socket.
+[  OK  ] Listening on User Database Manager Socket.
+[    4.250768] systemd[1]: Mounting Huge Pages File System...
+         Mounting Huge Pages File System...
+[    4.277141] systemd[1]: Mounting POSIX Message Queue File System...
+         Mounting POSIX Message Queue File System...
+[    4.309018] systemd[1]: Mounting Kernel Debug File System...
+         Mounting Kernel Debug File System...
+[    4.327245] systemd[1]: Kernel Trace File System was skipped because of a failed condition check (ConditionPathExists=/sys/kernel/tracing).
+[    4.348638] systemd[1]: Mounting Temporary Directory /tmp...
+         Mounting Temporary Directory /tmp...
+[    4.375247] systemd[1]: Starting Create List of Static Device Nodes...
+         Starting Create List of Static Device Nodes...
+[    4.405259] systemd[1]: Starting Load Kernel Module configfs...
+         Starting Load Kernel Module configfs...
+[    4.429298] systemd[1]: Starting Load Kernel Module drm...
+         Starting Load Kernel Module drm...
+[    4.451914] systemd[1]: Starting Load Kernel Module fuse...
+         Starting Load Kernel Module fuse...
+[    4.464104] fuse: init (API version 7.37)
+[    4.477552] systemd[1]: Starting Start psplash boot splash screen...
+         Starting Start psplash boot splash screen...
+[    4.505834] systemd[1]: Starting RPC Bind...
+         Starting RPC Bind...
+[    4.522362] systemd[1]: File System Check on Root Device was skipped because of a failed condition check (ConditionPathIsReadWrite=!/).
+[    4.544519] systemd[1]: Starting Journal Service...
+         Starting Journal Service...
+[    4.569489] systemd[1]: Starting Load Kernel Modules...
+         Starting Load Kernel Modules...
+[    4.586990] cryptodev: loading out-of-tree module taints kernel.
+[    4.594688] cryptodev: driver 1.12 loaded.
+[    4.598515] systemd[1]: Starting Generate network units from Kernel command line...
+         Starting Generate network …ts from Kernel command line...
+[    4.650627] systemd[1]: Starting Remount Root and Kernel File Systems...
+         Starting Remount Root and Kernel File Systems...
+[    4.669083] EXT4-fs (mmcblk0p1): re-mounted. Quota mode: none.
+[    4.680031] systemd[1]: Starting Coldplug All udev Devices...
+         Starting Coldplug All udev Devices...
+[    4.707294] systemd[1]: Started RPC Bind.
+[  OK  ] Started RPC Bind.
+[    4.722605] systemd[1]: Started Journal Service.
+[  OK  ] Started Journal Service.
+[  OK  ] Mounted Huge Pages File System.
+[  OK  ] Mounted POSIX Message Queue File System.
+[  OK  ] Mounted Kernel Debug File System.
+[  OK  ] Mounted Temporary Directory /tmp.
+[  OK  ] Finished Create List of Static Device Nodes.
+[  OK  ] Finished Load Kernel Module configfs.
+[  OK  ] Finished Load Kernel Module drm.
+[  OK  ] Finished Load Kernel Module fuse.
+[FAILED] Failed to start Start psplash boot splash screen.
+See 'systemctl status psplash-start.service' for details.
+[DEPEND] Dependency failed for Star…progress communication helper.
+[  OK  ] Finished Load Kernel Modules.
+[  OK  ] Finished Generate network units from Kernel command line.
+[  OK  ] Finished Remount Root and Kernel File Systems.
+         Mounting FUSE Control File System...
+         Mounting Kernel Configuration File System...
+         Starting Flush Journal to Persistent Storage...
+[    5.126521] systemd-journald[166]: Received client request to flush runtime journal.
+         Starting Apply Kernel Variables...
+         Starting Create Static Device Nodes in /dev...
+[  OK  ] Mounted FUSE Control File System.
+[  OK  ] Mounted Kernel Configuration File System.
+[  OK  ] Finished Flush Journal to Persistent Storage.
+[  OK  ] Finished Apply Kernel Variables.
+[  OK  ] Finished Create Static Device Nodes in /dev.
+[  OK  ] Reached target Preparation for Local File Systems.
+         Mounting /media/ram...
+         Mounting /var/volatile...
+[    5.371704] audit: type=1334 audit(1651167747.572:2): prog-id=5 op=LOAD
+[    5.378449] audit: type=1334 audit(1651167747.580:3): prog-id=6 op=LOAD
+         Starting Rule-based Manage…for Device Events and Files...
+[  OK  ] Finished Coldplug All udev Devices.
+[  OK  ] Mounted /media/ram.
+[  OK  ] Mounted /var/volatile.
+         Starting Load/Save Random Seed...
+[  OK  ] Reached target Local File Systems.
+         Starting Create Volatile Files and Directories...
+[  OK  ] Started Rule-based Manager for Device Events and Files.
+[  OK  ] Finished Create Volatile Files and Directories.
+         Starting Network Time Synchronization...
+         Starting Record System Boot/Shutdown in UTMP...
+[  OK  ] Finished Record System Boot/Shutdown in UTMP.
+[    5.926769] mc: Linux media interface: v0.10
+[  OK  ] Found device /dev/ttyS2.
+[  OK  ] Started Network Time Synchronization.
+[  OK  ] Reached target System Initialization.
+[  OK  ] Started Daily Cleanup of Temporary Directories.
+[  OK  ] Reached target System Time Set.
+[  OK  ] Started Daily rotation of log files.
+[    6.032366] videodev: Linux video capture interface: v2.00
+[  OK  ] Reached target Timer Units.
+[    6.057940] platform 79000000.r5f: R5F core may have been powered on by a different host, programmed state (0) != actual state (1)
+[    6.070225] platform 79000000.r5f: configured R5F for IPC-only mode
+[  OK  ] Listening on Avahi mDNS/DNS-SD Stac[    6.077549] platform 79000000.r5f: assigned reserved memory node mcu-r5fss-dma-memory-region@9b800000
+k Activation Socket.
+[    6.093115] remoteproc remoteproc0: 79000000.r5f is available
+[    6.099907] remoteproc remoteproc0: attaching to 79000000.r5f
+[  OK  ] Listening on D-Bus System Message Bus Socket.
+         Starting Docker Socket for the API...
+[    6.138803] tlv320aic3x 1-001b: supply IOVDD not found, using dummy regulator
+[    6.138943] platform 79000000.r5f: R5F core initialized in IPC-only mode
+[    6.146234] tlv320aic3x 1-001b: supply DVDD not found, using dummy regulator
+[    6.153568] rproc-virtio rproc-virtio.0.auto: assigned reserved memory node mcu-r5fss-dma-memory-region@9b800000
+[    6.161337] tlv320aic3x 1-001b: supply AVDD not found, using dummy regulator
+[    6.182929] virtio_rpmsg_bus virtio0: rpmsg host is online
+[    6.188600] virtio_rpmsg_bus virtio0: creating channel ti.ipc4.ping-pong addr 0xd
+[  OK  ] Listening on dropbear.socket.
+[    6.201749] tlv320aic3x 1-001b: supply DRVDD not found, using dummy regulator
+[    6.202218] rproc-virtio rproc-virtio.0.auto: registered virtio0 (type 7)
+[    6.215971] remoteproc remoteproc0: remote processor 79000000.r5f is now attached
+[    6.223677] virtio_rpmsg_bus virtio0: creating channel rpmsg_chrdev addr 0xe
+[    6.231493] tlv320aic3x 1-001b: Invalid supply voltage(s) AVDD: -22, DVDD: -22
+[    6.239579] platform 78000000.r5f: R5F core may have been powered on by a different host, programmed state (0) != actual state (1)
+[    6.251545] platform 78000000.r5f: configured R5F for IPC-only mode
+[  OK  ] Listening on PC/SC Smart Card Daemo[    6.258157] platform 78000000.r5f: assigned reserved memory node r5f-dma-memory@9c800000
+n Activation Socket.
+[    6.272421] remoteproc remoteproc1: 78000000.r5f is available
+[    6.279913] remoteproc remoteproc1: attaching to 78000000.r5f
+[    6.285860] platform 78000000.r5f: R5F core initialized in IPC-only mode
+[    6.292745] remoteproc remoteproc1: remote processor 78000000.r5f is now attached
+[    6.416923] panel-simple display: supply power not found, using dummy regulator
+[    6.424584] ------------[ cut here ]------------
+[    6.429202] WARNING: CPU: 0 PID: 211 at drivers/gpu/drm/panel/panel-simple.c:616 panel_simple_probe+0x2fc/0x3b0 [panel_simple]
+[    6.440623] Modules linked in: panel_simple(+) pvrsrvkm(O+) rtc_ti_k3(+) k3_j72xx_bandgap(+) dwc3_am62(+) rti_wdt j721e_csi2rx(+) wave5 videobuf2_dma_contig snd_soc_tlv320aic3x_i2c tidss snd_soc_tlv320aic3x videobuf2_memops v4l2_mem2mem videobuf2_v4l2 dummysensor ti_k3_r5_remoteproc tps6598x videobuf2_common v4l2_async virtio_rpmsg_bus typec drm_dma_helper rpmsg_ns videodev sa2ul drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops mc snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma cdns_dphy_rx snd_soc_ti_sdma cryptodev(O) fuse drm drm_panel_orientation_quirks ipv6
+[    6.491921] CPU: 0 PID: 211 Comm: systemd-udevd Tainted: G           O       6.1.80-ti-g2e423244f8c0 #1
+[    6.491936] Hardware name: Visteon AM62P5 Einstein 4.0 (DT)
+[    6.491941] pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    6.491948] pc : panel_simple_probe+0x2fc/0x3b0 [panel_simple]
+[    6.491999] lr : panel_simple_probe+0xdc/0x3b0 [panel_simple]
+[    6.492026] sp : ffff800009c8b860
+[    6.492028] x29: ffff800009c8b8e0 x28: 0000000000000000 x27: ffff800009c8bc80
+[    6.492040] x26: ffff800009c8bc30 x25: ffff800009c8bc80 x24: 000000000000003a
+[    6.492049] x23: ffff8000092d0990 x22: ffff800000ff6db0 x21: ffff000800cd6810
+[    6.492058] x20: ffff000803788c80 x19: 0000000000000007 x18: ffffffffffffffff
+         Starting Weston socket...
+[    6.492067] x17: 2e726f74616c7567 x16: 65723a726f74616c x15: 756765722f6b6e69
+[    6.492076] x14: 0000000000000000 x13: 00302e726f74616c x12: 756765723a726f74
+[    6.492085] x11: 0000000000000000 x10: fffffffff81d66c8 x9 : 0000000000000004
+[    6.492094] x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff666d686c
+[    6.492103] x5 : 8080808000000000 x4 : 0000000000000000 x3 : ffff8000092deea8
+[    6.492111] x2 : 0000000000000000 x1 : 0000000000000046 x0 : 00000000ffffffcc
+[    6.492121] Call trace:
+[    6.492124]  panel_simple_probe+0x2fc/0x3b0 [panel_simple]
+[    6.492153]  panel_simple_platform_probe+0x34/0x4c [panel_simple]
+[    6.492179]  platform_probe+0x68/0xe0
+[    6.492190]  really_probe+0xbc/0x2dc
+[    6.492199]  __driver_probe_device+0x78/0x114
+[    6.492207]  driver_probe_device+0xd8/0x15c
+[    6.492214]  __driver_attach+0x94/0x19c
+[    6.492220]  bus_for_each_dev+0x74/0xd4
+[    6.492228]  driver_attach+0x24/0x30
+[    6.492235]  bus_add_driver+0x154/0x20c
+[    6.492241]  driver_register+0x78/0x130
+[    6.492249]  __platform_driver_register+0x28/0x34
+[    6.492254]  panel_simple_init+0x30/0x1000 [panel_simple]
+[    6.492281]  do_one_initcall+0x54/0x1d0
+[    6.492289]  do_init_module+0x48/0x1d0
+[    6.492298]  load_module+0x18f4/0x1c80
+[    6.492305]  __do_sys_finit_module+0xac/0x104
+[    6.492312]  __arm64_sys_finit_module+0x20/0x30
+[    6.492320]  invoke_syscall+0x48/0x114
+[    6.492327]  el0_svc_common.constprop.0+0xd4/0xfc
+[    6.492334]  do_el0_svc+0x20/0x30
+[    6.492340]  el0_svc+0x28/0xa0
+[    6.492349]  el0t_64_sync_handler+0xbc/0x140
+[    6.492356]  el0t_64_sync+0x18c/0x190
+[    6.492362] ---[ end trace 0000000000000000 ]---
+[    6.494820] ------------[ cut here ]------------
+[    6.497438] rtc-ti-k3 2b1f0000.rtc: registered as rtc0
+[    6.497477] rtc-ti-k3 2b1f0000.rtc: setting system clock to 1970-01-01T00:00:13 UTC (13)
+[    6.551611] systemd-journald[166]: Time jumped backwards, rotating.
+[    6.553926] random: crng init done
+[    6.557861] WARNING: CPU: 1 PID: 211 at drivers/gpu/drm/panel/panel-simple.c:621 panel_simple_probe+0x30c/0x3b0 [panel_simple]
+[    6.557929] Modules linked in: panel_simple(+) pvrsrvkm(O+) rtc_ti_k3 k3_j72xx_bandgap dwc3_am62 rti_wdt j721e_csi2rx(+) wave5 videobuf2_dma_contig snd_soc_tlv320aic3x_i2c tidss snd_soc_tlv320aic3x videobuf2_memops v4l2_mem2mem videobuf2_v4l2 dummysensor ti_k3_r5_remoteproc tps6598x videobuf2_common v4l2_async virtio_rpmsg_bus typec drm_dma_helper rpmsg_ns videodev sa2ul drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops mc snd_soc_davinci_mcasp snd_soc_ti_udma snd_soc_ti_edma cdns_dphy_rx snd_soc_ti_sdma cryptodev(O) fuse drm drm_panel_orientation_quirks ipv6
+[    6.558040] CPU: 1 PID: 211 Comm: systemd-udevd Tainted: G        W  O       6.1.80-ti-g2e423244f8c0 #1
+[    6.558048] Hardware name: Visteon AM62P5 Einstein 4.0 (DT)
+[    6.558052] pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    6.558059] pc : panel_simple_probe+0x30c/0x3b0 [panel_simple]
+[    6.827647] lr : panel_simple_probe+0xdc/0x3b0 [panel_simple]
+[    6.833420] sp : ffff800009c8b860
+[    6.836726] x29: ffff800009c8b8e0 x28: 0000000000000000 x27: ffff800009c8bc80
+[    6.843858] x26: ffff800009c8bc30 x25: ffff800009c8bc80 x24: 000000000000003a
+[    6.850984] x23: ffff8000092d0990 x22: ffff800000ff6db0 x21: ffff000800cd6810
+[    6.858112] x20: ffff000803788c80 x19: 0000000000000007 x18: ffffffffffffffff
+[    6.865239] x17: 2e726f74616c7567 x16: 65723a726f74616c x15: 756765722f6b6e69
+[    6.872366] x14: 0000000000000000 x13: 00302e726f74616c x12: 756765723a726f74
+[    6.879495] x11: 0000000000000000 x10: fffffffff81d66c8 x9 : 0000000000000004
+[    6.886623] x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff666d686c
+[    6.893751] x5 : 8080808000000000 x4 : 0000000000000000 x3 : ffff8000092deea8
+[    6.900878] x2 : 00000000ffffeff0 x1 : 00000000fffffffa x0 : 000000000000100a
+[    6.908008] Call trace:
+[    6.910447]  panel_simple_probe+0x30c/0x3b0 [panel_simple]
+[    6.915958]  panel_simple_platform_probe+0x34/0x4c [panel_simple]
+[    6.922071]  platform_probe+0x68/0xe0
+[    6.925731]  really_probe+0xbc/0x2dc
+[    6.929302]  __driver_probe_device+0x78/0x114
+[    6.933652]  driver_probe_device+0xd8/0x15c
+[    6.937829]  __driver_attach+0x94/0x19c
+[    6.941659]  bus_for_each_dev+0x74/0xd4
+[    6.945490]  driver_attach+0x24/0x30
+[    6.949060]  bus_add_driver+0x154/0x20c
+[    6.952890]  driver_register+0x78/0x130
+[    6.956721]  __platform_driver_register+0x28/0x34
+[    6.961415]  panel_simple_init+0x30/0x1000 [panel_simple]
+[    6.966843]  do_one_initcall+0x54/0x1d0
+[    6.970677]  do_init_module+0x48/0x1d0
+[    6.974423]  load_module+0x18f4/0x1c80
+[    6.978167]  __do_sys_finit_module+0xac/0x104
+[    6.982517]  __arm64_sys_finit_module+0x20/0x30
+[    6.987041]  invoke_syscall+0x48/0x114
+[    6.990786]  el0_svc_common.constprop.0+0xd4/0xfc
+[    6.995482]  do_el0_svc+0x20/0x30
+[    6.998792]  el0_svc+0x28/0xa0
+[    7.001843]  el0t_64_sync_handler+0xbc/0x140
+[    7.006107]  el0t_64_sync+0x18c/0x190
+[    7.009763] ---[ end trace 0000000000000000 ]---
+[    7.017808] PVR_K:  217: Device: fd80000.gpu
+[    7.032623] PVR_K:  217: Read BVNC 36.53.104.796 from HW device registers
+[    7.041325] PVR_K:  217: RGX Device registered BVNC 36.53.104.796 with 1 core in the system
+         Starting D-Bus System Message Bus...
+[    7.057747] [drm] Initialized tidss 1.0.0 20180215 for 30200000.dss on minor 0
+[    7.073269] Console: switching to colour frame buffer device 240x45
+[    7.093471] [drm] Initialized pvr 23.3.6512818 20170530 for fd80000.gpu on minor 1
+[    7.118051] tidss 30200000.dss: [drm] fb0: tidssdrmfb frame buffer device
+         Starting Reboot and dump vmcore via kexec...
+[  OK  ] Finished Load/Save Random Seed.
+[  OK  ] Listening on Docker Socket for the API.
+[    7.199273] cdns-csi2rx 30101000.csi-bridge: Probed CSI2RX with 2/4 lanes, 4 streams, external D-PHY
+[  OK  ] Listening on Weston socket.
+[  OK  ] Finished Reboot and dump vmcore via kexec.
+[    7.244255] xhci-hcd xhci-hcd.2.auto: xHCI Host Controller
+[    7.267446] xhci-hcd xhci-hcd.2.auto: new USB bus registered, assigned bus number 1
+[    7.276193] xhci-hcd xhci-hcd.2.auto: USB3 root hub has no ports
+[  OK  ] Started D-Bus System Message Bus.
+[    7.290446] xhci-hcd xhci-hcd.2.auto: hcc params 0x0258fe6d hci version 0x110 quirks 0x0000008000010010
+[    7.302718] xhci-hcd xhci-hcd.2.auto: irq 426, io mem 0x31100000
+[    7.325122] hub 1-0:1.0: USB hub found
+[    7.330581] hub 1-0:1.0: 1 port detected
+[  OK  ] Reached target Socket Units.
+[    7.425789] tlv320aic3x 1-001b: Unable to sync registers 0x8-0x9. -121
+[  OK  ] Reached target Basic System.
+[    7.441954] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+[    7.456118] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+[  OK  ] Reached target Hardware activated USB gadget.
+[  OK  ] Started Job spooling tools.
+[  OK  ] Started Periodic Command Scheduler tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[0m.
+[    7.539315] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000051] -121
+[    7.552016] tlv320aic3x 1-001b: ASoC: Left Line Mixer DAPM update failed: -121
+[    7.560839] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000056] -121
+         Starting DEMO...
+[    7.579138] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+         Starting Print notice about GPLv3 packages[    7.606455] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000050] -121
+...
+         Starting IPv6 Packet Filtering Framework...
+         Starting IPv4 Packet Filtering Framework...
+[  OK  ] Started irqbalance daemon.
+[    7.649512] tlv320aic3x 1-001b: ASoC: Left Line Mixer DAPM update failed: -121
+         Starting Telephony service...
+[    7.658839] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+         Starting PulseAudio Sound System...
+[    7.676208] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000005d] -121
+         Starting Expand the rootfs…ll size of the boot device....
+[    7.699794] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    7.714556] tlv320aic3x 1-001b: ASoC: Left HP Mixer DAPM update failed: -121
+
+[  OK  ] Started strongSwan IPsec I…IKEv2 [    7.730148] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000033] -121
+daemon using ipsec.conf.
+[    7.748401] audit: type=1334 audit(14.748:4): prog-id=7 op=LOAD
+[    7.754496] audit: type=1334 audit(14.756:5): prog-id=8 op=LOAD
+         Starting User Login Management...
+[    7.764641] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[  OK  ] Started TEE Supplicant.
+[    7.786015] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+         Starting Telnet Server...
+[    7.807536] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[  OK  ] Started ti-apps-launcher service.
+[    7.831636] tlv320aic3x 1-001b: ASoC: Left HP Mixer DAPM update failed: -121
+[  OK  ] Started DEMO.
+[  OK  ] Finished IPv6 Packet Filtering Framework.
+[  OK  ] Finished IPv4 Packet Filtering Framework.
+[  OK  ] Finished Telnet Server.
+[  OK  ] Reached target Preparation for Network.
+[    7.919840] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+         Starting Network Configuration...
+[  OK  ] Started Telephony service.
+[    7.962830] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000041] -121
+[    7.983630] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000048] -121
+[    8.007802] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[    8.019960] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    8.039412] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    8.055293] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    8.117281] Bluetooth: Core ver 2.22
+[    8.121118] NET: Registered PF_BLUETOOTH protocol family
+[    8.128767] Bluetooth: HCI device and connection manager initialized
+[    8.151945] Bluetooth: HCI socket layer initialized
+[    8.156917] Bluetooth: L2CAP socket layer initialized
+[  OK  ] Finished Expand the rootfs…full size of the boot device..
+[    8.181972] Bluetooth: SCO socket layer initialized
+[  OK  ] Listening on Load/Save RF …itch Status /dev/rfkill Watch.
+[    8.256263] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[    8.272198] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000065] -121
+
+[    8.294101] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[    8.312691] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000007] -121
+[    8.326161] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000002] -121
+[    8.346396] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    8.362933] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[    8.390090] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    8.403327] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000b] -121
+[    8.420473] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    8.433983] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000050] -121
+[    8.436577] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000004] -121
+[    8.449770] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[    8.459880] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+[    8.475083] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000034] -121
+[    8.497535] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+[    8.512587] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    8.526397] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000a] -121
+[    8.527121] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    8.528183] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    8.529834] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    8.530329] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    8.531181] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000051] -121
+[    8.532025] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000052] -121
+[    8.532479] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    8.532958] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[    8.533990] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000056] -121
+[    8.534603] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000056] -121
+[    8.535228] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000033] -121
+[    8.535584] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000033] -121
+[    8.535944] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[    8.536270] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[    8.536731] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[    8.537167] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[    8.537595] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    8.537911] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    8.538222] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    8.538829] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[    8.539137] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[    8.539364] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    8.539609] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[    8.539838] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[    8.540170] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[    8.540472] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[    8.540767] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[    8.541114] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    8.541361] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    8.541992] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[    8.542291] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[    8.542602] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    8.542984] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[    8.543306] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    8.543544] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    8.601993] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    8.613246] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[    8.634169] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[    8.647851] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[    8.658570] cfg80211: Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+[    8.671046] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[  OK  ] Finished Save/Restore Sound Card St[    9.038944] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+ate.
+[    9.056315] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[    9.058975] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[  OK  ] Reached target Sound Card.
+[    9.082343] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[    9.083592] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[    9.083778] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[    9.084646] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[    9.085825] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[    9.086292] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    9.086511] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    9.086845] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[    9.087482] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    9.087768] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    9.087975] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[    9.088246] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[    9.088556] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[    9.088729] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[    9.088994] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[    9.089259] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[    9.089576] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[    9.089934] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    9.090134] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    9.090392] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[    9.090569] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[    9.090831] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[    9.091008] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[    9.091200] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[    9.091381] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[    9.091724] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[    9.390373] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+
+[    9.409980] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[    9.411999] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[    9.433689] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[    9.445971] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+         Starting Network Name Resolution...
+[    9.461841] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[    9.476697] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+
+[    9.493760] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[    9.506503] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[    9.519820] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[    9.534862] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[    9.548138] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[    9.562559] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[    9.575060] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[    9.587449] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    9.599390] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[    9.612084] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    9.624711] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[    9.637548] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    9.649618] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    9.662013] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    9.674259] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[    9.686801] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    9.699164] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    9.711541] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    9.723993] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[    9.737548] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    9.749367] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    9.759676] am65-cpsw-nuss 8000000.ethernet eth0: PHY [8000f00.mdio:00] driver [TI DP83TG721CS1.0] (irq=POLL)
+[    9.761437] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    9.770821] am65-cpsw-nuss 8000000.ethernet eth0: configuring for phy/rgmii-rxid link mode
+[    9.782591] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[    9.794887] am65-cpsw-nuss 8000000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+[    9.803897] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    9.810643] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+[    9.822439] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[    9.841715] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    9.853859] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[    9.867568] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000013] -121
+[    9.879684] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000016] -121
+[    9.897036] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[    9.908961] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[    9.921249] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000065] -121
+[    9.933639] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[    9.945918] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000007] -121
+[    9.957810] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000002] -121
+[  OK  ] Started Network Name Resolution[    9.970614] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+.
+[  OK  ] Reached target Network.
+[    9.987264] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000b] -121
+[  OK  ] Reached target Host and Network Nam[   10.004647] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000004] -121
+e Lookups.
+[   10.021508] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+         Starting Avahi mDNS/DNS-SD Stack...
+[   10.034627] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+         Starting Enable and configure wl18xx bluetooth[   10.051527] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000a] -121
+ stack...
+         Starting containerd container runtime...
+[  OK  ] Started Netperf Benchmark Server.
+[  OK  ] Started NFS status monitor for NFSv[   10.088049] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000025] -121
+2/3 locking..
+         Starting Simple Network Ma…ent Protocol (SNM[   10.108950] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+P) Daemon....
+         Starting Permit User Sessions...
+[   10.131594] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[  OK  ] Finished Enable and configure wl18xx bluetooth stack.
+[  OK  ] Finished Permit User Sessions.
+[  OK  ] Started Avahi mDNS/DNS-SD Stack.
+[  OK  ] Started Getty on tty1.
+[   10.172565] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[   10.185322] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+
+[  OK  ] Reached target Login Prompts.
+[   10.202137] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000065] -121
+         Starting Synchronize System and HW clocks.[   10.219672] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+..
+[   10.236840] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000007] -121
+[   10.236998] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000002] -121
+[   10.237263] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[   10.272408] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000b] -121
+[   10.273379] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000004] -121
+         Starting Weston, a Wayland…ositor, as a syst[   10.296469] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+em service...
+[   10.314920] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+[   10.327140] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000a] -121
+[   10.339967] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   10.360330] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000016] -121
+[   10.375571] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   10.387287] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   10.399038] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   10.410871] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   10.423030] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   10.435083] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000016] -121
+[   10.454272] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[   10.467009] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[   10.479047] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000065] -121
+[   10.491489] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[   10.494118] audit: type=1334 audit(17.496:6): prog-id=9 op=LOAD
+[   10.506625] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000007] -121
+[   10.521053] audit: type=1334 audit(17.520:7): prog-id=10 op=LOAD
+[   10.522620] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000002] -121
+[   10.539414] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[   10.552683] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000b] -121
+         Starting User Database Manager...
+[   10.569123] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000004] -121
+[   10.584832] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+[   10.598344] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+[   10.613813] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000a] -121
+[  OK  ] Created slice Slice /system/systemd-fsck.
+[   10.647047] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   10.675186] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   10.703128] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   10.726272] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   10.754023] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   10.768699] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   10.789426] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[   10.807008] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[   10.820473] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[   10.832349] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[   10.844256] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[  OK  ] Started Simple Network Man…ement [   10.859089] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+Protocol (SNMP) Daemon..
+[   10.876775] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[   10.889336] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[   10.914855] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[  OK  ] Found device /dev/mmcblk0p7.
+[   10.926644] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[   10.946572] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[   10.958848] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[   10.971316] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[   10.988611] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+         Starting File System Check on /dev/mmcblk0p7...
+[  OK  ] Started User Database Manager.
+[   11.019689] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   11.032590] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   11.032825] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   11.033101] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[   11.044897] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[   11.046616] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[  OK  ] Found device /dev/mmcblk0p2.[   11.093721] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+
+[   11.109634] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[  OK  ] Finished Synchronize System and HW [   11.121576] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+clocks.
+[   11.139188] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   11.151476] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   11.163348] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[   11.175352] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[   11.187164] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+         Starting File System Check on /dev/mmcblk0p2...
+[  OK  ] Finished File System Check on /dev/[   11.218983] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+mmcblk0p7.
+[  OK  ] Created slice User Slice of UID 100[   11.242983] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+0.
+[   11.256914] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[   11.269492] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+         Mounting /run/media/update-cache-mmcblk0p7...
+         Starting User Runtime Directory /run/user/1000...
+[   11.295694] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[   11.307553] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[   11.325737] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[  OK  ] Finished User Runtime Directory /ru[   11.337922] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+n/user/1000.
+[   11.355017] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[  OK  ] Finished File System Check on /dev/[   11.361796] EXT4-fs (mmcblk0p7): mounted filesystem with ordered data mode. Quota mode: none.
+mmcblk0p2.
+[   11.381919] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[   11.394834] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[   11.407737] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+         Mounting /run/media/system-mmcblk0p2...[   11.422507] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+
+         Starting User Manager for UID 1000...
+[   11.439971] audit: type=1006 audit(18.440:8): pid=870 uid=0 old-auid=4294967295 auid=1000 tty=(none) old-ses=4294967295 ses=1 res=1
+[   11.445125] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   11.454448] audit: type=1300 audit(18.440:8): arch=c00000b7 syscall=64 success=yes exit=4 a0=8 a1=fffff984aa28 a2=4 a3=ffffac93a020 items=0 ppid=1 pid=870 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=1 comm="(systemd)" exe="/lib/systemd/systemd" key=(null)
+[   11.466162] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[   11.491553] audit: type=1327 audit(18.440:8): proctitle="(systemd)"
+[   11.497394] EXT4-fs (mmcblk0p2): mounted filesystem with ordered data mode. Quota mode: none.
+[   11.503420] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000025] -121
+[  OK  ] Mounted /run/media/update-cache-mmc[   11.530395] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+blk0p7.
+[   11.547447] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[  OK  ] Started containerd container runtim[   11.559827] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+e.
+[  OK  ] Mounted /run/media/system-m[   11.577725] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+mcblk0p2.
+[   11.594096] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[   11.606510] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   11.618412] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[   11.630504] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[   11.642352] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[   11.654200] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[   11.665991] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+[   11.677984] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[   11.689778] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[   11.701500] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[   11.713276] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+[   11.725223] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000026] -121
+[   11.737157] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[   11.749024] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[   11.760797] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[   11.772581] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+[   11.784539] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[   11.796365] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[   11.808222] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+[   11.820085] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+[   11.855140] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[   11.866984] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000009] -121
+[   11.878988] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000065] -121
+[   11.890809] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[   11.902807] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000007] -121
+[   11.914603] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000002] -121
+[   11.926488] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000003] -121
+[   11.938472] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000b] -121
+[   11.950290] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000004] -121
+[   11.962106] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000005] -121
+[   11.973968] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x00000006] -121
+[   11.986972] tlv320aic3x 1-001b: ASoC: error at soc_component_write_no_lock on tlv320aic3x.1-001b for register: [0x0000000a] -121
+[   11.998840] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   12.010839] tlv320aic3x 1-001b: ASoC: error at snd_soc_component_update_bits on tlv320aic3x.1-001b for register: [0x00000016] -121
+[   12.024556] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002b] -121
+[   12.036295] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002c] -121
+[   12.048116] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[   12.059906] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[   12.071688] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[   12.084125] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[   12.095871] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[   12.107647] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[   12.119393] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[   12.132160] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[   12.144886] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[   12.156901] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000056] -121
+[   12.168734] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000005d] -121
+[  OK  ] Started User Manager for UID 1000   12.180571] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+0m.
+[   12.197685] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+[  OK  ] Started Session c1 of User weston   12.209667] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000049] -121
+0m.
+[   12.212497] audit: type=1006 audit(19.212:9): pid=791 uid=0 old-auid=4294967295 auid=1000 tty=tty7 old-ses=4294967295 ses=2 res=1
+[   12.226681] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   12.238858] audit: type=1300 audit(19.212:9): arch=c00000b7 syscall=64 success=yes exit=4 a0=8 a1=fffff984aa28 a2=4 a3=ffffac93a020 items=0 ppid=1 pid=791 auid=1000 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=tty7 ses=2 comm="(weston)" exe="/lib/systemd/systemd" key=(null)
+[   12.250145] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   12.275524] audit: type=1327 audit(19.212:9): proctitle="(weston)"
+[   12.287236] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000004f] -121
+[   12.305970] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[   12.321618] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[   12.333371] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000000c] -121
+[   12.345250] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[   12.357082] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[   12.369087] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+[   12.380930] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   12.392677] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   12.404475] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[   12.416215] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[   12.417956] PVR_K:  791: RGX Firmware image 'rgx.fw.36.53.104.796' loaded
+[   12.428040] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[   12.438702] PVR_K:  791: Shader binary image 'rgx.sh.36.53.104.796' loaded
+[   12.446226] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[   12.464713] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000033] -121
+[   12.476505] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000041] -121
+[   12.488385] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[   12.500965] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[   12.512853] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[   12.524610] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[   12.536687] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[   12.548507] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[   12.560241] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003a] -121
+[   12.571980] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000048] -121
+[   12.585320] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002f] -121
+[  OK  ] Started Weston, a Wayland …mposit[   12.597258] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002d] -121
+or, as a system service.
+[   12.614940] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000002e] -121
+[   12.628937] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000034] -121
+[   12.640952] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000025] -121
+[   12.652892] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000052] -121
+[   12.664868] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000050] -121
+[   12.676982] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000051] -121
+[   12.688918] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   12.702621] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[   12.714465] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000013] -121
+[   12.726368] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000014] -121
+[   12.740372] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+
+***************************************************************[   12.755794] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+
+NOTICE: This file system contains the following GPL-3.0 packag[   12.772513] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+es:
+        adwaita-icon-theme-symbolic
+        autoconf
+        bash-dev
+        bash
+[   12.789534] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x0000003b] -121
+        bc
+        binutils
+        cifs-utils
+        coreutils-stdbuf
+        coreutils
+        cpi[   12.806655] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+o
+        cpp-symlinks
+        cpp
+        dosfstools
+        elfutils
+        g++-symlinks
+        [   12.823552] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+g++
+        gawk
+        gcc-symlinks
+        gcc
+        gdb
+        gdbserver
+        gettext
+        gl[   12.840481] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+mark2
+        gnu-config
+        grub-common
+        grub-editenv
+        grub-efi
+        gzi[   12.857442] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000042] -121
+p
+        hidapi
+        less
+        libasm1
+        libatomic-dev
+        libatomic1
+        libbf[   12.874800] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000026] -121
+d
+        libdebuginfod1
+        libdw1
+        libeigen-dev
+        libelf1
+        libgcc-s-[   12.891733] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+dev
+        libgcc1
+        libgdbm-compat4
+        libgdbm-dev
+        libgdbm6
+        libge[   12.908610] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+ttextlib
+        libgettextsrc
+        libgmp10
+        libidn2-0
+        libmpc3
+        libm[   12.925450] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+pfr6
+        libopcodes
+        libqt5charts-examples
+        libqt5charts-plugins[   12.942459] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000057] -121
+
+        libqt5charts-qmlplugins
+        libqt5charts5
+        libqt5sensors-plugi[   12.959800] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+ns
+        libqt5sensors-qmlplugins
+        libqt5sensors5
+        libqt5serialpor[   12.976666] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+t-examples
+        libqt5serialport-plugins
+        libqt5serialport-qmlplug[   12.993609] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000016] -121
+ins
+        libqt5serialport5
+        libqt5svg-examples
+        libqt5svg-plugins[   13.010554] tlv320aic3x 1-001b: ASoC: error at soc_component_read_no_lock on tlv320aic3x.1-001b for register: [0x00000017] -121
+
+        libqt5svg-qmlplugins
+        libqt5svg5
+        libqt5virtualkeyboard-plugins
+        libqt5virtualkeyboard-qmlplugins
+        libqt5virtualkeyboard5
+        libqt5webchannel-plugins
+        libqt5webchannel-qmlplugins
+        libqt5webchannel5
+        libreadline-dev
+        libreadline8
+        libstdc++-dev
+        libstdc++6
+        libunistring2
+        m4-dev
+        m4
+        make
+        nettle
+        parted
+        piglit
+        qt3d-plugins
+        qt3d-qmlplugins
+        qt3d
+        qtbase-examples
+        qtbase-plugins
+        qtbase-qmlplugins
+        qtbase
+        qtconnectivity-plugins
+        qtconnectivity-qmlplugins
+        qtconnectivity
+        qtdeclarative-plugins
+        qtdeclarative-qmlplugins
+        qtdeclarative-tools
+        qtdeclarative
+        qtgraphicaleffects-qmlplugins
+        qtlocation-examples
+        qtlocation-plugins
+        qtlocation-qmlplugins
+        qtlocation
+        qtmultimedia-examples
+        qtmultimedia-plugins
+        qtmultimedia-qmlplugins
+        qtmultimedia
+        qtquick3d-plugins
+        qtquick3d-qmlplugins
+        qtquick3d
+        qtquics-qmlplugins.control
+        qtquics2-plugins.control
+        qtquics2-qmlplugins.control
+        qtquics2.control
+        qtscript-examples
+        qtscript-plugins
+        qtscript-qmlplugins
+        qtscript
+        qtwayland-examples
+        qtwayland-plugins
+        qtwayland-qmlplugins
+        qtwayland
+        tar
+        which
+
+If you do not wish to distribute GPL-3.0 components please remove
+the above packages prior to distribution.  This can be done using
+the opkg remove command.  i.e.:
+    opkg remove <package>
+Where <package> is the name printed in the list above
+
+NOTE: If the package is a dependency of another package you
+      will be notified of the dependent packages.  You should
+      use the --force-removal-of-dependent-packages option to
+      also remove the dependent packages as well
+***************************************************************
+***************************************************************
+[  OK  ] Started PulseAudio Sound System.
+[  OK  ] Finished Print notice about GPLv3 packages.
+[  OK  ] Reached target Multi-User System.
+[  OK  ] Reached target Graphical Interface.
+         Starting Record Runlevel Change in UTMP...
+[  OK  ] Finished Record Runlevel Change in UTMP.
+[   13.819840] sh (1271): drop_caches: 1
+
+ _____                    _____           _         _
+|  _  |___ ___ ___ ___   |  _  |___ ___  |_|___ ___| |_
+|     |  _| .'| . | . |  |   __|  _| . | | | -_|  _|  _|
+|__|__|_| |__,|_  |___|  |__|  |_| |___|_| |___|___|_|
+              |___|                    |___|
+
+Arago Project am62pxx-einstein -
+
+Arago 2023.10 am62pxx-einstein -
+
+am62pxx-einstein login: [   17.546536] platform regulator-2: deferred probe pending
+[   18.043382] tlv320ai

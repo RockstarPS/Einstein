@@ -1,0 +1,49 @@
+# /system/usr/bin/OSAL_FT/osal_process/osal_process osal_process_test &
+[2] 3039266
+[1] - Done                 /system/usr/bin/OSAL_FT/osal_process/osal_proce
+Test Program for DKOsalProcess...!
+testing getProcessId() API :
+/system/usr/bin/OSAL_FT/osal_process/osal_process process_Id = 3039266
+
+testing getenv() API - reading  OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 = empty(NULL)
+
+# pidin | grep osal_process
+ 3039266   1 ocess/osal_process  10r NANOSLEEP
+
+testing setenv() API - updating OSAL_PROCESS_ENV1:
+OSAL_PROCESS_ENV1 updated..!
+
+reading  OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 = /:/bin:/tmp
+
+over-writing  OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 updated..!
+
+reading  OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 = /:/system:/lib
+
+testing unsetenv() API - deleting OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 deleted..!
+
+reading  OSAL_PROCESS_ENV1 :
+OSAL_PROCESS_ENV1 = empty(NULL)
+
+testing createProcess() API - creating a process < osal_testing >
+pid return from osal_testing = 3043376
+ << starting osal_testing
+ << pid printing from osal_testing = 3043376
+ << OSAL_PROCESS_ENV1 = empty(NULL)
+ << argc printing from osal_testing = 2
+ << argv[] printing from osal_testing = osal_testing osal_process_test
+
+OSAL_PROCESS_ENV1 updating:
+OSAL_PROCESS_ENV1 updated..!
+
+testing createProcess() API - creating process < osal_testing >
+pid return from osal_testing = 3063858
+ << starting osal_testing
+ << pid printing from osal_testing = 3063858
+ << OSAL_PROCESS_ENV1 = /:/bin:/tmp
+ << argc printing from osal_testing = 2
+ << argv[] printing from osal_testing = osal_testing osal_process_test

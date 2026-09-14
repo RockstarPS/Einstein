@@ -1,0 +1,20 @@
+obj/am62px/ti-arm-clang/release/wkup-r5f/sdl_sbl//sdl_esm.obj: \
+  ../esm/soc/am62px/sdl_esm.c \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/sdl_esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/sdl_esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/soc/sdl_esm_soc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/soc/am62px/sdl_esm_soc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/am62px/sdlr_intr_wkup_esm0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/am62px/sdlr_intr_esm0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/am62px/sdlr_soc_baseaddress.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/sdl_ip_esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/sdlr_esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/soc_config.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/am62px/soc_config.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/v0/v0_0/sdlr_esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/v0/esm.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/esm/sdl_esm_priv.h \
+  ../esm/soc/am62px/sdl_esm_soc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/hw_types.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/dpl/sdl_dpl.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/sdl/include/sdl_types.h

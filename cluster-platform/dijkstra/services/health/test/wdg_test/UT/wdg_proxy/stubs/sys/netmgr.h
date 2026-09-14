@@ -1,0 +1,2 @@
+#define _POSIX_PATH_MAX 256
+#define	ND_LOCAL_NODE		0

@@ -1,0 +1,1374 @@
+/*****************************************************************************
+ *                                                                            *
+ *              CONFIDENTIAL VISTEON CORPORATION                              *
+ *                                                                            *
+ * This is an unpublished work of authorship, which contains trade            *
+ * secrets, created in 2018. Visteon Corporation owns all rights to           *
+ * this work and intends to maintain it in confidence to preserve             *
+ * its trade secret status. Visteon Corporation reserves the right,           *
+ * under the copyright laws of the United States or those of any              *
+ * other country that may have jurisdiction, to protect this work             *
+ * as an unpublished work, in the event of an inadvertent or                  *
+ * deliberate unauthorized publication. Visteon Corporation also              *
+ * reserves its rights under all copyright laws to protect this               *
+ * work as a published work, when appropriate. Those having access            *
+ * to this work may not copy it, use it, modify it or disclose the            *
+ * information contained in it without the written authorization              *
+ * of Visteon Corporation.                                                    *
+ *                                                                            *
+ ******************************************************************************/
+/*!***************************************************************************
+ * @ingroup Input-Output Hardware Abstraction
+ * @file IoHwAb_Adc_Cfg.c
+ * @brief Configuration definitions for adc inputs
+ * ****************************************************************************/
+/*****************************************************************************
+ *  Include Files                                                             *
+ ******************************************************************************/
+#include "IoHwAb_Adc_Cfg.h"
+#include "Rte_IoHwAb.h"
+#include "IoHwAb_Adc.h"
+
+  #if (IOHWAB_ADC_ENABLE == STD_ON)
+  /*****************************************************************************
+  *  Configuration Definitions                                                 *                                                                                       *
+  ******************************************************************************/
+  #define IoHwAb_START_SEC_CONST_UNSPECIFIED
+  #include <IoHwAb_MemMap.h>
+
+  /**
+  * @brief Filters and their array index used for Analog signals
+  */
+  const uint8 IoHwAb_AdcFilterIndex_MAI_P_VBATT_MON[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_OIL_LEVEL_SENSOR[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    1u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_FUEL_LEVEL[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_0[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_1[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+ const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_2[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_3[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_4[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_5[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+ const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_6[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+  const uint8 IoHwAb_AdcFilterIndex_MAI_MUX_7[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+ const uint8 IoHwAb_AdcFilterIndex_MAI_STRG_WHEEL_SW1[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+ const uint8 IoHwAb_AdcFilterIndex_MAI_STRG_WHEEL_SW2[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    1u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    1u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+   const uint8 IoHwAb_AdcFilterIndex_MAI_BRK_FL_LVL[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    2u,  /* IOHWAB_ENCODED_ADC   */
+    0u,  /* IOHWAB_RESOLUTION_ADC       */
+    2u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+    const uint8 IoHwAb_AdcFilterIndex_MAI_DIMM_STATUS_DIA[IOHWAB_MAX_FILTER_INDEX] =
+  {
+    0u,  /* Reserved*/
+    0u,  /* IOHWAB_ENCODED_ADC   */
+    2u,  /* IOHWAB_RESOLUTION_ADC       */
+    0u,  /* IOHWAB_DEBOUNCE_ADC  */
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u,  /* Reserved*/
+    0u   /* Reserved*/
+  };
+
+const IoHwAb_AdcNumOfGroupType IoHwAb_AdcNumOfGroup[IOHWAB_NUM_ADC_GROUP] = \
+{
+    {AdcConf_AdcGroupId_AdcGroup_IOHWAB,0,3,IOHWAB_GROUP_NON_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,3,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,6,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,9,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,12,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,15,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,18,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,21,3,IOHWAB_GROUP_MUX},
+    {AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,24,3,IOHWAB_GROUP_MUX}
+};
+
+  /**
+  * @brief Definition of configuration parameters for Analog inputs
+  */
+  const IoHwAb_AdcCfgType IoHwAb_AdcCfg[IOHWAB_NUM_ADC_INPUT] =
+  {
+      {
+          {
+            {
+          /* MAI_P_VBATT_MON*/
+          0uL,                                               /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_P_VBATT_MON,      /* Single Channel Group ID*/
+		  AdcConf_AdcGroupId_AdcGroup_IOHWAB,               /* Multi Channel Group ID*/
+          0u,                                              /* Adc Index for Multi Channel*/
+          0u,                                             /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */	
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          FALSE,                                        /* Is This Mux Channel? */
+          0u,                                          /* Mux Channel Id*/
+          0u                                          /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_P_VBATT_MON[0],   /* Adc filter id*/
+      IOHWAB_RESOLUTION_ADC,                                /* Adc filter type*/
+      eIO_ADC_MAI_P_VBATT_MON,                          /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_OIL_LEVEL_SENSOR*/
+          0uL,                                                    /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_OIL_LEVEL_SENSOR,      /* Single Channel Group ID*/
+		  AdcConf_AdcGroupId_AdcGroup_IOHWAB,                    /*Multi Channel Group ID*/
+          1u,                                                   /* Adc Index for Multi Channel*/
+          0u,                                                  /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          FALSE,                                              /* Is This Mux Channel? */
+          0u,                                                /* Mux Channel Id*/
+          0u                                                /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_OIL_LEVEL_SENSOR[0],   /* Adc filter id*/
+      IOHWAB_RESOLUTION_ADC,                                      /* Adc filter type*/
+      eIO_ADC_MAI_OIL_LEVEL_SENSOR,                           /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_FUEL_LEVEL*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_FUEL_LEVEL,      /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_IOHWAB,               /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          FALSE, /* Is This Mux Channel? */
+          0u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_FUEL_LEVEL[0],  /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,                               /* Adc filter type*/
+      eIO_ADC_MAI_FUEL_LEVEL,                          /* Adc software signal id*/
+      },
+/* MAI_MUX_0*/
+      {
+          {
+            {
+          /* MAI_DIMM_STATUS_DIA*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          0u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_DIMM_STATUS_DIA[0],               /* Adc filter id*/
+      IOHWAB_RESOLUTION_ADC,           /* Adc filter type*/
+      eIO_ADC_MAI_DIMM_STATUS_DIA, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT08_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          0u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_0,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT08_DIAG, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT01_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          0u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_0,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT01_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_1*/
+      {
+        {
+            {
+          /* MAI_TFT_TEMP*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,       /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          1u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_1,               /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TFT_TEMP, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT05_1_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          1u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_1,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT05_1_DIAG, /* Adc software signal id*/
+      },
+      {
+        {
+          {
+          /* MAI_TT02_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          1u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_1,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT02_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_2*/
+      {
+        {
+          {
+          /* MAI_EXTERNAL_TEMP*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          2u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_2,               /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_EXTERNAL_TEMP, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_IGN*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          2u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_2,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_IGN, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+        /* MAI_TT03_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          2u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_2,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT03_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_3*/
+      {
+        {
+          {
+          /* MAI_STRG_WHEEL_SW1*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,       /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          3u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_STRG_WHEEL_SW1,               /* Adc filter id*/
+      IOHWAB_ADC6_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_STRG_WHEEL_SW1, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_SPARE4*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          3u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_3,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_SPARE4, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT04_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          3u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_3,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT04_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_4*/
+      {
+        {
+          {
+          /* MAI_STRG_WHEEL_SW2*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          4u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_STRG_WHEEL_SW2,               /* Adc filter id*/
+      IOHWAB_ADC6_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_STRG_WHEEL_SW2, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_GPU_TEMP*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          4u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_4,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_GPU_TEMP, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT05_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          4u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_4,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT05_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_5*/
+      {
+        {
+          {
+          /* MAI_BRK_FL_LVL*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          5u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_BRK_FL_LVL[0],               /* Adc filter id*/
+      IOHWAB_ADC6_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_BRK_FL_LVL, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_SPARE5*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          5u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_5,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_SPARE5, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_TT11_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          5u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_5,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT11_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_6*/
+      {
+        {
+          {
+          /* MAI_OVP_FB_BL*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          6u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_6,               /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_OVP_FB_BL, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_TT12_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          6u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_6,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT12_DIAG, /* Adc software signal id*/
+      },
+      {
+          {
+            {
+          /* MAI_TT06_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          6u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_6,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT06_DIAG, /* Adc software signal id*/
+      },
+/* MAI_MUX_7*/
+      {
+        {
+          {
+          /* MAI_PMIC_AMUX*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Multi Channel Group ID*/
+          0u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          7u, /* Mux Channel Id*/
+          0u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_7,               /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_PMIC_AMUX, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_TT09_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Multi Channel Group ID*/
+          1u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          7u, /* Mux Channel Id*/
+          1u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_7,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT09_DIAG, /* Adc software signal id*/
+      },
+      {
+        {
+            {
+          /* MAI_TT07_DIAG*/
+          0uL,                                              /* Ratioed Adc Multiplier*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Single Channel Group ID*/
+          AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7,        /* Multi Channel Group ID*/
+          2u,                                             /* Adc Index for Multi Channel*/
+          0u,                                            /* Ratioed Adc Ref Channel Index*/
+		  IOHWAB_SOURCE_ADC_MCAL,      				/* External or Mcal Adc */
+          #if (IOHWAB_ADC_MUX == STD_ON)
+          TRUE, /* Is This Mux Channel? */
+          7u, /* Mux Channel Id*/
+          2u /* Mux Group Id*/
+          #endif
+            }
+          },
+      (uint8*)&IoHwAb_AdcFilterIndex_MAI_MUX_7,             /* Adc filter id*/
+      IOHWAB_ADC2_FILTER,           /* Adc filter type*/
+      eIO_ADC_MAI_TT07_DIAG /* Adc software signal id*/
+      },
+
+  };
+
+  #if (IOHWAB_ADC_MUX == STD_ON)
+  const IoHwAb_AdcDioMuxGroupCfgType IoHwAb_AdcDioMuxGroup[IOHWAB_NUM_OF_MUX_GROUP] = {
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_0
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_1
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_2
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_3
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_4
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_5
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_6
+  },
+  {
+    {
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_A, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_B, 0u},
+      {DioConf_DioChannel_DioChannel_MDO_MUX_CTRL_C, 0u},
+    },
+    AdcConf_AdcGroupId_AdcGroup_MAI_MUX_7
+  },
+  };
+
+  const uint8 IoHwAb_AdcMuxIndex[IOHWAB_NUM_OF_MUX_INDEX] = { 0U, 3U, 4U, 3U, 1U, 3U, 4U, 3U, 2U, 3U, 4U, 3U, 5U, 3U, 4U, 3U, 6U, 3U, 4U, 3U, 7U, 3U, 4U ,3U};
+  #endif
+
+  #define IoHwAb_STOP_SEC_CONST_UNSPECIFIED
+  #include <IoHwAb_MemMap.h>
+
+  /*****************************************************************************
+  *  Private Function Definitions                                              *                                                                                       *
+  ******************************************************************************/
+
+  #define IoHwAb_START_SEC_CODE
+  #include <IoHwAb_MemMap.h>
+
+  /**
+  * This method is used to get the current vehicle variant for adc inputs
+  * @param     AdcVarientId   - variable to get the varient number
+  * @return    Std_ReturnType - E_OK-Operation successful, E_NOT_OK-Operation failure
+  */
+  Std_ReturnType IoHwAb_Adc_GetCurrentVariant(uint8* AdcVariantId)
+  {
+   *AdcVariantId  = 0U;
+   return E_OK;
+  }
+
+  /**
+  * This method is used to check any precondition before reading the adc inputs
+  * @param     void
+  * @return    Std_ReturnType - E_OK-Operation successful, E_NOT_OK-Operation failure
+  */
+  Std_ReturnType IoHwAb_Adc_PreHook(void)
+  {
+  return E_OK;
+  }
+
+  void IoHwAb_ADCNotification(void)
+  {
+
+    if (ADC_STREAM_COMPLETED ==  Adc_GetGroupStatus(ADC_CFGSET_GROUP_5_CHANNELS))
+    {
+        /*Notification*/    }
+  }
+
+  Std_ReturnType IoHwAb_Adc_SetupResultBuffer(Adc_GroupType Group, uint16* DataResultBufferPtr)
+{
+  Std_ReturnType IoHwAb_Adc_SetBufferResult = E_NOT_OK;
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //IoHwAb_Adc_SetBufferResult = Adc_SetupResultBuffer((Adc_GroupType)Group, DataResultBufferPtr);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      IoHwAb_Adc_SetBufferResult = PmicCdd_IoHwAb_Adc_SetupResultBuffer((PmicCdd_Adc_GroupType)Group, DataResultBufferPtr);
+    }
+    else
+    {
+
+    }
+  }
+  return IoHwAb_Adc_SetBufferResult;
+}
+
+
+void IoHwAb_Adc_StartGroupConversion(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_StartGroupConversion((Adc_GroupType)Group);
+
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_StartGroupConversion((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+
+
+void IoHwAb_Adc_StopGroupConversion(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_StopGroupConversion((Adc_GroupType)Group);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_StopGroupConversion((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+
+Std_ReturnType IoHwAb_Adc_ReadGroup(Adc_GroupType Group, uint16* DataResultBufferPtr)
+{
+  Std_ReturnType IoHwAb_Adc_SetBufferResult = E_NOT_OK;
+  uint8 GroupIndex = 0u;
+  uint8 AdcGroupIndex = 0u;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //IoHwAb_Adc_SetBufferResult = Adc_ReadGroup((Adc_GroupType)Group, DataResultBufferPtr);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      IoHwAb_Adc_SetBufferResult = PmicCdd_IoHwAb_Adc_ReadGroup((PmicCdd_Adc_GroupType)Group, DataResultBufferPtr);
+    }
+    else
+    {
+    }
+  }
+  return IoHwAb_Adc_SetBufferResult;
+}
+
+IoHwAb_Adc_StatusType IoHwAb_Adc_GetGroupStatus(Adc_GroupType Group)
+{
+  PmicCdd_Adc_StatusType IoHwAb_PmicCdd_Adc_ResultStatus = 0U;
+  IoHwAb_Adc_StatusType  IoHwAb_Adc_ResultStatus = IOHWAB_ADC_IDLE;
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+      {
+        /*IoHwAb_Adc_ResultStatus = Adc_GetGroupStatus((Adc_GroupType)Group);
+        if(ADC_IDLE == IoHwAb_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_IDLE;
+        }
+        else if (ADC_BUSY == IoHwAb_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_BUSY;
+        }
+        else if  (ADC_COMPLETED == IoHwAb_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_COMPLETED;
+        }
+        else
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_STREAM_COMPLETED;
+        }*/
+      }
+      else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+      {
+        IoHwAb_PmicCdd_Adc_ResultStatus = PmicCdd_IoHwAb_Adc_GetGroupStatus((PmicCdd_Adc_GroupType)Group);
+        if(PMICCDD_ADC_IDLE == IoHwAb_PmicCdd_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_IDLE;
+        }
+        else if (PMICCDD_ADC_BUSY == IoHwAb_PmicCdd_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_BUSY;
+        }
+        else if  (PMICCDD_ADC_COMPLETED == IoHwAb_PmicCdd_Adc_ResultStatus)
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_COMPLETED;
+        }
+        else
+        {
+          IoHwAb_Adc_ResultStatus = IOHWAB_ADC_STREAM_COMPLETED;
+        }
+      }
+      else
+      {
+
+      }
+  }
+    return IoHwAb_Adc_ResultStatus;
+}
+
+void IoHwAb_Adc_EnableHardwareTrigger(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_EnableHardwareTrigger((Adc_GroupType)Group);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_EnableHardwareTrigger((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+
+void IoHwAb_Adc_DisableHardwareTrigger(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_DisableHardwareTrigger((Adc_GroupType)Group);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_DisableHardwareTrigger((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+
+void IoHwAb_Adc_EnableGroupNotification(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_EnableGroupNotification((Adc_GroupType)Group);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_EnableGroupNotification((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+
+void IoHwAb_Adc_DisableGroupNotification(Adc_GroupType Group)
+{
+  uint8 GroupIndex = 0U;
+  uint8 AdcGroupIndex = 0U;
+  uint8 VariantId = 0U;
+  uint8 AdcVariantId = 0U;
+  uint8 Found = 0U;
+
+  for(GroupIndex = 0; GroupIndex < IOHWAB_NUM_ADC_INPUT; GroupIndex++)
+  {
+    for(VariantId = 0; VariantId < IOHWAB_ADC_NUM_OF_VARIANTS; VariantId++)
+    {
+      if((Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].MultiCh_Adc_GroupId) || (Group == IoHwAb_AdcCfg[GroupIndex].IoHwAb_AdcGroup[VariantId].SingleCh_Adc_GroupId))
+      {
+        AdcGroupIndex = GroupIndex;
+        AdcVariantId = VariantId;
+        Found = 1U;
+        break;
+      }
+    }
+
+    if(Found == 1U)
+    {
+      break;
+    }
+  }
+  if(AdcGroupIndex < IOHWAB_NUM_ADC_INPUT)
+  {
+    if(IOHWAB_SOURCE_ADC_MCAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId)
+    {
+      //Adc_DisableGroupNotification((Adc_GroupType)Group);
+    }
+    else if(IOHWAB_SOURCE_ADC_EXTERNAL == IoHwAb_AdcCfg[AdcGroupIndex].IoHwAb_AdcGroup[AdcVariantId].SourceSignalId) 
+    {
+      PmicCdd_IoHwAb_Adc_DisableGroupNotification((PmicCdd_Adc_GroupType)Group);
+    }
+    else
+    {
+    }
+  }
+}
+  #define IoHwAb_STOP_SEC_CODE
+  #include <IoHwAb_MemMap.h>
+
+  #endif
+
+  /*End of File*/
+  /*****************************************************************************
+  *  for each change to this file, be sure to record:                         *
+  *     1.  who made the change and when the change was made                  *
+  *     2.  why the change was made and the intended result                   *
+  *  Following block needs to be repeated for each change
+  ******************************************************************************
+  *  Note: In the trace-ability column we need to trace back to the Design Doc.*
+  *  For the initial version it is traced to the Design Document section.     *
+  *  For further changes it shall trace to the source of the change which may *
+  *  be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  *
+  *  other reason                                                            *
+  ******************************************************************************/
+  /*****************************************************************************
+  Date              :22-Aug-2018
+  By                :pragesh
+  Traceability      :RTC-1181436:MMC: Safe IoHwAb Delivery
+  Change Description:Initial Version for IoHwAb safe implementation
+  ******************************************************************************/
+  /*****************************************************************************
+  Date              :13-Mar-2020
+  By                :MSAVARIY
+  Traceability      : 808643: [Honda BEV] IoHwAb configuration
+  Change Description: MUX ADC support added
+  ******************************************************************************/

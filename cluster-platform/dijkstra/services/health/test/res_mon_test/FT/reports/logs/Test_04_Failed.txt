@@ -1,0 +1,44 @@
+     +--------------------------------------------------------------------+
+     ¦                        • MobaXterm 20.3 •                          ¦
+     ¦            (SSH client, X-server and networking tools)             ¦
+     ¦                                                                    ¦
+     ¦ ? Telnet session to INDJJ0KH92.vistcorp.ad.visteon.com             ¦
+     ¦ ? Your DISPLAY is set to 192.168.0.103:0.0                         ¦
+     ¦ ? For more info, ctrl+click on help or visit our website           ¦
+     +--------------------------------------------------------------------+
+
+
+
+QNX Neutrino (localhost) (ttyp0)
+
+login: root
+Password for root@localhost:
+No home directory.
+Logging in with home = "/".
+# pidin a | grep slogger2
+    8198 /bin/slogger2
+  696356 grep slogger2
+# pidin a | grep res
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0xFC09C126 -b0x5D090000 -m0xF8098000 -b0x5D0A0000 -m0x00000000 -b0x5D0B0000 -m0x00000000 -b0x5D0C0000 -m0x00000060 -b0x5D0D0000 -m0x00000000
+   94228 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay_tianma.so
+  639012 grep res
+# pidin a | grep vmf
+   81924 /usr/bin/vmf
+   86035 /usr/bin/ucl_proxy_vmf
+  655396 grep vmf
+# kill 81924
+# pidin a | grep vmf
+   86035 /usr/bin/ucl_proxy_vmf
+  675875 grep vmf
+# /tmp/res_mon -d 30 -uep &
+[1] 692228
+# [ 2369.119319]~DLT~692228~INFO     ~Socket /tmp/dlt cannot be opened. Retrying later...
+
+# slog2info -c
+# slog2info -b res_mon -w
+Jan 01 00:39:29.115                 res_mon.692228                           0  -----ONLINE-----
+                                    res_mon.692228              res_mon     0  -----UNSYNC-----
+
+# slog2info -b res_mon | grep ResMon_CommIfInit
+# slog2info -b res_mon | grep ResMon_CommIfInit
+#

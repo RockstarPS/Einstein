@@ -1,0 +1,18 @@
+#ifndef _TIME_H_INCLUDED
+#define _TIME_H_INCLUDED
+
+struct timespec {
+   long   tv_sec;
+   long     tv_nsec;
+};
+
+/*  Clock types */
+#define CLOCK_REALTIME              0
+#define CLOCK_MONOTONIC             2
+
+extern "C"{
+	extern int clock_gettime(unsigned char __clock_id, struct timespec *__tp);
+}
+
+
+#endif

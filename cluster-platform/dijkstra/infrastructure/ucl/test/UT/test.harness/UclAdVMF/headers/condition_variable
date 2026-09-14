@@ -1,0 +1,37 @@
+#ifndef STUB_CONDITION_VARIABLES
+#define STUB_CONDITION_VARIABLES
+
+#include <mutex>
+
+namespace std
+{
+enum class cv_status { no_timeout, timeout };
+  class condition_variable
+  {
+  public:
+
+    condition_variable();
+    ~condition_variable();
+
+    condition_variable(const condition_variable&);
+    condition_variable& operator=(const condition_variable&);
+
+    void
+    notify_one();
+
+    void
+    notify_all();
+
+    void
+    wait(unique_lock<mutex>& __lock);
+    template<typename _Rep, typename _Period>
+      cv_status
+      wait_for(unique_lock<mutex>& __lock,
+	       const chrono::duration<_Rep, _Period>& __rtime)
+      {  }
+  };
+
+} // namespace
+
+
+#endif

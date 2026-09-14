@@ -1,0 +1,15 @@
+diff --git a/src/hardware/startup/boards/am62a/evm/hw_init.c b/src/hardware/startup/boards/am62a/evm/hw_init.c
+index a774292..e143ce4 100644
+--- a/src/hardware/startup/boards/am62a/evm/hw_init.c
++++ b/src/hardware/startup/boards/am62a/evm/hw_init.c
+@@ -308,6 +308,10 @@ static void init_i2c(void)
+     // pinmux for I2C1
+     out32(AM62A_CTRLMMR_PADCONFIG + PIN_I2C1_SCL, PIN_INPUT_ENABLE | PIN_MODE(0));
+     out32(AM62A_CTRLMMR_PADCONFIG + PIN_I2C1_SDA, PIN_INPUT_ENABLE | PIN_MODE(0));
++
++    // pinmux for I2C2
++    out32(AM62A_CTRLMMR_PADCONFIG +  PIN_GPMC0_CSN2, PIN_INPUT_ENABLE | PIN_MODE(1));
++    out32(AM62A_CTRLMMR_PADCONFIG +  PIN_GPMC0_CSN3, PIN_INPUT_ENABLE | PIN_MODE(1));
+ }
+ 
+ #define EVM_SDIO_1V8_EN_PIN_NUM     (31U)

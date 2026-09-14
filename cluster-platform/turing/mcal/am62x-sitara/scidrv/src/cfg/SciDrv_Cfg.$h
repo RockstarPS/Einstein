@@ -1,0 +1,147 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2024. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  SciDrv_Cfg.h
+Module Short Name:  SciDrv_Cfg.h
+VOBName          :  
+Author           :  sdv
+Description      :  This file contains configurations needed for ExtIO module
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef SCIDRV_CFG_H_
+#define SCIDRV_CFG_H_
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+
+#include "SciDrv_Types.h"
+#include "Std_Types.h"
+#include "Platform_Types.h"
+
+
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+
+
+
+
+// SCI Driver Maximum Channels
+#define SCIDRV_MAX_CHANNELS                (1u)
+
+// SCI Driver Bus Clock Frequence in MHZ
+#define SCIDRV_INPUT_CLOCK_FREQ_MHZ          (48000000U)
+
+//Timeout value for ASynchronous Receive
+#define SCIDRV_ASYNC_RECEIVE_TIMEOUT          (3000U)
+
+//Timeout value for Synchronous Transmit
+#define SCIDRV_SYNC_TRANSMIT_TIMEOUT          (3000U)
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+/* End Notification for Transmit */
+typedef void (*SciDrv_TransmitEndNotificationCallbackType)(ESciDrvChnResult TransmitResult);
+/* End Notification for Receive */
+typedef void (*SciDrv_ReceiveEndNotificationCallbackType)(ESciDrvChnResult ReceiveResult,  uint32 SciBytesReceived, uint32 SciExtraBytesReceived);
+
+typedef struct SSciDrvChnCfgType {
+	//Peripheral Base Address
+	uint32 SciDrvBaseAddr;
+	//Module input clock frequency
+	uint32 SciDrvInputClkFreq;
+    // Transmit Callback
+	SciDrv_TransmitEndNotificationCallbackType pSciDrvTransmitNotificationCbk;
+    // Receive Callback
+	SciDrv_ReceiveEndNotificationCallbackType pSciDrvReceiveNotificationCbk;
+    //SCI Channel No
+    uint8 SciDrvHwChnId;
+    // Channel Baudrate
+    uint32 SciDrvBaudRate;
+    // Number of bits per frame
+	uint8 SciDrvDataLength;
+    // No of Stops Bits Per Frame
+	uint8 SciDrvStopBitsLength;
+    // Channel Parity Setting
+	uint8 SciDrvEnableParity;
+	//Operational mode Setting
+	uint16 SciDrvOperMode;
+	//Rx Trigger level Setting
+	uint8 SciDrvRxTrigLvl;
+	//Tx Trigger level Setting
+	uint8 SciDrvTxTrigLvl;
+	//Enable or Diable Hw Flow Control
+	uint8 SciDrvHwFlowControl;
+
+} SSciDrvChnCfg;
+
+typedef struct SSciDrvCfgType {
+	// No of configured SCI channels
+	uint8 SciDrvMaxChn;
+	// SCI Channel Configurations
+	const SSciDrvChnCfg *pSciDrvChnCfg;
+} SSciDrvCfg;
+
+// Export the Configuration Structure
+extern const SSciDrvCfg* pSciDrvCfg;
+
+#define CallBack
+// Client Callbacks
+#ifdef CallBack
+extern void Client_PhyTransmitCallback(ESciDrvChnResult TransmitResult);
+extern void Client_PhyReceiveCallback(ESciDrvChnResult ReceiveResult,  uint32 SciBytesReceived, uint32 SciExtraBytesReceived);
+#endif /*CallBack*/
+
+#endif /* SCIDRV_CFG_H_ */
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/**-------------------------------------------------------------------------*/
+/*Date              : 09-02-2024                                            */
+/*Version           :                                                       */
+/*By                : sdv                                             */
+/*Traceability      :                                                       */
+/*Change Description: Proveout, Initial Version                             */
+/*--------------------------------------------------------------------------*/
+/**-------------------------------------------------------------------------*/
+/*Date              : 29-02-2024                                 */
+/*Version           :                                                       */
+/*By                : sdv                                                   */
+/*Traceability      :                                                       */
+/*Change Description: Initial Version Platform Release                            */
+/*--------------------------------------------------------------------------*/

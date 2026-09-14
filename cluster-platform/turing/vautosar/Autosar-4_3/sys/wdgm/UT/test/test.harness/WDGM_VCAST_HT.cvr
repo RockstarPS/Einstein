@@ -1,0 +1,447 @@
+-- VectorCAST 18 (02/04/18)
+-- Imported Coverage Results Script
+IMPORT.BEGIN
+IMPORT.SOURCE.BEGIN
+IMPORT.SOURCE.UNIT:8
+IMPORT.SOURCE.ORIG_FILENAME:C:\Sprint\Autosar4_3UT\sys\wdgm\UT\WDGM_VCAST_HT\S0000008.c
+IMPORT.SOURCE.TIMESTAMP:0
+IMPORT.SOURCE.COVERAGE_STATUS:FALSE
+IMPORT.SOURCE.COVERAGE_TYPE:None
+IMPORT.SOURCE.FILE_CHECKSUM:FFFF
+IMPORT.SOURCE.COVER_EMPTY_STATEMENTS:TRUE
+IMPORT.SOURCE.HAS_EMPTY_STATEMENTS:TRUE
+IMPORT.SOURCE.COVER_CATCH_AS_BRANCH:FALSE
+IMPORT.SOURCE.HAS_CATCH_STATEMENTS:TRUE
+IMPORT.SOURCE.EDG_COVERAGE:TRUE
+IMPORT.SOURCE.COVER_FUNCTION_PARAMETERS:FALSE
+IMPORT.SOURCE.HAS_LOGICAL_OPS_IN_PARAMETERS:TRUE
+IMPORT.SOURCE.COVER_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.HAS_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.COVER_NESTED_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.HAS_NESTED_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.COVER_STATEMENTS_BY_BLOCK:FALSE
+IMPORT.SOURCE.COVERAGE_FOR_DECLARATIONS:INSTRUMENT_VARIABLE_DECLARATIONS_UNKNOWN
+IMPORT.SOURCE.HAS_CONSTANT_BRANCH:TRUE
+IMPORT.SOURCE.BASIS_PATHS_FOR_CONSTANT_BRANCHES:TRUE
+IMPORT.SOURCE.END
+IMPORT.SOURCE.BEGIN
+IMPORT.SOURCE.UNIT:9
+IMPORT.SOURCE.ORIG_FILENAME:C:\Sprint\Autosar4_3UT\sys\wdgm\src\WdgIf\src\WdgIf.c
+IMPORT.SOURCE.TIMESTAMP:1751000472
+IMPORT.SOURCE.COVERAGE_STATUS:TRUE
+IMPORT.SOURCE.COVERAGE_TYPE:Statement+Branch
+IMPORT.SOURCE.FILE_CHECKSUM:1666142043
+IMPORT.SOURCE.COVER_EMPTY_STATEMENTS:TRUE
+IMPORT.SOURCE.HAS_EMPTY_STATEMENTS:FALSE
+IMPORT.SOURCE.COVER_CATCH_AS_BRANCH:TRUE
+IMPORT.SOURCE.HAS_CATCH_STATEMENTS:FALSE
+IMPORT.SOURCE.EDG_COVERAGE:TRUE
+IMPORT.SOURCE.COVER_FUNCTION_PARAMETERS:TRUE
+IMPORT.SOURCE.HAS_LOGICAL_OPS_IN_PARAMETERS:FALSE
+IMPORT.SOURCE.COVER_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.HAS_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.COVER_NESTED_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.HAS_NESTED_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.COVER_STATEMENTS_BY_BLOCK:FALSE
+IMPORT.SOURCE.COVERAGE_FOR_DECLARATIONS:INSTRUMENT_VARIABLE_DECLARATIONS_INITIALIZATIONS
+IMPORT.SOURCE.HAS_CONSTANT_BRANCH:FALSE
+IMPORT.SOURCE.BASIS_PATHS_FOR_CONSTANT_BRANCHES:TRUE
+IMPORT.SOURCE.END
+IMPORT.SOURCE.BEGIN
+IMPORT.SOURCE.UNIT:11
+IMPORT.SOURCE.ORIG_FILENAME:C:\Sprint\Autosar4_3UT\sys\wdgm\src\WdgM\src\WdgM.c
+IMPORT.SOURCE.TIMESTAMP:1751000472
+IMPORT.SOURCE.COVERAGE_STATUS:TRUE
+IMPORT.SOURCE.COVERAGE_TYPE:Statement+Branch
+IMPORT.SOURCE.FILE_CHECKSUM:2291802612
+IMPORT.SOURCE.COVER_EMPTY_STATEMENTS:TRUE
+IMPORT.SOURCE.HAS_EMPTY_STATEMENTS:TRUE
+IMPORT.SOURCE.COVER_CATCH_AS_BRANCH:TRUE
+IMPORT.SOURCE.HAS_CATCH_STATEMENTS:FALSE
+IMPORT.SOURCE.EDG_COVERAGE:TRUE
+IMPORT.SOURCE.COVER_FUNCTION_PARAMETERS:TRUE
+IMPORT.SOURCE.HAS_LOGICAL_OPS_IN_PARAMETERS:FALSE
+IMPORT.SOURCE.COVER_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.HAS_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.COVER_NESTED_CONDITIONAL_OPERATOR:TRUE
+IMPORT.SOURCE.HAS_NESTED_CONDITIONAL_OPERATOR:FALSE
+IMPORT.SOURCE.COVER_STATEMENTS_BY_BLOCK:FALSE
+IMPORT.SOURCE.COVERAGE_FOR_DECLARATIONS:INSTRUMENT_VARIABLE_DECLARATIONS_INITIALIZATIONS
+IMPORT.SOURCE.HAS_CONSTANT_BRANCH:FALSE
+IMPORT.SOURCE.BASIS_PATHS_FOR_CONSTANT_BRANCHES:TRUE
+IMPORT.SOURCE.END
+RESULT.CBA.BEGIN
+RESULT.CBA.RESULT: CBA_WdgM
+RESULT.CBA.UNIT: c:/sprint/autosar4_3ut/sys/wdgm/src/wdgm/src/wdgm.c
+RESULT.CBA.FUNCTION: WdgM_CheckpointReached
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 41
+RESULT.CBA.CONTEXT: WdgM_DeadlineData[deadline_checkpoint].Deadline_Status = 0u;
+RESULT.CBA.CONTEXT_BEFORE:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                }
+                                else
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 43
+RESULT.CBA.CONTEXT: WdgM_ExitCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE:
+                                    WdgM_DeadlineData[deadline_checkpoint].Deadline_Status = 1u;
+                                }
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                break;
+                            }
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 39
+RESULT.CBA.CONTEXT: WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE:
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 42
+RESULT.CBA.CONTEXT: WdgM_DeadlineData[deadline_checkpoint].Deadline_Status = 1u;
+RESULT.CBA.CONTEXT_BEFORE:
+                                else
+                                {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                }
+                                WdgM_ExitCriticalSection();
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.COVERAGE: T
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.COVERAGE: F
+RESULT.CBA.CONTEXT: if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_BEFORE:
+                                time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+                                WdgM_EnterCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                    (time_diff > WdgMDeadlineSupervision[transition_index].DeadlineMax))
+                                {
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 44
+RESULT.CBA.CONTEXT: break;
+RESULT.CBA.CONTEXT_BEFORE:
+                                }
+                                WdgM_ExitCriticalSection();
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            }
+                        }
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 38
+RESULT.CBA.CONTEXT: time_diff = current_time - WdgM_DeadlineData[last_checkpoint].PreviousTimestamp;
+RESULT.CBA.CONTEXT_BEFORE:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                                WdgM_EnterCriticalSection();
+                            if((time_diff < WdgMDeadlineSupervision[transition_index].DeadlineMin) ||
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.COVERAGE: T
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 37
+RESULT.CBA.COVERAGE: F
+RESULT.CBA.CONTEXT: if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID
+RESULT.CBA.CONTEXT_BEFORE:
+                        if(transition_index < 1U)
+                        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                            {
+                                /*Transition Found! Source ID matches with the previous CPID. Examine the Deadline */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 36
+RESULT.CBA.CONTEXT: if(transition_index < 1U
+RESULT.CBA.CONTEXT_BEFORE:
+                    {
+                    transition_index = WdgMDeadlineTransition[deadline_checkpoint].TransitionIndex + deadline_transitions;
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        {
+                        if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID)
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 36
+RESULT.CBA.CONTEXT: if(transition_index < 1U
+RESULT.CBA.CONTEXT_BEFORE:
+                    {
+                    transition_index = WdgMDeadlineTransition[deadline_checkpoint].TransitionIndex + deadline_transitions;
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        {
+                        if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID)
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 36
+RESULT.CBA.COVERAGE: T
+RESULT.CBA.CONTEXT: if(transition_index < 1U
+RESULT.CBA.CONTEXT_BEFORE:
+                    {
+                    transition_index = WdgMDeadlineTransition[deadline_checkpoint].TransitionIndex + deadline_transitions;
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        {
+                        if(last_checkpoint == WdgMDeadlineSupervision[transition_index].SourceCPID)
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.FUNCTION: WdgM_ProcessSupervisionEntities
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 39
+RESULT.CBA.CONTEXT: local_status = (1U);
+RESULT.CBA.CONTEXT_BEFORE:
+                    /* If failed counter < failed tolernace, then the SE local status is FAILED */
+                {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                    *local_failed_status = 1u;
+                }
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 40
+RESULT.CBA.CONTEXT: *local_failed_status = 1u;
+RESULT.CBA.CONTEXT_BEFORE:
+                {
+                    local_status = (1U);
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                }
+            }
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 30
+RESULT.CBA.CONTEXT: if((WdgM_SupervisedEntityData[supervised_entity].FailedAliveSupervisionCounter >
+RESULT.CBA.CONTEXT_BEFORE:
+            {
+                /* If failed counter is < failed tolerance, then SE local status is FAILED */
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        WdgM_ConfigParam[0].SupervisedEntityRef[supervised_entity].FailedAliveSupervisionRefCycleTol) ||
+                        (WdgM_SupervisedEntityData[supervised_entity].FailedDeadlineSupervisionCounter >
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 30
+RESULT.CBA.CONTEXT: if((WdgM_SupervisedEntityData[supervised_entity].FailedAliveSupervisionCounter >
+RESULT.CBA.CONTEXT_BEFORE:
+            {
+                /* If failed counter is < failed tolerance, then SE local status is FAILED */
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        WdgM_ConfigParam[0].SupervisedEntityRef[supervised_entity].FailedAliveSupervisionRefCycleTol) ||
+                        (WdgM_SupervisedEntityData[supervised_entity].FailedDeadlineSupervisionCounter >
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 30
+RESULT.CBA.COVERAGE: F
+RESULT.CBA.CONTEXT: if((WdgM_SupervisedEntityData[supervised_entity].FailedAliveSupervisionCounter >
+RESULT.CBA.CONTEXT_BEFORE:
+            {
+                /* If failed counter is < failed tolerance, then SE local status is FAILED */
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+                        WdgM_ConfigParam[0].SupervisedEntityRef[supervised_entity].FailedAliveSupervisionRefCycleTol) ||
+                        (WdgM_SupervisedEntityData[supervised_entity].FailedDeadlineSupervisionCounter >
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.FUNCTION: WdgM_SetMode
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 35
+RESULT.CBA.CONTEXT: WdgM_Det_ReportError(0x03U,0x15U);
+RESULT.CBA.CONTEXT_BEFORE:
+            else
+            {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+            }
+        }
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 7
+RESULT.CBA.CONTEXT: if(((0U) != (1U)) || (Mode != 0U)
+RESULT.CBA.CONTEXT_BEFORE:
+        if(3u > Mode)
+        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+            {
+                /* SWS_WdgM_00316 */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 7
+RESULT.CBA.CONTEXT: if(((0U) != (1U)) || (Mode != 0U)
+RESULT.CBA.CONTEXT_BEFORE:
+        if(3u > Mode)
+        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+            {
+                /* SWS_WdgM_00316 */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.LINE.BEGIN
+RESULT.CBA.LINE: 7
+RESULT.CBA.COVERAGE: F
+RESULT.CBA.CONTEXT: if(((0U) != (1U)) || (Mode != 0U)
+RESULT.CBA.CONTEXT_BEFORE:
+        if(3u > Mode)
+        {
+RESULT.CBA.CONTEXT_BEFORE_END
+RESULT.CBA.CONTEXT_AFTER:
+            {
+                /* SWS_WdgM_00316 */
+RESULT.CBA.CONTEXT_AFTER_END
+RESULT.CBA.LINE.END
+RESULT.CBA.END
+IMPORT.END

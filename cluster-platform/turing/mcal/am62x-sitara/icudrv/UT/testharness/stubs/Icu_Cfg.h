@@ -1,0 +1,115 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2024. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  Icu_Cfg.h
+Module Short Name:  Icu
+VOBName          :  
+Author           :  kporkodi
+Description      :  This file contains configurations needed for Icu module
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef ICU_CFG_H
+#define ICU_CFG_H
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Icu_Types.h"
+
+// #include "PmicCdd_Cfg.h"
+// #include "PmicCdd_Types.h"
+// #include "PmicCdd.h"
+
+/*****************************************************************************
+*                            Functions                                       *
+******************************************************************************/
+
+void Icu_ReportError(uint8 ApiId, uint8 ErrorId);
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+/* Adds / removes the service Icu_DeInit() from the code. */
+#define ICU_DEINIT_API (STD_OFF)
+
+/* Number of ICU channels in the configuration */
+#define ICU_CHANNEL_COUNT    (1U)
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+/* Function pointer type for ICU notification callbacks */
+typedef void (*Icu_NotificationCallbackType)(void);
+
+/* Structure to hold the configuration for each ICU channel */
+typedef struct {
+    Icu_ChannelType ChannelId;
+    uint32 GpioPinNumber;
+    uint32 GpioBaseAddress;
+    Icu_ActivationType GpioTriggerType;
+    Icu_MeasurementModeType MeasurementMode;
+    Icu_NotificationCallbackType NotificationCallback;
+} Icu_ChannelConfigType;
+
+/* Structure for global ICU configuration */
+typedef struct {
+    const Icu_ChannelConfigType* ChannelPtr; /* Pointer to ICU channel config array */
+    uint8 NumberOfChannels;                  /* Number of ICU channels */
+} Icu_ConfigType;
+
+/* Declaration of the configuration structure */
+extern const Icu_ConfigType Icu_Config;
+
+/* ICU channel common state data */
+extern const Icu_ChannelConfigType Icu_ChannelConfigArray[ICU_CHANNEL_COUNT];
+
+#endif /* ICU_CFG_H */
+
+/*****************************************************************************
+*     End of File
+*
+******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/**-------------------------------------------------------------------------*/
+/*Date              : 19-11-2024                                            */
+/*Version           :                                                       */
+/*By                : kporkodi                                              */
+/*Traceability      :                                                       */
+/*Change Description: Initial Version Platform Release                      */
+/*--------------------------------------------------------------------------*/
+/**-------------------------------------------------------------------------*/
+/*Date              : 02-12-2024                                            */
+/*Version           :                                                       */
+/*By                : kporkodi                                              */
+/*Traceability      :                                                       */
+/*Change Description: Initial Version Platform Release                      */
+/*--------------------------------------------------------------------------*/

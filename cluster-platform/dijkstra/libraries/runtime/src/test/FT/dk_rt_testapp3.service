@@ -1,0 +1,12 @@
+[Unit]
+Description=dk_rt_testapp3
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/etc/systemd/system/dk_rt_testapp3
+WatchdogSec=1
+Restart=on-success
+
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,106 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+ * @endverbatim
+ * @file        FltM_Ppu_Cfg.h
+ * @details     <b> Peripheral Firewall Configuration </b>
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2025
+ *
+ */
+
+#ifndef  PPU_CFG_H_
+#define  PPU_CFG_H_
+
+ /*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Std_Types.h"
+#include "sciclient.h"
+#include "FltM_Soc.h"
+
+#define FLTM_SEC_CODE_START
+#define FLTM_CORE_CONST_SEC_START
+#define FLTM_CORE_DATA_SEC_START
+#define FLTM_CORE_BSS_SEC_START
+
+#include "MemMap.h"
+
+ /*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+#define PPU_INSTANCE_CONFIGURED                  12U
+
+#define FLTM_PPU_FULL_ACCESS_TO_ALL              0xC3FFFF
+#define FLTM_PPU_ALL_ACCESS_TO_MCU               0x60FFFF
+#define FLTM_PPU_READ_ACCESS_TO_ALL              0xC3AAAA
+
+#define FLTM_BGND_ADDR_START              0x00000000
+#define FLTM_BGND_ADDR_END                0xFFFFFFFF
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+typedef struct
+{
+	uint8	      Index;
+	uint16        fwl_id;
+    uint16        region_id;
+    uint32        n_permission_regs;
+    uint32        control;
+    uint32        permissions_0;
+    uint32        permissions_1;
+    uint32        permissions_2;
+    uint64        start_address;
+    uint64        end_address;
+}FltM_Ppu_ConfigType;
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+extern const FltM_Ppu_ConfigType Ppu_Config[PPU_INSTANCE_CONFIGURED];
+
+#define FLTM_SEC_CODE_STOP
+#define FLTM_CORE_CONST_SEC_END
+#define FLTM_CORE_DATA_SEC_END
+#define FLTM_CORE_BSS_SEC_END
+
+#include "MemMap.h"
+
+#endif
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/

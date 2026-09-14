@@ -1,0 +1,69 @@
+#include "Std_Types.h"
+#include "Os.h"
+#include "Apm.h"
+
+#define APM_TOTAL_NO_OF_TASKS	OsNumberOfTasks
+
+#define STUBS_CODE_SEC_START
+#include "MemMap.h"
+
+
+//---------------------------------------------------------------------------------------------------------------------
+/// @brief  PreTaskHook is called after a task set into RUNNING state
+//---------------------------------------------------------------------------------------------------------------------
+void PreTaskHook( void )
+{
+#ifdef APM_ENABLED
+	TaskType TaskID = INVALID_TASK;
+	TaskStateType TaskState = (TaskStateType)0;
+
+	(void)GetTaskID(&TaskID);
+	(void)GetTaskState(TaskID, &TaskState);
+
+	Apm_PreTaskProcess(TaskID, TaskState);
+#endif // APM_ENABLED
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Called just before entering an ISR routine
+///
+/// @param    x:   Identifier of the ISR that is about to be entered
+//----------------------------------------------------------------------------------------------------------------------
+void UserPreISRHook(ISRType x)
+{
+#ifdef APM_ENABLED
+	Apm_PreIsrProcess(x);
+#endif // APM_ENABLED
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief    Called just after leaving an ISR routine of a category 2 interrupt
+///
+/// @param    x:   Identifier of the ISR that was just left
+//----------------------------------------------------------------------------------------------------------------------
+void UserPostISRHook(ISRType x)
+{
+#ifdef APM_ENABLED
+	Apm_PostIsrProcess(x);
+#endif // APM_ENABLED
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+/// @brief  PostTaskHook is called before a task is taken out of RUNNING state
+//---------------------------------------------------------------------------------------------------------------------
+void PostTaskHook( void )
+{
+#ifdef APM_ENABLED
+	TaskType TaskID = INVALID_TASK;
+	TaskStateType TaskState = (TaskStateType)0;
+
+	(void)GetTaskID(&TaskID);
+	(void)GetTaskState(TaskID, &TaskState);
+
+	Apm_PostTaskProcess(TaskID, TaskState);
+#endif // APM_ENABLED
+}
+
+#define STUBS_CODE_SEC_END
+#include "MemMap.h"
+

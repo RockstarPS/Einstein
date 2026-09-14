@@ -1,0 +1,29 @@
+user_ta_header.o: \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/src/user_ta_header.c \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/compiler.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/config.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/malloc.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/pta_stats.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/stdint.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/limits.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_api_types.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/inttypes.h \
+ /home/gsoundar/.conan2/p/ti-sd416a3545c184f/p/ti_sdk/sysroots/x86_64-arago-linux/usr/lib/aarch64-oe-linux/gcc/aarch64-oe-linux/15.2.0/include/stdbool.h \
+ /home/gsoundar/.conan2/p/ti-sd416a3545c184f/p/ti_sdk/sysroots/x86_64-arago-linux/usr/lib/aarch64-oe-linux/gcc/aarch64-oe-linux/15.2.0/include/stddef.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_api_defines.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/types_ext.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/unistd.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_ta_api.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_internal_api.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/trace.h \
+ /home/gsoundar/.conan2/p/ti-sd416a3545c184f/p/ti_sdk/sysroots/x86_64-arago-linux/usr/lib/aarch64-oe-linux/gcc/aarch64-oe-linux/15.2.0/include/stdarg.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/trace_levels.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_api_compat.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_internal_api_extensions.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/stdio.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/tee_api_defines_extensions.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/user_ta_header.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/util.h \
+ user_ta_header_defines.h include/SecurestorageCrypto_ta.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/utee_syscalls.h \
+ /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/libraries/optee-securitylib/Prebuilt_OS/arm-plat-k3/export-ta_arm64/include/utee_types.h

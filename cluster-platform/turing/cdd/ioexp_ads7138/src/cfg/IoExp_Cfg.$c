@@ -1,0 +1,373 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2024. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  IoExp_Cfg.c
+Module Short Name:  IoExp_Cfg.c
+VOBName          :  
+Author           :  GTHANAPP
+Description      :  This file contains configurations needed for IoExp module
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef IOEXP_CFG_C
+#define IOEXP_CFG_C
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+
+#include "IoExp_Cfg.h"
+#include "IoExp.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+const uint8 IOEXP_I2C_DeviceAddress[IOEXP_NUM_OF_DEVICES] =
+{
+    0x17,  /* 7 bit slave address */
+    0x16   /* 7 bit slave address */
+};
+
+
+const IoExp_DInConfigType IoExp_DInConfig[IOEXP_NUM_OF_DI_PINS_CFG_COUNT] =
+{
+     #if 0
+    {
+        IOEXP_AI_MAIN_PWB_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN0,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+   {
+        IOEXP_AI_TFT_LED_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN1,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_AI_FALD_BL_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN2,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_AI_VBATT_MON,                  /* SW Channel ID */
+        IOEXP_PIN3,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_AI_30V0_BL_PWR_UC,                  /* SW Channel ID */
+        IOEXP_PIN4,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_AI_CABLE_DEATECT_TT,                  /* SW Channel ID */
+        IOEXP_PIN5,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_AI_SBATT2_MON,                  /* SW Channel ID */
+        IOEXP_PIN6,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+   },
+   {
+        IOEXP_AI_SOC_TEMP_SENS3,                  /* SW Channel ID */
+        IOEXP_PIN7,                             /* HW_ChannelID  */
+        0u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_08,                  /* SW Channel ID */
+        IOEXP_PIN0,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+       IOEXP_DIO_ADC_GPIO_09,                  /* SW Channel ID */
+        IOEXP_PIN1,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_10,                  /* SW Channel ID */
+        IOEXP_PIN2,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+   {
+        IOEXP_DIO_ADC_GPIO_11,                  /* SW Channel ID */
+        IOEXP_PIN3,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_12,                  /* SW Channel ID */
+        IOEXP_PIN4,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_13,                  /* SW Channel ID */
+         IOEXP_PIN5,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_14,                  /* SW Channel ID */
+        IOEXP_PIN6,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_15,                  /* SW Channel ID */
+        IOEXP_PIN7,                             /* HW_ChannelID  */
+        1u,                                     /* Device Index  */ 
+    },
+    #endif
+};
+
+const IoExp_DOutConfigType IoExp_DOutConfig[IOEXP_NUM_OF_DO_PINS_CFG_COUNT] =
+{
+     #if 0
+    {
+        IOEXP_AI_MAIN_PWB_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN0,          /* HW_ChannelID   */
+        0u,                  /* Device Index   */ 
+        PUSH_PULL,           /* Drive Type     */
+        STD_LOW,             /* Initial Output Value */
+    },
+    {
+        IOEXP_AI_TFT_LED_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN1,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_AI_FALD_BL_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN2,          /* HW_ChannelID   */
+        0u,                  /* Device Index */ 
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_AI_VBATT_MON,                  /* SW Channel ID */
+        IOEXP_PIN3,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+   },
+   {
+        IOEXP_AI_30V0_BL_PWR_UC,                  /* SW Channel ID */
+        IOEXP_PIN4,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_AI_CABLE_DEATECT_TT,                  /* SW Channel ID */
+        IOEXP_PIN5,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_AI_SBATT2_MON,                  /* SW Channel ID */
+        IOEXP_PIN6,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_AI_SOC_TEMP_SENS3,                  /* SW Channel ID */
+        IOEXP_PIN7,          /* HW_ChannelID   */
+        0u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    #endif
+    {
+        IOEXP_DIO_ADC_GPIO_08,                  /* SW Channel ID */
+        IOEXP_PIN0,          /* HW_ChannelID   */
+        1u,                  /* Device Index   */ 
+        PUSH_PULL,           /* Drive Type     */
+        STD_LOW,             /* Initial Output Value */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_09,                  /* SW Channel ID */
+        IOEXP_PIN1,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_10,                  /* SW Channel ID */
+        IOEXP_PIN2,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_11,                  /* SW Channel ID */
+        IOEXP_PIN3,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_12,                  /* SW Channel ID */
+        IOEXP_PIN4,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_13,                  /* SW Channel ID */
+        IOEXP_PIN5,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_14,                  /* SW Channel ID */
+        IOEXP_PIN6,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_15,                  /* SW Channel ID */
+        IOEXP_PIN7,          /* HW_ChannelID   */
+        1u,                  /* Device Index */
+        PUSH_PULL,           /* Drive Type */
+        STD_LOW,             /* Initial Output State */
+    },
+ };
+
+const IoExp_AInConfigType IoExp_AInConfig[IOEXP_NUM_OF_AI_PINS_CFG_COUNT] =
+{ 
+    {
+        IOEXP_AI_TFT_LED_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN1,          /* HW_ChannelID   */
+        0u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_AI_FALD_BL_TEMP,                  /* SW Channel ID */
+        IOEXP_PIN2,          /* HW_ChannelID */
+        0u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_AI_30V0_BL_PWR_UC,                  /* SW Channel ID */
+        IOEXP_PIN4,          /* HW_ChannelID   */
+        0u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_AI_CABLE_DEATECT_TT,                  /* SW Channel ID */
+        IOEXP_PIN5,          /* HW_ChannelID   */
+        0u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_AI_SBATT2_MON,                  /* SW Channel ID */
+        IOEXP_PIN6,          /* HW_ChannelID   */
+        0u,                  /* Device Index */ 
+    },
+    #if 0
+    {
+        IOEXP_DIO_ADC_GPIO_08,                  /* SW Channel ID */
+        IOEXP_PIN0,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_09,                  /* SW Channel ID */
+        IOEXP_PIN1,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_10,                  /* SW Channel ID */
+        IOEXP_PIN2,          /* HW_ChannelID */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_11,                  /* SW Channel ID */
+        IOEXP_PIN3,          /* HW_ChannelID */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_12,                  /* SW Channel ID */
+        IOEXP_PIN4,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_13,                  /* SW Channel ID */
+        IOEXP_PIN5,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_14,                  /* SW Channel ID */
+        IOEXP_PIN6,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    },
+    {
+        IOEXP_DIO_ADC_GPIO_15,                  /* SW Channel ID */
+        IOEXP_PIN7,          /* HW_ChannelID   */
+        1u,                  /* Device Index */ 
+    }
+    #endif 
+};
+
+/*****************************************************************************
+*                   Functions                                                *
+******************************************************************************/
+void IoExp_Det_ReportError(uint16 ModuleId,
+                               uint8  InstanceId,
+                               uint8  ApiId,
+                               uint8  ErrorId)
+{
+    if(IOEXP_MAINFUNC_ID == ApiId)
+    {
+        /* Do Nothing */
+    }
+    else
+    {
+        Det_ReportError(ModuleId, InstanceId, ApiId, ErrorId);
+        while(1){};
+    }
+}
+
+#endif    /* IOEXP_CFG_C */
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/**-------------------------------------------------------------------------*/
+/*Date              : 08-03-2024                                            */
+/*Version           :                                                       */
+/*By                : gthanapp                                              */
+/*Traceability      :                                                       */
+/*Change Description: Initial release                                       */
+/*--------------------------------------------------------------------------*/

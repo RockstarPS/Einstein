@@ -1,0 +1,27 @@
+
+Kernel
+    Filename           DynamicDownload
+EndKernel
+
+AddressSpace			vmf_listener
+	Filename			vmf_listener
+    Arguments           -i 0 -g 01 -c 1000
+	MemoryPoolSize		10M
+	Language			C
+	Task				Initial
+		StartIt			true
+        StackLength     5M
+	EndTask
+EndAddressSpace
+
+AddressSpace            vmf_sender
+    Filename            vmf_sender
+    Arguments           -g 01 -e 02 -n 11223344 -l10 -t -c 1000 -d 1000 -w 15
+    MemoryPoolSize	    10M
+    Language            C
+    Task                Initial
+        StartIt         true
+        StackLength     5M
+    EndTask
+EndAddressSpace
+

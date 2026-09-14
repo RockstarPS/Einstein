@@ -1,0 +1,407 @@
+/**
+ * @verbatim
+               CONFIDENTIAL VISTEON CORPORATION
+
+ This is an unpublished work of authorship, which contains trade
+ secrets, created in 2025. Visteon Corporation owns all rights to
+ this work and intends to maintain it in confidence to preserve
+ its trade secret status. Visteon Corporation reserves the right,
+ under the copyright laws of the United States or those of any
+ other country that may have jurisdiction, to protect this work
+ as an unpublished work, in the event of an inadvertent or
+ deliberate unauthorized publication. Visteon Corporation also
+ reserves its rights under all copyright laws to protect this
+ work as a published work, when appropriate. Those having access
+ to this work may not copy it, use it, modify it or disclose the
+ information contained in it without the written authorization
+ of Visteon Corporation.
+ * @endverbatim
+ * @file        FltM_Cfg.c
+ * @details     <b> Fault Manager to handle TI SDL - ESM </b>
+ * @note
+ *              Compiler    : clang \n
+ *              Target Hw   : Independent
+ *
+ * @copyright   Visteon (c) 2024
+ *
+ */
+#ifndef  FLTM_CFG_C_
+#define  FLTM_CFG_C_
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "FltM_Cfg.h"
+#include "FltM_Types.h"
+#include "Rte_RstM_Type.h"    // E4 fault ID symbols
+#include "FltMExt.h"          // FltMExt functions
+#include "Det.h"              // DET Functions
+#include "Dem.h"
+
+#define FLTM_SEC_CODE_START
+#define FLTM_CORE_CONST_SEC_START
+#define FLTM_CORE_DATA_SEC_START
+#define FLTM_CORE_BSS_SEC_START
+
+#include "MemMap.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+/*****************************************************************************
+*                                 Locally used Variable Declarations         *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+/**
+ * @brief Fault Manager DLT log metadata table
+ */
+const FltM_Dlt_MessageLogInfoType FltM_Dlt_MessageLogInfo[FLTM_NUMBER_OF_DLT_LOGINFO] =
+{
+  /* [0] Session Id, argCount, options, appId, contextId */
+  { 0U, 2U, DLT_ISMSGVERBOSEMODE_BIT,
+    { (uint8)'F', (uint8)'L', (uint8)'T', (uint8)'M' },
+    { (uint8)'F', (uint8)'L', (uint8)'T', (uint8)'M' } },
+  /* [1] Session Id, argCount, options, appId, contextId */
+  { 0U, 2U, DLT_ISMSGVERBOSEMODE_BIT,
+    { (uint8)'F', (uint8)'L', (uint8)'T', (uint8)'M' },
+    { (uint8)'F', (uint8)'L', (uint8)'T', (uint8)'M' } }
+};
+
+/**
+ * @brief Fault Manager debounce configuration table
+ */
+const FltM_DebounceConfigType FltM_DebounceConfig[FLTM_NUM_DEBOUNCE_CFG] =
+{
+  /* [FLTM_DEBOUNCE_CFG_IMMEDIATE] Counter debounce with immediate fail/recovery confirmation */
+  { FLTM_DEBOUNCE_TYPE_COUNTER, 0U, 0U, 0U, 0U }
+};
+
+/**
+ * @brief Fault Manager log configuration table
+ */
+const FltM_LogConfigType FltM_LogConfig[FLTM_NUM_LOG_CFG] =
+{
+  /* [FLTM_LOG_CFG_FATAL_DLT] Fatal logging */
+  { DLT_LOG_FATAL, 1U },
+  /* [FLTM_LOG_CFG_ERROR_DLT] Error logging */
+  { DLT_LOG_ERROR, 1U },
+  /* [FLTM_LOG_CFG_INFO_DLT] Info logging */
+  { DLT_LOG_INFO, 1U }
+};
+
+/**
+ * @brief Fault Manager severity configuration table
+ */
+const FltM_SeverityConfigType FltM_SeverityConfig[FLTM_NUM_SEVERITY_CFG] =
+{
+  /* [FLTM_SEVERITY_CFG_FATAL] Fatal severity */
+  { FLTM_SEVERITY_FATAL },
+  /* [FLTM_SEVERITY_CFG_ERROR] Error severity */
+  { FLTM_SEVERITY_ERROR },
+  /* [FLTM_SEVERITY_CFG_INFO] Info severity */
+  { FLTM_SEVERITY_INFO }
+};
+
+/**
+ * @brief Fault Manager DEM configuration table
+ *
+ * One-to-one E4 mapping aligned with FltM_FaultConfig row order.
+ */
+const FltM_DemConfigType FltM_DemConfig[FLTM_MAX_NUM_FAULTS] =
+{
+  /* [FLTM_DEM_CFG_DCC_FAIL] */                              { TRUE,  2U },
+  /* [FLTM_DEM_CFG_ECC_FAULT] */                             { TRUE,  3U },
+  /* [FLTM_DEM_CFG_ECC_1BIT_ERROR] */                        { TRUE,  4U },
+  /* [FLTM_DEM_CFG_ECC_2BIT_ERROR] */                        { TRUE,  5U },
+  /* [FLTM_DEM_CFG_OCOC_FAIL] */                             { TRUE,  6U },
+  /* [FLTM_DEM_CFG_POK_FAULT] */                             { TRUE,  7U },
+  /* [FLTM_DEM_CFG_TIFS_SAFETY_CHECK_FWL_FAIL] */            { TRUE,  8U },
+  /* [FLTM_DEM_CFG_BACKLIGHT_ERROR] */                       { TRUE,  9U },
+  /* [FLTM_DEM_CFG_POWER_ON_RESET] */                        { TRUE, 10U },
+  /* [FLTM_DEM_CFG_POWER_SUPPLY_FAULT] */                    { TRUE, 11U },
+  /* [FLTM_DEM_CFG_EXT_WDG_RESET] */                         { TRUE, 12U },
+  /* [FLTM_DEM_CFG_EXT_WDG_COMM_ERROR] */                    { TRUE, 13U },
+  /* [FLTM_DEM_CFG_WDGM_ALIVE_FAIL] */                       { TRUE, 14U },
+  /* [FLTM_DEM_CFG_PMIC_MAXRSTCOUNT_REACHED] */              { TRUE, 15U },
+  /* [FLTM_DEM_CFG_PMIC_ABIST_FAIL] */                       { TRUE, 16U },
+  /* [FLTM_DEM_CFG_NVM_INTEGRITY_ERROR] */                   { TRUE, 17U },
+  /* [FLTM_DEM_CFG_BUCK1_OVUV_ERROR] */                      { TRUE, 18U },
+  /* [FLTM_DEM_CFG_BUCK2_OVUV_ERROR] */                      { TRUE, 19U },
+  /* [FLTM_DEM_CFG_BUCK3_OVUV_ERROR] */                      { TRUE, 20U },
+  /* [FLTM_DEM_CFG_BUCK4_OVUV_ERROR] */                      { TRUE, 21U },
+  /* [FLTM_DEM_CFG_LDO1_OVUV_ERROR] */                       { TRUE, 22U },
+  /* [FLTM_DEM_CFG_LDO2_OVUV_ERROR] */                       { TRUE, 23U },
+  /* [FLTM_DEM_CFG_LDO3_OVUV_ERROR] */                       { TRUE, 24U },
+  /* [FLTM_DEM_CFG_VVCA_OVUV_ERROR] */                       { TRUE, 25U },
+  /* [FLTM_DEM_CFG_VMON1_OVUV_ERROR] */                      { TRUE, 26U },
+  /* [FLTM_DEM_CFG_FLASH_INTEGRITY_FAIL] */                  { TRUE, 27U },
+  /* [FLTM_DEM_CFG_DMNMGR_GIP_FIRSTHB_MISS] */               { TRUE, 28U },
+  /* [FLTM_DEM_CFG_SW_MAIN_WARMRSTZ] */                      { TRUE, 29U },
+  /* [FLTM_DEM_CFG_ARM_PREFETCH_ABORT_R5] */                 { TRUE, 30U },
+  /* [FLTM_DEM_CFG_ARM_DATA_ABORT] */                        { TRUE, 31U },
+  /* [FLTM_DEM_CFG_ARM_UNDEFINED_INSTRUCTION] */             { TRUE, 32U },
+  /* [FLTM_DEM_CFG_OS_STATE] */                              { TRUE, 33U },
+  /* [FLTM_DEM_CFG_OS_CALLLEVEL] */                          { TRUE, 34U },
+  /* [FLTM_DEM_CFG_OS_ACCESS] */                             { TRUE, 35U },
+  /* [FLTM_DEM_CFG_OS_ID] */                                 { TRUE, 36U },
+  /* [FLTM_DEM_CFG_OS_LIMIT] */                              { TRUE, 37U },
+  /* [FLTM_DEM_CFG_OS_NOFUNC] */                             { TRUE, 38U },
+  /* [FLTM_DEM_CFG_OS_RESOURCE] */                           { TRUE, 39U },
+  /* [FLTM_DEM_CFG_OS_VALUE] */                              { TRUE, 40U },
+  /* [FLTM_DEM_CFG_OS_SERVICEID] */                          { TRUE, 41U },
+  /* [FLTM_DEM_CFG_OS_ILLEGAL_ADDRESS] */                    { TRUE, 42U },
+  /* [FLTM_DEM_CFG_OS_MISSINGEND] */                         { TRUE, 43U },
+  /* [FLTM_DEM_CFG_OS_DISABLEDINT] */                        { TRUE, 44U },
+  /* [FLTM_DEM_CFG_OS_STACKFAULT] */                         { TRUE, 45U },
+  /* [FLTM_DEM_CFG_OS_PROTECTION_MEMORY] */                  { TRUE, 46U },
+  /* [FLTM_DEM_CFG_OS_PROTECTION_TIME] */                    { TRUE, 47U },
+  /* [FLTM_DEM_CFG_OS_PROTECTION_ARRIVAL] */                 { TRUE, 48U },
+  /* [FLTM_DEM_CFG_OS_PROTECTION_LOCKED] */                  { TRUE, 49U },
+  /* [FLTM_DEM_CFG_OS_PROTECTION_EXCEPTION] */               { TRUE, 50U },
+  /* [FLTM_DEM_CFG_OS_INTERFERENCE_DEADLOCK] */              { TRUE, 51U },
+  /* [FLTM_DEM_CFG_OS_NESTING_DEADLOCK] */                   { TRUE, 52U },
+  /* [FLTM_DEM_CFG_OS_SPINLOCK] */                           { TRUE, 53U },
+  /* [FLTM_DEM_CFG_OS_CORE] */                               { TRUE, 54U },
+  /* [FLTM_DEM_CFG_OS_PARAM_POINTER] */                      { TRUE, 55U },
+  /* [FLTM_DEM_CFG_OS_SHUTDOWN] */                           { TRUE, 56U },
+  /* [FLTM_DEM_CFG_OS_SYS_API_ERROR] */                      { TRUE, 57U },
+  /* [FLTM_DEM_CFG_OS_SYS_ASSERTION] */                      { TRUE, 58U },
+  /* [FLTM_DEM_CFG_OS_SYS_DISABLED] */                       { TRUE, 59U },
+  /* [FLTM_DEM_CFG_OS_SYS_NO_BARRIER_PARTICIPANT] */         { TRUE, 60U },
+  /* [FLTM_DEM_CFG_OS_SYS_UNIMPLEMENTED_FUNCTIONALITY] */    { TRUE, 61U },
+  /* [FLTM_DEM_CFG_OS_SYS_NO_NTFSTACK] */                    { TRUE, 62U },
+  /* [FLTM_DEM_CFG_OS_SYS_OVERFLOW] */                       { TRUE, 63U },
+  /* [FLTM_DEM_CFG_OS_SYS_KILL_KERNEL_OBJ] */                { TRUE, 64U },
+  /* [FLTM_DEM_CFG_OS_SYS_NO_RESTARTTASK] */                 { TRUE, 65U },
+  /* [FLTM_DEM_CFG_OS_SYS_CALL_NOT_ALLOWED] */               { TRUE, 66U },
+  /* [FLTM_DEM_CFG_OS_SYS_FUNCTION_UNAVAILABLE] */           { TRUE, 67U },
+  /* [FLTM_DEM_CFG_OS_SYS_PROTECTION_SYSCALL] */             { TRUE, 68U },
+  /* [FLTM_DEM_CFG_OS_SYS_PROTECTION_IRQ] */                 { TRUE, 69U },
+  /* [FLTM_DEM_CFG_OS_SYS_OVERLOAD] */                       { TRUE, 70U },
+  /* [FLTM_DEM_CFG_OS_SYS_CROSS_CORE_REQUESTED] */           { TRUE, 71U },
+  /* [FLTM_DEM_CFG_DM_WDG_FAIL] */                           { TRUE, 73U },
+  /* [FLTM_DEM_CFG_DMNMGR_GIP_HB_MISS] */                    { TRUE, 74U },
+  /* [FLTM_DEM_CFG_DMNMGR_GIP_LINKUP_FAILED] */              { TRUE, 75U },
+  /* [FLTM_DEM_CFG_DMNMGR_GIP_HEALTH_FATAL_ERROR] */         { TRUE, 76U },
+  /* [FLTM_DEM_CFG_VOLTAGE_ERROR] */                         { TRUE, 77U },
+  /* [FLTM_DEM_CFG_SW_HANG] */                               { FALSE, 0U },
+  /* [FLTM_DEM_CFG_BUCK1_OVUV_RESET] */                      { FALSE, 0U },
+  /* [FLTM_DEM_CFG_BUCK2_OVUV_RESET] */                      { FALSE, 0U },
+  /* [FLTM_DEM_CFG_BUCK3_OVUV_RESET] */                      { FALSE, 0U },
+  /* [FLTM_DEM_CFG_BUCK4_OVUV_RESET] */                      { FALSE, 0U },
+  /* [FLTM_DEM_CFG_LDO1_OVUV_RESET] */                       { FALSE, 0U },
+  /* [FLTM_DEM_CFG_LDO2_OVUV_RESET] */                       { FALSE, 0U },
+  /* [FLTM_DEM_CFG_LDO3_OVUV_RESET] */                       { FALSE, 0U },
+  /* [FLTM_DEM_CFG_VVCA_OVUV_RESET] */                       { FALSE, 0U },
+  /* [FLTM_DEM_CFG_VMON1_OVUV_RESET] */                      { FALSE, 0U },
+  /* [FLTM_DEM_CFG_DET_ERROR] */                             { TRUE, 72U },
+  /* [FLTM_DEM_CFG_PERIODIC_READBACK_FAIL] */                { FALSE, 0U }
+#if (FLTM_SAME_FAULT_RESET_LOOP_HW_TEST_ENABLE == STD_ON)
+  ,
+  /* [FLTM_DEM_CFG_HW_TEST_RESERVED] */                      { FALSE, 0U }
+#endif
+};
+
+/**
+ * @brief Fault Manager reset-policy configuration table
+ */
+const FltM_ResetPolicyConfigType FltM_ResetPolicyConfig[FLTM_NUM_RESET_POLICY_CFG] =
+{
+  /* [FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3] Reset until final safe action, threshold 3 */
+  { FLTM_RESET_POLICY_RESET_UNTIL_FINAL_ACTION, 3U },
+  /* [FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1] Reset until final safe action, threshold 1 */
+  { FLTM_RESET_POLICY_RESET_UNTIL_FINAL_ACTION, 1U },
+  /* [FLTM_RESET_POLICY_CFG_NONE] No reset policy */
+  { FLTM_RESET_POLICY_NONE, 0U }
+};
+
+/**
+ * @brief Fault Manager action configuration table
+ */
+const FltM_ActionConfigType FltM_ActionConfig[FLTM_NUM_ACTION_CFG] =
+{
+  /* [FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY] First safe action + final safe action + recovery action */
+  { FltMExt_InitialSafeAction, FltMExt_FinalSafeAction, FltMExt_RecoveryAction },
+  /* [FLTM_ACTION_CFG_INITIAL_RECOVERY] First safe action + no final safe action + recovery action */
+  { FltMExt_InitialSafeAction, NULL_PTR, FltMExt_RecoveryAction },
+  /* [FLTM_ACTION_CFG_NONE] No actions configured */
+  { NULL_PTR, NULL_PTR, NULL_PTR }
+#if (FLTM_SAME_FAULT_RESET_LOOP_HW_TEST_ENABLE == STD_ON)
+  ,
+  /* [FLTM_ACTION_CFG_HW_TEST_FINAL] HW validation harmless final action */
+  { NULL_PTR, FltMExt_SameFaultHwTestFinalAction, NULL_PTR }
+#endif
+};
+
+/**
+ * @brief Fault Manager fault configuration table
+ */
+const FltM_FaultConfigType FltM_FaultConfig[FLTM_MAX_NUM_FAULTS] =
+{
+  /* FaultId                                  SevCfg                   DebCfg                         LogCfg                  DemCfg                                                   ResetCfg                                                 ActionCfg */
+  { DCC_FAIL,                                 FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DCC_FAIL,                                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { ECC_FAULT,                                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_ECC_FAULT,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { ECC_1BIT_ERROR,                           FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_ECC_1BIT_ERROR,                            FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_RECOVERY },
+  { ECC_2BIT_ERROR,                           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_ECC_2BIT_ERROR,                            FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { OCOC_FAIL,                                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OCOC_FAIL,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { POK_FAULT,                                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_POK_FAULT,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { TIFS_SAFETY_CHECK_FWL_FAIL,               FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_TIFS_SAFETY_CHECK_FWL_FAIL,                FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { BACKLIGHT_ERROR,                          FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_BACKLIGHT_ERROR,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { POWER_ON_RESET,                           FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_POWER_ON_RESET,                            FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_RECOVERY },
+  { POWER_SUPPLY_FAULT,                       FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_POWER_SUPPLY_FAULT,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { EXT_WDG_RESET,                            FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_EXT_WDG_RESET,                             FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { EXT_WDG_COMM_ERROR,                       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_EXT_WDG_COMM_ERROR,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { WDGM_ALIVE_FAIL,                          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_WDGM_ALIVE_FAIL,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_PMIC_MAXRSTCOUNT_REACHED,            FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_PMIC_MAXRSTCOUNT_REACHED,                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_PMIC_ABIST_FAIL,                   FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_PMIC_ABIST_FAIL,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_NVM_INTEGRITY_ERROR,               FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_NVM_INTEGRITY_ERROR,                       FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_BUCK1_OVUV,                        FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_BUCK1_OVUV_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_BUCK2_OVUV,                        FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_BUCK2_OVUV_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_BUCK3_OVUV,                        FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_BUCK3_OVUV_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_BUCK4_OVUV,                        FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_BUCK4_OVUV_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_LDO1_OVUV,                         FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_LDO1_OVUV_ERROR,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_LDO2_OVUV,                         FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_LDO2_OVUV_ERROR,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_LDO3_OVUV,                         FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_LDO3_OVUV_ERROR,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_VVCA_OVUV,                         FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_VVCA_OVUV_ERROR,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_VMON1_OVUV,                        FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_VMON1_OVUV_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FALSH_INTEGRITY_FAIL,                     FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_FLASH_INTEGRITY_FAIL,                      FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_DMNMGR_GIP_FIRSTHB_MISS,           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DMNMGR_GIP_FIRSTHB_MISS,                   FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { SW_MAIN_WARMRSTz,                         FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_SW_MAIN_WARMRSTZ,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { E_ARM_PREFETCH_ABORT_R5,                  FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_ARM_PREFETCH_ABORT_R5,                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { E_ARM_DATA_ABORT,                         FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_ARM_DATA_ABORT,                            FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { E_ARM_UNDEFINED_INSTRUCTION,              FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_ARM_UNDEFINED_INSTRUCTION,                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_STATE,                          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_STATE,                                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_CALLLEVEL,                      FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_CALLLEVEL,                              FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_ACCESS,                         FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_ACCESS,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_ID,                             FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_ID,                                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_LIMIT,                          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_LIMIT,                                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_NOFUNC,                         FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_NOFUNC,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_RESOURCE,                       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_RESOURCE,                               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_VALUE,                          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_VALUE,                                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SERVICEID,                      FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SERVICEID,                              FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_ILLEGAL_ADDRESS,                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_ILLEGAL_ADDRESS,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_MISSINGEND,                     FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_MISSINGEND,                             FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_DISABLEDINT,                    FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_DISABLEDINT,                            FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_STACKFAULT,                     FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_STACKFAULT,                             FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PROTECTION_MEMORY,              FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PROTECTION_MEMORY,                      FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PROTECTION_TIME,                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PROTECTION_TIME,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PROTECTION_ARRIVAL,             FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PROTECTION_ARRIVAL,                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PROTECTION_LOCKED,              FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PROTECTION_LOCKED,                      FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PROTECTION_EXCEPTION,           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PROTECTION_EXCEPTION,                   FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_INTERFERENCE_DEADLOCK,          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_INTERFERENCE_DEADLOCK,                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_NESTING_DEADLOCK,               FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_NESTING_DEADLOCK,                       FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SPINLOCK,                       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SPINLOCK,                               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_CORE,                           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_CORE,                                   FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_PARAM_POINTER,                  FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_PARAM_POINTER,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SHUTDOWN,                       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SHUTDOWN,                               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_API_ERROR,                  FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_API_ERROR,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_ASSERTION,                  FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_ASSERTION,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_DISABLED,                   FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_DISABLED,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_NO_BARRIER_PARTICIPANT,     FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_NO_BARRIER_PARTICIPANT,              FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_UNIMPLEMENTED_FUNCTIONALITY,FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_UNIMPLEMENTED_FUNCTIONALITY,         FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_NO_NTFSTACK,                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_NO_NTFSTACK,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_OVERFLOW,                   FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_OVERFLOW,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_KILL_KERNEL_OBJ,            FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_KILL_KERNEL_OBJ,                    FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_NO_RESTARTTASK,             FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_NO_RESTARTTASK,                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_CALL_NOT_ALLOWED,           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_CALL_NOT_ALLOWED,                   FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_FUNCTION_UNAVAILABLE,       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_FUNCTION_UNAVAILABLE,               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_PROTECTION_SYSCALL,         FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_PROTECTION_SYSCALL,                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_PROTECTION_IRQ,             FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_PROTECTION_IRQ,                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_OVERLOAD,                   FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_OVERLOAD,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_OS_SYS_CROSS_CORE_REQUESTED,       FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_OS_SYS_CROSS_CORE_REQUESTED,               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { DM_WDG_FAIL,                              FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DM_WDG_FAIL,                               FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_DMNMGR_GIP_HB_MISS,                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DMNMGR_GIP_HB_MISS,                        FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_DMNMGR_GIP_LINKUP_FAILED,          FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DMNMGR_GIP_LINKUP_FAILED,                  FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_DMNMGR_GIP_HEALTH_FATAL_ERROR,     FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DMNMGR_GIP_HEALTH_FATAL_ERROR,             FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { VOLTAGE_ERROR,                            FLTM_SEVERITY_CFG_ERROR, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_ERROR_DLT, FLTM_DEM_CFG_VOLTAGE_ERROR,                             FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { FLTM_E_SW_HANG,                           FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_SW_HANG,                                   FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_BUCK1_OVUV,                        FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_BUCK1_OVUV_RESET,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_BUCK2_OVUV,                        FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_BUCK2_OVUV_RESET,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_BUCK3_OVUV,                        FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_BUCK3_OVUV_RESET,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_BUCK4_OVUV,                        FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_BUCK4_OVUV_RESET,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_LDO1_OVUV,                         FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_LDO1_OVUV_RESET,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_LDO2_OVUV,                         FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_LDO2_OVUV_RESET,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_LDO3_OVUV,                         FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_LDO3_OVUV_RESET,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_VVCA_OVUV,                         FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_VVCA_OVUV_RESET,                           FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { FLTM_E_VMON1_OVUV,                        FLTM_SEVERITY_CFG_INFO,  FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_INFO_DLT,  FLTM_DEM_CFG_VMON1_OVUV_RESET,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH1,     FLTM_ACTION_CFG_NONE },
+  { DET_ERROR,                                FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_DET_ERROR,                                 FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY },
+  { PERIODIC_READBACK_FAIL,                   FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_PERIODIC_READBACK_FAIL,                     FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_INITIAL_FINAL_RECOVERY }
+#if (FLTM_SAME_FAULT_RESET_LOOP_HW_TEST_ENABLE == STD_ON)
+  ,
+  { FLTM_SAME_FAULT_HW_TEST_FAULT_ID,           FLTM_SEVERITY_CFG_FATAL, FLTM_DEBOUNCE_CFG_IMMEDIATE,  FLTM_LOG_CFG_FATAL_DLT, FLTM_DEM_CFG_HW_TEST_RESERVED,                          FLTM_RESET_POLICY_CFG_RESET_UNTIL_FINAL_ACTION_TH3,     FLTM_ACTION_CFG_HW_TEST_FINAL }
+#endif
+};
+
+/**
+ * @brief Fault Manager DET wrapper
+ */
+void FltM_Det_ReportError(uint8 ApiId, uint8 ErrorId)
+{
+  (void)Det_ReportError((uint16)6500U, 0x01, ApiId, ErrorId);
+}
+
+/**
+ * @brief Fault Manager DEM wrapper
+ */
+Std_ReturnType FltM_Dem_SetEventStatus(Dem_EventIdType EventId,
+                                       Dem_EventStatusType EventStatus)
+{
+  return Dem_SetEventStatus(EventId, EventStatus);
+}
+
+#define FLTM_SEC_CODE_STOP
+#define FLTM_CORE_CONST_SEC_END
+#define FLTM_CORE_DATA_SEC_END
+#define FLTM_CORE_BSS_SEC_END
+
+#include "MemMap.h"
+
+#endif
+
+/*****************************************************************************
+*     End of File
+*
+*******************************************************************************/
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/*----------------------------------------------------------------------------
+REVISION HISTORY
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :18-Nov-2025
+By                :MSAVARIY
+Traceability      :
+Change Description:Time Debounce implementation
+                       https://visteon.atlassian.net/browse/PE4TI29141-10705
+-----------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------
+Date              :26-Jan-2026
+By                :SDC
+Traceability      :
+Change Description:Safe Recovery Implementation for Fault Manager
+                       https://visteon.atlassian.net/browse/PE4TI29141-11472
+-----------------------------------------------------------------------------*/

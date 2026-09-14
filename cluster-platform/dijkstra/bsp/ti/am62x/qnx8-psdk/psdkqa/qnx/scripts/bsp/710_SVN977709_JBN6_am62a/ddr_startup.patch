@@ -1,0 +1,31 @@
+diff --git a/src/hardware/startup/boards/am62a/evm/board.h b/src/hardware/startup/boards/am62a/evm/board.h
+index a870f04..25186d9 100644
+--- a/src/hardware/startup/boards/am62a/evm/board.h
++++ b/src/hardware/startup/boards/am62a/evm/board.h
+@@ -25,8 +25,10 @@
+ #define __BOARD_H
+ 
+ #define IDK_DDR0_BASE   0x80000000ul
+-//#define IDK_DDR0_SIZE   MEG(2048)       /* 2GB */
+-#define IDK_DDR0_SIZE   MEG(512)       /* 512MB for initial wakeup */
++#define IDK_DDR0_SIZE   MEG(2048)       /* 2GB */
++
++#define IDK_DDR1_BASE   0x880000000ul
++#define IDK_DDR1_SIZE (MEG(14336)) /* 14GB */
+ 
+ extern struct callout_rtn   reboot_ti_sci;
+ extern int r5_display;
+diff --git a/src/hardware/startup/boards/am62a/init_raminfo.c b/src/hardware/startup/boards/am62a/init_raminfo.c
+index 5268092..bd23b37 100644
+--- a/src/hardware/startup/boards/am62a/init_raminfo.c
++++ b/src/hardware/startup/boards/am62a/init_raminfo.c
+@@ -31,6 +31,9 @@ void init_raminfo(void)
+ #ifdef  IDK_DDR0_SIZE
+     add_ram(IDK_DDR0_BASE, IDK_DDR0_SIZE);
+ #endif
++#ifdef  IDK_DDR1_SIZE
++    add_ram(IDK_DDR1_BASE, IDK_DDR1_SIZE);
++#endif
+ }
+ 
+ #if defined(__QNXNTO__) && defined(__USESRCVERSION)

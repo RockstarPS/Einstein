@@ -1,0 +1,13 @@
+[Unit]
+Description=Dependency test 20 Requires child
+Requires=test_20_1.service
+After=test_20_1.service
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_20 20
+Restart=no
+
+StandardOutput=journal
+StandardError=journal

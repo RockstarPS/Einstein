@@ -1,0 +1,280 @@
+
+=> setenv dfu_alt_info "qnx-ifs ram 0x80080000 0x5000000"
+=> dfu 0 ram 0 list
+DFU alt settings list:
+dev: RAM alt: 0 name: qnx-ifs layout: RAM_ADDR
+=> dfu 0 ram 0
+######################################################################################################################################################################################################DOWNLOAD ... OK
+Ctrl+C to exit ...
+> go 0x80080000
+## Starting application at 0x80080000 ...
+MMU: 16-bit ASID 40-bit PA TCR_EL1=b5183519
+ARM GIC-500 r1p1, arch v3.0 detected
+gic_v3_lpi_add_entry for vectors 8192 -> 8447, Ok
+gic_v3_lpi_add_entry for vectors 8448 -> 65535, Ok
+No SPI intrinfo. Add default entry for 32 -> 287 vectors, Ok
+LPI config table #1 @ 000000008000f000, callout vaddr: ffffff8040291000
+aarch64_cpuspeed: core speed 1250
+cpu0: MPIDR=80000000
+cpu0: MIDR=410fd034 Cortex-A53 r0p4
+cpu0: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu0: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu0: L1 Icache 32K linesz=64 set/way=256/2
+cpu0: L1 Dcache 32K linesz=64 set/way=128/4
+cpu0: L2 Unified 512K linesz=64 set/way=512/16
+Enabling ITS 0
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 0
+update CWRITER to 0x00000060
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 0000000001880000 for CPU0
+init_usb_host: USB0
+SYSFW ABI: 3.1 (firmware rev 9 '9.0.6--w09.00.05-am62p (Kool Ko'
+no DSS0 power: trying to turn it on
+no DSS_DSI0 power: trying to turn it on
+no DSS1 power: trying to turn it on
+init_oldi: Start to set pin-mux for OLDI0
+init_oldi: reg=0x000f40d4 val=0x00010007
+init_oldi: reg=0x000f4230 val=0x00010007
+init_oldi: reg=0x000f419c val=0x00010007
+init_oldi: Start to set pin-mux for OLDI0 completed
+no TISCI_DEV_OLDI0_VD power: trying to turn it on
+no TISCI_DEV_OLDI1_VD power: trying to turn it on
+Loading IFS...decompressing...done
+aarch64_cpuspeed: core speed 1250
+cpu1: MPIDR=80000001
+cpu1: MIDR=410fd034 Cortex-A53 r0p4
+cpu1: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu1: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu1: L1 Icache 32K linesz=64 set/way=256/2
+cpu1: L1 Dcache 32K linesz=64 set/way=128/4
+cpu1: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 1
+update CWRITER to 0x000000c0
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018a0000 for CPU1
+aarch64_cpuspeed: core speed 1250
+cpu2: MPIDR=80000002
+cpu2: MIDR=410fd034 Cortex-A53 r0p4
+cpu2: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu2: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu2: L1 Icache 32K linesz=64 set/way=256/2
+cpu2: L1 Dcache 32K linesz=64 set/way=128/4
+cpu2: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 2
+update CWRITER to 0x00000120
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018c0000 for CPU2
+aarch64_cpuspeed: core speed 1250
+cpu3: MPIDR=80000003
+cpu3: MIDR=410fd034 Cortex-A53 r0p4
+cpu3: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu3: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu3: L1 Icache 32K linesz=64 set/way=256/2
+cpu3: L1 Dcache 32K linesz=64 set/way=128/4
+cpu3: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 3
+update CWRITER to 0x00000180
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018e0000 for CPU3
+
+System page at phys:0000000080023000 user:ffffff80402b5000 kern:ffffff80402b2000
+Starting next program at vffffff806008b4b0
+All ClockCycles offsets within tolerance
+
+Welcome to QNX Neutrino 7.1.0 on TI_AM62P_SK_EVM_Board !
+
+Starting I2C driver ...
+Configuring Resmgr DIO driver for TI AM62P
+start serial driver
+Starting MMC/SD memory card driver... eMMC
+Starting XHCI driver on USB3SS0 and USB3SS1
+Path=0 - am65x
+ target=0 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=1 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=2 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=3 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=4 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=5 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=6 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=7 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+Partition already exists.
+[DLT] Cannot open file for logging! Using CommandLine
+[DLT] Registering Context ResMgrDisplay , ResMgr_Display Component
+[ResMgrDisplay][ResMgrDisplay][Info] (155662|1) CDisplay_RM.c:150 :main: starting... Display RM
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:356 :CDisplay_RM_Init: attached power path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:389 :CDisplay_RM_Init: attached state path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:415 :CDisplay_RM_Init: attached gamma red path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:441 :CDisplay_RM_Init: attached gamma green path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:467 :CDisplay_RM_Init: attached gamma blue path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:501 :CDisplay_RM_Init: attached Temparature val path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:535 :CDisplay_RM_Init: attached Temparature type path
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:555 :CDisplay_RM_Init: Dispatch context allocation Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:579 :CDisplay_Hw_Init: Display dll load success
+[DLT] Registering Context DisplayLib , Display_Lib Component
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:143 :Init_Display: Init Success!
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:590 :CDisplay_Hw_Init: Display Hw init success
+Starting Screen Graphics...
+Starting shell ...
+#
+#
+#
+#  ls /dev/display/display*
+gamma_blue     gamma_red      state
+gamma_green    power
+# display_rm_test -p1 -w1
+executing set display power  test case
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+display_test::errno=0:"No error"
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7683]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:186 :Enable_Display: Display DO_PWM_DIMMING 12 set Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 1 success
+devctl_ret=0:"No error"
+#
+# gles
+gles1-gears  gles1-vsync  gles2-gears  gles3-gears
+# gles3-gears
+
+#
+# display_power_off
+Start: display_power_off
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7680]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:217 :Enable_Display: Display state set to 0 success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 0 success
+Return value is :0
+Exit: display_power_off
+# echo 1 > /dev/display/display0/power
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7683]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:186 :Enable_Display: Display DO_PWM_DIMMING 12 set Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 1 success
+#
+# gles3-gears
+
+#
+# gles3-gears
+
+# echo 0 > /dev/display/display0/power
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7680]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:217 :Enable_Display: Display state set to 0 success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 0 success
+#
+# gles3-gears
+
+# display_power_on
+Start: display_power_on
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7683]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:186 :Enable_Display: Display DO_PWM_DIMMING 12 set Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 1 success
+Return value is :0
+Exit: display_power_on
+#
+# gles
+gles1-gears  gles1-vsync  gles2-gears  gles3-gears
+# gles3-gears &
+[1] 221201
+# display_rm_test -p1 -w0
+executing set display power  test case
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+display_test::errno=0:"No error"
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:426 :Set_Display_State: display [0] powermode is set as expected [0x7680]
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:217 :Enable_Display: Display state set to 0 success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1254 :CDisplay_RM_Set_Power: display set power to 0 success
+devctl_ret=0:"No error"
+# 299 frames in  5.009 seconds = 59.693 FPS
+slay g300 frames in  5.000 seconds = 60.000 FPS
+les3-gears
+# cat /dev/display/display0/state
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:701 :CDisplay_RM_io_read: Display state read success OFF
+
+OFF
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:701 :CDisplay_RM_io_read: Display state read success OFF
+
+[1] + Terminated           gles3-gears
+#
+#
+# cat /dev/display/display0/state
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:701 :CDisplay_RM_io_read: Display state read success OFF
+
+OFF
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:701 :CDisplay_RM_io_read: Display state read success OFF
+
+# display_rm_test -s1
+executing set display state  test case
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+display_test::errno=0:"No error"
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1096 :CDisplay_RM_io_devctl: Display state read Success
+devctl_ret=0:"No error"
+internal read value = 0
+# cat /dev/thermal/thermal0/temperature/value
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:720 :CDisplay_RM_io_read: Display Thermal Temp read success
+0
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:720 :CDisplay_RM_io_read: Display Thermal Temp read success
+# display_rm_test -t1
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1130 :CDisplay_RM_io_devctl: Display thermal read Success
+display_thermaltest::errno=0:"No error"
+display_thermaltest::temp read value = 0
+#  cat /dev/thermal/thermal0/temperature/type
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+LCD
+# display_rm_test -t2
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:626 :CDisplay_RM_io_open: Display RM Open Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1159 :CDisplay_RM_io_devctl: Display Thermal type read success
+display_thermaltest::errno=0:"No error"
+display_thermaltest::temp read type = LCD
+#
+#
+# pidin arg
+     pid Arguments
+       1 procnto-smp-instr -v
+       2 pipe
+   20483 slogger2
+   20484 dumper
+   20485 mqueue
+   20486 random -p -t
+   20487 i2c-omap35xx -p0x20000000 -i193 -d
+   20488 i2c-omap35xx -p0x20010000 -i194 -d
+   20489 i2c-omap35xx -p0x20020000 -i195 -d
+   20490 resmgr_dio -b0x00600000 -m0x00000000 -b0x00600000 -m0x00100741 -b0x00600000 -m0x000000FC -b0x00601000 -m0x000FBA00 -b0x00601000 -m0x000B2000
+   20491 devc-seromap -e -R -F 0x02800000,210
+   20492 devb-sdmmc-am65x qnx6 trim=enable cam cache,ra=128k:4096k,memory=/memory/below4G/ram/sysram,maxio=256,disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@ disk name=emmc sdmmc partitions=on,pwroff_notify=short sdio addr=0x0fa10000,irq=165,emmc,bs=sscfg=0x8000 disk name=emmc,naming=0#@
+   20493 io-usb-otg -d dwc3-xhci ioport=0x31000000,irq=220
+  155662 resmgr_display -p0 -t0 -llibdisplay.so
+  155663 screen -c /usr/lib/graphics/am62p/graphics-einstein4.conf
+  155664 ksh
+  303121 pidin arg
+# slay 155662
+[ResMgrDisplay][ResMgrDisplay][Erro] (155662|1) CDisplay_RM.c:216 :main: Dispatch Block Failed
+[ResMgrDisplay][DisplayLib][Info] (155662|1) CDisplay_interface.c:247 :Deinit_Display: Enter
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1534 :CDisplay_Deinit: Display Shut Down success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1543 :CDisplay_Deinit: Display DLL handle close success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1461 :CDisplay_RM_Terminate: Display HW DeInitialization Success
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1468 :CDisplay_RM_Terminate: Display Power Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1470 :CDisplay_RM_Terminate: Display Power state Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1472 :CDisplay_RM_Terminate: Display Power Thermal Temp Val Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1474 :CDisplay_RM_Terminate: Display Power Thermal Temp Type Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1476 :CDisplay_RM_Terminate: Display Gamma Red Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1478 :CDisplay_RM_Terminate: Display Gamma Green Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1480 :CDisplay_RM_Terminate: Display Gamma Blue Detach
+[ResMgrDisplay][ResMgrDisplay][Defa] (155662|1) CDisplay_RM.c:1504 :CDisplay_RM_Terminate: Display RM Dispatch destroyed
+#
+#
+#
+# /dev/display/display*
+ksh: /dev/display/display*: cannot execute - No such file or directory
+# ls -l /dev/display/display*
+ls: No such file or directory (/dev/display/display*)
+#

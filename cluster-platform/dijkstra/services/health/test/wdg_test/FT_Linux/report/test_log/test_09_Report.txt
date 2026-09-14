@@ -1,0 +1,121 @@
+root@am62pxx-7xxd-b@23:47:/system/usr/bin/wdg_test_FT# ./testcase09_restart_always.sh
+------------------------------------------------------------------
+----- Test Case 9 - Restart type: always --------------------------
+  Cause of termination:
+        (1) Clean exit (code 0)
+        (2) Clean signals: SIGHUP, SIGINT, SIGTERM, SIGPIPE
+        (3) Unclean exit (code 1)
+        (4) Unclean signals: SIGKILL, SIGSEGV
+
+  Expected behavior:
+        The process shall always be restarted regardless of
+        exit code or signal.
+
+  Error Notification Fatal (Yes/No): No
+  Process Restart (Yes/No): Yes
+  [*] Configuration:
+        Restart=always
+------------------------------------------------------------------
+[>] Starting test_04.service...
+[+] test_04.service started successfully.
+[>] Starting wdg_proxy_test_04.service...
+Error: Failed to start wdg_proxy_test_04.service.
+.......................................................
+       Test: signal-triggered clean exit (code 0)
+.......................................................
+[!] Sending signal 35 to test_04.service (PID: 44367)...
+.......................................................
+       Test: clean signal termination (SIGHUP)
+.......................................................
+[!] Sending signal 1 to test_04.service (PID: 44383)...
+.......................................................
+       Test: signal-triggered exit (code 255)
+.......................................................
+[!] Sending signal 36 to test_04.service (PID: 44392)...
+.......................................................
+       Test: unclean signal termination (SIGABRT)
+.......................................................
+[!] Sending signal 6 to test_04.service (PID: 44401)...
+.......................................................
+       Test: signal-triggered exit (code 1)
+.......................................................
+[!] Sending signal 37 to test_04.service (PID: 44416)...
+.......................................................
+       Test: unclean signal termination (SIGKILL)
+.......................................................
+[!] Sending signal 9 to test_04.service (PID: 44424)...
+.......................................................
+       Test: clean signal termination (SIGTERM)
+.......................................................
+[!] Sending signal 15 to test_04.service (PID: 44433)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 23:47:42 am62pxx-7xxd-b systemd[1]: /usr/lib/systemd/system/test_04.service:9: Unknown key 'StartLimitIntervalSec' in section [Service], ignoring.
+May 29 23:47:43 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:43 am62pxx-7xxd-b test_04[44367]: Start - Test Case: 4
+May 29 23:47:43 am62pxx-7xxd-b test_04[44367]: SIG MIN: 34
+May 29 23:47:43 am62pxx-7xxd-b test_04[44367]: SIG MAX: 64
+May 29 23:47:45 am62pxx-7xxd-b test_04[44367]: Interrupt signal (35) received.
+May 29 23:47:46 am62pxx-7xxd-b test_04[44367]: Exit - Test case: 4
+May 29 23:47:46 am62pxx-7xxd-b systemd[1]: test_04.service: Deactivated successfully.
+May 29 23:47:46 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 1.
+May 29 23:47:46 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:46 am62pxx-7xxd-b test_04[44383]: Start - Test Case: 4
+May 29 23:47:46 am62pxx-7xxd-b test_04[44383]: SIG MIN: 34
+May 29 23:47:46 am62pxx-7xxd-b test_04[44383]: SIG MAX: 64
+May 29 23:47:47 am62pxx-7xxd-b systemd[1]: test_04.service: Deactivated successfully.
+May 29 23:47:47 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 2.
+May 29 23:47:47 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:47 am62pxx-7xxd-b test_04[44392]: Start - Test Case: 4
+May 29 23:47:47 am62pxx-7xxd-b test_04[44392]: SIG MIN: 34
+May 29 23:47:47 am62pxx-7xxd-b test_04[44392]: SIG MAX: 64
+May 29 23:47:49 am62pxx-7xxd-b test_04[44392]: Interrupt signal (36) received.
+May 29 23:47:49 am62pxx-7xxd-b test_04[44392]: Exit - Test case: 4
+May 29 23:47:49 am62pxx-7xxd-b systemd[1]: test_04.service: Main process exited, code=exited, status=255/EXCEPTION
+May 29 23:47:49 am62pxx-7xxd-b systemd[1]: test_04.service: Failed with result 'exit-code'.
+May 29 23:47:49 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 3.
+May 29 23:47:49 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:49 am62pxx-7xxd-b test_04[44401]: Start - Test Case: 4
+May 29 23:47:49 am62pxx-7xxd-b test_04[44401]: SIG MIN: 34
+May 29 23:47:49 am62pxx-7xxd-b test_04[44401]: SIG MAX: 64
+May 29 23:47:51 am62pxx-7xxd-b systemd[1]: test_04.service: Main process exited, code=dumped, status=6/ABRT
+May 29 23:47:51 am62pxx-7xxd-b systemd[1]: test_04.service: Failed with result 'core-dump'.
+May 29 23:47:51 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 4.
+May 29 23:47:51 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:51 am62pxx-7xxd-b test_04[44416]: Start - Test Case: 4
+May 29 23:47:51 am62pxx-7xxd-b test_04[44416]: SIG MIN: 34
+May 29 23:47:51 am62pxx-7xxd-b test_04[44416]: SIG MAX: 64
+May 29 23:47:53 am62pxx-7xxd-b test_04[44416]: Interrupt signal (37) received.
+May 29 23:47:53 am62pxx-7xxd-b test_04[44416]: Exit - Test case: 4
+May 29 23:47:53 am62pxx-7xxd-b systemd[1]: test_04.service: Main process exited, code=exited, status=1/FAILURE
+May 29 23:47:53 am62pxx-7xxd-b systemd[1]: test_04.service: Failed with result 'exit-code'.
+May 29 23:47:53 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 5.
+May 29 23:47:54 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:54 am62pxx-7xxd-b test_04[44424]: Start - Test Case: 4
+May 29 23:47:54 am62pxx-7xxd-b test_04[44424]: SIG MIN: 34
+May 29 23:47:54 am62pxx-7xxd-b test_04[44424]: SIG MAX: 64
+May 29 23:47:55 am62pxx-7xxd-b systemd[1]: test_04.service: Main process exited, code=killed, status=9/KILL
+May 29 23:47:55 am62pxx-7xxd-b systemd[1]: test_04.service: Failed with result 'signal'.
+May 29 23:47:55 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 6.
+May 29 23:47:55 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:55 am62pxx-7xxd-b test_04[44433]: Start - Test Case: 4
+May 29 23:47:55 am62pxx-7xxd-b test_04[44433]: SIG MIN: 34
+May 29 23:47:55 am62pxx-7xxd-b test_04[44433]: SIG MAX: 64
+May 29 23:47:57 am62pxx-7xxd-b systemd[1]: test_04.service: Deactivated successfully.
+May 29 23:47:57 am62pxx-7xxd-b systemd[1]: test_04.service: Scheduled restart job, restart counter is at 7.
+May 29 23:47:57 am62pxx-7xxd-b systemd[1]: Started Test application 04.
+May 29 23:47:57 am62pxx-7xxd-b test_04[44441]: Start - Test Case: 4
+May 29 23:47:57 am62pxx-7xxd-b test_04[44441]: SIG MIN: 34
+May 29 23:47:57 am62pxx-7xxd-b test_04[44441]: SIG MAX: 64
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+-----------------------------------------------
+[*] Checking status: test_04.service
+[!] test_04.service is running. Stopping for a clean state...
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_04.service
+--- Test complete. DLT logging stopped. ---
+******************************************************
+root@am62pxx-7xxd-b@23:48:/system/usr/bin/wdg_test_FT#

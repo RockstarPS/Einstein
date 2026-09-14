@@ -1,0 +1,44 @@
+# set_dir_out 29
+Start: set_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=704527 _=/usr/sbin/set_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=704527 _=/usr/sbin/set_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: set_dir_out
+# dio_set_pin 29
+Start: dio_set_pin
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=712719 _=/usr/sbin/dio_set_pin
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=712719 _=/usr/sbin/dio_set_pin ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: dio_set_pin
+#
+#
+#
+# cat /dev/gpio/gpio29/value
+1
+#
+#
+# slog2info | grep ResMgr_DIO
+Jan 01 00:49:10.333               ResMgr_DIO.32781              dio_log*     0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:49:10.333               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:49:10.334               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 0 write using devctl is successful and status is 0
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 0 write using devctl is successful and status is 0
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:49:27.549               ResMgr_DIO.32781              dio_log      0  dio_get_dir:102 bitstatus is 0
+Jan 01 00:50:35.454               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:50:35.454               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:50:35.454               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+Jan 01 00:50:40.909               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 29
+Jan 01 00:50:40.909               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:50:40.909               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:983 Value 1 write using devctl is successful and status is 0
+Jan 01 00:50:48.195               ResMgr_DIO.32781              dio_log      0  dio_read_channel:136 In Read Channel : bitstatus is 1
+Jan 01 00:50:48.195               ResMgr_DIO.32781              dio_log      0  dio_read_channel:136 In Read Channel : bitstatus is 1
+#

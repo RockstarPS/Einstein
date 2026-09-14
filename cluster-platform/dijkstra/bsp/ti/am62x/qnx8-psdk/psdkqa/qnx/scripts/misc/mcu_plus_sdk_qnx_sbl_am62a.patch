@@ -1,0 +1,139 @@
+diff --git a/examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/example.syscfg b/examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/example.syscfg
+index 001db05319..a273df77a8 100644
+--- a/examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/example.syscfg
++++ b/examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/example.syscfg
+@@ -8,8 +8,6 @@
+ /**
+  * Import the modules used in this configuration.
+  */
+-const mcu_bist    = scripting.addModule("/drivers/mcu_bist/mcu_bist", {}, false);
+-const mcu_bist1   = mcu_bist.addInstance();
+ const flash       = scripting.addModule("/board/flash/flash", {}, false);
+ const flash1      = flash.addInstance();
+ const bootloader  = scripting.addModule("/drivers/bootloader/bootloader", {}, false);
+@@ -18,6 +16,11 @@ const bootloader2 = bootloader.addInstance();
+ const ddr         = scripting.addModule("/drivers/ddr/ddr", {}, false);
+ const ddr1        = ddr.addInstance();
+ const gtc         = scripting.addModule("/drivers/gtc/gtc");
++const mcu_bist    = scripting.addModule("/drivers/mcu_bist/mcu_bist", {}, false);
++const mcu_bist1   = mcu_bist.addInstance();
++const mmcsd       = scripting.addModule("/drivers/mmcsd/mmcsd", {}, false);
++const mmcsd1      = mmcsd.addInstance();
++const mmcsd2      = mmcsd.addInstance();
+ const clock       = scripting.addModule("/kernel/dpl/clock");
+ const debug_log   = scripting.addModule("/kernel/dpl/debug_log");
+ const mpu_armv7   = scripting.addModule("/kernel/dpl/mpu_armv7", {}, false);
+@@ -35,8 +38,6 @@ const mpu_armv710 = mpu_armv7.addInstance();
+ /**
+  * Write custom configuration values to the imported modules.
+  */
+-mcu_bist1.$name = "CONFIG_MCU_BIST0";
+-
+ bootloader1.$name          = "CONFIG_BOOTLOADER_FLASH_MCU";
+ bootloader1.appImageOffset = "0x800000";
+ 
+@@ -56,6 +57,13 @@ flash1.serialFlashDriver.peripheralDriver.phyEnable    = true;
+ 
+ ddr1.$name = "CONFIG_DDR0";
+ 
++mcu_bist1.$name = "CONFIG_MCU_BIST0";
++
++mmcsd1.$name = "CONFIG_MMCSD0";
++
++mmcsd2.$name        = "CONFIG_MMCSD1";
++mmcsd2.moduleSelect = "MMC1";
++
+ const udma                                           = scripting.addModule("/drivers/udma/udma", {}, false);
+ const udma1                                          = udma.addInstance({}, false);
+ udma1.$name                                          = "CONFIG_UDMA0";
+@@ -115,6 +123,14 @@ mpu_armv710.size         = 9;
+ mpu_armv710.allowExecute = false;
+ mpu_armv710.attributes   = "Device";
+ 
++/**
++ * These are the reserved peripherals and settings in this configuration
++ */
++const iUSB1 = scripting.addPeripheral("USB");
++iUSB1.$name = "MyUSB1";
++const iUSB2 = scripting.addPeripheral("USB");
++iUSB2.$name = "MyUSB2";
++
+ /**
+  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+@@ -132,6 +148,37 @@ flash1.serialFlashDriver.peripheralDriver.OSPI.D3.$suggestSolution   = "OSPI0_D3
+ flash1.serialFlashDriver.peripheralDriver.OSPI.D2.$suggestSolution   = "OSPI0_D2";
+ flash1.serialFlashDriver.peripheralDriver.OSPI.D1.$suggestSolution   = "OSPI0_D1";
+ flash1.serialFlashDriver.peripheralDriver.OSPI.D0.$suggestSolution   = "OSPI0_D0";
++mmcsd1.MMC0.$suggestSolution                                         = "MMC0";
++mmcsd1.MMC0.CLK.$suggestSolution                                     = "MMC0_CLK";
++mmcsd1.MMC0.CMD.$suggestSolution                                     = "MMC0_CMD";
++mmcsd1.MMC0.DAT0.$suggestSolution                                    = "MMC0_DAT0";
++mmcsd1.MMC0.DAT1.$suggestSolution                                    = "MMC0_DAT1";
++mmcsd1.MMC0.DAT2.$suggestSolution                                    = "MMC0_DAT2";
++mmcsd1.MMC0.DAT3.$suggestSolution                                    = "MMC0_DAT3";
++mmcsd1.MMC0.DAT4.$suggestSolution                                    = "MMC0_DAT4";
++mmcsd1.MMC0.DAT5.$suggestSolution                                    = "MMC0_DAT5";
++mmcsd1.MMC0.DAT6.$suggestSolution                                    = "MMC0_DAT6";
++mmcsd1.MMC0.DAT7.$suggestSolution                                    = "MMC0_DAT7";
++mmcsd2.MMC1.$suggestSolution                                         = "MMC1";
++mmcsd2.MMC1.CLK.$suggestSolution                                     = "MMC1_CLK";
++mmcsd2.MMC1.CMD.$suggestSolution                                     = "MMC1_CMD";
++mmcsd2.MMC1.DAT0.$suggestSolution                                    = "MMC1_DAT0";
++mmcsd2.MMC1.DAT1.$suggestSolution                                    = "MMC1_DAT1";
++mmcsd2.MMC1.DAT2.$suggestSolution                                    = "MMC1_DAT2";
++mmcsd2.MMC1.DAT3.$suggestSolution                                    = "MMC1_DAT3";
++mmcsd2.MMC1.SDCD.$suggestSolution                                    = "MMC1_SDCD";
+ debug_log.uartLog.UART.$suggestSolution                              = "USART0";
+ debug_log.uartLog.UART.RXD.$suggestSolution                          = "UART0_RXD";
+ debug_log.uartLog.UART.TXD.$suggestSolution                          = "UART0_TXD";
++iUSB1.$suggestSolution                                               = "USB1";
++iUSB1.DM.$suggestSolution                                            = "USB1_DM";
++iUSB1.DP.$suggestSolution                                            = "USB1_DP";
++iUSB1.DRVVBUS.$suggestSolution                                       = "USB1_DRVVBUS";
++iUSB1.RCALIB.$suggestSolution                                        = "USB1_RCALIB";
++iUSB1.VBUS.$suggestSolution                                          = "USB1_VBUS";
++iUSB2.$suggestSolution                                               = "USB0";
++iUSB2.DM.$suggestSolution                                            = "USB0_DM";
++iUSB2.DP.$suggestSolution                                            = "USB0_DP";
++iUSB2.DRVVBUS.$suggestSolution                                       = "USB0_DRVVBUS";
++iUSB2.RCALIB.$suggestSolution                                        = "USB0_RCALIB";
++iUSB2.VBUS.$suggestSolution                                          = "USB0_VBUS";
+diff --git a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx.cfg b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx.cfg
+index 5a3cfb8aa0..74fa4b6f17 100644
+--- a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx.cfg
++++ b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx.cfg
+@@ -22,7 +22,7 @@
+ # Now send one or more files to flash or flashverify as needed. The order of sending files does not matter
+ 
+ # When sending bootloader make sure to flash at offset 0x0. ROM expects bootloader at offset 0x0
+---file=sbl_prebuilt/am62ax-sk/sbl_ospi_nand_linux_stage1.release.tiimage --operation=flash --flash-offset=0x0
++--file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage1.release.tiimage --operation=flash --flash-offset=0x0
+ 
+ # 2nd stage bootloader is flashed at 0x80000 or to whatever offset your bootloader is configured for
+ --file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage2/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage2.release.appimage --operation=flash --flash-offset=0x80000
+diff --git a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs.cfg b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs.cfg
+index a3a6b04046..880024039f 100644
+--- a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs.cfg
++++ b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs.cfg
+@@ -23,6 +23,7 @@
+ 
+ # When sending bootloader make sure to flash at offset 0x0. ROM expects bootloader at offset 0x0
+ --file=sbl_prebuilt/am62ax-sk/sbl_ospi_nand_linux_stage1.release.hs.tiimage --operation=flash --flash-offset=0x0
++--file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage1.release.hs.tiimage --operation=flash --flash-offset=0x0
+ 
+ # 2nd stage bootloader is flashed at 0x80000 or to whatever offset your bootloader is configured for
+ --file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage2/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage2.release.appimage.hs --operation=flash --flash-offset=0x80000
+diff --git a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs_fs.cfg b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs_fs.cfg
+index 026d045019..8d57538223 100644
+--- a/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs_fs.cfg
++++ b/tools/boot/sbl_prebuilt/am62ax-sk/default_sbl_ospi_nand_qnx_hs_fs.cfg
+@@ -22,7 +22,7 @@
+ # Now send one or more files to flash or flashverify as needed. The order of sending files does not matter
+ 
+ # When sending bootloader make sure to flash at offset 0x0. ROM expects bootloader at offset 0x0
+---file=sbl_prebuilt/am62ax-sk/sbl_ospi_nand_linux_stage1.release.hs_fs.tiimage --operation=flash --flash-offset=0x0
++--file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage1/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage1.release.hs_fs.tiimage --operation=flash --flash-offset=0x0
+ 
+ # 2nd stage bootloader is flashed at 0x80000 or to whatever offset your bootloader is configured for
+  --file=../../examples/drivers/boot/sbl_ospi_nand_linux_multistage/sbl_ospi_nand_linux_stage2/am62ax-sk/r5fss0-0_nortos/ti-arm-clang/sbl_ospi_nand_linux_stage2.release.appimage.hs_fs --operation=flash --flash-offset=0x80000

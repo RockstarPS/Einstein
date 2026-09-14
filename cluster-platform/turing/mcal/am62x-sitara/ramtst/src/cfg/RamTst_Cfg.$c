@@ -1,0 +1,88 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2025. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  RamTst_Cfg.c
+Module Short Name:  RamTst_Cfg.c
+VOBName          :  
+Author           :  sgopal1
+Description      :  This file contains configurations needed for RamTst
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+******************************************************************************/
+#ifndef RAMTST_CFG_C
+#define RAMTST_CFG_C
+
+/*****************************************************************************
+ *  Include Files                                                             *
+ ******************************************************************************/
+#include "RamTst.h"
+#include "RamTst_Cfg.h"
+#include "Os.h"
+
+/*****************************************************************************
+ *  Configuration Definitions                                                 *                                                                           *
+ ******************************************************************************/
+#define RAMTST_START_SEC_CONST_UNSPECIFIED
+#include "RamTst_MemMap.h"
+
+/**
+ * @brief Filters and their array index used for Analog signals
+ */
+
+const RamTstBlockParamstype BlockConfig_1[] = { {0x0U, 0x79150100U, 0x79151124U, 0xFFFFFFFFU, RAMTEST_NON_DESTRUCTIVE, 0x79151224U } };
+
+const RamTstAlgParamstype Algconfig[] = { {0x0U, RAMTST_MARCH_TEST, 65536U, 65536U, 1U, 1024U, &BlockConfig_1[0], 0x79152248U} };
+
+const RamTst_ConfigType RamTstConfig = { 0x0U, 0x1U, 0x1U, NULL_PTR, NULL_PTR };
+
+void RAMTST_ENTERCRITICALSECTION(void)
+{
+SuspendAllInterrupts();
+}
+
+void RAMTST_EXITCRITICALSECTION(void)
+{
+ResumeAllInterrupts();
+}
+void RamTstTestErrorNotification(void)
+{
+    RamTst_Suspend();
+} 
+
+void RamTstTestCompletedNotification(void)
+{
+    RamTst_Stop();
+} 
+#define RAMTST_STOP_SEC_CONST_UNSPECIFIED
+#include "RamTst_MemMap.h"
+
+#endif /* RAMTST_CFG_C */
+/****************************************************************************
+*   for each change to this file, be sure to record:                        *
+*      1.  who made the change and when the change was made                 *
+*      2.  why the change was made and the intended result                  *
+*   Following block needs to be repeated for each change                    *
+*****************************************************************************/
+/**-------------------------------------------------------------------------*/
+/*Date              : 25-02-2025                                            */
+/*Version           :                                                       */
+/*By                : sgopal1                                               */
+/*Traceability      :                                                       */
+/*Change Description: Proveout, Initial Version                             */
+/*--------------------------------------------------------------------------*/

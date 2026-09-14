@@ -1,0 +1,85 @@
+root@am62pxx-7xxd-b@19:14:/system/usr/bin/wdg_test_FT# ./testcase16_restart_on_failure.sh
+------------------------------------------------------------------
+----- Test Case 16 - Restart type: on-failure --------------------
+Cause of termination:
+    (1) Unclean exit (non-zero exit code)
+    (2) Unclean signal (SIGKILL)
+
+Expected behavior: Process should restart
+Error notification (Fatal): No
+Process restart: Yes
+[*] Configuration:
+    Restart=on-failure
+    SuccessExitStatus=255 SIGABRT
+------------------------------------------------------------------
+[>] Starting test_09.service...
+[+] test_09.service started successfully.
+[>] Starting wdg_proxy_test_09.service...
+[+] wdg_proxy_test_09.service started successfully.
+.......................................................
+   Test with unclean exit (code 1)
+.......................................................
+[!] Sending signal 37 (SIGRTMIN+3) to test_09.service (PID: 2434)...
+.......................................................
+   Test with unclean signal (SIGKILL)
+.......................................................
+[!] Sending signal 9 (SIGKILL) to test_09.service (PID: 2450)...
+-----------------------------------------------
+Recent journal entries:
+-----------------------------------------------
+May 29 19:15:13 am62pxx-7xxd-b systemd[1]: Started Test application 09.
+May 29 19:15:13 am62pxx-7xxd-b test_09[2434]: Start - Test Case: 9
+May 29 19:15:13 am62pxx-7xxd-b test_09[2434]: SIG MIN: 34
+May 29 19:15:13 am62pxx-7xxd-b test_09[2434]: SIG MAX: 64
+May 29 19:15:17 am62pxx-7xxd-b test_09[2434]: Interrupt signal (37) received.
+May 29 19:15:18 am62pxx-7xxd-b test_09[2434]: Exit - Test case: 9
+May 29 19:15:18 am62pxx-7xxd-b systemd[1]: test_09.service: Main process exited, code=exited, status=1/FAILURE
+May 29 19:15:18 am62pxx-7xxd-b systemd[1]: test_09.service: Failed with result 'exit-code'.
+May 29 19:15:18 am62pxx-7xxd-b systemd[1]: test_09.service: Scheduled restart job, restart counter is at 1.
+May 29 19:15:18 am62pxx-7xxd-b systemd[1]: Started Test application 09.
+May 29 19:15:18 am62pxx-7xxd-b test_09[2450]: Start - Test Case: 9
+May 29 19:15:18 am62pxx-7xxd-b test_09[2450]: SIG MIN: 34
+May 29 19:15:18 am62pxx-7xxd-b test_09[2450]: SIG MAX: 64
+May 29 19:15:19 am62pxx-7xxd-b systemd[1]: test_09.service: Main process exited, code=killed, status=9/KILL
+May 29 19:15:19 am62pxx-7xxd-b systemd[1]: test_09.service: Failed with result 'signal'.
+May 29 19:15:19 am62pxx-7xxd-b systemd[1]: test_09.service: Scheduled restart job, restart counter is at 2.
+May 29 19:15:19 am62pxx-7xxd-b systemd[1]: Started Test application 09.
+May 29 19:15:19 am62pxx-7xxd-b test_09[2455]: Start - Test Case: 9
+May 29 19:15:19 am62pxx-7xxd-b test_09[2455]: SIG MIN: 34
+May 29 19:15:19 am62pxx-7xxd-b test_09[2455]: SIG MAX: 64
+-----------------------------------------------
+Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/29 19:15:21.779882   16203344 242 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:21.977251   16205324 243 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:22.177252   16207325 244 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:22.377332   16209324 245 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:22.577212   16211324 246 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:22.777287   16213324 247 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:22.977145   16215324 248 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:23.177237   16217324 249 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:23.377282   16219324 250 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:23.577242   16221324 251 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:23.777118   16223324 252 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:23.977230   16225324 253 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:24.177248   16227324 254 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:24.377358   16229324 255 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:24.577222   16231325 000 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:24.777235   16233324 001 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:24.977308   16235325 002 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:25.177388   16237325 003 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:25.379946   16239343 004 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:25.577726   16241327 005 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:25.777644   16243326 006 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:25.979775   16245345 007 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:26.180934   16247330 008 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:26.377375   16249325 009 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 19:15:26.577540   16251327 010 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+-----------------------------------------------
+[*] Checking status: test_09.service
+[!] test_09.service is running. Stopping for a clean test...
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_09.service
+[!] wdg_proxy_test_09.service is running. Stopping for a clean test...
+--- Test complete. DLT logging stopped. ---
+******************************************************

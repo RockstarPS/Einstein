@@ -1,0 +1,14 @@
+
+
+# Target rules
+optee-os:
+	@echo "Building OP-TEE for TI AM62x..."
+	$(MAKE) -C $(OPTEE_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE_ARMV7) CROSS_COMPILE64=$(CROSS_COMPILE) PLATFORM=k3-am62px CFG_ARM64_core=y CFG_TEE_CORE_LOG_LEVEL=2 CFG_TEE_CORE_DEBUG=y CFG_PKCS11_TA=y CFG_REE_FS=y
+
+# Clean build
+optee-os_clean:
+	@echo "Cleaning build..."
+	$(MAKE) -C $(OPTEE_SRC_DIR) clean
+
+# Phony targets to avoid conflicts with files
+.PHONY: all clean

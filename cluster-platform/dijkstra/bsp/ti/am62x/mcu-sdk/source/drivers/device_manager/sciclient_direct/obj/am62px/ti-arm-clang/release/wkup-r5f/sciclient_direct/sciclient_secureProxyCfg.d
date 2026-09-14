@@ -1,0 +1,28 @@
+obj/am62px/ti-arm-clang/release/wkup-r5f/sciclient_direct//sciclient_secureProxyCfg.obj: \
+  soc/am62px/sciclient_secureProxyCfg.c \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr_soc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_soc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_dmss_defines.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_soc_baseaddress.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/tistdtypes.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/csl_utils.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/cslr64.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_soc_defines.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_intr_gicss0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_intr_mcu_r5fss0_core0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_intr_wkup_r5fss0_core0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_intr_main_gpiomux_introuter0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_intr_wkup_mcu_gpiomux_introuter0.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_mcu_r5fss0_baseaddress.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_psc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_soc_ctrl_mmr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_mcu_ctrl_mmr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_main_ctrl_mmr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_wkup_ctrl_mmr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/cslr_wkup_r5fss0_baseaddress.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/csl_psilcfg_thread_map.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/csl_soc_firewalls.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/hw_include/am62px/csl_soc_psc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/sciclient/csl_sec_proxy.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/drivers/sciclient/cslr_sec_proxy_v0.h

@@ -1,0 +1,1220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<basis_paths xml_basis_paths_version="1.0" basis_paths="TRUE" edg="Y" checksum="2089501721" handle_ternary="Y" handle_nested_ternary="Y" cover_declarations="Y" cover_headers="N" basis_paths_for_constant_branches="Y">
+  <subprogram index="1" name="osSetEvent" canonical="" mangled="osSetEvent" class_member="FALSE" testable="TRUE" complexity="9">
+    <listing_start>57</listing_start>
+    <listing_end>112</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="8">
+          <text>
+            <line>(8) if (pTaskParam-&gt;State == 4U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:&lt;&lt;MIN&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+</notes>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="8">
+          <text>
+            <line>(8) if (pTaskParam-&gt;State == 4U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:4
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+</notes>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:0
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (0 != (Os_GetContext() &amp; ((uint16)0x1 | (uint16)0x2))) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:1
+TEST.VALUE:uut_prototype_stubs.Os_GetContext.return:0
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="6">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (0 != (Os_GetContext() &amp; ((uint16)0x1 | (uint16)0x2))) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if (0U != OsCtrlParam.RequestScheduler) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:1
+TEST.VALUE:uut_prototype_stubs.Os_GetContext.return:3
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.RequestScheduler:0
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="7">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (0 != (Os_GetContext() &amp; ((uint16)0x1 | (uint16)0x2))) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if (0U != OsCtrlParam.RequestScheduler) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="7">
+          <text>
+            <line>(7) if (0U == OsCtrlParam.LockDispatcher) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:1
+TEST.VALUE:uut_prototype_stubs.Os_GetContext.return:3
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.RequestScheduler:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.LockDispatcher:1
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="8">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (0 != (Os_GetContext() &amp; ((uint16)0x1 | (uint16)0x2))) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if (0U != OsCtrlParam.RequestScheduler) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="7">
+          <text>
+            <line>(7) if (0U == OsCtrlParam.LockDispatcher) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:1
+TEST.VALUE:uut_prototype_stubs.Os_GetContext.return:3
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.RequestScheduler:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.LockDispatcher:0
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="9">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.osSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSetEvent.TaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+  </subprogram>
+  <subprogram index="2" name="osSysSetEvent" canonical="" mangled="osSysSetEvent" class_member="FALSE" testable="TRUE" complexity="6">
+    <listing_start>120</listing_start>
+    <listing_end>165</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (pTaskParam-&gt;State == 4U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:&lt;&lt;MIN&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/3
+</notes>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (pTaskParam-&gt;State == 4U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:4
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/3
+</notes>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:0
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskParam-&gt;State == 2U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if ((0U) != (pTaskParam-&gt;SetEventMask &amp; pTaskParam-&gt;WaitEventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:2
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (3)-&gt; 0
+TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.WaitEventMask:1
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/2
+      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/3
+      Cannot set pTaskParam-&gt;SetEventMask due to assignment
+</notes>
+    </test_path>
+    <test_path index="6">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.osSysSetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSysSetEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osSysSetEvent.TaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+  </subprogram>
+  <subprogram index="3" name="osClearEvent" canonical="" mangled="osClearEvent" class_member="FALSE" testable="TRUE" complexity="5">
+    <listing_start>172</listing_start>
+    <listing_end>206</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osClearEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (TaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+-- Values at different branches: (1)-&gt;less than 21 (4)-&gt;greater than or equal to 21
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osClearEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+      Conflict: Trying to set variable OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex 'less than' and 'greater than' same value in branches 1/4
+</notes>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.osClearEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osClearEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:2
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osClearEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+  </subprogram>
+  <subprogram index="4" name="osGetEvent" canonical="" mangled="osGetEvent" class_member="FALSE" testable="TRUE" complexity="5">
+    <listing_start>214</listing_start>
+    <listing_end>250</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osGetEvent.TaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osGetEvent.Event:&lt;&lt;malloc 1&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if ((void *)0 == Event) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskParam-&gt;State == 4U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osGetEvent.Event:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (4)-&gt; 0
+TEST.VALUE:OsEvent.osGetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osGetEvent.TaskIndex ) in branches 1/4
+</notes>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if ((void *)0 == Event) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskParam-&gt;State == 4U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osGetEvent.Event:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.State:4
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (4)-&gt; 0
+TEST.VALUE:OsEvent.osGetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.osGetEvent.TaskIndex ) in branches 1/4
+</notes>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if ((void *)0 == Event) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osGetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osGetEvent.Event:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if ((void *)0 == Event) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.osGetEvent.TaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osGetEvent.Event:&lt;&lt;null&gt;&gt;
+</script>
+    </test_path>
+  </subprogram>
+  <subprogram index="5" name="osWaitEvent" canonical="" mangled="osWaitEvent" class_member="FALSE" testable="TRUE" complexity="7">
+    <listing_start>257</listing_start>
+    <listing_end>312</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if ((0U) == (pTaskParam-&gt;SetEventMask &amp; EventMask)) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.SetEventMask:1
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:1
+</script>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if ((0U) == (pTaskParam-&gt;SetEventMask &amp; EventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.SetEventMask:0
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:0
+</script>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="6">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:2
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="7">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (0U == osCheckInterruptsEnabled()) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="6">
+          <text>
+            <line>(6) if ((0U) == (pTaskParam-&gt;SetEventMask &amp; EventMask)) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:uut_prototype_stubs.osCheckInterruptsEnabled.return:0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.SetEventMask:1
+TEST.VALUE:OsEvent.osWaitEvent.EventMask:1
+</script>
+    </test_path>
+  </subprogram>
+  <subprogram index="6" name="osSysWaitEvent" canonical="" mangled="osSysWaitEvent" class_member="FALSE" testable="TRUE" complexity="6">
+    <listing_start>319</listing_start>
+    <listing_end>365</listing_end>
+    <test_path index="1">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+    </test_path>
+    <test_path index="2">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if ((0U) == (pTaskParam-&gt;SetEventMask &amp; EventMask)) ==&gt; FALSE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.SetEventMask:1
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:1
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+    <test_path index="3">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (CurrentTasksType != (uint8)1) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="5">
+          <text>
+            <line>(5) if ((0U) == (pTaskParam-&gt;SetEventMask &amp; EventMask)) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:1
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.SetEventMask:0
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:0
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+    <test_path index="4">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="4">
+          <text>
+            <line>(4) if (CurrentTasksType != (uint8)1) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TasksType:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+    <test_path index="5">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; FALSE</line>
+          </text>
+        </branch>
+        <branch index="3">
+          <text>
+            <line>(3) if (pTaskPrm-&gt;ResCnt &gt; 0U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef.ResCnt:&lt;&lt;MAX&gt;&gt;
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0].TaskParamRef:&lt;&lt;malloc 1&gt;&gt;
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+    <test_path index="6">
+      <branches>
+        <branch index="1">
+          <text>
+            <line>(1) if (TaskIndex &lt; 21U &amp;&amp; OsCtrlParam.ActiveTaskIndex &lt; 21U) ==&gt; TRUE</line>
+          </text>
+        </branch>
+        <branch index="2">
+          <text>
+            <line>(2) if (OsCtrlParam.CurrentContext == (uint16)0x2) ==&gt; TRUE</line>
+          </text>
+        </branch>
+      </branches>
+      <script>TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.CurrentContext:2
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.TcbTaskRefConfig[0]:&lt;&lt;malloc 1&gt;&gt;
+-- Values at different branches: (1)-&gt;less than 21 (2)-&gt; 0
+TEST.VALUE:OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex:&lt;&lt;MIN&gt;&gt;
+TEST.VALUE:OsEvent.osSysWaitEvent.EventMask:&lt;&lt;MIN&gt;&gt;
+</script>
+      <notes>      Conflict: Cannot resolve multiple comparisons ( OsEvent.&lt;&lt;GLOBAL&gt;&gt;.OsCtrlParam.ActiveTaskIndex ) in branches 1/2
+</notes>
+    </test_path>
+  </subprogram>
+</basis_paths>

@@ -1,0 +1,419 @@
+               /**
+                * @verbatim
+                              CONFIDENTIAL VISTEON CORPORATION
+                This is an unpublished work of authorship, which contains trade
+                secrets, created in 2013. Visteon Corporation owns all rights to
+                this work and intends to maintain it in confidence to preserve
+                its trade secret status. Visteon Corporation reserves the right,
+                under the copyright laws of the United States or those of any
+                other country that may have jurisdiction, to protect this work
+                as an unpublished work, in the event of an inadvertent or
+                deliberate unauthorized publication. Visteon Corporation also
+                reserves its rights under all copyright laws to protect this
+                work as a published work, when appropriate. Those having access
+                to this work may not copy it, use it, modify it or disclose the
+                information contained in it without the written authorization
+                of Visteon Corporation.
+                * @endverbatim
+                * @file        OsEvent.c
+                * @details     <b>Implements the Events concepts of Autosar 4.2.1</b>
+                * @note
+                *              Compiler    : Independent \n
+                *              Target Hw   : Independent
+                *
+                * @copyright   Visteon (c) 2024
+                *
+                */
+               /*****************************************************************************
+               *                            Include files                                   *
+               ******************************************************************************/
+               #include "C:/SPRINT/AUTOSAR4_3UT/SYS/MOS/SRC/includes/OsMain.h"
+               #include "C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/OS/CPU/ARM/cortex7/OsPrivate.h"
+               #include "C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/mos/AssertLib.h"
+               #include "C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+               /*****************************************************************************
+               *                                 Macro Definitions                          *
+               *----------------------------------------------------------------------------*
+               * Definition of macro shall be followed by a comment that explains the       *
+               * purpose of the macro.                                                      *
+               ******************************************************************************/
+               /*****************************************************************************
+               *                                 Type Declarations                          *
+               ******************************************************************************/
+               /*****************************************************************************
+               *                                 Locally used Variable Declarations         *
+               *----------------------------------------------------------------------------*
+               * Declaration shall be followed by a comment that gives the following info.  *
+               * about the variable.                                                        *
+               * purpose, critical section, unit, and resolution                            *
+               ******************************************************************************/
+               /**
+                * @brief SetEvent - The service may be called from an interrupt service routine and from the task level, but not from hook routines.
+                *
+                * @param TaskIndex
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osSetEvent ( TaskType TaskIndex, EventMaskType EventMask )
+               {
+1 0     ( )    osSetEvent
+                   StatusType Status = (0x01U);
+1 1     ( )( ) if(TaskIndex < 21U)
+                   {
+                   osuint8 CurrentTasksType = TcbTaskRefConfig[TaskIndex]->TasksType;
+1 2     ( )( )   if (CurrentTasksType != (uint8)1)
+                   {
+                       OsErr_osApplicationErrorHook(0x36U,&Status, 1);
+                   }
+                   else
+                   {
+                       OsPrvEnterCriticalSection();
+                       OsTaskParamRefType pTaskParam = TcbTaskRefConfig[TaskIndex]->TaskParamRef;
+                       pTaskParam->SetEventMask |= EventMask;
+1 3     ( )( )     if(pTaskParam->State == 2U)
+                       {
+1 4     ( )( )       if(0U != (pTaskParam->SetEventMask & pTaskParam->WaitEventMask))
+                           {
+                               pTaskParam->State = 3;
+                               osSchedInsertTask(TaskIndex);
+1 5     ( )( )         if(0 != (Os_GetContext() & ((uint16)0x0001 | (uint16)0x0002)))
+                               {
+1 6     ( )( )           if(0U != OsCtrlParam.RequestScheduler)
+                                   {
+1 7     ( )( )             if(0U == OsCtrlParam.LockDispatcher)
+                                       {
+                                           OsPrvExitCriticalSection();
+                                           OsStartDispatchMetric(); osDispatchAsm();
+                                       }
+                                   }
+                               }
+                           }
+                           Status = (0x00U);
+                       }
+                       else 
+1 8     ( )( )       if(pTaskParam->State == 4U)
+                       {
+                           OsErr_osApplicationErrorHook(0x36U, &Status, 7);
+                       }
+                       else
+                       {
+                           Status = (0x00U);
+                           //Log this as we didnt do anything here
+                           //todo
+                       }
+                       OsPrvExitCriticalSection();
+                   }
+                   }
+                   else
+                   {
+                       OsErr_osApplicationErrorHook(0x36U, &Status, 3);
+                   }
+                   return Status;
+               }
+               /**
+                * @brief SysSetEvent - Internal Function
+                *
+                * @param TaskIndex
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osSysSetEvent ( TaskType TaskIndex, EventMaskType EventMask )
+               {
+2 0     ( )    osSysSetEvent
+                   StatusType Status = (0x01U);
+2 1     ( )( ) if(TaskIndex < 21U)
+                   {
+                   osuint8 CurrentTasksType = TcbTaskRefConfig[TaskIndex]->TasksType;
+2 2     ( )( )   if (CurrentTasksType != (uint8)1)
+                   {
+                       OsErr_osApplicationErrorHook(0x36U,&Status, 1);
+                   }
+                   else
+                   {
+                       OsPrvEnterCriticalSection();
+                       OsTaskParamRefType pTaskParam = TcbTaskRefConfig[TaskIndex]->TaskParamRef;
+                       pTaskParam->SetEventMask |= EventMask;
+2 3     ( )( )     if(pTaskParam->State == 2U)
+                       {
+2 4     ( )( )       if(0U != (pTaskParam->SetEventMask & pTaskParam->WaitEventMask))
+                           {
+                               pTaskParam->State = 3;
+                               osSchedInsertTask(TaskIndex);
+                           }
+                           Status = (0x00U);
+                       }
+                       else 
+2 5     ( )( )       if(pTaskParam->State == 4U)
+                       {
+                           OsErr_osApplicationErrorHook(0x36U, &Status, 7);
+                       }
+                       else
+                       {
+                           Status = (0x00U);
+                           /*Log this as we didnt do anything here*/
+                           /*todo*/
+                       }
+                       OsPrvExitCriticalSection();
+                   }
+                   }
+                   else
+                   {
+                       OsErr_osApplicationErrorHook(0x36U,&Status, 3);
+                   }
+                   /*todo: api fail status to be updated*/
+                   return Status;
+               }
+               /**
+                * @brief ClearEvent - The events of the extended task calling ClearEvent are cleared according to the event mask <Mask>.
+                *
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osClearEvent ( EventMaskType EventMask )
+               {
+3 0     ( )    osClearEvent
+                   StatusType Status = (0x01U);
+                   TaskType TaskIndex = 0;
+3 1     ( )( ) if(OsCtrlParam.ActiveTaskIndex < 21U)
+                   {
+                   osuint8 CurrentTasksType = TcbTaskRefConfig[OsCtrlParam.ActiveTaskIndex]->TasksType;
+                   OsPrvEnterCriticalSection();
+3 2     ( )( )   if(OsCtrlParam.CurrentContext == (uint16)0x0002)
+                   {
+                       OsErr_osApplicationErrorHook(0x37U, &Status, 2);
+                   }
+                   else 
+3 3     ( )( )     if (CurrentTasksType != (uint8)1)
+                   {
+                       OsErr_osApplicationErrorHook(0x37U,&Status, 1);
+                   }
+                   else
+                   {
+                       TaskIndex = OsCtrlParam.ActiveTaskIndex;
+3 4     ( )( )       if(TaskIndex < 21U)
+                       {
+                           TcbTaskRefConfig[TaskIndex]->TaskParamRef->SetEventMask &= (EventMaskType)(~EventMask);
+                       }
+                       else
+                       {
+                       ;
+                       }
+                       Status = (0x00U);
+                   }
+                   OsPrvExitCriticalSection();
+                   }
+                   return Status;
+               }
+               /**
+                * @brief GetEvent - This service returns the current state of all event bits of the task <TaskID>, not the events that the task is waiting for
+                *
+                * @param TaskIndex
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osGetEvent ( TaskType TaskIndex, EventMaskRefType Event )
+               {
+4 0     ( )    osGetEvent
+                   StatusType Status = (0x01U);
+4 1     ( )( ) if(TaskIndex < 21U)
+                   {
+                   osuint8 CurrentTasksType = TcbTaskRefConfig[TaskIndex]->TasksType;
+4 2     ( )( )   if(((void *)0) == Event)
+                   {
+                       Status = 10;
+                       OsErr_osApplicationErrorHook(0x38U, &Status, 10);
+                   }
+                   else 
+4 3     ( )( )     if (CurrentTasksType != (uint8)1)
+                   {
+                       OsErr_osApplicationErrorHook(0x38U,&Status, 1);
+                   }
+                   else
+                   {
+                       OsTaskParamRefType pTaskParam = TcbTaskRefConfig[TaskIndex]->TaskParamRef; /*MISRA RULE 8.13 VIOLATION: This is the reason why the MISRA rule could not be followed in this special case*/
+4 4     ( )( )       if(pTaskParam->State == 4U)
+                       {
+                           OsErr_osApplicationErrorHook(0x38U, &Status, 7);
+                       }
+                       else
+                       {
+                           *Event = pTaskParam->SetEventMask;
+                           Status = (0x00U);
+                       }
+                   }
+                   }
+                   else
+                   {
+                       OsErr_osApplicationErrorHook(0x38U, &Status, 3);
+                   }
+                   return Status;
+               }
+               /**
+                * @brief WaitEvent - The state of the calling task is set to waiting, unless at least one of the events specified in <Mask> has already been set.
+                *
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osWaitEvent ( EventMaskType EventMask )
+               {
+5 0     ( )    osWaitEvent
+                   StatusType Status = (0x01U);
+                   TaskType TaskIndex = 0;
+                   TaskIndex = OsCtrlParam.ActiveTaskIndex;
+5 1     ( )( ) if((TaskIndex < 21U) && (OsCtrlParam.ActiveTaskIndex < 21U))
+                   {
+                   osuint8 CurrentTasksType = TcbTaskRefConfig[TaskIndex]->TasksType;
+                   OsTaskParamRefType pTaskPrm = TcbTaskRefConfig[OsCtrlParam.ActiveTaskIndex]->TaskParamRef; /*MISRA RULE 8.13 VIOLATION: This is the reason why the MISRA rule could not be followed in this special case*/
+5 2     ( )( )   if(0U == osCheckInterruptsEnabled())
+                   {
+                       ;
+                       /*SWS_Os_00239
+                       Enable Interrupts*/
+                       osEnableAllInterrupts();
+                       OsErr_osApplicationErrorHook(0x39U, &Status, 12);
+                   }
+                   OsPrvEnterCriticalSection();
+5 3     ( )( )   if(OsCtrlParam.CurrentContext == (uint16)0x0002)
+                   {
+                       OsErr_osApplicationErrorHook(0x39U, &Status, 2);
+                   }
+                   else 
+5 4     ( )( )     if(pTaskPrm->ResCnt > 0U)
+                   {
+                       OsErr_osApplicationErrorHook(0x39U,&Status, 6);
+                   }
+                   else 
+5 5     ( )( )       if (CurrentTasksType != (uint8)1)
+                   {
+                       OsErr_osApplicationErrorHook(0x39U,&Status, 1);
+                   }
+                   else
+                   {
+                       /* WaitEvent Implementation Here */
+                       OsTaskParamRefType pTaskParam = TcbTaskRefConfig[TaskIndex]->TaskParamRef;
+                       pTaskParam->WaitEventMask = EventMask;
+5 6     ( )( )         if( 0U == (pTaskParam->SetEventMask & EventMask ))
+                       {
+                           pTaskParam->State = 2U;
+                           osTaskStopHook();
+                           osSchedRemoveTask();
+                           OsPrvExitCriticalSection();
+                           OsStartDispatchMetric(); osDispatchAsm();
+                       }
+                       Status = (0x00U);
+                   }
+                   }
+                   else
+                   {
+                       ;
+                   }
+                   OsPrvExitCriticalSection();
+                   return Status;
+               }
+               /**
+                * @brief osSysWaitEvent - The state of the calling task is set to waiting, unless at least one of the events specified in <Mask> has already been set.
+                *
+                * @param EventMask
+                * @return StatusType
+                */
+               StatusType osSysWaitEvent ( EventMaskType EventMask )
+               {
+6 0     ( )    osSysWaitEvent
+                   StatusType Status = (0x01U);
+                   TaskType TaskIndex = 0;
+                   TaskIndex = OsCtrlParam.ActiveTaskIndex;
+6 1     ( )( ) if((TaskIndex < 21U) && (OsCtrlParam.ActiveTaskIndex < 21U))
+                   {
+                       osuint8 CurrentTasksType = TcbTaskRefConfig[TaskIndex]->TasksType;
+                       OsTaskParamRefType pTaskPrm = TcbTaskRefConfig[OsCtrlParam.ActiveTaskIndex]->TaskParamRef; /*MISRA RULE 8.13 VIOLATION: This is the reason why the MISRA rule could not be followed in this special case*/
+                       OsPrvEnterCriticalSection();
+6 2     ( )( )   if(OsCtrlParam.CurrentContext == (uint16)0x0002)
+                       {
+                           OsErr_osApplicationErrorHook(0x39U, &Status, 2);
+                       }
+                       else 
+6 3     ( )( )     if(pTaskPrm->ResCnt > 0U)
+                       {
+                           OsErr_osApplicationErrorHook(0x39U,&Status, 6);
+                       }
+                       else 
+6 4     ( )( )       if (CurrentTasksType != (uint8)1)
+                       {
+                           OsErr_osApplicationErrorHook(0x39U,&Status, 1);
+                       }
+                       else
+                       {
+                           /* WaitEvent Implementation Here */
+                           OsTaskParamRefType pTaskParam = TcbTaskRefConfig[TaskIndex]->TaskParamRef;
+                           pTaskParam->WaitEventMask = EventMask;
+6 5     ( )( )         if( 0U == (pTaskParam->SetEventMask & EventMask ))
+                           {
+                               pTaskParam->State = 2U;
+                               osTaskStopHook();
+                               osSchedRemoveTask();
+                               OsCtrlParam.LockDispatcher = 0U;
+                           }
+                           Status = (0x00U);
+                       }
+                       OsPrvExitCriticalSection();
+                   }
+                   else
+                   {
+                       ;
+                   }
+                   return Status;
+               }
+               #include "C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+               /*============================================================================
+               **============================================================================
+               ** R E V I S I O N    N O T E S
+               **============================================================================
+               **
+               ** For each change to this file, be sure to record:
+               ** 1.  Who made the change and when the change was made.
+               ** 2.  Why the change was made and the intended result.
+               **
+               **===========================================================================*/
+               /*---------------------------------------------------------------------------
+               Date               : 12-Sep-16
+               CDSID              : vbalakr3
+               Traceability       : 
+               Change Description : Initial version
+               -----------------------------------------------------------------------------*/
+               /*----------------------------------------------------------------------------------**
+               **  ------------------------------------------------------------------------------- **
+               **   ****************************************************************************   **
+               **      for each change to this file, be sure to record:                            **
+               **         1.  who made the change and when the change was made                     **
+               **         2.  why the change was made and the intended result                      **
+               **      Following block needs to be repeated for each change                        **
+               **   ****************************************************************************   **
+               **      Note: In the traceability column we need to trace back to the Design Doc.   **
+               **      For the initial version it is traced to the Design Document section.        **
+               **      For further changes it shall trace to the source of the change which may    **
+               **      be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any     **
+               **      other reason                                                                **
+               **   ****************************************************************************   **
+               **   ------------------------------------------------------------------------------ **
+               **   Date              : 12-Sep-2016                                                **
+               **   CDSID             : vbalakr3                                                   **
+               **   RTC Id            : ------                                                     **
+               **   Change Description: Initial Version                                            **
+               **----------------------------------------------------------------------------------**
+               **   Date              : 18-Aug-2020                                                **
+               **   CDSID             : ssukuma1                                                   **
+               **   RTC Id            : 1005188                                                    **
+               **   Change Description: Os Extended Error Support                                  **
+               **   ------------------------------------------------------------------------------ **
+               **----------------------------------------------------------------------------------**
+               **   Date              : 13-May-2022                                                **
+               **   CDSID             : eganesan                                                   **
+               **   RTC Id            : 1648619                                                    **
+               **   Change Description: Coverity & Misra Medium Warning Fix                        **
+               **----------------------------------------------------------------------------------**
+               **   Date              : 09-June-2022                                               **
+               **   CDSID             : eganesan                                                   **
+               **   RTC Id            : 1679233                                                    **
+               **   Change Description: Coverity & Misra Low Warning Fix                           **
+               **----------------------------------------------------------------------------------**/
+               /* end of file =============================================================*/

@@ -1,0 +1,153 @@
+/* vim: set syntax=c: */
+#include <string.h>
+#include <assert.h>
+#include "nw_vmf_routing_db.h"
+#include "nw_vmf_routing_db-private.h"
+
+static NW_ROUTING_DB_ENTRY_TYPE*  NW_ROUTING_DB_FIND_ENTRY(NW_ROUTING_DB_KEY_TYPE Key);
+
+
+void
+NW_ROUTING_DB_CLEAR()
+{
+    NW_ROUTING_DB_TYPE*  db = NW_ROUTING_DB_THIS;
+
+    db->end        = db->begin;
+    db->memory_end = db->begin + NW_ROUTING_DB_MAX_ENTRY_N;
+}
+
+vmf_ret_t
+NW_ROUTING_DB_REGISTER
+{
+    NW_ROUTING_DB_KEY_TYPE      Key      = NW_ROUTING_DB_MAP_ARGUMENTS_TO_KEY;
+    NW_ROUTING_DB_TYPE*         db       = NW_ROUTING_DB_THIS;
+    NW_ROUTING_DB_ENTRY_TYPE*   entry    = 0x0; 
+
+    assert(db->end != 0x0);
+    assert(db->begin <= db->end);
+
+    /* if there is no memory left in the pool, then forget about it */
+    if( __vmf_routing_db_memory_pool_is_full() )
+    { return VMF_ERR_OUT_OF_MEMORY; } 
+
+    entry = NW_ROUTING_DB_FIND_ENTRY(Key);
+
+    if( NW_ROUTING_DB_KEY(entry) == Key && entry != db->end ) { 
+#       if defined (NW_ROUTING_DB_SINGLE_HANDLE_ENTRY)
+        entry->observer.handle = Handle;
+#       else
+        __nw_vmf_routing_db_handle_list_add(&(entry->observer.handle_list), Handle);
+#       endif
+        return VMF_OK;
+    }
+
+    /* no entry currently exists for the given combination, add one */
+    if( db->end == db->memory_end ) { return VMF_ERR_OUT_OF_MEMORY; } 
+
+    /* shift content backwards */
+    if( entry != db->end ) { 
+        memmove(entry + 1, entry, 
+                (db->end - entry) * sizeof(NW_ROUTING_DB_ENTRY_TYPE));
+    } 
+
+    /* initialize data of new entry */
+    NW_ROUTING_DB_KEY(entry) = Key;
+
+    /* entry already exists, so only set the call back function */
+#   if defined (NW_ROUTING_DB_SINGLE_HANDLE_ENTRY)
+    entry->observer.handle = Handle;
+#   else
+    entry->observer.handle_list.begin  = __vmf_routing_db_memory_pool()->end;
+    entry->observer.handle_list.length = 0;
+    __nw_vmf_routing_db_handle_list_add(&(entry->observer.handle_list), Handle);
+#   endif
+
+    ++(db->end);
+    return VMF_OK;
+}
+
+void
+NW_ROUTING_DB_DEREGISTER
+{
+    NW_ROUTING_DB_KEY_TYPE     Key   = NW_ROUTING_DB_MAP_ARGUMENTS_TO_KEY;
+    NW_ROUTING_DB_TYPE*        db    = NW_ROUTING_DB_THIS;
+    NW_ROUTING_DB_ENTRY_TYPE*  entry = NW_ROUTING_DB_FIND_ENTRY(Key);
+
+    if( ! ( NW_ROUTING_DB_KEY(entry) == Key && entry != db->end ) ) { 
+        /* entry that do not exist cannot be deleted */
+        return;
+    }
+
+#   if ! defined (NW_ROUTING_DB_SINGLE_HANDLE_ENTRY)
+    /* delete handle from list */
+    __nw_vmf_routing_db_handle_list_remove(&(entry->observer.handle_list), Handle);
+
+    /* if handle list does not contain any handle anymore, then delete the whole entry */
+    if( entry->observer.handle_list.length != 0 ) { return; }
+#   endif
+
+    /* shift content forwards */
+    if( entry != db->end - 1 ) { 
+        memmove(entry, entry + 1, (db->end - 1 - entry) * sizeof(NW_ROUTING_DB_ENTRY_TYPE));
+    } 
+
+    --(db->end);
+}
+
+unsigned16 
+NW_ROUTING_DB_GET_HANDLES
+{
+    NW_ROUTING_DB_TYPE*        db    = NW_ROUTING_DB_THIS;
+    NW_ROUTING_DB_KEY_TYPE     Key   = NW_VMF_ROUTING_MAP_VMF_MESSAGE_TO_KEY(*msg);
+    NW_ROUTING_DB_ENTRY_TYPE*  entry = NW_ROUTING_DB_FIND_ENTRY(Key);
+
+    if( NW_ROUTING_DB_KEY(entry) == Key && entry != db->end ) { 
+#       if defined (NW_ROUTING_DB_SINGLE_HANDLE_ENTRY)
+        *response_p = &(entry->observer.handle);
+        return 1;
+#       else
+        /* one or more people registered on the given message */
+        *response_p = entry->observer.handle_list.begin;
+        return entry->observer.handle_list.length;
+#       endif
+    }
+    else { 
+        return 0;  /* error: no message found that registered */
+    }
+
+}
+NW_ROUTING_DB_ENTRY_TYPE*
+NW_ROUTING_DB_FIND_ENTRY(NW_ROUTING_DB_KEY_TYPE Key)
+{
+    /* RETURNS: Either the entry in the database thas contains the key EventGroupID, or
+     *          the place before which the element needs to be inserted. Check the
+     *          cases by comparing .event_group_id == EventGroupID after calling
+     *          this function.
+     *
+     * returns_value == routing_db_event_db->end || returns_value != EventGroupID ==> not found!
+     */
+    NW_ROUTING_DB_TYPE*       db             = NW_ROUTING_DB_THIS;
+    NW_ROUTING_DB_ENTRY_TYPE* lower_iterator = db->begin;
+    NW_ROUTING_DB_ENTRY_TYPE* upper_iterator = db->end;
+    NW_ROUTING_DB_ENTRY_TYPE* iterator       = 0x0;
+
+    if( db->end == db->begin) { return db->end; } 
+
+    while( upper_iterator - lower_iterator > 1 ) {                                                                                  
+        /* middle value between upper and lower bracket */                                
+        iterator = lower_iterator + ((upper_iterator - lower_iterator) >> 1);     
+        
+        /* reset the upper and lower brackets, notify finding ... */
+        if     ( Key > NW_ROUTING_DB_KEY(iterator) ) { lower_iterator = iterator; }           
+        else if( Key < NW_ROUTING_DB_KEY(iterator) ) { upper_iterator = iterator; }            
+        else                                         { return iterator; }
+    } 
+
+    /* NOTE: Here, we do not return the .end pointer, because we want to pass
+     *       a pointer to the place where the entry with the given Key has to
+     *       entered in the table. See also, the comment at the entry of this 
+     *       function.                                                          */
+    if( Key <= NW_ROUTING_DB_KEY(lower_iterator) ) { return lower_iterator; } 
+    else                                           { return upper_iterator; } 
+}
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=Test application 10
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_10 10 10
+WatchdogSec=1
+Restart=on-failure
+
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,281 @@
+root@am62pxx-7xxd-b@18:48:/usr/bin/wdg_test_FT# ./testcase42_dependency_relationship.sh
+------------------------------------------------------------------
+----- Test Case 42 - systemd dependency relationships ------------
+
+Expected behavior:
+    Requires= + After= starts required parent before child and stops child when parent stops
+    Requires= does not stop child when required parent crashes unexpectedly
+    Before= orders source before target in the same transaction
+    Conflicts= stops the conflicting active service
+    Watchdog proxy observes Requires= dependency-driven stops without restart loops
+------------------------------------------------------------------
+-----------------------------------------------
+--- Preparing services ------------------------
+-----------------------------------------------
+-----------------------------------------------
+--- Verifying unit configuration --------------
+-----------------------------------------------
+[*] test_20_2.service Requires=sysinit.target system.slice test_20_1.service
+[+] test_20_2.service has Requires dependency on test_20_1.service
+[*] test_20_2.service After=systemd-journald.socket basic.target system.slice sysinit.target test_20_1.service
+[+] test_20_2.service has After dependency on test_20_1.service
+[*] test_20_3.service Before=test_20_4.service shutdown.target
+[+] test_20_3.service has Before dependency on test_20_4.service
+[*] test_20_4.service Requires=test_20_3.service system.slice sysinit.target
+[+] test_20_4.service has Requires dependency on test_20_3.service
+[*] test_20_5.service Conflicts=test_20_6.service shutdown.target
+[+] test_20_5.service has Conflicts dependency on test_20_6.service
+[*] test_20_6.service Conflicts=test_20_5.service shutdown.target
+[+] test_20_6.service has Conflicts dependency on test_20_5.service
+-----------------------------------------------
+--- Requires and After behavior ---------------
+-----------------------------------------------
+[>] Starting test_20_2.service ...
+[+] test_20_2.service started
+[*] test_20_1.service ActiveState=active
+[+] test_20_1.service is active
+[*] test_20_2.service ActiveState=active
+[+] test_20_2.service is active
+[>] Starting wdg_proxy_test_20.service ...
+[+] wdg_proxy_test_20.service started
+[>] Stopping required parent test_20_1.service ...
+[*] test_20_1.service ActiveState=inactive
+[+] test_20_1.service is inactive
+[*] test_20_2.service ActiveState=inactive
+[+] test_20_2.service is inactive
+[*] test_20_2.service NRestarts before=0 after=0
+[+] test_20_2.service did not restart
+[>] Stopping wdg_proxy_test_20.service after Requires= watchdog validation ...
+-----------------------------------------------
+--- Requires parent crash behavior ------------
+-----------------------------------------------
+[>] Starting test_20_2.service ...
+[+] test_20_2.service started
+[*] test_20_1.service ActiveState=active
+[+] test_20_1.service is active
+[*] test_20_2.service ActiveState=active
+[+] test_20_2.service is active
+[>] Killing required parent test_20_1.service with SIGKILL, PID=592 ...
+[*] test_20_1.service ActiveState=failed
+[+] test_20_1.service is failed
+[*] test_20_2.service ActiveState=active
+[+] test_20_2.service is active
+[*] test_20_2.service NRestarts before=0 after=0
+[+] test_20_2.service did not restart
+[*] Requires= does not bind child lifetime to unexpected parent crash. Use BindsTo= if child must stop on crash.
+-----------------------------------------------
+--- Before ordering transaction ---------------
+-----------------------------------------------
+[>] Starting test_20_4.service ...
+[+] test_20_4.service started
+[*] test_20_3.service ActiveState=active
+[+] test_20_3.service is active
+[*] test_20_4.service ActiveState=active
+[+] test_20_4.service is active
+-----------------------------------------------
+--- Conflicts behavior ------------------------
+-----------------------------------------------
+[>] Starting test_20_5.service ...
+[+] test_20_5.service started
+[>] Starting conflicting service test_20_6.service ...
+[*] test_20_6.service ActiveState=active
+[+] test_20_6.service is active
+[*] test_20_5.service ActiveState=inactive
+[+] test_20_5.service is inactive
+[*] test_20_5.service NRestarts before=0 after=0
+[+] test_20_5.service did not restart
+-----------------------------------------------
+--- Service status ----------------------------
+-----------------------------------------------
+* test_20_1.service - Dependency test 20 parent
+     Loaded: loaded (/usr/lib/systemd/system/test_20_1.service; static)
+     Active: inactive (dead)
+
+May 29 18:48:50 am62pxx-7xxd-b test_20[554]: SIG MAX: 64
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 parent...
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: test_20_1.service: Deactivated successfully.
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 parent.
+May 29 18:48:56 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 parent.
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: Start - Test Case: 20
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: SIG MIN: 34
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: SIG MAX: 64
+May 29 18:48:58 am62pxx-7xxd-b systemd[1]: test_20_1.service: Main process exited, code=killed, status=9/KILL
+May 29 18:48:58 am62pxx-7xxd-b systemd[1]: test_20_1.service: Failed with result 'signal'.
+* test_20_2.service - Dependency test 20 Requires child
+     Loaded: loaded (/usr/lib/systemd/system/test_20_2.service; static)
+     Active: inactive (dead)
+
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 Requires child...
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: test_20_2.service: Deactivated successfully.
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 Requires child.
+May 29 18:48:56 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Requires child.
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: Start - Test Case: 20
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: SIG MIN: 34
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: SIG MAX: 64
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 Requires child...
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: test_20_2.service: Deactivated successfully.
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 Requires child.
+* test_20_3.service - Dependency test 20 Before source
+     Loaded: loaded (/usr/lib/systemd/system/test_20_3.service; static)
+     Active: active (running) since Thu 2025-05-29 18:49:01 UTC; 5s ago
+   Main PID: 623 (test_20)
+      Tasks: 1 (limit: 994)
+     Memory: 396.0K (peak: 580.0K)
+        CPU: 21ms
+     CGroup: /system.slice/test_20_3.service
+             `-623 /usr/bin/wdg_test_FT/test_20 20
+
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Before source.
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: Start - Test Case: 20
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: SIG MIN: 34
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: SIG MAX: 64
+* test_20_4.service - Dependency test 20 Before target
+     Loaded: loaded (/usr/lib/systemd/system/test_20_4.service; static)
+     Active: active (running) since Thu 2025-05-29 18:49:01 UTC; 5s ago
+   Main PID: 624 (test_20)
+      Tasks: 1 (limit: 994)
+     Memory: 400.0K (peak: 1.4M)
+        CPU: 48ms
+     CGroup: /system.slice/test_20_4.service
+             `-624 /usr/bin/wdg_test_FT/test_20 20
+
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Before target.
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: Start - Test Case: 20
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: SIG MIN: 34
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: SIG MAX: 64
+* test_20_5.service - Dependency test 20 conflict A
+     Loaded: loaded (/usr/lib/systemd/system/test_20_5.service; static)
+     Active: inactive (dead) since Thu 2025-05-29 18:49:04 UTC; 2s ago
+   Duration: 1.179s
+    Process: 636 ExecStart=/usr/bin/wdg_test_FT/test_20 20 (code=killed, signal=TERM)
+   Main PID: 636 (code=killed, signal=TERM)
+        CPU: 25ms
+
+May 29 18:49:03 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 conflict A.
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: Start - Test Case: 20
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: SIG MIN: 34
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: SIG MAX: 64
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 conflict A...
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: test_20_5.service: Deactivated successfully.
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 conflict A.
+* test_20_6.service - Dependency test 20 conflict B
+     Loaded: loaded (/usr/lib/systemd/system/test_20_6.service; static)
+     Active: active (running) since Thu 2025-05-29 18:49:04 UTC; 2s ago
+   Main PID: 644 (test_20)
+      Tasks: 1 (limit: 994)
+     Memory: 388.0K (peak: 540.0K)
+        CPU: 17ms
+     CGroup: /system.slice/test_20_6.service
+             `-644 /usr/bin/wdg_test_FT/test_20 20
+
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 conflict B.
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: Start - Test Case: 20
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: SIG MIN: 34
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: SIG MAX: 64
+* wdg_proxy_test_20.service - Health Test application 20
+     Loaded: loaded (/usr/lib/systemd/system/wdg_proxy_test_20.service; static)
+     Active: inactive (dead)
+
+May 29 18:48:51 am62pxx-7xxd-b systemd[1]: Started Health Test application 20.
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: Stopping Health Test application 20...
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: wdg_proxy_test_20.service: Deactivated successfully.
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: Stopped Health Test application 20.
+-----------------------------------------------
+--- Journal logs ------------------------------
+-----------------------------------------------
+[*] Logs for test_20_1.service
+May 29 18:48:50 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 parent.
+May 29 18:48:50 am62pxx-7xxd-b test_20[554]: Start - Test Case: 20
+May 29 18:48:50 am62pxx-7xxd-b test_20[554]: SIG MIN: 34
+May 29 18:48:50 am62pxx-7xxd-b test_20[554]: SIG MAX: 64
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 parent...
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: test_20_1.service: Deactivated successfully.
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 parent.
+May 29 18:48:56 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 parent.
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: Start - Test Case: 20
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: SIG MIN: 34
+May 29 18:48:56 am62pxx-7xxd-b test_20[592]: SIG MAX: 64
+May 29 18:48:58 am62pxx-7xxd-b systemd[1]: test_20_1.service: Main process exited, code=killed, status=9/KILL
+May 29 18:48:58 am62pxx-7xxd-b systemd[1]: test_20_1.service: Failed with result 'signal'.
+[*] Logs for test_20_2.service
+May 29 18:48:50 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Requires child.
+May 29 18:48:50 am62pxx-7xxd-b test_20[555]: Start - Test Case: 20
+May 29 18:48:50 am62pxx-7xxd-b test_20[555]: SIG MIN: 34
+May 29 18:48:50 am62pxx-7xxd-b test_20[555]: SIG MAX: 64
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 Requires child...
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: test_20_2.service: Deactivated successfully.
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 Requires child.
+May 29 18:48:56 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Requires child.
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: Start - Test Case: 20
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: SIG MIN: 34
+May 29 18:48:56 am62pxx-7xxd-b test_20[593]: SIG MAX: 64
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 Requires child...
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: test_20_2.service: Deactivated successfully.
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 Requires child.
+[*] Logs for test_20_3.service
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Before source.
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: Start - Test Case: 20
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: SIG MIN: 34
+May 29 18:49:01 am62pxx-7xxd-b test_20[623]: SIG MAX: 64
+[*] Logs for test_20_4.service
+May 29 18:49:01 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 Before target.
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: Start - Test Case: 20
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: SIG MIN: 34
+May 29 18:49:01 am62pxx-7xxd-b test_20[624]: SIG MAX: 64
+[*] Logs for test_20_5.service
+May 29 18:49:03 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 conflict A.
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: Start - Test Case: 20
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: SIG MIN: 34
+May 29 18:49:03 am62pxx-7xxd-b test_20[636]: SIG MAX: 64
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Stopping Dependency test 20 conflict A...
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: test_20_5.service: Deactivated successfully.
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Stopped Dependency test 20 conflict A.
+[*] Logs for test_20_6.service
+May 29 18:49:04 am62pxx-7xxd-b systemd[1]: Started Dependency test 20 conflict B.
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: Start - Test Case: 20
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: SIG MIN: 34
+May 29 18:49:04 am62pxx-7xxd-b test_20[644]: SIG MAX: 64
+[*] Logs for wdg_proxy_test_20.service
+May 29 18:48:51 am62pxx-7xxd-b systemd[1]: Started Health Test application 20.
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: Stopping Health Test application 20...
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: wdg_proxy_test_20.service: Deactivated successfully.
+May 29 18:48:55 am62pxx-7xxd-b systemd[1]: Stopped Health Test application 20.
+-----------------------------------------------
+--- Capturing DLT logs for 5 sec ---
+-----------------------------------------------
+2025/05/29 18:49:07.589286      94875 001 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf.service, object path: /org/freedesktop/systemd1/unit/vmf_2eservice ]
+2025/05/29 18:49:07.589310      94927 002 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: power_mgr.service, object path: /org/freedesktop/systemd1/unit/power_5fmgr_2eservice ]
+2025/05/29 18:49:07.589331      94988 003 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: display_mgr.service, object path: /org/freedesktop/systemd1/unit/display_5fmgr_2eservice ]
+2025/05/29 18:49:07.589354      95025 004 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: ucl_primary.service, object path: /org/freedesktop/systemd1/unit/ucl_5fprimary_2eservice ]
+2025/05/29 18:49:07.589376      95060 005 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-daemon.service, object path: /org/freedesktop/systemd1/unit/dlt_2ddaemon_2eservice ]
+2025/05/29 18:49:07.589398      95095 006 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-system.service, object path: /org/freedesktop/systemd1/unit/dlt_2dsystem_2eservice ]
+2025/05/29 18:49:07.589420      95137 007 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: server.service, object path: /org/freedesktop/systemd1/unit/server_2eservice ]
+2025/05/29 18:49:07.589441      95159 008 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: safeHMI.service, object path: /org/freedesktop/systemd1/unit/safeHMI_2eservice ]
+2025/05/29 18:49:07.589850      95197 009 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: mainHmi.service, object path: /org/freedesktop/systemd1/unit/mainHmi_2eservice ]
+2025/05/29 18:49:07.589993      95229 010 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 626 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf_cacher.service, object path: /org/freedesktop/systemd1/unit/vmf_5fcacher_2eservice ]
+2025/05/29 18:49:07.590017      95272 011 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_comm_if.c : 60 : WdgProxyCommIf_Init :  nw_vmf_connect success 1]
+2025/05/29 18:49:07.591018      97299 013 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: vmf.service, Current ActiveState: active]
+2025/05/29 18:49:07.591040      97313 014 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: power_mgr.service, Current ActiveState: active]
+2025/05/29 18:49:07.591062      97323 015 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: display_mgr.service, Current ActiveState: active]
+2025/05/29 18:49:07.591084      97347 016 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: ucl_primary.service, Current ActiveState: active]
+2025/05/29 18:49:07.591105      97365 017 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: dlt-daemon.service, Current ActiveState: active]
+2025/05/29 18:49:07.591127      97382 018 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: dlt-system.service, Current ActiveState: active]
+2025/05/29 18:49:07.591148      97404 019 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: server.service, Current ActiveState: active]
+2025/05/29 18:49:07.591169      97423 020 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: safeHMI.service, Current ActiveState: active]
+2025/05/29 18:49:07.591189      97436 021 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: mainHmi.service, Current ActiveState: active]
+2025/05/29 18:49:07.591210      97450 022 ECU1 WP-- WP - log info V 8 [(400|400)  wdg_proxy_linux.c : 662 : WdgProxy_GetCurrentState :  Service name: vmf_cacher.service, Current ActiveState: active]
+2025/05/29 18:49:07.966742     305322 001 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_linux.c : 629 : WdgProxy_SetupSdBusMatchRule :  Service name: test_20_1.service, object path: /org/freedesktop/systemd1/unit/test_5f20_5f1_2eservice ]
+2025/05/29 18:49:07.966765     305357 002 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_linux.c : 629 : WdgProxy_SetupSdBusMatchRule :  Service name: test_20_2.service, object path: /org/freedesktop/systemd1/unit/test_5f20_5f2_2eservice ]
+2025/05/29 18:49:07.966788     305381 003 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_comm_if.c : 60 : WdgProxyCommIf_Init :  nw_vmf_connect success 1]
+2025/05/29 18:49:07.966882     307398 005 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_linux.c : 665 : WdgProxy_GetCurrentState :  Service name: test_20_1.service, Current ActiveState: active]
+2025/05/29 18:49:07.966904     307414 006 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_linux.c : 665 : WdgProxy_GetCurrentState :  Service name: test_20_2.service, Current ActiveState: active]
+2025/05/29 18:49:07.968276     316778 007 ECU1 WP-- WP - log error V 8 [(564|564)  wdg_proxy_linux.c : 489 : WdgProxy_ProcessSDBUSEvent :  Service deactivated: test_20_2.service, PID: 555, Result: success, ActiveState: inactive]
+2025/05/29 18:49:07.968299     316950 008 ECU1 WP-- WP - log error V 8 [(564|564)  wdg_proxy_linux.c : 489 : WdgProxy_ProcessSDBUSEvent :  Service deactivated: test_20_1.service, PID: 554, Result: success, ActiveState: inactive]
+2025/05/29 18:49:07.971404     340205 009 ECU1 WP-- WP - log info V 8 [(564|564)  wdg_proxy_comm_if.c : 80 : WdgProxyCommIf_Shutdown :  nw_vmf_disconnect success -1]
+2025/05/29 18:49:07.971680     340436 051 ECU1 SYS- JOUR log info V 4 [2025/05/29 18:48:55.483912 systemd[1]: Informational: wdg_proxy_test_20.service: Deactivated successfully.]
+-----------------------------------------------
+--- Cleanup -----------------------------------
+-----------------------------------------------
+[>] Stopping test_20_3.service ...
+[>] Stopping test_20_6.service ...
+[PASS] Test Case 42 dependency relationship handling passed

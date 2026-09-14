@@ -1,0 +1,193 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file DoIP_Cfg.h
+*    @ingroup DoIPConfiguration
+*    @brief This is DoIP Pre-compile time configuration header file. It contains definitions of pre-compile time 
+*    configuration parameters for the DoIP module.
+*    @defgroup DoIPConfiguration
+*    @brief This contains the configuration files for the DoIP module.
+********************************************************************************************************************/
+#ifndef DOIP_CFG_H
+#define DOIP_CFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "DoIP_Types.h"
+/********************************************************************************************************************
+*  #! Precompile Configuration                                                                                      *
+********************************************************************************************************************/
+/*! @brief  Switches the development error detection and notification on or off.
+    true: detection and notification is enabled.
+    false: detection and notification is disabled. */
+#define DOIP_DEV_ERROR_DETECT                       STD_ON
+/*! @brief  Enables / Disables DoIPVersionInfoApi API */
+#define DOIP_VERSION_INFO_API                       STD_ON 
+/*! @brief Specifies the period of main function DoIP_MainFunction in milliseconds.*/ 
+#define DOIP_MAIN_FUNCTION_PERIOD                   10U    
+/*! @brief "Timeout in [s] for waiting for a response to an Alive Check request before the connection is considered to 
+    be disconnected. Represents parameter T_TCP_AliveCheck of ISO 13400-2:2012." */
+#define DOIP_ALIVE_CHECK_RESPONSE_TIMEOUT           100u
+/*! @brief If DoIPDhcpOptionVinUse is set to true the DoIP module will add the VIN to the Dhcp host name if no valid 
+    Dhcp host name is already set. */
+#define DOIP_DHCP_OPTION_VIN_USE                    STD_ON
+/*! @brief This parameter is used to distinguish the optional support of the Max data size element of a diagnostic 
+    entity status response. */
+#define DOIP_ENTITY_STATUS_MAX_BYTE_FIELD_USE       STD_ON
+/*! @brief Timeout in [s] for maximum inactivity of a TCP socket connection before the DoIP module will close the 
+    according socket connection. Represents parameter T_TCP_General_Inactivity of ISO 13400-2:2012 */
+#define DOIP_GENERAL_INACTIVITY_TIME                100u
+/*! @brief Specifies the Byte pattern that is used for response messages if no valid GID could be retrieved.
+    Only the value '0' or '255' is allowed */
+#define DOIP_GID_INVALIDITY_PATTERN                 0xFFU
+/*! @brief Maximum Size of the DHCP HostName in ASCII. This parameter is necessary to reserve the correct amount of
+    bytes for working with the DHCP HostName option. Minimum range is 5 because Dhcp Host Name should be at least 
+    "DoIP-" on any configuration */
+#define DOIP_HOST_NAME_SIZE_MAX                     5u
+/*! @brief Timeout in [s] used for initial inactivity of a connected TCP socket connection directly after socket 
+    connection. Represents parameter T_TCP_Initial_Inactivity of ISO 13400-2:2012 */
+#define DOIP_INITIAL_INACTIVITY_TIME                100u
+/*! @brief Time to wait in [s] for sending first vehicle anouncement message after IP address assignment. 
+    Represents parameter A_DoIP_Announce_Wait of ISO 13400-2:2012 */
+#define DOIP_INITIAL_VEHICLE_ANNOUNCEMENT_TIME      100u
+/*! @brief Specifies the maximum allowed bytes of a DoIP message request without the DoIP header. */
+#define DOIP_MAX_REQUEST_BYTES                      1500u
+/*! @brief Maximum amount of tester connections that shall be maintained at one time before alive check is performed.*/
+#define DOIP_MAX_TESTER_CONNECTIONS                 1U
+/*! @brief This parameter captures the maximum amont of UDP Requests necessary to handle paralel within a single 
+    UDP connection. */
+#define DOIP_MAX_UDP_REQUEST_PER_MESSAGE            1U
+/*! @brief Defines the DoIP node type as Gateway */ 
+#define DOIP_GATEWAY                                0U
+/*! @brief Defines the DoIP node type as DoIP Node */ 
+#define DOIP_NODE                                   1U
+/*! @brief Describes the the DoIP node type. */
+#define DOIP_NODE_TYPE                              DOIP_NODE
+/*! @brief Specifies if the DoIP entity shall use its EID if it is the Master for vehicle identification gid on the 
+    vehicle identification/vehicle announcement */
+#define DOIP_USE_EID_AS_GID                         STD_OFF
+/*! @brief Provided the information if a configured EID at vehicle identification response/vehicle announment is used 
+    or the MAC address. TRUE: Use MAC Address instead of EID for Vehicle identification/announcement.
+    FALSE: Use configured EID for vehicle identification/announcement. Dependencies: DoIPEID */
+#define DOIP_USE_MAC_ADDRESS_FOR_IDENTIFICATION     STD_OFF
+/*! @brief Defines if the optional VIN/GID synchronization status is used additionally in the vehicle 
+    identification/announcement. */
+#define DOIP_USE_VEHICLE_IDENTIFICATION_SYNC_STATUS STD_OFF
+/*! @brief Number of vehicle announcement messages on IP address assignment. Represents parameter 
+    A_DoIP_Announce_Num of ISO 13400-2:2012. */
+#define DOIP_VEHICLE_ANNOUNCEMENT_COUNT             1U
+/*! @brief Time to wait in [s] for sending subsequent vehicle anouncement messages. Represents parameter
+    A_DoIP_Announce_Interval of ISO 13400-2:2012 */
+#define DOIP_VEHICLE_ANNOUNCEMENT_INTERVAL          100U
+/*! @brief Amount of repetitions of the vehicle announcement message on IP address assignment. Represents parameter 
+    A_DoIP_Annunce_Num of ISO 13400-2:2012 */
+#define DOIP_VEHICLE_ANNOUNCEMENT_REPETITION        2U
+/*! @brief Specifies if the DoIP entity is the Vehicle identification Master for the GID (Group ID). */
+#define DOIP_VIN_GID_MASTER                         STD_ON
+/*! @brief Specifies the Byte pattern that is used for response messages if no valid VIN could be retrieved.
+    Only the value '0' or '255' is allowed */
+#define DOIP_VIN_INVALIDITY_PATTERN                 0XFFU
+/*! @brief Direct C Callback function to get the OEM specific Further Action Byte for the DoIP vehicle identification 
+    response/vehicle announcement. If the DoIPFurtherActionByteDirect parameter is present, the DoIP module will not 
+    use an RPort of ServiceInterface "CBGetFurtherActionByte" but will call the configured function */
+#define DOIP_FURTHER_ACTION_BYTE_CALLBACK_SUPPORT   STD_ON 
+/*! @brief If the DoIPGetGidDirect parameter exist the DoIP module shall call the configured callback function 
+    (<User>_DoIPGetGID) direct. (It is not needed to specify a service port to the DoIP service component.)
+    If the DoIPGetGidDirect parameter does NOT exist the DoIP module shall use a RPort with a CallbackGetGID type 
+    of client-server port interface to retrive the GID. */
+#define DOIP_GET_GID_CALLBACK_SUPPORT               STD_OFF
+/*! @brief If the DoIPPowerModeDirect parameter exist the DoIP module shall call the configured callback function
+    (<User>_DoIPGetPowerModeCallback) direct. (It is not needed to specify a service port to the DoIP 
+    service component.) If the DoIPPowerModeDirect parameter does NOT present the DoIP module shall use a RPort with 
+    a CallbackGetPowerMode type of client-server port interface to retrive the current power mode. */
+#define DOIP_POWER_MODE_CALLBACK_SUPPORT            STD_OFF
+/*! @brief If the DoIPTriggerGidSyncDirect parameter exist the DoIP module shall call the configured callback function 
+    (<User>_DoIPTriggerGidSyncCallback) direct. (It is not needed to specify a service port to the DoIP service 
+    component.) If the DoIPTriggerGidSyncDirect parameter does NOT present the DoIP module shall use a 
+    RPort with a CallbackTriggerGIDSynchnonization type of client-server port interface to trigger the GID 
+    synchronization.*/
+#define DOIP_TRIGGER_GID_SYNC_CALLBACK_SUPPORT      STD_OFF
+/*! @brief Describes the logical address of the DoIP entity, i.e. the LA that will route diagnostic requests to the
+    Dcm of the DoIP entity. */
+#define DOIP_LOGICAL_ADDRESS                        0x01U
+#define DOIP_OEM_PAYLOAD_TYPE_ENABLED               STD_ON
+#define DOIP_GID_VALUE_CONFIGURED                   STD_OFF   
+#define DOIP_UDP_MAX_RETRY_COUNT                    6000u /* 60s for 10ms task */ 
+/********************************************************************************************************************
+*  #! DoIP Internal feature support                                                                                *
+********************************************************************************************************************/
+/*! @brief Defines the dummy macro */
+#ifndef DOIP_DUMMY_STATEMENT
+#define DOIP_DUMMY_STATEMENT(v) (void)v
+#endif
+/*******************************************************************************************************************
+*  #! DoIP module configuration                                                                                   *
+*******************************************************************************************************************/
+#define DOIP_NUM_OF_CONNECTION  1U
+#define DOIP_NUM_OF_UDP_CONNECTION 1u
+#define DOIP_NUM_OF_TCP_CONNECTION 1u
+#define DOIP_NUM_OF_TCP_TX_QUEUE 1U
+#define DOIP_TCP_TX_QUEUE_SIZE 10U
+#define DOIP_NUM_OF_TESTER  1U
+#define DOIP_NUM_OF_ROUTING_ACTIVATION  1U
+#define DOIP_NUM_OF_CHANNEL  1U
+#define DOIP_NUM_OF_LOCAL_ADDR  1U
+#define DOIP_NUM_OF_IP_ADDRESS_ASSIGNEMENT  1U
+#define DOIP_TCP_RX_MULTI_MSG STD_ON
+#define DOIP_NUM_OF_RX_PDU 1u
+#define DOIP_RX_HEADER_BUFFER_SIZE 10u
+#define DOIP_TX_HEADER_BUFFER_SIZE 10U
+#define DOIP_TX_IF_BUFFER_SIZE 10U
+#define DOIP_DIAG_NACK_BUFFER_SIZE 10U
+#define DOIP_OEM_PAYLOAD_UDP_BUFFER_SIZE 100u
+#define DOIP_OEM_PAYLOAD_TCP_BUFFER_SIZE 0u
+#define DoIP_NUM_OF_TESTER_TO_ROUTING_ACTIVATION 1u
+#define DOIP_VERIFY_RX_PDU_MAX_DATA_LENGTH 1u
+#define DOIP_LOCAL_ADDR_TO_CON_MAP_SIZE 1u
+#define DOIP_NUM_OF_TX_PDU 1u
+#define TODO 0
+/********************************************************************************************************************
+*  #! SW and AUTOSAR Version Macros                                                                                 *
+********************************************************************************************************************/
+/* Software Version */
+/*! @brief Defines the DoIP configuration software Major version */
+#define DOIP_CFG_SW_MAJOR_VERSION                1u
+/*! @brief Defines the DoIP configuration software Minor version */
+#define DOIP_CFG_SW_MINOR_VERSION                0u
+/*! @brief Defines the DoIP configuration software Patch version */
+#define DOIP_CFG_SW_PATCH_VERSION                0u
+/* Autosar Release */
+/*! @brief Defines the AUTOSAR Release Major version supported by ComM configuration  */
+#define DOIP_CFG_AR_RELEASE_MAJOR_VERSION        4u
+/*! @brief Defines the AUTOSAR Release Minor version supported by ComM configuration  */
+#define DOIP_CFG_AR_RELEASE_MINOR_VERSION        3u
+/*! @brief Defines the AUTOSAR Release patch version supported by ComM configuration  */
+#define DOIP_CFG_AR_RELEASE_REVISION_VERSION     1u
+
+/********************************************************************************************************************
+* #! DoIP types                                                                                                    *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/*! @brief Configuration type of the individual transceiver */
+typedef struct
+{
+    uint8 dummy;
+}DoIP_ConfigType;
+
+#endif /* DOIP_CFG_H */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

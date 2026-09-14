@@ -1,0 +1,85 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file XcpOnCan_Lcfg.h
+*    @ingroup XcpOnCanConfiguration
+*    @brief This is XcpOnCan link time configuration header file. It contains definitions of link time
+*    configuration parameters for the XcpOnCan module.
+********************************************************************************************************************/
+#ifndef XCPONCAN_LCFG_H
+#define XCPONCAN_LCFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "XcpOnCan_Cfg.h"
+/********************************************************************************************************************
+* #! XcpOnCan types                                                                                                 *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/* Macro for static and inline type */
+#ifndef XCPONCAN_LOCAL 
+#define XCPONCAN_LOCAL  static
+#endif
+
+#ifndef LOCAL_INLINE
+#define LOCAL_INLINE    static inline
+#endif
+
+#ifndef XCPONCAN_LOCAL_INLINE
+#define XCPONCAN_LOCAL_INLINE  LOCAL_INLINE
+#endif
+
+/*! @brief Defines the tyoe for XcpOnCan Channel ctrl status */
+typedef struct
+{
+    /*! @brief Defines the Queued PduInfo state  IDLE or PENDING */
+    XcpOnCan_TxStateType        QueuedPduInfoState;
+    /*! @brief Defines the Pdu state OFFLINE or ONLINE */
+    XcpOnCan_PduSetStateType    PduSetState;
+    /*! @brief Defines the queued pdu info */
+    PduInfoType                 QueuedPduInfo;
+    /*! @brief Defines the transmit timeout confirmation */
+    uint32                      Timer;
+    /*! @brief Defines the transmit data buffer */
+    uint8                       TxBuffer[XCPONCAN_TX_BUFFER_SIZE];
+}XcpOnCan_ChannelCtrlStatusType;
+
+/*! @brief Defines the type for XcpOnCan channel configuration.*/
+typedef struct 
+{
+    /*! @brief Defines the Xcp Tx confirmation id for this channels. */
+    PduIdType           TxConfPduId;
+    /*! @brief  Defines the SoAd Tx pdu id for this channel. */
+    PduIdType           CanIfTxPduId;
+}XcpOnCan_ChannelConfigType;
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+#if ( CANXCP_ENABLE_CONTROL == STD_ON )
+/*! @brief Defines the XcpOnCan control state . */
+extern VAR(XcpOnCan_ControlStateType,XCPONCAN_VAR_INIT) XcpOnCan_ControlState;
+#endif
+/*! @brief Defines the XcpOnCan ctrl status for the channel . */
+extern VAR(XcpOnCan_ChannelCtrlStatusType,XCPONCAN_VAR_NOINIT) XcpOnCan_ChannelCtrlStatus[XCPONCAN_NUM_OF_CHANNELS];
+/********************************************************************************************************************
+* #! XcpOnCan const config  data                                                                                       *
+********************************************************************************************************************/
+/*! @brief Defines the XcpOnCan channel configuration. */
+extern CONST(XcpOnCan_ChannelConfigType,XCPONCAN_CONST) XcpOnCan_ChannelConfig[XCPONCAN_NUM_OF_CHANNELS];
+
+#endif /* XCPONCAN_LCFG_H */
+/********************************************************************************************************************
+*                                 END OF FILE                                                                       *
+********************************************************************************************************************/

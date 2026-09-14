@@ -1,0 +1,13 @@
+
+# Target rules
+optee-client:
+	@echo "Building OP-TEE for TI AM62x..."
+	$(MAKE) -C $(OPTEE_CLIENT_SRC) CROSS_COMPILE64=$(CROSS_COMPILE) PLATFORM=k3 CFG_TEE_SUPP_LOG_LEVEL=2 CFG_ARM64_core=y
+
+# Clean build
+optee-client_clean:
+	@echo "Cleaning build..."
+	$(MAKE) -C $(OPTEE_CLIENT_SRC) clean
+
+# Phony targets to avoid conflicts with files
+.PHONY: all clean

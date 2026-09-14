@@ -1,0 +1,106 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file XcpOnCan_Cfg.h
+*    @ingroup XcpOnCanConfiguration
+*    @brief This is XcpOnCan Pre-compile time configuration header file. It contains definitions of pre-compile time 
+*    configuration parameters for the XcpOnCan module.
+*    @defgroup XcpOnCanConfiguration
+*    @brief This contains the configuration files for the XcpOnCan module.
+********************************************************************************************************************/
+#ifndef XCPONCAN_CFG_H
+#define XCPONCAN_CFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "XcpOnCan_Types.h"
+#include "SchM_XcpOnCan.h"
+/********************************************************************************************************************
+*  #! Precompile Configuration                                                                                      *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+*  #! XcpOnCan Internal feature support                                                                                *
+********************************************************************************************************************/
+
+/*! @breif Defines the maximum cto supported by XcpOnCan */
+#define XCPONCAN_MAX_CTO                    8U
+/*! @breif Defines the maximum Dto supported by XcpOnCan */
+#define XCPONCAN_MAX_DTO                    8U
+/*! @breif Defines the number of channels supported */
+#define XCPONCAN_NUM_OF_CHANNELS            1U
+/*! @brief Defines the number of received pdu supported */
+#define XcpOnCan_XcpRxMsg                   0U
+#define XCPONCAN_NUM_OF_RX_PDUID            1U
+/*! @brief Defines the number of received pdu supported */
+#define XcpOnCan_XcpTxMsg                   0U
+#define XCPONCAN_NUM_OF_TX_PDUID            1U
+/*! @brief Defines the main function period in ms for XcpOnCan module. */
+#define XCPONCAN_MAINFUNCTION_PERIOD        10U
+/*! @brief Defines the Transmit confirmation timeout value in ms . The value should be the multiple of the XcpOnCan 
+    Mainfunction period */
+#define XCPONCAN_TX_CONFIRMATION_TIMEOUT    100U
+/*! @brief  Switches the development error detection and notification on or off.
+    STD_ON  : detection and notification is enabled.
+    STD_OFF : detection and notification is disabled. */
+#define XCPONCAN_DEV_ERROR_DETECT           STD_ON
+/*! @brief Defines the vairable dlc support for XcpOnCan. */
+#define XCPONCAN_VARIABLE_DLC               STD_ON
+/*! @brief Defines the transmit pdu size of XcpOnCan. */
+#define XCPONCAN_PDU_SIZE                   8U
+/*! @brief Defines the transmit pdu buffer size */
+#if (XCPONCAN_MAX_CTO > XCPONCAN_MAX_DTO)
+#define XCPONCAN_TX_BUFFER_SIZE             (XCPONCAN_MAX_CTO)
+#else
+#define XCPONCAN_TX_BUFFER_SIZE             (XCPONCAN_MAX_DTO)
+#endif
+#ifndef XCPONCAN_DUMMY_STATEMENT
+#define XCPONCAN_DUMMY_STATEMENT(v) (void)v
+#endif
+/*******************************************************************************************************************
+*  #! XcpOnCan module configuration                                                                                   *
+*******************************************************************************************************************/
+
+/********************************************************************************************************************
+*  #! SW and AUTOSAR Version Macros                                                                                 *
+********************************************************************************************************************/
+/* Software Version */
+/*! @brief Defines the XcpOnCan configuration software Major version */
+#define XCPONCAN_CFG_SW_MAJOR_VERSION                      1u
+/*! @brief Defines the XcpOnCan configuration software Minor version */
+#define XCPONCAN_CFG_SW_MINOR_VERSION                      0u
+/*! @brief Defines the XcpOnCan configuration software Patch version */
+#define XCPONCAN_CFG_SW_PATCH_VERSION                      0u
+/* Autosar Release */
+/*! @brief Defines the AUTOSAR Release Major version supported by XcpOnCan configuration  */
+#define XCPONCAN_CFG_AR_RELEASE_MAJOR_VERSION              4u
+/*! @brief Defines the AUTOSAR Release Minor version supported by XcpOnCan configuration  */
+#define XCPONCAN_CFG_AR_RELEASE_MINOR_VERSION              3u
+/*! @brief Defines the AUTOSAR Release patch version supported by XcpOnCan configuration  */
+#define XCPONCAN_CFG_AR_RELEASE_REVISION_VERSION           1u
+/********************************************************************************************************************
+* #! XcpOnCan types                                                                                                 *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+typedef struct
+{
+    uint8 Dummy;
+}XcpOnCan_ConfigType;
+
+#endif /* XCPONCAN_CFG_H */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

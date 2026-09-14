@@ -1,0 +1,366 @@
+-- VectorCAST 18 (02/04/18)
+-- Test Case Script
+-- 
+-- Environment    : HT_UCLALPHYSERIALVLITE_IMPL
+-- Unit(s) Under Test: UclALPhySerialVlite_Impl
+-- 
+-- Script Features
+TEST.SCRIPT_FEATURE:C_DIRECT_ARRAY_INDEXING
+TEST.SCRIPT_FEATURE:CPP_CLASS_OBJECT_REVISION
+TEST.SCRIPT_FEATURE:MULTIPLE_UUT_SUPPORT
+TEST.SCRIPT_FEATURE:MIXED_CASE_NAMES
+TEST.SCRIPT_FEATURE:STATIC_HEADER_FUNCS_IN_UUTS
+--
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.GpioId:1
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_GpioChanged.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.InstId:0
+TEST.VALUE:uut_prototype_stubs.UclHWIf_ByteReceived.length[0]:10
+TEST.VALUE:uut_prototype_stubs.UclHWIf_ByteReceived.return:UCL_E_OK
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete_BytesRecvd_fail.002
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete_BytesRecvd_fail.002
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.InstId:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete_eUclALPhyPeerReadyStatus_NotReady_fail.003
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete_eUclALPhyPeerReadyStatus_NotReady_fail.003
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyInst_0.isPeerReady:1
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.InstId:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_ReceiveComplete.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.InstId:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALHwCbk_TransmitComplete.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALPhy_Initialize
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Initialize.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Initialize
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Initialize.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.InstId:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Initialize.002
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Initialize
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Initialize.002
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.InstId:0
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Initialize.return:UCL_E_NOK
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Initialize.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALPhy_Read
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Read.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Read
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Read.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize[0]:10
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Read_pData_Null.002
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Read
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Read_pData_Null.002
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData:<<malloc 9>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData:<<null>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize[0]:10
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Read_pSize_Null.003
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Read
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Read_pSize_Null.003
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData[0]:10
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize:<<null>>
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Read_pSize_less_than_zero_Null.004
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Read
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Read_pSize_less_than_zero_Null.004
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pData[0]:10
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pSize[0]:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Read.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALPhy_Shutdown
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Shutdown
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.InstId:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Shutdown.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_IUclALPhy_Write
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Write.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Write
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Write.001
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData[0]:1
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.Size:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Write.return:UCL_E_OK
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Write_Buffer_fail.002
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Write
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Write_Buffer_fail.002
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData[0]:1
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.Size:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Write.return:UCL_E_NOK
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Write_pData_Invalid.004
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Write
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Write_pData_Invalid.004
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData:<<malloc 9>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData:<<null>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.Size:1
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_IUclALPhy_Write_size_Invalid.003
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_IUclALPhy_Write
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_IUclALPhy_Write_size_Invalid.003
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.InstId:0
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData:<<malloc 1>>
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pData[0]:1
+TEST.VALUE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.Size:0
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_IUclALPhy_Write.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_SetupReceive
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupReceive.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupReceive
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupReceive.001
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupReceive.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupReceive.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupReceive.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Subprogram: UclALPhySerialVlite_Impl_SetupTransmit
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_DEVICECOMM_STATUS_MSG_GOOD_.001
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_DEVICECOMM_STATUS_MSG_GOOD_.001
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_OK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_MSG_GOOD
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_DEVICECOMM_STATUS_MSG_PENDING_.002
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_DEVICECOMM_STATUS_MSG_PENDING_.002
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_OK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_MSG_PENDING
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_Ring_buffer_fail_.003
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_Ring_buffer_fail_.003
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_NOK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_MSG_GOOD
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_NOK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_Size_fail_.004
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_Size_fail_.004
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:0
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_OK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_MSG_GOOD
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_UartChStatus_fail_.006
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_UartChStatus_fail_.006
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UartChStatus:1
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_UartRet_fail_.005
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_UartRet_fail_.005
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_OK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_ERROR_DISABLED
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END
+
+-- Test Case: UclALPhySerialVlite_Impl_SetupTransmit_hwFlowCntrlOn_uartInspecChsts_flase
+TEST.UNIT:UclALPhySerialVlite_Impl
+TEST.SUBPROGRAM:UclALPhySerialVlite_Impl_SetupTransmit
+TEST.NEW
+TEST.NAME:UclALPhySerialVlite_Impl_SetupTransmit_hwFlowCntrlOn_uartInspecChsts_flase
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UartChStatus:0
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.HwFlowCtrlOn:1
+TEST.VALUE:UclALPhySerialVlite_Impl.<<GLOBAL>>.UclALPhyCfg_0.txDmaBufferSize:1
+TEST.VALUE:uut_prototype_stubs.UclCmnRingBuffer_Read.return:UCL_E_OK
+TEST.VALUE:uut_prototype_stubs.uart_tx_req.return:DEVICECOMM_STATUS_MSG_GOOD
+TEST.VALUE:uut_prototype_stubs.inspect_uart_sts.return:1
+TEST.EXPECTED:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.return:UCL_E_OK
+TEST.VALUE_USER_CODE:UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst
+<<UclALPhySerialVlite_Impl.UclALPhySerialVlite_Impl_SetupTransmit.pInst>> = ( &UclALPhyInst_0 );
+TEST.END_VALUE_USER_CODE:
+TEST.END

@@ -1,0 +1,39 @@
+options C_COMPILER_CFG_SOURCE BUILT_IN_TAG 
+options C_COMPILER_HIERARCHY_STRING VectorCAST MinGW_C 
+options C_COMPILER_TAG BUILTIN_MINGW_63_C 
+options C_COMPILER_VERSION_CMD gcc --version 
+options C_COMPILE_CMD gcc -c -g 
+options C_DEBUG_CMD gdb 
+options C_DEFINE_LIST const= 
+options C_EDG_FLAGS -w --gcc --gnu_version 60300 
+options C_LINKER_VERSION_CMD ld --version 
+options C_LINK_CMD gcc -g 
+options C_PREPROCESS_CMD gcc -E -C 
+options VCAST_ASSEMBLY_FILE_EXTENSIONS asm s 
+options VCAST_COLLAPSE_STD_HEADERS COLLAPSE_SYSTEM_HEADERS 
+options VCAST_COMMAND_LINE_DEBUGGER TRUE 
+options VCAST_DISABLE_STD_WSTRING_DETECTION TRUE 
+options VCAST_DISPLAY_FUNCTION_COVERAGE TRUE 
+options VCAST_ENABLE_FUNCTION_CALL_COVERAGE TRUE 
+options VCAST_ENVIRONMENT_FILES  
+options VCAST_HAS_LONGLONG TRUE 
+options VCAST_NO_LONG_DOUBLE TRUE 
+options VCAST_PREPEND_TO_PATH_DIRS $(VECTORCAST_DIR)/MinGW/bin 
+options VCAST_RPTS_DEFAULT_FONT_FACE Arial(4) 
+options VCAST_TYPEOF_OPERATOR TRUE 
+options WHITEBOX YES 
+clear_default_source_dirs  
+options TESTABLE_SOURCE_DIR ..\..\..\..\src\src\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\src\includes\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\Common\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\Amd\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\Os\cpu\arm\cortex7\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\bsw-gen\bsw\amd\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\bsw-gen\bsw\os\ToolUpdateConfig\ 
+options TESTABLE_SOURCE_DIR ..\..\..\..\..\..\ut-stubs\comp-specific\sys\mos\Os\cpu\arm\cortex7_main\ 
+environment build OS_EVENT_VCAST_HT.env 
+/E:OS_EVENT_VCAST_HT tools script run OS_EVENT_VCAST_HT.tst 
+/E:OS_EVENT_VCAST_HT execute batch 
+/E:OS_EVENT_VCAST_HT tools import_coverage OS_EVENT_VCAST_HT.cvr 
+/E:OS_EVENT_VCAST_HT reports custom management OS_EVENT_VCAST_HT_management_report.html 

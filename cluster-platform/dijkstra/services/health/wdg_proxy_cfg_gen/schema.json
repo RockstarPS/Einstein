@@ -1,0 +1,108 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "title": "wdg_proxy_cfg",
+    "type": "object",
+    "properties": {
+      "WDG_VMF_GID": {
+        "type":"string"
+      },
+      "WDG_VMF_HEALTHY_EID": {
+        "type":"string"
+      },
+      "WDG_VMF_FATAL_ERROR_EID": {
+        "type":"string"
+      },
+      "WDG_VMF_HEALTH_EVENT_RECORD_EID": {
+        "type":"string"
+      },
+      "WDG_COMP_ID": {
+        "type":"string"
+      },
+      "WDG_DOMAIN_ID": {
+        "type":"string"
+      },
+      "WDG_VMF_MSG_PERIODICITY": {
+        "type":"integer"
+      },
+      "PROCESS_MONITOR_LIST":{
+        "type": "array",
+        "minItems":1,
+        "items": {
+          "type": "object",
+          "properties": {
+            "Entity_Name": {
+              "type": "string"
+            },
+            "HB_Enabled": {
+              "type": "string",
+              "enum": [
+                "TRUE",
+                "FALSE"
+              ]
+            },
+            "HB_Low_Miss_Action": {
+              "type": "string",
+              "enum": [
+                "WP_ACTION_NONE",
+                "WP_ACTION_FATAL",
+                "WP_ACTION_RESTART"
+              ]
+            },
+            "HB_High_Miss_Action": {
+              "type": "string",
+              "enum": [
+                "WP_ACTION_NONE",
+                "WP_ACTION_FATAL",
+                "WP_ACTION_RESTART"
+              ]
+            },
+            "Death_Action": {
+              "type": "string",
+              "enum": [
+                "WP_ACTION_NONE",
+                "WP_ACTION_FATAL",
+                "WP_ACTION_RESTART"
+              ]
+            },
+            "Restart_Count": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "Entity_Name",
+            "HB_Enabled",
+            "HB_Low_Miss_Action",
+            "HB_High_Miss_Action",
+            "Death_Action",
+            "Restart_Count"
+          ],
+          "if": {
+            "properties": {
+              "HB_Enabled": {
+                "const": "FALSE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "HB_Low_Miss_Action": {
+                "const": "WP_ACTION_NONE"
+              },
+              "HB_High_Miss_Action": {
+                "const": "WP_ACTION_NONE"
+              }
+            }
+          }
+        }
+      }
+    },
+    "required": [
+      "WDG_VMF_GID",
+      "WDG_VMF_HEALTHY_EID",
+      "WDG_VMF_FATAL_ERROR_EID",
+      "WDG_COMP_ID",
+      "WDG_DOMAIN_ID",
+      "WDG_VMF_MSG_PERIODICITY",
+      "WDG_VMF_HEALTH_EVENT_RECORD_EID"
+    ]
+  }

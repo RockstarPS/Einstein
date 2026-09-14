@@ -1,0 +1,114 @@
+root@am62pxx-7xxd-b@18:50:/system/usr/bin/wdg_test_FT# ./testcase02_no_restart.sh
+------------------------------------------------------------------
+----- Test Case 2 - Restart type: no restart ---------------------
+  Cause of termination:
+        One of the clean signals: SIGHUP, SIGINT, SIGTERM, or SIGPIPE
+
+  Expected behavior:
+        The process shall not be restarted.
+
+  Error Notification Fatal (Yes/No): Yes
+  Process Restart (Yes/No): No
+  [*] Configuration:
+        Restart=no
+------------------------------------------------------------------
+[>] Starting test_01.service...
+[+] test_01.service started successfully.
+[>] Starting wdg_proxy_test_01.service...
+[+] wdg_proxy_test_01.service started successfully.
+.......................................................
+       Test with clean signal exit (SIGHUP)
+.......................................................
+[!] Sending signal 1 (SIGHUP) to test_01.service (PID: 744)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 18:50:38 am62pxx-7xxd-b systemd[1]: Started Test application 01.
+May 29 18:50:38 am62pxx-7xxd-b test_01[744]: Start - Test Case: 1
+May 29 18:50:38 am62pxx-7xxd-b test_01[744]: SIG MIN: 34
+May 29 18:50:38 am62pxx-7xxd-b test_01[744]: SIG MAX: 64
+May 29 18:50:42 am62pxx-7xxd-b systemd[1]: test_01.service: Deactivated successfully.
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/29 18:50:43.984777       7801 016 ECU1 SYS- JOUR log warn V 4 [2025/05/29 18:48:23.002892 kernel: Warning: initrd.target: Wants dependency dropin /usr/lib/systemd/system/initrd.target.wants/wdg_proxy_test_03.service is not a symlink, ignoring.]
+2025/05/29 18:50:43.996440      28096 110 ECU1 SYS- JOUR log warn V 4 [2025/05/29 18:48:24.184171 klogd[289]: Warning: [    0.780192] systemd[1]: initrd.target: Wants dependency dropin /usr/lib/systemd/system/initrd.target.wants/wdg_proxy_test_03.service is not a symlink, ignoring.]
+2025/05/29 18:50:44.007024      80664 001 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf.service, object path: /org/freedesktop/systemd1/unit/vmf_2eservice ]
+2025/05/29 18:50:44.007046      80697 002 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: power_mgr.service, object path: /org/freedesktop/systemd1/unit/power_5fmgr_2eservice ]
+2025/05/29 18:50:44.007067      80748 003 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: display_mgr.service, object path: /org/freedesktop/systemd1/unit/display_5fmgr_2eservice ]
+2025/05/29 18:50:44.007088      80770 004 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: ucl_primary.service, object path: /org/freedesktop/systemd1/unit/ucl_5fprimary_2eservice ]
+2025/05/29 18:50:44.007109      80792 005 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-daemon.service, object path: /org/freedesktop/systemd1/unit/dlt_2ddaemon_2eservice ]
+2025/05/29 18:50:44.007412      80824 006 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-system.service, object path: /org/freedesktop/systemd1/unit/dlt_2dsystem_2eservice ]
+2025/05/29 18:50:44.007434      80853 007 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: server.service, object path: /org/freedesktop/systemd1/unit/server_2eservice ]
+2025/05/29 18:50:44.007455      80884 008 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: safeHMI.service, object path: /org/freedesktop/systemd1/unit/safeHMI_2eservice ]
+2025/05/29 18:50:44.007476      80929 009 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: mainHmi.service, object path: /org/freedesktop/systemd1/unit/mainHmi_2eservice ]
+2025/05/29 18:50:44.007497      80955 010 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 657 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf_cacher.service, object path: /org/freedesktop/systemd1/unit/vmf_5fcacher_2eservice ]
+2025/05/29 18:50:44.007518      80970 011 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_comm_if.c : 60 : WdgProxyCommIf_Init :  nw_vmf_connect success 1]
+2025/05/29 18:50:44.007922      82980 013 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: vmf.service, Current ActiveState: active]
+2025/05/29 18:50:44.007943      82981 014 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.007964      82990 015 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: power_mgr.service, Current ActiveState: active]
+2025/05/29 18:50:44.007985      82990 016 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008006      82999 017 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: display_mgr.service, Current ActiveState: active]
+2025/05/29 18:50:44.008027      82999 018 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008048      83009 019 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: ucl_primary.service, Current ActiveState: active]
+2025/05/29 18:50:44.008068      83009 020 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008090      83022 021 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: dlt-daemon.service, Current ActiveState: active]
+2025/05/29 18:50:44.008110      83023 022 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008131      83037 023 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: dlt-system.service, Current ActiveState: active]
+2025/05/29 18:50:44.008159      83038 024 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008182      83061 025 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: server.service, Current ActiveState: active]
+2025/05/29 18:50:44.008203      83064 026 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008224      83086 027 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: safeHMI.service, Current ActiveState: active]
+2025/05/29 18:50:44.008245      83087 028 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008265      83098 029 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: mainHmi.service, Current ActiveState: active]
+2025/05/29 18:50:44.008287      83098 030 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.008307      83109 031 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 693 : WdgProxy_GetCurrentState :  Service name: vmf_cacher.service, Current ActiveState: active]
+2025/05/29 18:50:44.008328      83109 032 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 704 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:50:44.010394      99666 033 ECU1 WP-- WP - log error V 8 [(376|376)  wdg_proxy_linux.c : 516 : WdgProxy_ProcessSDBUSEvent :  Service deactivated: safeHMI.service, PID: 189, Result: success, ActiveState: inactive]
+2025/05/29 18:50:44.010415      99937 034 ECU1 WP-- WP - log error V 8 [(376|376)  wdg_proxy_linux.c : 516 : WdgProxy_ProcessSDBUSEvent :  Service deactivated: mainHmi.service, PID: 200, Result: success, ActiveState: inactive]
+2025/05/29 18:50:44.010436     100102 035 ECU1 WP-- WP - log error V 8 [(376|376)  wdg_proxy_linux.c : 516 : WdgProxy_ProcessSDBUSEvent :  Service deactivated: server.service, PID: 165, Result: success, ActiveState: inactive]
+2025/05/29 18:50:44.010519     100980 036 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.010547     100990 037 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.010568     100998 038 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.010819     102978 039 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.010840     102988 040 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.010861     102996 041 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011174     104978 042 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011195     104987 043 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011215     104995 044 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011277     106978 045 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011298     106987 046 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011319     106994 047 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011340     108978 048 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011361     108988 049 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011382     108995 050 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011403     110978 051 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011443     110987 052 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011465     110994 053 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011654     112978 054 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011675     112987 055 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011696     112995 056 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011717     114978 057 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011738     114987 058 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011758     114994 059 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011839     116978 060 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011860     116987 061 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011881     116994 062 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011901     118978 063 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011922     118987 064 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011942     118995 065 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011963     120978 066 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.011984     120988 067 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012004     120996 068 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012184     122978 069 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012205     122987 070 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012226     122995 071 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012248     124978 072 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012268     124986 073 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012289     124993 074 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012370     126978 075 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012391     126988 076 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012412     126995 077 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012432     129006 078 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012453     129022 079 ECU1 WP-- WP - log info V 8 [(376|376)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 18:50:44.012474     129035 080 ECU1 WP-- WP - l

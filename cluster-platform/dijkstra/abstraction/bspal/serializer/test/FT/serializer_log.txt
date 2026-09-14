@@ -1,0 +1,99 @@
+
+root@am62pxx-7xxda1@00:13:23:/system/usr/bin# ./ser_test
+Usage: ./ser_test <option>
+CXD4951 - Serializer Test Utility
+1. Initialize Serializer
+2. Deinitialize Serializer
+3. Start Streaming
+4. Stop Streaming
+5. Get Link Status
+6. Get Error Status
+root@am62pxx-7xxda1@01:21:03:/system/usr/bin# ./ser_test 3
+Serializer streaming started successfully.
+root@am62pxx-7xxda1@01:21:09:/system/usr/bin# ./ser_test 4
+Serializer streaming stopped successfully.
+root@am62pxx-7xxda1@01:21:20:/system/usr/bin# ./ser_test 5
+Serializer link status: 1
+root@am62pxx-7xxda1@01:21:45:/system/usr/bin# ./ser_test 6
+Serializer error status: 0
+root@am62pxx-7xxda1@01:21:50:/system/usr/bin# ./ser_test 2
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=5503 _=./ser_test ]
+Serializer deinitialized successfully.
+[ 4915.388731]~DLT~ 5503~NOTICE   ~[dlt_free] data is still readable... [23] bytes read
+root@am62pxx-7xxda1@01:21:56:/system/usr/bin# dmesg | tail -n 10
+[ 4915.378438] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x53
+[ 4915.378562] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x20
+[ 4915.378665] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x28
+[ 4915.378768] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x50
+[ 4915.378870] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x58
+[ 4915.382972] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0xC0
+[ 4915.383126] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x18
+[ 4915.383244] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 4915.383357] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 4915.383469] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x53
+root@am62pxx-7xxda1@01:22:04:/system/usr/bin# dmesg | tail -n 5
+[ 4915.382972] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0xC0
+[ 4915.383126] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x18
+[ 4915.383244] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 4915.383357] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 4915.383469] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x53
+root@am62pxx-7xxda1@01:22:18:/system/usr/bin# ./ser_test 5
+Serializer link status: 0
+root@am62pxx-7xxda1@01:22:27:/system/usr/bin# ./ser_test 2
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=5555 _=./ser_test ]
+Serializer deinitialized successfully.
+[ 4959.337026]~DLT~ 5555~NOTICE   ~[dlt_free] data is still readable... [9] bytes read
+[ 4959.337196]~DLT~ 5555~NOTICE   ~[dlt_free] data is still readable... [14] bytes read
+root@am62pxx-7xxda1@01:22:40:/system/usr/bin# ./ser_test 6
+Serializer error status: 0
+root@am62pxx-7xxda1@01:22:51:/system/usr/bin# ./ser_test 1
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=5575 _=./ser_test ]
+Serializer initialized successfully.
+[ 4974.832354]~DLT~ 5575~NOTICE   ~[dlt_free] data is still readable... [23] bytes read
+root@am62pxx-7xxda1@01:22:56:/system/usr/bin# dmesg | tail -n 10
+[ 4974.823776] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x00 to register 0x53
+[ 4974.823903] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x12 to register 0x20
+[ 4974.824008] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x00 to register 0x28
+[ 4974.824112] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x06 to register 0x50
+[ 4974.824215] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x00 to register 0x58
+[ 4974.824319] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x76 to register 0xC0
+[ 4974.824596] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0xC0 to register 0x18
+[ 4974.830484] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x01 to register 0x1F
+[ 4974.830797] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x00 to register 0x1F
+[ 4974.831354] cxd4951_i2c_device 2-0020: Visteon cxd4951_init_stream:182 Wrote 0x01 to register 0x53
+root@am62pxx-7xxda1@01:23:03:/system/usr/bin# ./ser_test 3
+Serializer streaming started successfully.
+root@am62pxx-7xxda1@01:23:10:/system/usr/bin# ./ser_test
+Usage: ./ser_test <option>
+CXD4951 - Serializer Test Utility
+1. Initialize Serializer
+2. Deinitialize Serializer
+3. Start Streaming
+4. Stop Streaming
+5. Get Link Status
+6. Get Error Status
+root@am62pxx-7xxda1@01:23:29:/system/usr/bin# ./ser_test 4
+Serializer streaming stopped successfully.
+root@am62pxx-7xxda1@01:23:41:/system/usr/bin# ./ser_test 2
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=5666 _=./ser_test ]
+Serializer deinitialized successfully.
+root@am62pxx-7xxda1@01:24:17:/system/usr/bin# dmesg | tail -n 10
+[ 5055.951519] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x53
+[ 5055.951640] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x20
+[ 5055.951743] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x28
+[ 5055.951844] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x50
+[ 5055.951946] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x58
+[ 5055.952047] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0xC0
+[ 5055.952149] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x18
+[ 5055.952250] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 5055.952352] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x1F
+[ 5055.952463] cxd4951_i2c_device 2-0020: Visteon cxd4951_deinit_stream:211 Wrote 0x00 to register 0x53
+root@am62pxx-7xxda1@01:24:25:/system/usr/bin# ./ser_test 5
+Serializer link status: 0
+root@am62pxx-7xxda1@01:24:36:/system/usr/bin# ./ser_test 6
+Serializer error status: 0
+root@am62pxx-7xxda1@01:24:39:/system/usr/bin#

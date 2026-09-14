@@ -1,0 +1,114 @@
+# /system/usr/bin/OSAL_FT/osal_thread/osal_thread 1 &
+[1] 2965538
+Starting oslal_thread_testing
+construct a new thread object
+Testing currentThreadId() API
+Printing current thread id : 1
+
+Testing currentProcessId() API
+Printing current process id : 2965538
+# pidin | grep osal_thread
+ 2965538   1 thread/osal_thread  10r NANOSLEEP
+#
+# DetRtmErr:92,0,06,02
+Fee_JobErrorNotification
+
+Testing getName() API
+Calling getName() API with out setting the name
+tid name :
+
+Testing setName() API
+Calling getName() API after setting the name
+tid name : main_process
+
+Testing sleepMS() API
+
+# getTimeDiffUS(): thread_timedWaitMS invoked time  : 2001 MS
+Testing sleepUS() API
+getTimeDiffUS(): thread_timedWaitMS invoked time  : 9000 US
+testThread::testThread() constructor called id : 1
+testThread::run() : 1
+testThread::cleanup() invoked by thread_ID : 1
+testThread::testThread() constructor called id : 2
+testThread::run() : 2
+testThread::cleanup() invoked by thread_ID : 2
+Testing exit() API
+
+# /system/usr/bin/OSAL_FT/osal_thread/osal_thread 2 &
+[1] 3022882
+Construct a new Thread with a IRunnable object
+Testing currentThreadId() API
+Printing current thread id : 1
+
+Testing currentProcessId() API
+Printing current process id : 3022882
+
+Testing setName() API
+Calling getName() API
+thread name : Thread_cbk_1
+
+Testing sleepMS() API
+# pidin | grep osal_thread
+ 3022882   1 thread/osal_thread  10r NANOSLEEP
+# getTimeDiffUS(): thread_timedWaitMS invoked time  : 2002 MS
+
+Testing sleepUS() API
+getTimeDiffUS(): thread_timedWaitMS invoked time  : 6000 US
+Invoking the IRunnable threadcbk_1
+Thread_cbk_1 thread id : 2
+Invoking the IRunnable threadcbk_2
+running Thread_cbk_2 cnt : 1
+Invoking the IRunnable threadcbk_2
+running Thread_cbk_2 cnt : 2
+Invoking the IRunnable threadcbk_2
+running Thread_cbk_2 cnt : 3
+Invoking the IRunnable threadcbk_2
+running Thread_cbk_2 cnt : 4
+Invoking the IRunnable threadcbk_2
+running Thread_cbk_2 cnt : 5
+Invoking the IRunnable threadcbk_2Testing exit() API
+
+
+
+
+
+# /system/usr/bin/OSAL_FT/osal_thread/osal_thread 3 &
+[1] 2949154
+test_threadYield::test_threadYield() constructor called id : 0
+# /system/usr/bin/OSAL_FT/osal_thread/osal_thread 4 &
+[2] 2953264
+# test_threadYield::test_threadYield() constructor called id : 1
+
+#
+#
+#
+#
+#
+# top
+Computing times...
+
+
+50 processes; 287 threads;
+CPU states: 100.7% user, 0.5% kernel
+CPU  0 Idle: 0.0%
+CPU  1 Idle: 0.0%
+Memory: 1992M total, 1430M avail, page size 4K
+
+      PID   TID PRI STATE    HH:MM:SS    CPU  COMMAND
+  2949154     2  10 Run       0:01:10  34.74% osal_thread
+   204833     1  10 Run       0:02:08  34.44% diagnostic_mgr
+  2756643     1  13 Rply      0:00:48  14.65% chmi
+    69644     2  13 Rcv       0:00:09   2.41% io-pkt-v6-hc
+        1    19  10 Run       0:00:00   1.32% kernel
+   204831     1  13 NSlp      0:00:04   1.22% ethernet_nm
+  2756643    29  10 CdV       0:00:03   1.09% chmi
+   204826     1  13 SigW      0:00:01   0.58% soad_processor
+  2777128     4  10 Rdy       0:00:05   0.56% dlt-qnx-system
+  2756643    25  13 CdV       0:00:01   0.56% chmi
+
+             Min        Max       Average
+CPU 0 idle:    0%         0%         0%
+CPU 1 idle:    0%         0%         0%
+Mem Avail:   1430MB      1430MB      1430MB
+Processes:    50         50         50
+Threads:     287        287        287

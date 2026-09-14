@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:variable name="default-font-face" select="'Arial(4)'"/>
+  <xsl:variable name="default-font-size" select="10"/>
+  <xsl:variable name="default-font-color" select="'#000000'"/>
+  <xsl:variable name="heading-font-size" select="14"/>
+  <xsl:variable name="body-bgcolor" select="'#FFFFFF'"/>
+  <xsl:variable name="body-link-color" select="'#0000FF'"/>
+  <xsl:variable name="body-alink-color" select="'#FF0000'"/>
+  <xsl:variable name="body-vlink-color" select="'#FF00FF'"/>
+  <xsl:variable name="section-title-bgcolor" select="'#94A5C6'"/>
+  <xsl:variable name="table-border" select="'0'"/>
+  <xsl:variable name="table-cellpadding" select="'2'"/>
+  <xsl:variable name="table-heading-bgcolor" select="'#CCD8EE'"/>
+  <xsl:variable name="table-data-bgcolor" select="'#EEEEEE'"/>
+  <xsl:variable name="table-data-pass-color" select="'#00730D'"/>
+  <xsl:variable name="table-data-fail-color" select="'#CC0000'"/>
+  <xsl:variable name="table-automatic-bgcolor" select="'#8DC0C7'"/>
+  <xsl:variable name="table-data-pass-bgcolor" select="'#CCFFCC'"/>
+  <xsl:variable name="table-data-fail-bgcolor" select="'#FFCCCC'"/>
+  <xsl:variable name="table-data-partial-bgcolor" select="'#FFFFCC'"/>
+  <xsl:variable name="table-data-text-alignment" select="'left'"/>
+  <xsl:variable name="unit-column-width" select="19"/>
+  <xsl:variable name="subprogram-column-width" select="21"/>
+  <xsl:variable name="testcase-column-width" select="24"/>
+  <xsl:variable name="date-column-width" select="11"/>
+  <xsl:variable name="requirements-column-width" select="30"/>
+  <xsl:variable name="notes-column-width" select="30"/>
+  <xsl:variable name="result-column-width" select="13"/>
+  <xsl:variable name="complexity-column-width" select="10"/>
+  <xsl:variable name="coverage-result-column-width" select="18"/>
+  <xsl:variable name="platform" select="'win32'"/>
+</xsl:stylesheet>

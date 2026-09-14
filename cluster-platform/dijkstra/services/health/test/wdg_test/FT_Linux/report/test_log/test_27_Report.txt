@@ -1,0 +1,106 @@
+root@am62pxx-7xxd-b@19:28:/system/usr/bin/wdg_test_FT# ./testcase27_restart_limit_count.sh
+------------------------------------------------------------------
+----- Test Case 12 - Restart type: Always with limit (count) -----
+Cause of termination:
+    (1) Clean exit (code 0)
+    (2) Clean signals: SIGHUP, SIGINT, SIGTERM, SIGPIPE
+    (3) Unclean exit (code 1)
+    (4) Unclean signals: SIGKILL, SIGSEGV
+
+Expected behavior:
+    The process should restart only up to the limit configured in StartLimitBurst
+    within the StartLimitInterval.
+
+Error notification (Fatal): Yes
+Process restart: Yes
+[*] Configuration:
+    Restart=always
+    StartLimitBurst=3
+    StartLimitInterval=5min
+------------------------------------------------------------------
+[>] Starting test_16.service...
+[+] test_16.service started successfully.
+[>] Starting wdg_proxy_test_16.service...
+[+] wdg_proxy_test_16.service started successfully.
+.......................................................
+   First test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 6415)...
+.......................................................
+   Second test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 6437)...
+.......................................................
+   Third test with clean exit (code 0)
+.......................................................
+[!] Sending signal 35 (SIGRTMIN+1) to test_16.service (PID: 6446)...
+-----------------------------------------------
+Recent journal entries:
+-----------------------------------------------
+May 29 19:28:36 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 29 19:28:36 am62pxx-7xxd-b test_16[6415]: Start - Test Case: 16
+May 29 19:28:36 am62pxx-7xxd-b test_16[6415]: SIG MIN: 34
+May 29 19:28:36 am62pxx-7xxd-b test_16[6415]: SIG MAX: 64
+May 29 19:28:40 am62pxx-7xxd-b test_16[6415]: Interrupt signal (35) received.
+May 29 19:28:41 am62pxx-7xxd-b test_16[6415]: Exit - Test case: 16
+May 29 19:28:41 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 29 19:28:41 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 1.
+May 29 19:28:41 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 29 19:28:41 am62pxx-7xxd-b test_16[6437]: Start - Test Case: 16
+May 29 19:28:41 am62pxx-7xxd-b test_16[6437]: SIG MIN: 34
+May 29 19:28:41 am62pxx-7xxd-b test_16[6437]: SIG MAX: 64
+May 29 19:28:42 am62pxx-7xxd-b test_16[6437]: Interrupt signal (35) received.
+May 29 19:28:43 am62pxx-7xxd-b test_16[6437]: Exit - Test case: 16
+May 29 19:28:43 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 29 19:28:43 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 2.
+May 29 19:28:43 am62pxx-7xxd-b systemd[1]: Started Test application 16.
+May 29 19:28:43 am62pxx-7xxd-b test_16[6446]: Start - Test Case: 16
+May 29 19:28:43 am62pxx-7xxd-b test_16[6446]: SIG MIN: 34
+May 29 19:28:43 am62pxx-7xxd-b test_16[6446]: SIG MAX: 64
+May 29 19:28:44 am62pxx-7xxd-b test_16[6446]: Interrupt signal (35) received.
+May 29 19:28:44 am62pxx-7xxd-b test_16[6446]: Exit - Test case: 16
+May 29 19:28:44 am62pxx-7xxd-b systemd[1]: test_16.service: Deactivated successfully.
+May 29 19:28:45 am62pxx-7xxd-b systemd[1]: test_16.service: Scheduled restart job, restart counter is at 3.
+May 29 19:28:45 am62pxx-7xxd-b systemd[1]: test_16.service: Start request repeated too quickly.
+May 29 19:28:45 am62pxx-7xxd-b systemd[1]: test_16.service: Failed with result 'start-limit-hit'.
+May 29 19:28:45 am62pxx-7xxd-b systemd[1]: Failed to start Test application 16.
+-----------------------------------------------
+Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+
+2025/05/29 19:28:46.873729   24254189 029 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:47.073762   24256189 030 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:47.273721   24258189 031 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:47.473706   24260189 032 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:47.673754   24262189 033 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:47.673884   24262190 034 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:28:47.873684   24264189 035 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:48.073749   24266189 036 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:48.273724   24268189 037 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:48.473986   24270190 038 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:48.673770   24272189 039 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:48.673866   24272190 040 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:28:48.873741   24274189 041 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:49.073749   24276189 042 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:49.273687   24278189 043 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:49.473714   24280189 044 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:49.673767   24282189 045 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:49.673861   24282190 046 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:28:49.873681   24284189 047 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:50.073759   24286189 048 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:50.273728   24288189 049 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:50.473725   24290189 050 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:50.673764   24292189 051 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:50.673865   24292190 052 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:28:50.873737   24294189 053 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:51.073751   24296189 054 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:51.273719   24298189 055 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:51.473692   24300189 056 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:51.673735   24302189 057 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_16]
+2025/05/29 19:28:51.673827   24302190 058 ECU1 WP-- WP - log error V 8 [(6424|6424)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+-----------------------------------------------
+[*] Checking status: test_16.service
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_16.service
+[!] wdg_proxy_test_16.service is running. Stopping for a clean state...
+--- Test complete. DLT logging stopped. ---

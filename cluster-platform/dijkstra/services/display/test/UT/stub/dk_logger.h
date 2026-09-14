@@ -1,0 +1,11 @@
+﻿#ifndef DK_LOGGER_H
+#define DK_LOGGER_H
+
+#define LOG_DECLARE_CONTEXT(CONTEXT)
+#define LOG_REGISTER_CONTEXT(HNDL, TAG, DESC, LEVEL)
+#define LOG_UNREGISTER_CONTEXT(HNDL)
+#define LOGI(HNDL, ...)
+#define LOGE(HNDL, ...) 
+#define LOGV(HNDL, ...)
+
+#endif //DK_LOGGER_H

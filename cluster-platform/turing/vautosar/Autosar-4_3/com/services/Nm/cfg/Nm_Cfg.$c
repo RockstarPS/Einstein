@@ -1,0 +1,266 @@
+/********************************************************************************************************************
+|   File Name   : Nm_Cfg.c
+|
+|   Description : This file provides the link time configuration parameters for the AUTOSAR NM module 
+|--------------------------------------------------------------------------------------------------------------------
+|               C O P Y R I G H T
+|--------------------------------------------------------------------------------------------------------------------
+| Copyright (c) 2019 by Visteon Corporation.       All rights reserved.
+|
+| NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+| Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+| its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+| or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+| in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+| under all copyright laws to protect this work as a published work, when appropriate.
+| Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+| without the written authorization of Visteon Corporation.
+|--------------------------------------------------------------------------------------------------------------------
+|               A U T H O R   I D E N T I T Y
+|--------------------------------------------------------------------------------------------------------------------
+| Initials     Name                      Company
+| --------     ---------------------     -------------------------------------
+| MA            Muthu Alexander          Visteon Corporation
+|--------------------------------------------------------------------------------------------------------------------
+|               R E V I S I O N   H I S T O R Y
+|--------------------------------------------------------------------------------------------------------------------
+| Date        Version   Author  Description
+| ----------  --------  ------  -------------------------------------------------------------------------------------
+| 2019-12-05  00.00.01  MA     Initial Version
+|*******************************************************************************************************************/
+/* Includes */
+#include "Nm_Cfg.h"
+#include "ComM.h"
+#include "CanNm.h"
+//#include "CanNmFiatB.h"
+
+/*! @brief It defines the mapping between the ComM channel and NM channel */
+const NetworkHandleType Nm_ComMToNmChannelMapping[NM_COMM_NUMBER_OF_CHANNELS]=
+{
+    /* ComM channel Id */ 
+    0U,                     /* ComMChannel0 */
+    1U                      /* ComMChannel1 */
+};
+
+/*! @brief It defines the channel configuration of NM */
+const Nm_ChannelConfigType Nm_ChannelConfig[NM_NUMBER_OF_CHANNELS]=
+{
+    /* {BusNmFunctConfigId , BusNmType, ComMChRef} */
+    {
+        1U,
+        NM_BUSNM_CANNM,
+        0U, // ComMConf_ComMChannel_BHCAN
+#if(NM_COORDINATOR_SUPPORT_ENABLED == STD_ON) 
+#if (NM_COORDINATOR_SYNC_SUPPORT == STD_ON)
+        FALSE,
+#endif
+        FALSE,
+        0xFFU,
+        FALSE,
+        0xFFU,
+#endif
+#if(NM_STATE_CHANGE_IND_ENABLED == STD_ON)
+        FALSE,
+        0xFFU,
+#endif
+#if (NM_BUSNM_GENERIC_NM_SUPPORT == STD_ON)
+        0U,
+#endif
+    },
+    {
+        1U,
+        NM_BUSNM_CANNM,
+        1U, // ComMConf_ComMChannel_FDCAN1
+#if(NM_COORDINATOR_SUPPORT_ENABLED == STD_ON) 
+#if (NM_COORDINATOR_SYNC_SUPPORT == STD_ON)
+        FALSE,
+#endif
+        FALSE,
+        0xFFU,
+        FALSE,
+        0xFFU,
+#endif
+#if(NM_STATE_CHANGE_IND_ENABLED == STD_ON)
+        FALSE,
+        0xFFU,
+#endif
+#if (NM_BUSNM_GENERIC_NM_SUPPORT == STD_ON)
+        0U,
+#endif
+    }
+};
+
+/*! @brief It defines the supported function by the bus specific NM */ 
+const Nm_BusNmFunctConfigType Nm_BusNmFunctConfig[NM_NUM_OF_BUS_NM_SUPPORTED]=
+{
+    /* {BusNmPassiveStartUpFunctPtr, BusNmGetStateFunctPtr, BusNmNetworkRequestFunctPtr, BusNmNetworkReleaseFunctPtr, 
+    BusNmDisableCommunicationFunctPtr, BusNmEnableCommunicationFunctPtr, Nm_BusNmSetUserDataFunctType, 
+    Nm_BusNmGetUserDataFunctType, Nm_BusNmGetNodeIdentifierFunctType, Nm_BusNmGetLocalNodeIdentifierFunctType, 
+    Nm_BusNmGetPduDataFunctType, Nm_BusNmPduRxIndicationCallOutFunctType, 
+    Nm_BusNmCheckRemoteSleepIndicationFunctType } */
+    {
+        NULL_PTR,
+        NULL_PTR,
+#if(NM_PASSIVE_MODE_ENABLED == STD_OFF)
+        NULL_PTR,
+        NULL_PTR,
+#endif
+#if(NM_COM_CONTROL_ENABLED == STD_ON)
+        NULL_PTR,
+        NULL_PTR,
+#endif
+#if(NM_USER_DATA_ENABLED == STD_ON) 
+#if ((NM_PASSIVE_MODE_ENABLED == STD_OFF) && (NM_COM_USER_DATA_SUPPORT == STD_OFF))
+        NULL_PTR,
+#endif
+        NULL_PTR,
+#endif
+#if(NM_NODE_ID_ENABLED == STD_ON)
+        NULL_PTR,
+        NULL_PTR,
+#endif
+#if(NM_NODE_DETECTION_ENABLED == STD_ON)
+        NULL_PTR,
+#endif
+#if ((NM_NODE_ID_ENABLED == STD_ON) || (NM_USER_DATA_ENABLED == STD_ON))
+        NULL_PTR,
+#endif
+#if(NM_PDU_RX_INDICATION_ENABLED == STD_ON)
+        NULL_PTR,
+#endif
+#if(NM_REMOTE_SLEEP_IND_ENABLED == STD_ON)
+        NULL_PTR,
+#endif
+#if(NM_COORDINATOR_SUPPORT_ENABLED == STD_ON)
+        NULL_PTR,
+        NULL_PTR,
+#endif
+#if (NM_CAR_WAKE_UP_RX_ENABLED == STD_ON)
+        NULL_PTR
+#endif
+    },
+    {
+        CanNm_PassiveStartUp,
+        CanNm_GetState,
+#if(NM_PASSIVE_MODE_ENABLED == STD_OFF)
+        CanNm_NetworkRequest,
+        CanNm_NetworkRelease,
+#endif
+#if(NM_COM_CONTROL_ENABLED == STD_ON)
+        CanNm_DisableCommunication,
+        CanNm_EnableCommunication,
+#endif
+#if(NM_USER_DATA_ENABLED == STD_ON) 
+#if ((NM_PASSIVE_MODE_ENABLED == STD_OFF) && (NM_COM_USER_DATA_SUPPORT == STD_OFF))
+        NULL_PTR,
+#endif
+        NULL_PTR,
+#endif
+#if(NM_NODE_ID_ENABLED == STD_ON)
+        CanNm_GetNodeIdentifier,
+        CanNm_GetLocalNodeIdentifier,
+#endif
+#if(NM_NODE_DETECTION_ENABLED == STD_ON)
+        NULL_PTR,
+#endif
+#if ((NM_NODE_ID_ENABLED == STD_ON) || (NM_USER_DATA_ENABLED == STD_ON))
+        CanNm_GetPduData,
+#endif
+#if(NM_PDU_RX_INDICATION_ENABLED == STD_ON)
+        CanNmCallOut_PduRxIndication,
+#endif
+#if(NM_REMOTE_SLEEP_IND_ENABLED == STD_ON)
+        CanNm_CheckRemoteSleepIndication,
+#endif
+#if(NM_COORDINATOR_SUPPORT_ENABLED == STD_ON)
+        NULL_PTR,
+        NULL_PTR,
+#endif
+#if (NM_CAR_WAKE_UP_RX_ENABLED == STD_ON)
+        NULL_PTR
+#endif
+    }
+};
+
+/*! @brief It defines the supported function by the generic NM */
+const Nm_OemFunctType Nm_OemFunctConfig[NM_NUMBER_OF_CHANNELS] =
+{
+	/* UlRepeatMessageIndicationFunctPtr, UlTxTimeoutExceptionFunctPtr */
+	{
+#if (NM_REPEAT_MSG_IND_ENABLED == STD_ON)
+		NULL_PTR,
+#endif
+#if (NM_PASSIVE_MODE_ENABLED == STD_OFF)
+		NULL_PTR
+#endif
+	},
+	{
+#if (NM_REPEAT_MSG_IND_ENABLED == STD_ON)
+		NULL_PTR,
+#endif
+#if (NM_PASSIVE_MODE_ENABLED == STD_OFF)
+		NULL_PTR
+#endif
+	}
+};
+
+#if (STD_ON == NM_COORDINATOR_SUPPORT_ENABLED)
+/*! @brief It defines the channels included in the coordination cluster */
+const uint8 Nm_ClusterChannels_0[NM_NUMBER_OF_CHANNELS] = 
+{
+	0U,
+	1U
+};
+
+/*! @brief It defines the per-cluster configuration of the NM Coordinator */
+const Nm_PerClusterConfigType Nm_PerClusterConfig[NM_NUMBER_OF_CLUSTERS] = 
+{
+    /* Cluster 0 configuration */
+    {
+#if (STD_ON == NM_COORDINATOR_SYNC_SUPPORT)
+        TRUE,
+#endif /* STD_ON == NM_COORDINATOR_SYNC_SUPPORT */
+        TRUE,
+        0U,
+        2U,
+        Nm_ClusterChannels_0
+    }
+};
+
+/*! @brief It defines the configuration of the NM */
+const Nm_CoordConfigType Nm_CoordConfig = 
+{
+    NM_NUMBER_OF_CLUSTERS,
+    Nm_PerClusterConfig
+};
+
+/*! @brief Defines the status of the NM Coordinator */
+Nm_CoordStatusType Nm_CoordStatus[NM_NUMBER_OF_CHANNELS];
+/*! @brief Holds the Shutdown Status for each cluster */
+Nm_ShutdownStateType Nm_ShutdownState[NM_NUMBER_OF_CLUSTERS];
+
+#endif /* STD_ON == NM_COORDINATOR_SUPPORT_ENABLED */
+
+/*****************************************************************************************************************
+*                                 END OF FILE                                                                    *
+******************************************************************************************************************/
+/*****************************************************************************************************************
+*   For each change to this file, be sure to record:                                                             *
+*      1.  who made the change and when the change was made                                                      *
+*      2.  why the change was made and the intended result                                                       *
+*   Following block needs to be repeated for each change                                                         *
+******************************************************************************************************************/
+/*!***************************************************************************************************************
+*  @date            14-Jul-2023
+*  @version         0.0.1
+*  @author          EA
+*  @brief           Initial Version
+*  @tracability     
+*******************************************************************************************************************/
+/*!*****************************************************************************************************************
+*  @date            14-Jul-2025
+*  @version         1.0.0
+*  @author          MHISHAMU
+*  @brief           Implemented Coordination Support
+*  @tracability     DICVA-19335
+*******************************************************************************************************************/

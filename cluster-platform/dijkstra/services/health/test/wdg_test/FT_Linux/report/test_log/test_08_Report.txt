@@ -1,0 +1,131 @@
+root@am62pxx-7xxd-b@19:19:/system/usr/bin/wdg_test_FT# ./testcase08_no_restart.sh
+------------------------------------------------------------------
+----- Test Case 8 - RestartForceExitStatus behavior --------------
+  Description:
+        Services will be restarted if the exit code or signal is
+        specified in RestartForceExitStatus, even when Restart=no.
+
+  Expected behavior:
+        - Restart occurs for exit code 255
+        - Restart occurs for SIGABRT
+        - No restart for other signals (e.g., SIGKILL)
+
+  Error Notification Fatal (Yes/No): Yes
+  Process Restart (Yes/No): Conditional
+  [*] Configuration:
+        Restart=no
+        RestartForceExitStatus=255 SIGABRT
+------------------------------------------------------------------
+[>] Starting test_03.service...
+Failed to start test_03.service: Unit test_03.service not found.
+Error: Failed to start test_03.service.
+[>] Starting wdg_proxy_test_03.service...
+Failed to start wdg_proxy_test_03.service: Unit wdg_proxy_test_03.service not found.
+Error: Failed to start wdg_proxy_test_03.service.
+.......................................................
+       Test: exit code 255 (should restart)
+.......................................................
+Error: Could not find PID.
+^C
+root@am62pxx-7xxd-b@19:19:/system/usr/bin/wdg_test_FT# sync
+root@am62pxx-7xxd-b@19:20:/system/usr/bin/wdg_test_FT# sync
+root@am62pxx-7xxd-b@19:20:/system/usr/bin/wdg_test_FT# ./testcase08_no_restart.sh
+------------------------------------------------------------------
+----- Test Case 8 - RestartForceExitStatus behavior --------------
+  Description:
+        Services will be restarted if the exit code or signal is
+        specified in RestartForceExitStatus, even when Restart=no.
+
+  Expected behavior:
+        - Restart occurs for exit code 255
+        - Restart occurs for SIGABRT
+        - No restart for other signals (e.g., SIGKILL)
+
+  Error Notification Fatal (Yes/No): Yes
+  Process Restart (Yes/No): Conditional
+  [*] Configuration:
+        Restart=no
+        RestartForceExitStatus=255 SIGABRT
+------------------------------------------------------------------
+[>] Starting test_03.service...
+[+] test_03.service started successfully.
+[>] Starting wdg_proxy_test_03.service...
+[+] wdg_proxy_test_03.service started successfully.
+.......................................................
+       Test: exit code 255 (should restart)
+.......................................................
+[!] Sending signal 36 to test_03.service (PID: 5289)...
+.......................................................
+       Test: SIGABRT (should restart)
+.......................................................
+[!] Sending signal 6 (SIGABRT) to test_03.service (PID: 5312)...
+.......................................................
+       Test: SIGKILL (should NOT restart)
+.......................................................
+[!] Sending signal 9 (SIGKILL) to test_03.service (PID: 5328)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 19:21:00 am62pxx-7xxd-b systemd[1]: Started Test application 03.
+May 29 19:21:00 am62pxx-7xxd-b test_03[5289]: Start - Test Case: 3
+May 29 19:21:00 am62pxx-7xxd-b test_03[5289]: SIG MIN: 34
+May 29 19:21:00 am62pxx-7xxd-b test_03[5289]: SIG MAX: 64
+May 29 19:21:04 am62pxx-7xxd-b test_03[5289]: Interrupt signal (36) received.
+May 29 19:21:05 am62pxx-7xxd-b test_03[5289]: Exit - Test case: 3
+May 29 19:21:05 am62pxx-7xxd-b systemd[1]: test_03.service: Main process exited, code=exited, status=255/EXCEPTION
+May 29 19:21:05 am62pxx-7xxd-b systemd[1]: test_03.service: Failed with result 'exit-code'.
+May 29 19:21:05 am62pxx-7xxd-b systemd[1]: test_03.service: Scheduled restart job, restart counter is at 1.
+May 29 19:21:05 am62pxx-7xxd-b systemd[1]: Started Test application 03.
+May 29 19:21:05 am62pxx-7xxd-b test_03[5312]: Start - Test Case: 3
+May 29 19:21:05 am62pxx-7xxd-b test_03[5312]: SIG MIN: 34
+May 29 19:21:05 am62pxx-7xxd-b test_03[5312]: SIG MAX: 64
+May 29 19:21:06 am62pxx-7xxd-b systemd[1]: test_03.service: Main process exited, code=dumped, status=6/ABRT
+May 29 19:21:06 am62pxx-7xxd-b systemd[1]: test_03.service: Failed with result 'core-dump'.
+May 29 19:21:06 am62pxx-7xxd-b systemd[1]: test_03.service: Scheduled restart job, restart counter is at 2.
+May 29 19:21:06 am62pxx-7xxd-b systemd[1]: Started Test application 03.
+May 29 19:21:06 am62pxx-7xxd-b test_03[5328]: Start - Test Case: 3
+May 29 19:21:06 am62pxx-7xxd-b test_03[5328]: SIG MIN: 34
+May 29 19:21:06 am62pxx-7xxd-b test_03[5328]: SIG MAX: 64
+May 29 19:21:08 am62pxx-7xxd-b systemd[1]: test_03.service: Main process exited, code=killed, status=9/KILL
+May 29 19:21:08 am62pxx-7xxd-b systemd[1]: test_03.service: Failed with result 'signal'.
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/29 19:21:10.525285   19690884 032 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:10.725447   19692885 033 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:10.925304   19694884 034 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:11.125322   19696884 035 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:11.325336   19698884 036 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:11.325517   19698885 037 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:21:11.525300   19700884 038 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:11.725336   19702884 039 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:11.925330   19704884 040 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:12.125203   19706884 041 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:12.325323   19708884 042 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:12.325435   19708885 043 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:21:12.525313   19710884 044 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:12.725332   19712884 045 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:12.925330   19714884 046 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:13.125203   19716884 047 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:13.325302   19718884 048 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:13.325411   19718885 049 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:21:13.525319   19720884 050 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:13.725339   19722884 051 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:13.925299   19724884 052 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:14.125186   19726884 053 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:14.325304   19728884 054 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:14.325416   19728885 055 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 19:21:14.525327   19730884 056 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:14.725297   19732884 057 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:14.925532   19734885 058 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:15.125213   19736884 059 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:15.325297   19738884 060 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_03]
+2025/05/29 19:21:15.325406   19738885 061 ECU1 WP-- WP - log error V 8 [(5298|5298)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+-----------------------------------------------
+[*] Checking status: test_03.service
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_03.service
+[!] wdg_proxy_test_03.service is running. Stopping for a clean state...
+--- Test complete. DLT logging stopped. ---
+******************************************************
+root@am62pxx-7xxd-b@19:21:/system/usr/bin/wdg_test_FT#

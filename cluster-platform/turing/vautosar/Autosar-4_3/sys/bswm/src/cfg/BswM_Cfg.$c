@@ -1,0 +1,668 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2024. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  BswM_Cfg.C                                           *
+*  Module Short Name :                                                       *
+*  Description       :  BswM_Cfg                                             *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS                                                    *
+* Target Hardware  :  Platform Independent                                   *
+*                                                                            *
+******************************************************************************/
+#ifndef BSWM_CFG_C
+#define BSWM_CFG_C
+
+#include "BswM_Cfg.h"
+#include "BswM.h"
+#include "Rte_BswM.h"
+#include "EcuM.h"
+
+
+/* for every action list added the required function prototype will be added here */
+Std_ReturnType BswM_ActionList_ECUM_1(void);
+Std_ReturnType BswM_ActionList_ECUM_2(void);
+Std_ReturnType BswM_ActionList_NO_ROLE(void);
+Std_ReturnType BswM_ActionList_ROLE_EPTI(void);
+Std_ReturnType BswM_ActionList_ROLE_BASIC(void);
+Std_ReturnType BswM_ActionList_ROLE_EXTENDED(void);
+Std_ReturnType BswM_ActionList_ROLE_SUPERUSER(void);
+Std_ReturnType BswM_ActionList_ROLE_PRODUCTION(void);
+Std_ReturnType BswM_ActionList_ROLE_OTA(void);
+Std_ReturnType BSWM_ActionList_Postrun_Ivd_Request(void);
+Std_ReturnType BSWM_ActionList_Postrun_Ivd_Release(void);
+Std_ReturnType BSWM_ActionList_Timer0Stop(void);
+Std_ReturnType BSWM_ActionList_Timer0Start(void);
+Std_ReturnType BSWM_ActionList_Timer1Start(void);
+Std_ReturnType BSWM_ActionList_Timer1Stop(void);
+Std_ReturnType BSWM_ActionList_ComM_Reset(void);
+Std_ReturnType BswM_Nested_Rule(uint8 RuleId);
+Std_ReturnType BSWM_ActionList_BswM_GenericCall(void);
+Std_ReturnType BSWM_ActionList_BswM_NmCarWkIndication(void);
+
+/* for every rules added the required function prototype will be added here */
+BswM_HandleType BswM_Rule_BswMRule_InitSfda(void);
+BswM_HandleType BswM_Rule_BswMRule_UninitSfda(void);
+BswM_HandleType BswM_Rule_BswMRule_NO_ROLE(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_EPTI(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_BASIC(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_EXTENDED(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_SUPERUSER(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_PRODUCTION(void);
+BswM_HandleType BswM_Rule_BswMRule_ROLE_OTA(void);
+BswM_HandleType BswM_Rule_BswMRule_Postrun_Ivd(void);
+BswM_HandleType BswM_Rule_BswMRule_BswMTimer(void);
+BswM_HandleType BswM_Rule_BswMRule_BswMComMReset(void); 
+BswM_HandleType BswM_Rule_BswMRule_BswMGeneric(void);
+BswM_HandleType BswM_Rule_BswMRule_BswMNmCarWkp(void);
+
+/* required variables related to bswm switch BswMModeControl -> BswMSwitchPort containers */
+static Rte_ModeType_MDG_SfdAModes BswM_Switch_BswM_SfdaMode_MG_SfdAMode;
+static Rte_ModeType_MDG_SfdARoles BswM_Switch_BswM_SfdaRole_MG_SfdARole;
+
+static SfdA_RequestRoleType Request_SwcModeRequest_MG_SfdARole_Role; /* BswMModeRequestSource */
+static BswM_MDG_Sfd_NvmBlockStatus Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode; /* BswMModeRequestSource */
+static Rte_ModeType_EcuM_Mode BswM_Mode_Notification_currentMode_currentMode; /* BswMSwcModeNotification */
+static Ivd_RequestPostRun  Request_BswM_Postrun_Ivd_Request_Receive_Request; /* BswMModeRequestSource */
+
+/* bswm_requestmode - required structure */
+const BswM_GenericRequestType BswM_GenericRequest[BSWM_MAX_NUMBER_OF_BSWM_USERS] = {
+  {
+    BswM_EcuMUserId,
+    1
+  },
+  {
+    BswM_ComMUserId,
+    2
+  }
+};
+
+const BswM_ActionListsType BswM_ActionLists[BSWM_NUMBER_OF_ACTIONLIST] = {
+    /* Index    FctPtr  */                                    
+  { /*     0 */ BswM_ActionList_ECUM_1         },
+  { /*     1 */ BswM_ActionList_ECUM_2         },
+  { /*     2 */ BswM_ActionList_NO_ROLE        },
+  { /*     3 */ BswM_ActionList_ROLE_EPTI      },
+  { /*     4 */ BswM_ActionList_ROLE_BASIC     },
+  { /*     5 */ BswM_ActionList_ROLE_EXTENDED  },
+  { /*     6 */ BswM_ActionList_ROLE_SUPERUSER },
+  { /*     7 */ BswM_ActionList_ROLE_PRODUCTION},
+  { /*     8 */ BswM_ActionList_ROLE_OTA       },
+  { /*     9 */ BSWM_ActionList_Postrun_Ivd_Request },
+  { /*     10 */ BSWM_ActionList_Postrun_Ivd_Release },
+  { /*     11 */ BSWM_ActionList_Timer0Start          },
+  { /*     12 */ BSWM_ActionList_Timer0Stop           },
+  { /*     13 */ BSWM_ActionList_Timer1Start          },
+  { /*     14 */ BSWM_ActionList_Timer1Stop           },
+  { /*     15 */ BSWM_ActionList_ComM_Reset          },
+  { /*     16 */ BSWM_ActionList_BswM_GenericCall    },
+  { /*     17 */ BSWM_ActionList_BswM_NmCarWkIndication}
+};
+
+const BswM_RulesType BswM_DRules[BSWM_NUMBER_OF_DRULES] = {
+    /* Index    Id  FctPtr   */
+  { /*     0 */ 0U, BswM_Rule_BswMRule_InitSfda},
+  { /*     1 */ 1U, BswM_Rule_BswMRule_UninitSfda},
+  { /*     2 */ 2U, BswM_Rule_BswMRule_NO_ROLE},
+  { /*     3 */ 3U, BswM_Rule_BswMRule_ROLE_EPTI},
+  { /*     4 */ 4U, BswM_Rule_BswMRule_ROLE_BASIC},
+  { /*     5 */ 5U, BswM_Rule_BswMRule_ROLE_EXTENDED},
+  { /*     6 */ 6U, BswM_Rule_BswMRule_ROLE_SUPERUSER},
+  { /*     7 */ 7U, BswM_Rule_BswMRule_ROLE_PRODUCTION},
+  { /*     8 */ 8U, BswM_Rule_BswMRule_ROLE_OTA       },
+  { /*     9 */ 9U, BswM_Rule_BswMRule_Postrun_Ivd    },
+  { /*     10*/ 10U,BswM_Rule_BswMRule_BswMTimer      },
+  { /*     11*/ 11U,BswM_Rule_BswMRule_BswMGeneric  },
+  { /*     12*/ 12U,BswM_Rule_BswMRule_BswMNmCarWkp }
+};
+
+const BswM_RulesType BswM_IRules[BSWM_NUMBER_OF_IRULES] = {
+    /* Index    Id  FctPtr   */
+  { /*     11*/ 0U,BswM_Rule_BswMRule_BswMComMReset  }
+};
+
+const BswM_RulesType BswM_NestedRules[BSWM_NUMBER_OF_NESTEDRULES] = {
+    /* Index    Id  FctPtr   */
+  { /*     0 */ 0U, BswM_Rule_BswMRule_BswMTimer}
+};
+
+static uint8 BswM_DRuleState[BSWM_NUMBER_OF_DRULES];
+static uint8 BswM_IRuleState[BSWM_NUMBER_OF_IRULES];
+static uint8 BswM_NestedRuleState[BSWM_NUMBER_OF_NESTEDRULES];
+
+void BswM_Init_Gen(void)
+{
+	  BswM_Switch_BswM_SfdaRole_MG_SfdARole = 0xFF;
+	  BswM_Switch_BswM_SfdaMode_MG_SfdAMode = 0xFF;
+	  Request_SwcModeRequest_MG_SfdARole_Role = SFDC_NO_ROLE;
+	  Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode = SFD_BLOCKS_NOT_INITIALIZED;
+	  BswM_Mode_Notification_currentMode_currentMode = RTE_MODE_EcuM_Mode_STARTUP;  //BswMSwcModeNotification container
+}
+
+void BswM_ModeNotificationFct(void)
+{
+  if(BswM_Switch_BswM_SfdaMode_MG_SfdAMode != 0xFF)
+  {
+    if(Rte_Switch_Switch_BswM_SfdaMode_MG_SfdAMode(BswM_Switch_BswM_SfdaMode_MG_SfdAMode) == RTE_E_OK)
+    {
+      BswM_Switch_BswM_SfdaMode_MG_SfdAMode = 0xFF;
+    }
+  }
+  if(BswM_Switch_BswM_SfdaRole_MG_SfdARole != 0xFF)
+    {
+      if(Rte_Switch_Switch_BswM_SfdaRole_MG_SfdARole(BswM_Switch_BswM_SfdaRole_MG_SfdARole) == RTE_E_OK)
+      {
+        BswM_Switch_BswM_SfdaRole_MG_SfdARole = 0xFF;
+      }
+    }
+}
+
+void BswM_SwcModeRequestUpdateFct(void)
+{
+	  uint32 mode;
+	  mode = Rte_Mode_Notification_currentMode_currentMode();
+	  if (mode != RTE_TRANSITION_EcuM_Mode)
+	  {
+	    BswM_Mode_Notification_currentMode_currentMode = (Rte_ModeType_EcuM_Mode)mode;
+	  }
+	  (void)Rte_Read_Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode(&Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode);
+	  (void)Rte_Read_Request_SwcModeRequest_MG_SfdARole_Role(&Request_SwcModeRequest_MG_SfdARole_Role);
+	  (void)Rte_Read_Request_BswM_Postrun_Ivd_Request_Receive_Request(&Request_BswM_Postrun_Ivd_Request_Receive_Request);
+ 
+} 
+
+BswM_HandleType BswM_Rule_BswMRule_InitSfda(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if((BswM_Mode_Notification_currentMode_currentMode == RTE_MODE_EcuM_Mode_RUN) && ((Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode == SFD_BLOCKS_INITIALIZED)))
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_InitSfda] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_InitSfda] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_1. */
+      retVal = BSWM_ID_AL_ECUM_1;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_InitSfda] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_UninitSfda(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(BswM_Mode_Notification_currentMode_currentMode == RTE_MODE_EcuM_Mode_POST_RUN)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_UninitSfda] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_UninitSfda] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ECUM_2;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_UninitSfda] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_NO_ROLE(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFDC_NO_ROLE)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_NO_ROLE] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_NO_ROLE] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_NO_ROLE;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_NO_ROLE] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_EPTI(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_EPTI)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EPTI] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EPTI] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ROLE_EPTI;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EPTI] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_BASIC(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_BASIC)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_BASIC] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_BASIC] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_BswMRule_ROLE_BASIC;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_BASIC] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_EXTENDED(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_EXTENDED)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EXTENDED] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EXTENDED] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ROLE_EXTENDED;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_EXTENDED] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_SUPERUSER(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_SUPERUSER)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_SUPERUSER] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_SUPERUSER] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ROLE_SUPERUSER;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_SUPERUSER] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_PRODUCTION(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_PRODUCTION)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_PRODUCTION] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_PRODUCTION] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ROLE_PRODUCTION;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_PRODUCTION] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_ROLE_OTA(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_SwcModeRequest_MG_SfdARole_Role == SFD_ROLE_OTA)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_ROLE_OTA] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_ROLE_OTA] = BSWM_TRUE;
+      /* Return triggered action list BswM_ActionList_ECUM_2. */
+      retVal = BSWM_ID_AL_ROLE_OTA;
+    }
+  }
+  else
+  {
+    BswM_DRuleState[BSWM_ID_BswMRule_ROLE_OTA] = BSWM_FALSE;
+    /* No false action list configured. */
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_Postrun_Ivd(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION;
+  if(Request_BswM_Postrun_Ivd_Request_Receive_Request == IVD_REQUESTPOSTRUN_REQUESTED)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_Postrun_Ivd] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_Postrun_Ivd] = BSWM_TRUE;
+      /* Return triggered action list BSWM_ID_AL_Postrun_Ivd_Request. */
+      retVal = BSWM_ID_AL_Postrun_Ivd_Request;
+    }
+  }
+  else
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_Postrun_Ivd] != BSWM_FALSE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_Postrun_Ivd] = BSWM_FALSE;
+      /* Return triggered action list BSWM_ID_AL_Postrun_Ivd_Request. */
+      retVal = BSWM_ID_AL_Postrun_Ivd_Release;
+    }
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_BswMTimer(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if(BswM_GetTimerState(BSWM_TIMER0) == BSWM_TIMER_STARTED) 
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMTimer] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMTimer] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_BswMTimer0Start;
+    }
+  }
+  else
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMTimer] != BSWM_FALSE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMTimer] = BSWM_FALSE;
+
+      retVal = BSWM_ID_AL_BswMTimer0Stop;
+    }
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_BswMGeneric(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if((BswM_GetGenericRequestState(BswM_EcuMUserId) == COMM_NO_COMMUNICATION) || (BswM_GetGenericRequestState(BswM_ComMUserId) == COMM_FULL_COMMUNICATION))
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMGeneric] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMGeneric] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_BswMGenericCall;
+    }
+  }
+  else
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMGeneric] != BSWM_FALSE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMGeneric] = BSWM_FALSE;
+
+      retVal = BSWM_NO_ACTION;
+    }
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_BswMComMReset(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if(BswM_GetComMInitiateEventState(COMM_INITIATERESET) == BSWM_EVENTSET)
+  {
+    if( BswM_IRuleState[BSWM_ID_BswMRule_ComMInitiateReset] != BSWM_TRUE )
+    {
+      BswM_IRuleState[BSWM_ID_BswMRule_ComMInitiateReset] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_BswMComMInitiateReset;
+    }
+  }
+  else
+  {
+    if( BswM_IRuleState[BSWM_ID_BswMRule_ComMInitiateReset] != BSWM_FALSE )
+    {
+      BswM_IRuleState[BSWM_ID_BswMRule_ComMInitiateReset] = BSWM_FALSE;
+
+      retVal = BSWM_NO_ACTION;
+    }
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMRule_BswMNmCarWkp(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if(BswM_GetNmCarWkpIndicationEventState(NM_CARWKPINDICATION) == BSWM_EVENTSET)
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMNmCarWkp] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMNmCarWkp] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_BswMNmCarWkp;
+    }
+  }
+  else
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_BswMNmCarWkp] != BSWM_FALSE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_BswMNmCarWkp] = BSWM_FALSE;
+
+      retVal = BSWM_NO_ACTION;
+    }
+  }
+  return retVal;
+}
+
+BswM_HandleType BswM_Rule_BswMNestedRule_001(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if(BswM_GetTimerState(BSWM_TIMER0) == BSWM_TIMER_STARTED) 
+  {
+    if( BswM_NestedRuleState[BSWM_ID_BswMNesetdRule_001] != BSWM_TRUE )
+    {
+      BswM_NestedRuleState[BSWM_ID_BswMNesetdRule_001] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_BswMTimer1Start;
+    }
+  }
+  else
+  {
+    if( BswM_NestedRuleState[BSWM_ID_BswMNesetdRule_001] != BSWM_FALSE )
+    {
+      BswM_NestedRuleState[BSWM_ID_BswMNesetdRule_001] = BSWM_FALSE;
+
+      retVal = BSWM_ID_AL_BswMTimer1Stop;
+    }
+  }
+  return retVal;
+}
+
+/* Example for Generic Request Rule that will be evaluated once other BSW modules requests a mode transfer */
+/*
+BswM_HandleType BswM_Rule_BswMRule_XXX(void)
+{
+  BswM_HandleType retVal = BSWM_NO_ACTION; 
+  if(BswM_GetGenericRequestState(xxx_userid) == 'xxx_reqmode') 
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_XXX] != BSWM_TRUE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_XXX] = BSWM_TRUE;
+
+      retVal = BSWM_ID_AL_XXX;
+    }
+  }
+  else
+  {
+    if( BswM_DRuleState[BSWM_ID_BswMRule_XXX] != BSWM_FALSE )
+    {
+      BswM_DRuleState[BSWM_ID_BswMRule_XXX] = BSWM_FALSE;
+
+      retVal = BSWM_ID_AL_XXX;
+    }
+  }
+  return retVal;
+}
+*/
+
+Std_ReturnType BswM_ActionList_ECUM_1(void)
+{
+	BswM_Switch_BswM_SfdaMode_MG_SfdAMode = RTE_MODE_MDG_SfdAModes_INIT;
+  return E_OK;
+}
+
+Std_ReturnType BswM_ActionList_ECUM_2(void)
+{
+	BswM_Switch_BswM_SfdaMode_MG_SfdAMode = RTE_MODE_MDG_SfdAModes_UNINIT;
+  return E_OK;
+}
+
+Std_ReturnType BswM_ActionList_NO_ROLE(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFDC_NO_ROLE;
+	return E_OK;
+}
+
+Std_ReturnType BswM_ActionList_ROLE_EPTI(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_EPTI;
+	return E_OK;
+}
+
+Std_ReturnType BswM_ActionList_ROLE_BASIC(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_BASIC;
+	return E_OK;
+}
+Std_ReturnType BswM_ActionList_ROLE_EXTENDED(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_EXTENDED;
+	return E_OK;
+}
+Std_ReturnType BswM_ActionList_ROLE_SUPERUSER(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_SUPERUSER;
+	return E_OK;
+}
+Std_ReturnType BswM_ActionList_ROLE_PRODUCTION(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_PRODUCTION;
+	return E_OK;
+}
+Std_ReturnType BswM_ActionList_ROLE_OTA(void)
+{
+	BswM_Switch_BswM_SfdaRole_MG_SfdARole = RTE_MODE_MDG_SfdARoles_SFD_ROLE_OTA;
+	return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_Postrun_Ivd_Request(void)
+{
+	EcuM_RequestPOST_RUN(EcuMUserConfig_MDL_Ivd);
+	return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_Postrun_Ivd_Release(void)
+{
+	EcuM_ReleasePOST_RUN(EcuMUserConfig_MDL_Ivd);
+	return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_Timer0Start(void)
+{
+    BswM_SetTimerState(BSWM_TIMER0, BSWM_TIMER_STARTED);
+    BswM_SetTimerValue(BSWM_TIMER0, 155);
+    return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_Timer0Stop(void)
+{
+    BswM_SetTimerState(BSWM_TIMER0, BSWM_TIMER_STOPPED);
+    BswM_SetTimerValue(BSWM_TIMER0, 0);
+    return E_OK;
+} 
+
+Std_ReturnType BSWM_ActionList_Timer1Start(void)
+{
+    BswM_SetTimerState(BSWM_TIMER1, BSWM_TIMER_STARTED);
+    BswM_SetTimerValue(BSWM_TIMER1, 155);
+    return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_Timer1Stop(void)
+{
+    BswM_SetTimerState(BSWM_TIMER1, BSWM_TIMER_STOPPED);
+    BswM_SetTimerValue(BSWM_TIMER1, 0);
+    return E_OK;
+}
+
+Std_ReturnType BswM_Nested_Rule(uint8 RuleId)
+{
+    BswM_HandleType BswM_ActionIndex;
+    BswM_ActionIndex = BswM_NestedRules[RuleId].FctPtrOfRules();
+    if(BSWM_NO_ACTION != BswM_ActionIndex)
+    {
+        BswM_ActionLists[BswM_ActionIndex].ActionListsFPtr();
+    }
+    return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_ComM_Reset(void)
+{
+    BswM_Clear_EventRequest(COMM_INITIATERESET);
+    return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_BswM_GenericCall(void)
+{
+  ComM_RequestComMode(CN_MQB_KCAN_a1d5e6ac, COMM_NO_COMMUNICATION);
+  return E_OK;
+}
+
+Std_ReturnType BSWM_ActionList_BswM_NmCarWkIndication(void)
+{
+  /*Implement As per user needs*/
+  BswM_Clear_EventRequest(NM_CARWKPINDICATION);
+  return E_OK;
+}
+
+#endif
+
+

@@ -1,0 +1,533 @@
+//*****Automatically Generated From NvM Configurator Tool*****
+
+#include <stdio.h>
+#include "Std_Types.h"
+
+#include "Rte.h"
+#include "Dem.h"
+#include "NvM.h"
+#include "Dummy_Types.h"
+#include "Dem_Cbk.h"
+
+void MemLib_MemCpy ( void * const pDest, const void * const pSrc, const uint32 BytesCount )
+{
+	uint8 * const pDestBuf = (uint8 *)pDest;
+	const uint8 * const pSrcBuf = (const uint8 *)pSrc;
+	
+	if ( (NULL != pDestBuf ) && (NULL != pSrcBuf) && ((uint32)0 != BytesCount) )
+		{
+		if (
+			( pDestBuf > ( &pSrcBuf[BytesCount - (uint32)1]) ) ||
+			( (&pDestBuf[BytesCount - (uint32)1]) < pSrcBuf )
+		  )
+		{
+			uint32 Ix = ((uint32) 0);
+			while ( Ix < BytesCount )
+			{
+				pDestBuf[Ix] = pSrcBuf[Ix];
+				++Ix;
+			}
+		}
+	}
+}
+
+void SchM_Exit_NvM_NVM_EXCLUSIVE_AREA_0(void)
+{
+
+}
+
+void SchM_Enter_NvM_NVM_EXCLUSIVE_AREA_0(void)
+{
+
+}
+
+void MemLib_MemSet ( void * const pDest, const uint8 Value, const uint32 BytesCount )
+{
+}
+
+void SuspendAllInterrupts(void)
+{
+}
+
+void ResumeAllInterrupts(void)
+{
+}
+
+Std_ReturnType NvMExt_NotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_ICPlantCfg_Copy1_JobFinished(uint8 JobId, NvM_RequestResultType Result)
+{
+    return E_OK;
+}
+
+Std_ReturnType NvMExt_NotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_ICPlantCfg_Copy2_JobFinished(uint8 JobId, NvM_RequestResultType Result)
+{
+    return E_OK;
+}
+
+NV_Data_Magic_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_Magic_Flag;
+const NV_Data_Magic_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_Magic_Flag_ROM_NVBlockDescriptor_Magic_Flag;
+
+NV_Data_FBL_Validity_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_Validity_Flag;
+const NV_Data_FBL_Validity_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_Validity_Flag_ROM_NVBlockDescriptor_FBL_Validity_Flag;
+
+NV_Data_FBL_Switch_RoleBackFlag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_Switch_RoleBackFlag;
+const NV_Data_FBL_Switch_RoleBackFlag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_Switch_RoleBackFlag_ROM_NVBlockDescriptor_FBL_Switch_RoleBackFlag;
+
+NV_Data_FBL_OTA_Magic_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_OTA_Magic_Flag;
+const NV_Data_FBL_OTA_Magic_Flag Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_OTA_Magic_Flag_ROM_NVBlockDescriptor_FBL_OTA_Magic_Flag;
+
+NV_Data_FBL_FOTA_Status Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_FOTA_Status;
+const NV_Data_FBL_FOTA_Status Rte_NvBlockSwComponentType_NVBlockDescriptor_FBL_FOTA_Status_ROM_NVBlockDescriptor_FBL_FOTA_Status;
+
+NV_Data_Chimes Rte_NvBlockSwComponentType_NVBlockDescriptor_Chimes;
+const NV_Data_Chimes Rte_NvBlockSwComponentType_NVBlockDescriptor_Chimes_ROM_NVBlockDescriptor_Chimes;
+
+NV_Data_Config Rte_NvBlockSwComponentType_NVBlockDescriptor_Config;
+const NV_Data_Config Rte_NvBlockSwComponentType_NVBlockDescriptor_Config_ROM_NVBlockDescriptor_Config;
+
+NV_Data_Diagnostics Rte_NvBlockSwComponentType_NVBlockDescriptor_Diagnostics;
+const NV_Data_Diagnostics Rte_NvBlockSwComponentType_NVBlockDescriptor_Diagnostics_ROM_NVBlockDescriptor_Diagnostics;
+
+NV_Data_EOL Rte_NvBlockSwComponentType_NVBlockDescriptor_EOL;
+const NV_Data_EOL Rte_NvBlockSwComponentType_NVBlockDescriptor_EOL_ROM_NVBlockDescriptor_EOL;
+
+NV_Data_FuelGauge Rte_NvBlockSwComponentType_NVBlockDescriptor_FuelGauge;
+const NV_Data_FuelGauge Rte_NvBlockSwComponentType_NVBlockDescriptor_FuelGauge_ROM_NVBlockDescriptor_FuelGauge;
+
+NV_Data_Illumination Rte_NvBlockSwComponentType_NVBlockDescriptor_Illumination;
+const NV_Data_Illumination Rte_NvBlockSwComponentType_NVBlockDescriptor_Illumination_ROM_NVBlockDescriptor_Illumination;
+
+NV_Data_IOD Rte_NvBlockSwComponentType_NVBlockDescriptor_IOD;
+const NV_Data_IOD Rte_NvBlockSwComponentType_NVBlockDescriptor_IOD_ROM_NVBlockDescriptor_IOD;
+
+NV_Data_Odometer Rte_NvBlockSwComponentType_NVBlockDescriptor_Odometer;
+const NV_Data_Odometer Rte_NvBlockSwComponentType_NVBlockDescriptor_Odometer_ROM_NVBlockDescriptor_Odometer;
+
+NV_Data_TripComputer Rte_NvBlockSwComponentType_NVBlockDescriptor_TripComputer;
+const NV_Data_TripComputer Rte_NvBlockSwComponentType_NVBlockDescriptor_TripComputer_ROM_NVBlockDescriptor_TripComputer;
+
+NV_Data_Personalization Rte_NvBlockSwComponentType_NVBlockDescriptor_Personalization;
+const NV_Data_Personalization Rte_NvBlockSwComponentType_NVBlockDescriptor_Personalization_ROM_NVBlockDescriptor_Personalization;
+
+NV_Data_Health_Management Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management;
+const NV_Data_Health_Management Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management_ROM_NVBlockDescriptor_Health_Management;
+
+NV_Data_Health_Management2 Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management2;
+const NV_Data_Health_Management2 Rte_NvBlockSwComponentType_NVBlockDescriptor_Health_Management2_ROM_NVBlockDescriptor_Health_Management2;
+
+NV_Data_Cybersecurity Rte_NvBlockSwComponentType_NVBlockDescriptor_Cybersecurity;
+const NV_Data_Cybersecurity Rte_NvBlockSwComponentType_NVBlockDescriptor_Cybersecurity_ROM_NVBlockDescriptor_Cybersecurity;
+
+NV_Data_GaugeFuel Rte_NvBlockSwComponentType_NVBlockDescriptor_GaugeFuel;
+const NV_Data_GaugeFuel Rte_NvBlockSwComponentType_NVBlockDescriptor_GaugeFuel_ROM_NVBlockDescriptor_GaugeFuel;
+
+NV_Data_FOTA_Signature Rte_NvBlockSwComponentType_NVBlockDescriptor_FOTA_Signature;
+const NV_Data_FOTA_Signature Rte_NvBlockSwComponentType_NVBlockDescriptor_FOTA_Signature_ROM_NVBlockDescriptor_FOTA_Signature;
+
+NV_Data_vSwUpdM_Appl_UpdateState Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_UpdateState;
+const NV_Data_vSwUpdM_Appl_UpdateState Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_UpdateState_ROM_NVBlockDescriptor_vSwUpdM_Appl_UpdateState;
+
+NV_Data_vSwUpdM_Appl_PartitionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionStates;
+const NV_Data_vSwUpdM_Appl_PartitionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionStates_ROM_NVBlockDescriptor_vSwUpdM_Appl_PartitionStates;
+
+NV_Data_vSwUpdM_Appl_PartitionValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionValidities;
+const NV_Data_vSwUpdM_Appl_PartitionValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionValidities_ROM_NVBlockDescriptor_vSwUpdM_Appl_PartitionValidities;
+
+NV_Data_vSwUpdM_Appl_PartitionRevisions Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionRevisions;
+const NV_Data_vSwUpdM_Appl_PartitionRevisions Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_PartitionRevisions_ROM_NVBlockDescriptor_vSwUpdM_Appl_PartitionRevisions;
+
+NV_Data_vSwUpdM_Appl_ModuleStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleStates;
+const NV_Data_vSwUpdM_Appl_ModuleStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleStates_ROM_NVBlockDescriptor_vSwUpdM_Appl_ModuleStates;
+
+NV_Data_vSwUpdM_Appl_ModuleValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleValidities;
+const NV_Data_vSwUpdM_Appl_ModuleValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleValidities_ROM_NVBlockDescriptor_vSwUpdM_Appl_ModuleValidities;
+
+NV_Data_vSwUpdM_Appl_ModuleRevisions Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleRevisions;
+const NV_Data_vSwUpdM_Appl_ModuleRevisions Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ModuleRevisions_ROM_NVBlockDescriptor_vSwUpdM_Appl_ModuleRevisions;
+
+NV_Data_vSwUpdM_Appl_RegionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionStates;
+const NV_Data_vSwUpdM_Appl_RegionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionStates_ROM_NVBlockDescriptor_vSwUpdM_Appl_RegionStates;
+
+NV_Data_vSwUpdM_Appl_RegionEraseAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionEraseAddresses;
+const NV_Data_vSwUpdM_Appl_RegionEraseAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionEraseAddresses_ROM_NVBlockDescriptor_vSwUpdM_Appl_RegionEraseAddresses;
+
+NV_Data_vSwUpdM_Appl_SegmentAttributes Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentAttributes;
+const NV_Data_vSwUpdM_Appl_SegmentAttributes Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentAttributes_ROM_NVBlockDescriptor_vSwUpdM_Appl_SegmentAttributes;
+
+NV_Data_vSwUpdM_Appl_SegmentWriteAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentWriteAddresses;
+const NV_Data_vSwUpdM_Appl_SegmentWriteAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentWriteAddresses_ROM_NVBlockDescriptor_vSwUpdM_Appl_SegmentWriteAddresses;
+
+NV_Data_vSwUpdM_Appl_SegmentCount Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentCount;
+const NV_Data_vSwUpdM_Appl_SegmentCount Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentCount_ROM_NVBlockDescriptor_vSwUpdM_Appl_SegmentCount;
+
+NV_Data_vSwUpdM_Appl_ResumeInfo Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ResumeInfo;
+const NV_Data_vSwUpdM_Appl_ResumeInfo Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_ResumeInfo_ROM_NVBlockDescriptor_vSwUpdM_Appl_ResumeInfo;
+
+NV_Data_vSwUpdM_Appl_RegionPartitionId Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionPartitionId;
+const NV_Data_vSwUpdM_Appl_RegionPartitionId Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_RegionPartitionId_ROM_NVBlockDescriptor_vSwUpdM_Appl_RegionPartitionId;
+
+NV_Data_vSwUpdM_Appl_SegmentPartitionId Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentPartitionId;
+const NV_Data_vSwUpdM_Appl_SegmentPartitionId Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_SegmentPartitionId_ROM_NVBlockDescriptor_vSwUpdM_Appl_SegmentPartitionId;
+
+NV_Data_vSwUpdM_Appl_DiffModuleStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleStates;
+const NV_Data_vSwUpdM_Appl_DiffModuleStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleStates_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleStates;
+
+NV_Data_vSwUpdM_Appl_DiffModuleValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleValidities;
+const NV_Data_vSwUpdM_Appl_DiffModuleValidities Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleValidities_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffModuleValidities;
+
+NV_Data_vSwUpdM_Appl_DiffRegionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionStates;
+const NV_Data_vSwUpdM_Appl_DiffRegionStates Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionStates_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionStates;
+
+NV_Data_vSwUpdM_Appl_DiffRegionEraseAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionEraseAddresses;
+const NV_Data_vSwUpdM_Appl_DiffRegionEraseAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionEraseAddresses_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffRegionEraseAddresses;
+
+NV_Data_vSwUpdM_Appl_DiffSegmentAttributes Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentAttributes;
+const NV_Data_vSwUpdM_Appl_DiffSegmentAttributes Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentAttributes_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentAttributes;
+
+NV_Data_vSwUpdM_Appl_DiffSegmentWriteAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentWriteAddresses;
+const NV_Data_vSwUpdM_Appl_DiffSegmentWriteAddresses Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentWriteAddresses_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentWriteAddresses;
+
+NV_Data_vSwUpdM_Appl_DiffSegmentCount Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentCount;
+const NV_Data_vSwUpdM_Appl_DiffSegmentCount Rte_NvBlockSwComponentType_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentCount_ROM_NVBlockDescriptor_vSwUpdM_Appl_DiffSegmentCount;
+
+NV_Data_CddOsoh_NvMData Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsoh_NvMData;
+const NV_Data_CddOsoh_NvMData Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsoh_NvMData_ROM_NVBlockDescriptor_CddOsoh_NvMData;
+
+NV_Data_CddOsph_CddOsphChannel_00 Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsph_CddOsphChannel_00;
+const NV_Data_CddOsph_CddOsphChannel_00 Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsph_CddOsphChannel_00_ROM_NVBlockDescriptor_CddOsph_CddOsphChannel_00;
+
+NV_Data_CddOsph_CddOsphChannel_01 Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsph_CddOsphChannel_01;
+const NV_Data_CddOsph_CddOsphChannel_01 Rte_NvBlockSwComponentType_NVBlockDescriptor_CddOsph_CddOsphChannel_01_ROM_NVBlockDescriptor_CddOsph_CddOsphChannel_01;
+
+uint16 RetentionBlockStatus;
+const uint16 RetentionBlockStatusDefault;
+
+uint32 _NvMExt_RetRAM_GP1_START;
+uint32 _NvMExt_RetRAM_GP2_START;
+uint32 _NvMExt_RetRAM_GP3_START;
+Dem_Cfg_AdminDataType Dem_Cfg_AdminData;
+Dem_Cfg_StatusDataType Dem_Cfg_StatusData;
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_0;
+const Dem_Cfg_PrimaryEntryType Dem_Cfg_MemoryEntryInit;
+
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_1;
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_2;
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_3;
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_4;
+Dem_Cfg_PrimaryEntryType Dem_Cfg_PrimaryEntry_5;
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Magic_Flag_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FBL_Validity_Flag_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FBL_Switch_RoleBackFlag_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FBL_OTA_Magic_Flag_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FBL_FOTA_Status_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Chimes_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Config_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Diagnostics_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_EOL_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FuelGauge_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Illumination_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_IOD_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Odometer_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_TripComputer_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Personalization_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Health_Management_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Health_Management2_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_Cybersecurity_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_GaugeFuel_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_FOTA_Signature_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_UpdateState_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_PartitionStates_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_PartitionValidities_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_PartitionRevisions_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_ModuleStates_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_ModuleValidities_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_ModuleRevisions_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_RegionStates_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_RegionEraseAddresses_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_SegmentAttributes_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_SegmentWriteAddresses_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_SegmentCount_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_ResumeInfo_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_RegionPartitionId_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_SegmentPartitionId_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffModuleStates_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffModuleValidities_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffRegionStates_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffRegionEraseAddresses_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffSegmentAttributes_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffSegmentWriteAddresses_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_vSwUpdM_Appl_DiffSegmentCount_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_CddOsoh_NvMData_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_CddOsph_CddOsphChannel_00_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Rte_Call_NvM_NvM_RpNotifyJobEnd_NvBlockSwComponentTypeNVBlockDescriptor_CddOsph_CddOsphChannel_01_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType NvMExt_NotfyJobEnd_Retention_RAM_Gp_0 (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType NvMExt_NotfyJobEnd_Retention_RAM_Gp_1 (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType NvMExt_NotfyJobEnd_Retention_RAM_Gp_2 (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType NvMExt_NotfyJobEnd_Retention_RAM_Gp_3 (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+Std_ReturnType Dem_NvM_JobFinished (uint8 ServiceId, NvM_RequestResultType JobResult)
+{
+	return E_OK;
+}
+
+FUNC( void, NVM_CODE ) EcuMExt_MultiBlockJobEndNotification( NvM_ServiceIdType cnServiceIdP, NvM_RequestResultType cnJobResultP )
+{
+}
+
+static boolean NvM_ReadAll_Finished = FALSE;
+FUNC( void, NVM_CODE) NvMExt_MultipleJobEndNotification(NvM_ServiceIdType ServiceId, NvM_RequestResultType JobResult)
+{
+	if (ServiceId == NVM_READ_ALL)
+	{
+		NvM_ReadAll_Finished = (boolean)TRUE;
+	}
+	else if(ServiceId == NVM_WRITE_ALL)
+	{
+	}
+}
+
+boolean EcuMExt_GetNvmReadAllStatus(void)
+{
+	return NvM_ReadAll_Finished;
+}
+
+FUNC(StatusType, OS_CODE) SetEvent
+(
+	TaskType TaskID,
+	EventMaskType Mask
+)
+{
+	return 0;
+}
+
+FUNC(StatusType, OS_CODE) ClearEvent
+(
+	EventMaskType Mask
+)
+{
+	return 0;
+}
+
+FUNC(StatusType, OS_CODE) GetEvent
+(
+	TaskType TaskID,
+	EventMaskRefType Mask
+)
+{
+	return 0;
+}
+
+FUNC(StatusType, OS_CODE) WaitEvent
+(
+	EventMaskType Mask
+)
+{
+	return 0;
+}
+
+FUNC(StatusType, OS_CODE) Schedule(void)
+{
+	return 0;
+}
+
+Std_ReturnType Det_ReportError(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 ErrorId)
+{
+	return E_OK;
+}
+
+typedef uint32 Fls_AddressType;
+typedef Fls_AddressType Fls_LengthType;

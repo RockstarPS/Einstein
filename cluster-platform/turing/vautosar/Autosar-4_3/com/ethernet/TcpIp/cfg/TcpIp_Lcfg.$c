@@ -1,0 +1,116 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file TcpIp_Lcfg.c
+*    @ingroup TcpIpConfiguration
+*    @brief This is TcpIp Link time configuration source file. It contains definitions of Link time configuration
+*     parameters for the TcpIp module.
+********************************************************************************************************************/
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "TcpIp.h"
+#include "TcpIp_Lcfg.h"
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+* #! TcpIp const config  data                                                                                       *
+********************************************************************************************************************/
+
+/*! @brief specifies the assignment policy for the IP address. 
+AssignmentLifetime
+AssignmentMethod
+TcpIpAssignmentPriority
+TcpIpAssignmentTrigger
+*/
+const TcpIp_AddrAssignmentConfigType TcpIp_AddrAssignmentConfig = 
+{
+    TCPIP_FORGET,
+    TCPIP_IPADDR_ASSIGNMENT_STATIC,
+    1U,
+    TCPIP_MANUAL
+};
+
+/*! @brief specifies a static IP address including directly related parameters. 
+TcpIpStaticIpAddress
+TcpIpDefaultRouter
+TcpIpNetmask
+*/
+const TcpIp_StaticIpAddressConfigType TcpIp_StaticIpAddressConfig =
+{
+    0xC0A80002U,    /* 192.168.0.2 */
+    0xC0A80001U,    /* 192.168.0.1 */
+    24U             /* 255.255.255.0 */
+};
+
+/*! @brief Specifies the local IP (Internet Protocol) addresses used for IP communication.
+TcpIpAddrId
+AddressType
+DomainType
+CtrlConfigId
+pAddrAssignmentConfig
+pStaticIpAddressConfig
+*/
+const TcpIp_LocalAddrConfigType TcpIp_LocalAddrConfig =
+{
+    TCPIP_ADDR_ID_CFG1,
+    TCPIP_UNICAST,
+    TCPIP_AF_INET,
+    0U,
+    &TcpIp_AddrAssignmentConfig,
+    &TcpIp_StaticIpAddressConfig
+};
+
+/*! @brief specifies an upper layer of TcpIp that uses the socket API. 
+SocketOwnerCopyTxDataFunc
+SocketOwnerLocalIpAddrAssignmentChgFunc
+SocketOwnerRxIndicationFunc
+SocketOwnerTcpAcceptedFunc
+SocketOwnerTcpConnectedFunc
+SocketOwnerTcpIpEventFunc
+SocketOwnerTxConfirmationFunc
+SocketOwnerUL
+*/
+const TcpIp_SocketOwnerConfigType TcpIp_SocketOwnerConfig =
+{
+    &SoAd_CopyTxData,
+    &SoAd_LocalIpAddrAssignmentChg,
+    &SoAd_RxIndication,
+    &SoAd_TcpAccepted,
+    &SoAd_TcpConnected,
+    &SoAd_TcpIpEvent,
+    &SoAd_TxConfirmation,
+    TcpIp_SocketOwnerULSOAD
+};
+
+/*! @brief defines Configuration data structure of the TcpIp module. 
+pCtrlConfig - pointer to the Controller configuration array
+pLocalAddrConfig - pointer to the Local address configuration array 
+pSocketOwnerConfig - pointer to the Controller configuration array
+*/
+const TcpIp_TcpIpConfigType TcpIp_TcpIpConfig =
+{
+    &TcpIp_CtrlConfig,
+    &TcpIp_LocalAddrConfig,
+    &TcpIp_SocketOwnerConfig
+};
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/
+
+

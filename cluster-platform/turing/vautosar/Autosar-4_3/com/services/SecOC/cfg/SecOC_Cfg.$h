@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * Copyright (C) 2025 Visteon Corporation., Ltd.
+ * All rights reserved.
+ *
+ * NOTICE: This is an unpublished work of authorship, which contains trade
+ * secrets. Visteon Corporation owns all rights to this work and intends to
+ * maintain it in confidence to preserve its trade secret status.
+ * Visteon Corporation reserves the right, under the copyright laws of the
+ * United States or those of any other country that may have jurisdiction,
+ * to protect this work as an unpublished work, in the event of an inadvertent
+ * or deliberate unauthorized publication. Visteon Corporation also reserves its
+ * rights under all copyright laws to protect this work as a published work,
+ * when appropriate. Those having access to this work may not copy it, use it,
+ * modify it, or disclose the information contained in it without the written
+ * authorization of Visteon Corporation.
+/*******************************************************************************
+********************************************************************************
+**                                                                            **
+**  FILENAME         : SecOC_Cfg.h                                            **
+**                                                                            **
+**  Created on       : July - 2025                                            **
+**  Author           : cvenkata                                               **
+**  Vendor           :                                                        **
+**  DESCRIPTION      :                                                        **
+**                                                                            **
+**  SPECIFICATION(S) : AUTOSAR CP Release 4.3.1                               **
+**                                                                            **
+*******************************************************************************/
+
+#ifndef SECOC_CFG_H_
+#define SECOC_CFG_H_
+
+#define SECOC_ENABLE_FORCED_PASS_OVERRIDE           STD_OFF
+#define SECOC_OVERRIDE_STATUS_WITH_DATA_ID          STD_OFF
+
+#define E_BUSY                       0x2U
+
+#define SECOC_TX_PDU_NUM               1U
+#define SECOC_TX_IF_PDU_NUM            1U
+#define SECOC_RX_PDU_NUM               1U
+#define SECOC_RX_IF_PDU_NUM            1U
+#define SECOC_TOTAL_PDU_NUM            2U
+#define SECOC_BUFFER_LENGTH            8U
+#define SECOC_AUTHPDU_MAX_LENGTH      16U
+#define SECOC_SECUREPDU_MAX_LENGTH    16U
+#define SECOC_COLAUTHPDU_MAX_LENGTH   16U
+#define SECOC_CRYPTOPDU_MAX_LENGTH    16U
+#define SECOC_TX_SECUREDPDUBUFFER_MAX_LENGTH   16U
+#define SECOC_DATA_TO_AUTHENTICATOR_LENGTH      8U
+#define SECOC_MAX_FRESHNESS_SIZE                8U
+
+#if 0
+
+#  ifndef SECOC_VERIFICATIONSUCCESS
+#   define SECOC_VERIFICATIONSUCCESS (0U)
+#  endif
+
+#  ifndef SECOC_VERIFICATIONFAILURE
+#   define SECOC_VERIFICATIONFAILURE (1U)
+#  endif
+
+#  ifndef SECOC_FRESHNESSFAILURE
+#   define SECOC_FRESHNESSFAILURE (2U)
+#  endif
+
+#  ifndef SECOC_AUTHENTICATIONBUILDFAILURE
+#   define SECOC_AUTHENTICATIONBUILDFAILURE (3U)
+#  endif
+
+#  ifndef SECOC_NO_VERIFICATION
+#   define SECOC_NO_VERIFICATION (4U)
+#  endif
+
+#  ifndef SECOC_VERIFICATIONFAILURE_OVERWRITTEN
+#   define SECOC_VERIFICATIONFAILURE_OVERWRITTEN (5U)
+#  endif
+#endif
+
+/*******************************************************************************
+**                      Revision  History                                     **
+*******************************************************************************/
+/*---------------------------------------------------------------------------
+Date              : 27/Jul/2025
+By                : cvenkata
+Traceability      : DICVA-19595
+Change Description: SecOC module - Initial development.
+-----------------------------------------------------------------------------*/
+
+#endif /* SECOC_CFG_H_ */

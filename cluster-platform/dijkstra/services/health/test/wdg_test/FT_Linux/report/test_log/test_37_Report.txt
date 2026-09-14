@@ -1,0 +1,195 @@
+root@am62pxx-7xxd-b@22:09:/system/usr/bin/wdg_test_FT# ./testcase37_multiprocess_monitor.sh
+------------------------------------------------------------------
+-----   Testcase 37 - Mixed Stop + Fatal Kill  -------------------
+  Configuration:
+        (1). Restart action - always
+        (2). Watchdog - enabled
+        (3). Restart Limit - 3
+        (4). One service stopped gracefully
+        (5). One service killed (fatal expected)
+
+  Expected behaviour:
+        test_18_1.service  -> No fatal, No restart
+        test_18_4.service  -> Fatal + Restart
+------------------------------------------------------------------
+[>] Starting test_18_1.service ...
+[+] test_18_1.service started successfully.
+[>] Starting test_18_2.service ...
+[+] test_18_2.service started successfully.
+[>] Starting test_18_3.service ...
+[+] test_18_3.service started successfully.
+[>] Starting test_18_4.service ...
+[+] test_18_4.service started successfully.
+[>] Starting test_18_5.service ...
+[+] test_18_5.service started successfully.
+[>] Starting wdg_proxy_test_18.service ...
+[+] wdg_proxy_test_18.service started successfully.
+-----------------------------------------------
+--- Stop + Kill Test --------------------------
+-----------------------------------------------
+[!] Stopping test_18_1.service using systemctl stop ...
+[+] test_18_1.service stopped gracefully (inactive)
+[!] Killing test_18_4.service (PID: 13586) with Signal 9...
+[!] Killing test_18_4.service (PID: 13615) with Signal 9...
+[!] Killing test_18_4.service (PID: 13624) with Signal 9...
+[!] Error: Could not find PID for test_18_4.service
+-----------------------------------------------
+--- Service Status ----------------------------
+-----------------------------------------------
+* test_18_1.service - Test application 18_1
+     Loaded: loaded (/usr/lib/systemd/system/test_18_1.service; static)
+     Active: inactive (dead)
+
+May 29 22:05:49 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_1...
+May 29 22:05:49 am62pxx-7xxd-b systemd[1]: test_18_1.service: Deactivated successfully.
+May 29 22:05:49 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_1.
+May 29 22:09:41 am62pxx-7xxd-b systemd[1]: Started Test application 18_1.
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: Start - Test Case: 18
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: SIG MIN: 34
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: SIG MAX: 64
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_1...
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: test_18_1.service: Deactivated successfully.
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_1.
+x test_18_4.service - Test application 18_4
+     Loaded: loaded (/usr/lib/systemd/system/test_18_4.service; static)
+     Active: failed (Result: signal) since Thu 2025-05-29 22:10:02 UTC; 6s ago
+   Duration: 2.900s
+    Process: 13624 ExecStart=/system/usr/bin/wdg_test_FT/test_05 18 10 (code=killed, signal=KILL)
+   Main PID: 13624 (code=killed, signal=KILL)
+        CPU: 28ms
+
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 3.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Start request repeated too quickly.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: Failed to start Test application 18_4.
+-----------------------------------------------
+--- Journal Logs ------------------------------
+-----------------------------------------------
+[*] Logs for test_18_1.service
+May 29 22:09:41 am62pxx-7xxd-b systemd[1]: Started Test application 18_1.
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: Start - Test Case: 18
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: SIG MIN: 34
+May 29 22:09:41 am62pxx-7xxd-b test_01[13565]: SIG MAX: 64
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_1...
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: test_18_1.service: Deactivated successfully.
+May 29 22:09:54 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_1.
+[*] Logs for test_18_4.service
+May 29 22:09:47 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 22:09:47 am62pxx-7xxd-b test_05[13586]: Start - Test Case: 18, sleep time 10
+May 29 22:09:47 am62pxx-7xxd-b test_05[13586]: Test Case 18: calling connect()
+May 29 22:09:56 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 22:09:56 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 22:09:56 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 1.
+May 29 22:09:56 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 22:09:56 am62pxx-7xxd-b test_05[13615]: Start - Test Case: 18, sleep time 10
+May 29 22:09:56 am62pxx-7xxd-b test_05[13615]: Test Case 18: calling connect()
+May 29 22:09:59 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 22:09:59 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 22:09:59 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 2.
+May 29 22:09:59 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 22:09:59 am62pxx-7xxd-b test_05[13624]: Start - Test Case: 18, sleep time 10
+May 29 22:09:59 am62pxx-7xxd-b test_05[13624]: Test Case 18: calling connect()
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 3.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Start request repeated too quickly.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 22:10:02 am62pxx-7xxd-b systemd[1]: Failed to start Test application 18_4.
+-----------------------------------------------
+--- Capturing DLT Logs for 5 sec ---
+-----------------------------------------------
+2025/05/29 22:10:08.916859  121074690 150 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:08.917130  121074691 151 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:08.977241  121075324 198 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:09.119235  121076714 152 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:09.120312  121076715 153 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:09.120497  121076717 154 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 22:10:09.177445  121077326 199 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:09.316951  121078714 155 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:09.317088  121078715 156 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:09.378052  121079331 200 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:09.516088  121080701 157 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:09.516337  121080702 158 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:09.578056  121081328 201 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:09.713404  121082679 159 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:09.713549  121082681 160 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:09.777114  121083323 202 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:09.916033  121084708 161 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:09.916169  121084709 162 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:09.977164  121085324 203 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:10.116509  121086689 163 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:10.117483  121086690 164 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:10.117714  121086692 165 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 22:10:10.177516  121087327 204 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:10.313680  121088683 166 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:10.317819  121088685 167 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:10.378824  121089331 205 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:10.516051  121090704 168 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:10.516198  121090706 169 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:10.577146  121091324 206 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:10.716690  121092710 170 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:10.716846  121092712 171 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:10.777134  121093324 207 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:10.916321  121094709 172 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:10.916467  121094710 173 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:10.977815  121095329 208 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:11.121418  121096689 174 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:11.121561  121096690 175 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:11.121588  121096691 176 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 22:10:11.177703  121097327 209 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:11.318319  121098719 177 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:11.318756  121098721 178 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:11.377271  121099324 210 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:11.518978  121100730 179 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:11.519259  121100732 180 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:11.577306  121101325 211 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:11.714425  121102694 181 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:11.714572  121102695 182 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:11.779202  121103343 212 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:11.918413  121104693 183 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:11.923657  121104694 184 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:11.978735  121105337 213 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:12.116730  121106710 185 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:12.116882  121106711 186 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:12.116919  121106712 187 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 22:10:12.177244  121107325 214 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:12.316631  121108710 188 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:12.316932  121108711 189 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:12.377212  121109324 215 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:12.513557  121110681 190 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:12.513699  121110682 191 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:12.577091  121111324 216 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:12.716924  121112715 192 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:12.717223  121112716 193 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:12.777821  121113329 217 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:12.916922  121114713 194 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:12.917082  121114715 195 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:12.977075  121115323 218 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:13.116107  121116690 196 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:13.118701  121116691 197 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:13.118862  121116693 198 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 22:10:13.177536  121117326 219 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:13.314923  121118695 199 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:13.315134  121118697 200 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:13.377676  121119328 220 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:13.519692  121120729 201 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:13.520117  121120731 202 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:13.577636  121121326 221 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+2025/05/29 22:10:13.715739  121122700 203 ECU1 WP-- WP - log info V 8 [(13600|13600)  wdg_proxy_linux.c : 714 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_INACTIVE:]
+2025/05/29 22:10:13.716175  121122701 204 ECU1 WP-- WP - log error V 8 [(13600|13600)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_05]
+2025/05/29 22:10:13.777150  121123324 222 ECU1 WP-- WP - log info V 8 [(422|422)  wdg_proxy_linux.c : 701 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_FAILED:]
+
+Expected Result:
+ - test_18_1.service should remain stopped (no restart)
+ - test_18_4.service should trigger fatal + restart
+ - Watchdog should react only to killed service
+-----------------------------------------------
+--- Cleanup ----------------------------------
+-----------------------------------------------
+[!] Stopping test_18_2.service ...
+[!] Stopping test_18_3.service ...
+[!] Stopping test_18_5.service ...
+[!] Stopping wdg_proxy_test_18.service ...
+------------------------------------------------
+--- Test Complete ------------------------------
+------------------------------------------------

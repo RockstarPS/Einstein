@@ -1,0 +1,12 @@
+[Unit]
+Description=Test application 19_2
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_02 19 10
+WatchdogSec=1
+Restart=no
+
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,49 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file XcpOnCan_Lcfg.c
+*    @ingroup XcpOnCanConfiguration
+*    @brief This is XcpOnCan Link time configuration source file. It contains definitions of Link time configuration
+*     parameters for the XcpOnCan module.
+********************************************************************************************************************/
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "XcpOnCan_Lcfg.h"
+#include "CanIf.h"
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+
+#if (CANXCP_ENABLE_CONTROL == STD_ON)
+VAR(XcpOnCan_ControlStateType,XCPONCAN_VAR_INIT) XcpOnCan_ControlState = XcpOnCan_ControlStateEnable;
+#endif
+/*! @brief Defines the XcpOnCan ctrl status for the channel . */
+VAR(XcpOnCan_ChannelCtrlStatusType,XCPONCAN_VAR_NOINIT) XcpOnCan_ChannelCtrlStatus[XCPONCAN_NUM_OF_CHANNELS];
+/********************************************************************************************************************
+* #! XcpOnCan const config  data                                                                                       *
+********************************************************************************************************************/
+/* @brief Defines the XcpOnCan channel configuration.
+    TxConfPduId : Defines the Xcp Tx confirmation id for this channels.
+    CanIfTxPduId : Defines the CanIf Tx pdu id for this channel.
+*/
+CONST(XcpOnCan_ChannelConfigType,XCPONCAN_CONST) XcpOnCan_ChannelConfig[XCPONCAN_NUM_OF_CHANNELS]=
+{
+    {  0U , 0U }
+};
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

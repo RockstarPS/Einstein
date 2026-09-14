@@ -1,0 +1,13 @@
+[Unit]
+Description=Test application 18
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_18 18
+Restart=always
+StartLimitBurst=3
+StartLimitInterval=5min
+
+StandardOutput=journal
+StandardError=journal

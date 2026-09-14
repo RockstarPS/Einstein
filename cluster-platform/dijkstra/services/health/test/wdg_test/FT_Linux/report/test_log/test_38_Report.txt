@@ -1,0 +1,134 @@
+root@am62pxx-7xxd-b@18:48:/system/usr/bin/wdg_test_FT# ./testcase38_multiprocess_monitor.sh
+------------------------------------------------------------------
+-----   Testcase 38 - Mixed Stop + Fatal Kill  -------------------
+  Configuration:
+        (1). Restart action - always
+        (2). Watchdog - enabled
+        (3). Restart Limit - 3
+        (4). One service stopped gracefully
+        (5). One service killed (fatal expected)
+
+  Expected behaviour:
+        test_18_1.service  -> No fatal, No restart
+        test_18_4.service  -> Fatal + Restart
+------------------------------------------------------------------
+[>] Starting test_18_1.service ...
+[+] test_18_1.service started successfully.
+[>] Starting test_18_2.service ...
+[+] test_18_2.service started successfully.
+[>] Starting test_18_3.service ...
+[+] test_18_3.service started successfully.
+[>] Starting test_18_4.service ...
+[+] test_18_4.service started successfully.
+[>] Starting test_18_5.service ...
+[+] test_18_5.service started successfully.
+[>] Starting wdg_proxy_test_18.service ...
+[+] wdg_proxy_test_18.service started successfully.
+-----------------------------------------------
+--- Stop + Kill Test --------------------------
+-----------------------------------------------
+[!] Stopping test_18_1.service using systemctl stop ...
+[+] test_18_1.service stopped gracefully (inactive)
+[!] Killing test_18_4.service (PID: 496) with Signal 9...
+[!] Killing test_18_4.service (PID: 526) with Signal 9...
+[!] Killing test_18_4.service (PID: 534) with Signal 9...
+[!] Error: Could not find PID for test_18_4.service
+[!] Stopping  using systemctl start ...
+Unknown command verb 'starttest_18_1.service'.
+-----------------------------------------------
+--- Service Status ----------------------------
+-----------------------------------------------
+* test_18_1.service - Test application 18_1
+     Loaded: loaded (/usr/lib/systemd/system/test_18_1.service; static)
+     Active: inactive (dead)
+
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Started Test application 18_1.
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: Start - Test Case: 18
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: SIG MIN: 34
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: SIG MAX: 64
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_1...
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: test_18_1.service: Deactivated successfully.
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_1.
+x test_18_4.service - Test application 18_4
+     Loaded: loaded (/usr/lib/systemd/system/test_18_4.service; static)
+     Active: failed (Result: signal) since Thu 2025-05-29 18:49:14 UTC; 8s ago
+   Duration: 2.903s
+    Process: 534 ExecStart=/system/usr/bin/wdg_test_FT/test_05 18 10 (code=killed, signal=KILL)
+   Main PID: 534 (code=killed, signal=KILL)
+        CPU: 35ms
+
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 3.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Start request repeated too quickly.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Failed to start Test application 18_4.
+-----------------------------------------------
+--- Journal Logs ------------------------------
+-----------------------------------------------
+[*] Logs for test_18_1.service
+May 29 18:48:53 am62pxx-7xxd-b systemd[1]: Started Test application 18_1.
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: Start - Test Case: 18
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: SIG MIN: 34
+May 29 18:48:53 am62pxx-7xxd-b test_01[474]: SIG MAX: 64
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: Stopping Test application 18_1...
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: test_18_1.service: Deactivated successfully.
+May 29 18:49:06 am62pxx-7xxd-b systemd[1]: Stopped Test application 18_1.
+[*] Logs for test_18_4.service
+May 29 18:49:00 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 18:49:00 am62pxx-7xxd-b test_05[496]: Start - Test Case: 18, sleep time 10
+May 29 18:49:00 am62pxx-7xxd-b test_05[496]: Test Case 18: calling connect()
+May 29 18:49:08 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 18:49:08 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 18:49:08 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 1.
+May 29 18:49:08 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 18:49:08 am62pxx-7xxd-b test_05[526]: Start - Test Case: 18, sleep time 10
+May 29 18:49:08 am62pxx-7xxd-b test_05[526]: Test Case 18: calling connect()
+May 29 18:49:11 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 18:49:11 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 18:49:11 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 2.
+May 29 18:49:11 am62pxx-7xxd-b systemd[1]: Started Test application 18_4.
+May 29 18:49:11 am62pxx-7xxd-b test_05[534]: Start - Test Case: 18, sleep time 10
+May 29 18:49:11 am62pxx-7xxd-b test_05[534]: Test Case 18: calling connect()
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Main process exited, code=killed, status=9/KILL
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Scheduled restart job, restart counter is at 3.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Start request repeated too quickly.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_18_4.service: Failed with result 'signal'.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Failed to start Test application 18_4.
+-----------------------------------------------
+--- Capturing DLT Logs for 5 sec ---
+-----------------------------------------------
+2025/05/29 18:49:23.134285       7780 019 ECU1 SYS- JOUR log warn V 4 [2025/05/29 18:48:22.923852 kernel: Warning: initrd.target: Wants dependency dropin /usr/lib/systemd/system/initrd.targ                                                ink, ignoring.]
+2025/05/29 18:49:23.154669      42079 187 ECU1 SYS- JOUR log warn V 4 [2025/05/29 18:48:25.623060 klogd[311]: Warning: [    0.778050] systemd[1]: initrd.target: Wants dependency dropin /usr                                                y_test_03.service is not a symlink, ignoring.]
+2025/05/29 18:49:23.186552     166815 001 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf.service, object path: /org/free
+2025/05/29 18:49:23.186573     166860 002 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: power_mgr.service, object path: /or                                                e ]
+2025/05/29 18:49:23.186593     166895 003 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: display_mgr.service, object path: /                                                rvice ]
+2025/05/29 18:49:23.186613     166928 004 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: ucl_primary.service, object path: /                                                rvice ]
+2025/05/29 18:49:23.186633     166959 005 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-daemon.service, object path: /o                                                ice ]
+2025/05/29 18:49:23.186652     167011 006 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: dlt-system.service, object path: /o                                                ice ]
+2025/05/29 18:49:23.186705     167057 007 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: server.service, object path: /org/f
+2025/05/29 18:49:23.186727     167090 008 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: safeHMI.service, object path: /org/
+2025/05/29 18:49:23.186747     167122 009 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: mainHmi.service, object path: /org/
+2025/05/29 18:49:23.186767     167168 010 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 649 : WdgProxy_SetupSdBusMatchRule :  Service name: vmf_cacher.service, object path: /o                                                ice ]
+2025/05/29 18:49:23.186787     167188 011 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_comm_if.c : 60 : WdgProxyCommIf_Init :  nw_vmf_connect success 1]
+2025/05/29 18:49:23.187316     169216 013 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: vmf.service, Current ActiveState: activ
+2025/05/29 18:49:23.187336     169219 014 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.187355     169262 015 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: power_mgr.service, Current ActiveState:
+2025/05/29 18:49:23.187407     169264 016 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.187429     169286 017 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: display_mgr.service, Current ActiveStat
+2025/05/29 18:49:23.187449     169288 018 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.187468     169303 019 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: ucl_primary.service, Current ActiveStat
+2025/05/29 18:49:23.187488     169305 020 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.187773     169335 021 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: dlt-daemon.service, Current ActiveState
+2025/05/29 18:49:23.187883     169336 022 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.188068     169357 023 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: dlt-system.service, Current ActiveState
+2025/05/29 18:49:23.188091     169358 024 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.188113     169391 025 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: server.service, Current ActiveState: ac
+2025/05/29 18:49:23.188132     169393 026 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.188152     169420 027 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: safeHMI.service, Current ActiveState: a
+2025/05/29 18:49:23.188172     169421 028 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.188192     169439 029 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: mainHmi.service, Current ActiveState: a
+2025/05/29 18:49:23.188212     169440 030 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 696 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVE:]
+2025/05/29 18:49:23.188231     169457 031 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 685 : WdgProxy_GetCurrentState :  Service name: vmf_cacher.service, Current ActiveState
+2025/05/29 18:49:23.188251     169458 032 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 715 : WdgProxy_GetCurrentState :  WP_SD_PROCESS_CURR_STATE_ACTIVATING:]
+2025/05/29 18:49:23.188270     169458 033 ECU1 WP-- WP - log info V 8 [(426|426)  wdg_proxy_linux.c : 421 : WdgProxy_CheckProcessCurrState :  Service : vmf_cacher.service current status is
+2025/05/29 18:49

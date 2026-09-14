@@ -1,0 +1,7 @@
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp/vmf
+export LD_LIBRARY_PATH
+
+
+chmod 777 *
+ 

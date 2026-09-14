@@ -1,0 +1,26 @@
+
+Kernel
+    Filename           DynamicDownload
+EndKernel
+
+AddressSpace			vmf_shm_mgr
+	Filename			vmf_shm_mgr.elf
+	MemoryPoolSize		2M
+	Language			C
+	Task				Initial
+		StartIt			true
+	EndTask
+EndAddressSpace
+
+AddressSpace            vmf
+    Filename            vmf.elf
+    Arguments           -m
+    MemoryPoolSize	    10M
+    Language            C
+    Task                Initial
+        StartIt         true
+        StackLength     6M
+    EndTask
+EndAddressSpace
+
+

@@ -1,0 +1,113 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2012. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  SNvM_Cfg.h
+Module Short Name:  SNvM_Cfg.h
+VOBName          :  
+Author           :  
+Description      :  Generated File
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef SNVM_CFG_H
+#define SNVM_CFG_H
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Os.h"
+#include "MemIf_Types.h"
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+#ifndef SNVM_CFG_C
+#define EXTERN extern
+#else
+#define EXTERN
+#endif
+
+#define Page_SIZE       			((uint8)4)
+#define FLS_drive       			((boolean)1)
+#define EEP_drive       			((boolean)0)
+#define No_Of_Drives       			((uint8)2)
+#define FLS_Sec_Size       			((uint32)128)
+#define SNvM_ID_MAX             ((uint8)1)
+#define NVM_JOB_END_NOTIFICATION() 
+#define NVM_JOB_ERROR_NOTIFICATION() 
+
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+typedef struct 
+{
+    boolean Fls_EepDrv;
+    uint32 Base_Add;
+    uint8 Sector_Index;
+    uint32 Sector_Offset;
+    uint16 Length;
+}SNvM_BlockConfigType;
+
+typedef struct
+{
+    Std_ReturnType (*SNvM_Sector_Erase)(uint32,uint32);//arguments (address, length)
+    MemIf_JobResultType (*SNvM_Status)(void);
+    Std_ReturnType (*SNvM_Write)(uint32,uint8*,uint32);//arguments (address, dataptr, length)
+    Std_ReturnType (*SNvM_Read)(uint32,uint8*,uint32);//arguments (address, dataptr, length)
+}SNvM_Fls_Eep_fun_type;
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+
+EXTERN const SNvM_BlockConfigType SNvM_BlockConfig[SNvM_ID_MAX];
+
+EXTERN const SNvM_Fls_Eep_fun_type SNvM_Fls_Eep_fun[No_Of_Drives];
+/*****************************************************************************
+*                                 Locally used Variable Declarations         *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+
+
+/*****************************************************************************
+*                              Limited Scope Prototypes                      *
+******************************************************************************/
+
+/*****************************************************************************
+*                   Functions                                                *
+******************************************************************************/
+
+#undef EXTERN
+
+#endif    /* */
+/* end of file */
+/****************************************************************
+Created Time: 4/12/2021 4:12:12 PM
+****************************************************************/

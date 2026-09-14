@@ -1,0 +1,216 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><body bgcolor="#FFFFFF"><div><span style="font-family:Arial;font-size:16pt;color:#000000;"><strong>Aggregate Coverage Report</strong></span></div><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Configuration&nbsp;Data</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#EEEEEE"><td><strong>Environment&nbsp;Name:</strong></td><td>OS_METRICS_VCAST_HT</td></tr><tr bgcolor="#EEEEEE"><td><strong>Date&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>11&nbsp;AUG&nbsp;2025</td></tr><tr bgcolor="#EEEEEE"><td><strong>Time&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>12:30:03&nbsp;PM</td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Aggregate&nbsp;Coverage</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><strong>Code&nbsp;Coverage&nbsp;for&nbsp;Unit:&nbsp;OsMetrics</strong></td></tr><tr><td align="left"><pre><span>--&nbsp;Coverage&nbsp;Type:&nbsp;ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D
+</span><span>--&nbsp;Unit:&nbsp;OsMetrics
+</span><span>--&nbsp;Test&nbsp;Case:&nbsp;Aggregate
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsMetrics.c
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@verbatim
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONFIDENTIAL&nbsp;VISTEON&nbsp;CORPORATION
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;an&nbsp;unpublished&nbsp;work&nbsp;of&nbsp;authorship,&nbsp;which&nbsp;contains&nbsp;trade
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secrets,&nbsp;created&nbsp;in&nbsp;2013.&nbsp;Visteon&nbsp;Corporation&nbsp;owns&nbsp;all&nbsp;rights&nbsp;to
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;work&nbsp;and&nbsp;intends&nbsp;to&nbsp;maintain&nbsp;it&nbsp;in&nbsp;confidence&nbsp;to&nbsp;preserve
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;its&nbsp;trade&nbsp;secret&nbsp;status.&nbsp;Visteon&nbsp;Corporation&nbsp;reserves&nbsp;the&nbsp;right,
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;under&nbsp;the&nbsp;copyright&nbsp;laws&nbsp;of&nbsp;the&nbsp;United&nbsp;States&nbsp;or&nbsp;those&nbsp;of&nbsp;any
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other&nbsp;country&nbsp;that&nbsp;may&nbsp;have&nbsp;jurisdiction,&nbsp;to&nbsp;protect&nbsp;this&nbsp;work
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;an&nbsp;unpublished&nbsp;work,&nbsp;in&nbsp;the&nbsp;event&nbsp;of&nbsp;an&nbsp;inadvertent&nbsp;or
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deliberate&nbsp;unauthorized&nbsp;publication.&nbsp;Visteon&nbsp;Corporation&nbsp;also
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reserves&nbsp;its&nbsp;rights&nbsp;under&nbsp;all&nbsp;copyright&nbsp;laws&nbsp;to&nbsp;protect&nbsp;this
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;work&nbsp;as&nbsp;a&nbsp;published&nbsp;work,&nbsp;when&nbsp;appropriate.&nbsp;Those&nbsp;having&nbsp;access
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;this&nbsp;work&nbsp;may&nbsp;not&nbsp;copy&nbsp;it,&nbsp;use&nbsp;it,&nbsp;modify&nbsp;it&nbsp;or&nbsp;disclose&nbsp;the
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;information&nbsp;contained&nbsp;in&nbsp;it&nbsp;without&nbsp;the&nbsp;written&nbsp;authorization
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;Visteon&nbsp;Corporation.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@endverbatim
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@details&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;mOs&nbsp;&nbsp;file&nbsp;for&nbsp;calculating&nbsp;os&nbsp;metrics&lt;/b&gt;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@note
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compiler&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;IAR&nbsp;\n
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Target&nbsp;Hw&nbsp;&nbsp;&nbsp;:&nbsp;Independent
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@copyright&nbsp;&nbsp;&nbsp;Visteon&nbsp;(c)&nbsp;2021
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/SYS/MOS/SRC/includes/OsMetrics.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/OS/CPU/ARM/cortex7/OsPrivate.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/mos/Gpt.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*****************************************************************************
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Macro&nbsp;Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*----------------------------------------------------------------------------*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Definition&nbsp;of&nbsp;macro&nbsp;shall&nbsp;be&nbsp;followed&nbsp;by&nbsp;a&nbsp;comment&nbsp;that&nbsp;explains&nbsp;the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;purpose&nbsp;of&nbsp;the&nbsp;macro.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;******************************************************************************/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricType&nbsp;osMetrics[4U];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricsType&nbsp;osMetricsData;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsGetTimerCount&nbsp;-&nbsp;Function&nbsp;to&nbsp;get&nbsp;the&nbsp;timer&nbsp;count
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;osuint32
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osuint32&nbsp;OsGetTimerCount(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">1&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetTimerCount
+</span><span style="color:#009900;">1&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osuint32&nbsp;time=0;
+</span><span style="color:#009900;">1&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;time;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsGetStartTaskMetrics&nbsp;-&nbsp;Function&nbsp;to&nbsp;get&nbsp;the&nbsp;time&nbsp;required&nbsp;for&nbsp;starting&nbsp;the&nbsp;task
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsGetStartTaskMetrics(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetStartTaskMetrics
+</span><span style="color:#009900;">2&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsGetContextSwitchMetrics();
+</span><span style="color:#009900;">2&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">2&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;osMetrics[0].ValFlag&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[0].EndTime&nbsp;=&nbsp;OsGetTimerCount();
+</span><span style="color:#009900;">2&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[0].ValFlag&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">2&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricsData.StartTaskMetrics=osMetrics[0].EndTime-osMetrics[0].StartTime;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsGetResumeTaskMetrics&nbsp;-&nbsp;Function&nbsp;to&nbsp;get&nbsp;the&nbsp;time&nbsp;required&nbsp;for&nbsp;resuming&nbsp;a&nbsp;task
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsGetResumeTaskMetrics(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetResumeTaskMetrics
+</span><span style="color:#009900;">3&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OsGetContextSwitchMetrics();
+</span><span style="color:#009900;">3&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">3&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;osMetrics[1].ValFlag&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[1].EndTime&nbsp;=&nbsp;OsGetTimerCount();
+</span><span style="color:#009900;">3&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[1].ValFlag&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">3&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricsData.ResumeTaskMetrics=osMetrics[1].EndTime-osMetrics[1].StartTime;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsGetContextSwitchMetrics&nbsp;-&nbsp;Function&nbsp;to&nbsp;get&nbsp;the&nbsp;time&nbsp;required&nbsp;for&nbsp;context&nbsp;switching
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsGetContextSwitchMetrics(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">4&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetContextSwitchMetrics
+</span><span style="color:#009900;">4&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">4&nbsp;1.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;osMetrics[2].ValFlag&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">4&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[2].EndTime&nbsp;=&nbsp;OsGetTimerCount();
+</span><span style="color:#009900;">4&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[2].ValFlag&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">4&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricsData.TaskContextSwitchingMetrics=osMetrics[2].EndTime-osMetrics[2].StartTime;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsGetOsInitMetrics&nbsp;-&nbsp;Function&nbsp;to&nbsp;get&nbsp;the&nbsp;time&nbsp;required&nbsp;for&nbsp;os&nbsp;initialisation
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsGetOsInitMetrics(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">5&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsGetOsInitMetrics
+</span><span style="color:#009900;">5&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">5&nbsp;1.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;osMetrics[3].ValFlag&nbsp;!=&nbsp;0U)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">5&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[3].EndTime&nbsp;=&nbsp;OsGetTimerCount();
+</span><span style="color:#009900;">5&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetrics[3].ValFlag&nbsp;=&nbsp;0U;
+</span><span style="color:#009900;">5&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;osMetricsData.OsInitMetrics=osMetrics[3].EndTime-osMetrics[3].StartTime;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@brief&nbsp;OsStartDispatchMetric&nbsp;-&nbsp;Function&nbsp;to&nbsp;dispatch&nbsp;metric
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;&nbsp;None
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;OsStartDispatchMetric(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">6&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;OsStartDispatchMetric
+</span><span style="color:#009900;">6&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/SPRINT/AUTOSAR4_3UT/UT-STUBS/COMP-SPECIFIC/SYS/MOS/BSW-GEN/BSW/OS/ToolUpdateConfig/Os_IntMemMap.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*----------------------------------------------------------------------------------**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;-------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;each&nbsp;change&nbsp;to&nbsp;this&nbsp;file,&nbsp;be&nbsp;sure&nbsp;to&nbsp;record:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;who&nbsp;made&nbsp;the&nbsp;change&nbsp;and&nbsp;when&nbsp;the&nbsp;change&nbsp;was&nbsp;made&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;why&nbsp;the&nbsp;change&nbsp;was&nbsp;made&nbsp;and&nbsp;the&nbsp;intended&nbsp;result&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Following&nbsp;block&nbsp;needs&nbsp;to&nbsp;be&nbsp;repeated&nbsp;for&nbsp;each&nbsp;change&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:&nbsp;In&nbsp;the&nbsp;traceability&nbsp;column&nbsp;we&nbsp;need&nbsp;to&nbsp;trace&nbsp;back&nbsp;to&nbsp;the&nbsp;Design&nbsp;Doc.&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;the&nbsp;initial&nbsp;version&nbsp;it&nbsp;is&nbsp;traced&nbsp;to&nbsp;the&nbsp;Design&nbsp;Document&nbsp;section.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;further&nbsp;changes&nbsp;it&nbsp;shall&nbsp;trace&nbsp;to&nbsp;the&nbsp;source&nbsp;of&nbsp;the&nbsp;change&nbsp;which&nbsp;may&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;SPSS/SCR/Defect&nbsp;details(Defect&nbsp;may&nbsp;be&nbsp;Testing/validation&nbsp;defect)/Any&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;other&nbsp;reason&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;****************************************************************************&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;------------------------------------------------------------------------------&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;27-June-2022&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;pmathew&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;RTC&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;1586146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;Change&nbsp;Description:&nbsp;Change&nbsp;Description:&nbsp;mOS&nbsp;updations&nbsp;for&nbsp;supporting&nbsp;user&nbsp;mode&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**----------------------------------------------------------------------------------**/
+</span><span>TEST&nbsp;COVERAGE&nbsp;SUMMARY
+</span><span>
+</span><span>
+</span><span>&nbsp;21&nbsp;of&nbsp;21&nbsp;Lines&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span><span>&nbsp;22&nbsp;of&nbsp;22&nbsp;Branches&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>MC/DC&nbsp;Condition&nbsp;Tables</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMetrics</strong><br><strong>Subprogram:&nbsp;OsGetStartTaskMetrics</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 62
+Actual Expression is: ((osMetrics)[0]).ValFlag != 0U
+Condition "a" (Ca) is: ((osMetrics)[0]).ValFlag != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMetrics</strong><br><strong>Subprogram:&nbsp;OsGetResumeTaskMetrics</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 80
+Actual Expression is: ((osMetrics)[1]).ValFlag != 0U
+Condition "a" (Ca) is: ((osMetrics)[1]).ValFlag != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMetrics</strong><br><strong>Subprogram:&nbsp;OsGetContextSwitchMetrics</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 97
+Actual Expression is: ((osMetrics)[2]).ValFlag != 0U
+Condition "a" (Ca) is: ((osMetrics)[2]).ValFlag != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;OsMetrics</strong><br><strong>Subprogram:&nbsp;OsGetOsInitMetrics</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 114
+Actual Expression is: ((osMetrics)[3]).ValFlag != 0U
+Condition "a" (Ca) is: ((osMetrics)[3]).ValFlag != 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Metrics</strong></span></td></tr><tr bgcolor="#94A5C6"><td align="left">ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D</td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td bgcolor="#CCD8EE"><strong>Unit</strong></td><td bgcolor="#CCD8EE"><strong>Subprogram</strong></td><td bgcolor="#CCD8EE"><strong>Complexity</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Coverage</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Calls</strong></td><td bgcolor="#CCD8EE"><strong>Statements</strong></td><td bgcolor="#CCD8EE"><strong>Branches</strong></td><td bgcolor="#CCD8EE"><strong>Pairs</strong></td></tr><tr bgcolor="#EEEEEE"><td>OsMetrics</td><td>OsGetTimerCount</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsGetStartTaskMetrics</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsGetResumeTaskMetrics</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsGetContextSwitchMetrics</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">4&nbsp;/&nbsp;4&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsGetOsInitMetrics</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">4&nbsp;/&nbsp;4&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>OsStartDispatchMetric</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>TOTALS</strong></td><td><strong>6</strong></td><td align="right"><strong>10</strong></td><td bgcolor="#CCFFCC"><strong>6&nbsp;/&nbsp;6&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>6&nbsp;/&nbsp;6&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>21&nbsp;/&nbsp;21&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>22&nbsp;/&nbsp;22&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>4&nbsp;/&nbsp;4&nbsp;(100%)</strong></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>GRAND&nbsp;TOTALS</strong></td><td><strong>6</strong></td><td align="right"><strong>10</strong></td><td bgcolor="#CCFFCC"><strong>6&nbsp;/&nbsp;6&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>6&nbsp;/&nbsp;6&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>21&nbsp;/&nbsp;21&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>22&nbsp;/&nbsp;22&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>4&nbsp;/&nbsp;4&nbsp;(100%)</strong></td></tr></table></td></tr></table></body></html>

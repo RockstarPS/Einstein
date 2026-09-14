@@ -1,0 +1,64 @@
+#---------------------------------------------------------------------------------------------------------------------
+#
+# VISTEON CORPORATION CONFIDENTIAL
+# ________________________________
+#
+# [2019] Visteon Corporation
+# All Rights Reserved.
+#
+# NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+# Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+# its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+# or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+# in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+# under all copyright laws to protect this work as a published work, when appropriate.
+# Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+# without the written authorization of Visteon Corporation.
+#
+#---------------------------------------------------------------------------------------------------------------------
+cmake_minimum_required (VERSION 3.14)
+
+# Create Binary
+add_executable(${BINARY_NAME}
+	${CMAKE_CURRENT_SOURCE_DIR}/src/applications/test_app3/main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/applications/test_app3/test_app3.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/components/test_app3_com1/test_app3_com1.cpp
+)
+
+# Add directories
+target_include_directories(${BINARY_NAME}
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/applications/test_app3
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/components/test_app3_com1
+	${CMAKE_CURRENT_SOURCE_DIR}/src/common
+)
+
+target_add_dependencies(${BINARY_NAME}
+   PUBLIC
+   dk_logger
+   PRIVATE
+   dk_runtime
+)
+
+if(CMAKE_SYSTEM_NAME MATCHES Linux)
+  	target_link_libraries(${BINARY_NAME}
+    	PRIVATE
+    	osal vmf_client dk_logger pthread rt
+    )
+elseif(CMAKE_SYSTEM_NAME MATCHES QNX)
+    if(DK_HAM_WATCHDOG_ENABLED)
+        target_link_libraries(${BINARY_NAME}
+            PRIVATE
+            ham dk_wdg_client
+        )
+        endif()
+        target_link_libraries(${BINARY_NAME}
+            PRIVATE
+            osal vmf_client dk_logger mq slog2 socket
+        )
+endif()
+    
+# Install the library
+install(TARGETS ${BINARY_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/dk_runtime_FT
+)

@@ -1,0 +1,42 @@
+==============  Test case 1 log =================
+root@am62pxx-7xxdb@00:03:31:~# /usr/bin/secure_qtd_mount
+[DLT] Cannot open file for logging! Using CommandLine
+[DLT] Registering Context SQM , Secure Qtd Mount Component
+[SQM][SQM][Info] (746|746) main.c:340 :get_partition_info: Boot A Active
+
+[SQM][SQM][Info] (746|746) main.c:848 :main: Usage:
+[SQM][SQM][Info] (746|746) main.c:849 :main:    secure_qtd_mount -c <config_file>
+
+==============  Test case 2 log =================
+root@am62pxx-7xxdb@00:03:31:~#/usr/bin/secure_qtd_mount -c /etc/primary-qtd.conf
+[DLT] Registering Context SQM , Secure Qtd Mount Component
+[SQM][SQM][Info] (103|103) main.c:340 :get_partition_info: Boot A Active
+
+[SQM][SQM][Info] (103|103) main.c:835 :main: Config file /etc/primary-qtd.conf
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p9 ext4 /system ro
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p10 ext4 /app ro
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p11 ext4 /asset ro
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p15 ext4 /data rw
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p16 ext4 /persist rw
+
+[SQM][SQM][Info] (103|103) main.c:455 :mount_fs: /dev/mmcblk0p17 ext4 /ota_cache rw
+
+==============  Test case 3 log =================
+Running cmd after already mounting
+root@am62pxx-7xxdb@00:03:37:~# /usr/bin/secure_qtd_mount -c /etc/primary-qtd.conf
+[DLT] Cannot open file for logging! Using CommandLine
+[DLT] Registering Context SQM , Secure Qtd Mount Component
+[SQM][SQM][Info] (966|966) main.c:340 :get_partition_info: Boot A Active
+
+[SQM][SQM][Info] (966|966) main.c:835 :main: Config file /etc/primary-qtd.conf
+
+[SQM][SQM][Info] (966|966) main.c:455 :mount_fs: /dev/mmcblk0p9 ext4 /system ro
+
+[SQM][SQM][Erro] (966|966) main.c:478 :mount_fs: Mount Failed /system: Device or resource busy
+
+[SQM][SQM][Erro] (966|966) main.c:843 :main: Parsing failed

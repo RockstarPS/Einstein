@@ -1,0 +1,82 @@
+root@am62pxx-7xxd-b@23:50:/system/usr/bin/wdg_test_FT# ./testcase11_restart_always.sh
+------------------------------------------------------------------
+----- Test Case 11 - RestartPreventExitStatus behavior -----------
+  Description:
+        Even with Restart=always, the service will NOT restart
+        if the exit code or signal matches RestartPreventExitStatus.
+
+  Expected behavior:
+        - No restart for exit code 255
+        - No restart for SIGABRT
+        - Restart for other signals (e.g., SIGKILL)
+
+  Error Notification Fatal (Yes/No): Yes
+  Process Restart (Yes/No): Conditional
+  [*] Configuration:
+        Restart=always
+        RestartPreventExitStatus=255 SIGABRT
+------------------------------------------------------------------
+[>] Starting test_06.service...
+[+] test_06.service started successfully.
+[>] Starting wdg_proxy_test_06.service...
+[+] wdg_proxy_test_06.service started successfully.
+.......................................................
+       Test: SIG User Defined Signal 1 (should not restart)
+.......................................................
+[!] Sending signal 36 to test_06.service (PID: 45196)...
+.......................................................
+       Test: SIGABRT (should NOT restart)
+.......................................................
+Error: Could not find PID.
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 23:52:42 am62pxx-7xxd-b systemd[1]: Started Test application 06.
+May 29 23:52:42 am62pxx-7xxd-b test_06[45196]: Start - Test Case: 6
+May 29 23:52:42 am62pxx-7xxd-b test_06[45196]: SIG MIN: 34
+May 29 23:52:42 am62pxx-7xxd-b test_06[45196]: SIG MAX: 64
+May 29 23:52:46 am62pxx-7xxd-b test_06[45196]: Interrupt signal (36) received.
+May 29 23:52:47 am62pxx-7xxd-b test_06[45196]: Exit - Test case: 6
+May 29 23:52:47 am62pxx-7xxd-b systemd[1]: test_06.service: Main process exited, code=exited, status=255/EXCEPTION
+May 29 23:52:47 am62pxx-7xxd-b systemd[1]: test_06.service: Failed with result 'exit-code'.
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+2025/05/29 23:52:50.547117  182691103 029 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:50.747206  182693103 030 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:50.947513  182695104 031 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:51.147193  182697103 032 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:51.347186  182699103 033 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:51.347304  182699104 034 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 23:52:51.547173  182701103 035 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:51.747172  182703103 036 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:51.947182  182705103 037 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:52.147093  182707103 038 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:52.347186  182709103 039 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:52.347296  182709104 040 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 23:52:52.547182  182711103 041 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:52.747161  182713103 042 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:52.947178  182715103 043 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:53.147160  182717103 044 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:53.347197  182719103 045 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:53.347305  182719104 046 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 23:52:53.547189  182721103 047 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:53.747185  182723103 048 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:53.947177  182725103 049 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:54.147092  182727103 050 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:54.347190  182729103 051 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:54.347304  182729104 052 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+2025/05/29 23:52:54.547165  182731103 053 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:54.747193  182733103 054 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:54.947168  182735103 055 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:55.147386  182737104 056 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:55.347206  182739103 057 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 553 : WdgProxy_ReportFatalError :  WP FATAL ERROR FOR test_06]
+2025/05/29 23:52:55.347317  182739104 058 ECU1 WP-- WP - log error V 8 [(45205|45205)  wdg_proxy_linux.c : 385 : WdgProxy_RunEventTimer :  Fatal error: Skipping heartbeat to VIP]
+-----------------------------------------------
+[*] Checking status: test_06.service
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_06.service
+[!] wdg_proxy_test_06.service is running. Stopping for a clean state...
+--- Test complete. DLT logging stopped. ---
+******************************************************
+root@am62pxx-7xxd-b@23:52:/system/usr/bin/wdg_test_FT#

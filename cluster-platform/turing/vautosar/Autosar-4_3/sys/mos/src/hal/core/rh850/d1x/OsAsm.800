@@ -1,0 +1,501 @@
+--/*****************************************************************************
+--
+--                CONFIDENTIAL VISTEON CORPORATION                        
+--                                                                        
+--   This is an unpublished work of authorship, which contains trade      
+--   secrets, created in 2013. Visteon Corporation owns all rights to     
+--   this work and intends to maintain it in confidence to preserve       
+--   its trade secret status. Visteon Corporation reserves the right,     
+--   under the copyright laws of the United States or those of any        
+--   other country that may have jurisdiction, to protect this work       
+--   as an unpublished work, in the event of an inadvertent or            
+--   deliberate unauthorized publication. Visteon Corporation also        
+--   reserves its rights under all copyright laws to protect this         
+--   work as a published work, when appropriate. Those having access      
+--   to this work may not copy it, use it, modify it or disclose the      
+--   information contained in it without the written authorization        
+--   of Visteon Corporation.                                              
+--
+--
+--
+--
+--
+--   Project Name: mOS Turing-B Non-Autosar
+--   File Name: OsAsm.800
+--
+--
+--   Description: Assembler functions for mOS RH850 (GHS compiler)
+--
+--
+--****************************************************************************/
+
+
+---+--------------------------------------------------------------------------
+-- File settings
+------------------------------------------------------------------------------
+
+--+--------------------------------------------------------------------------
+-- Includes
+-----------------------------------------------------------------------------
+
+.include "OsAsm.inc"
+.include "tcb.inc"
+.inspect "OsInternal.h"
+.inspect "OsMain.h"
+.inspect "OsPrivate.h"
+
+
+
+.import osStartOS
+.import osTimerInterrupt
+.import osIntSP
+.import IsrStackConfig
+.import _mOS_GetTaskParam_Task
+.import _mOS_GetTaskParam_Stackaddress
+#ifdef RTM_ENABLED
+.warning "Rtm cpu load measurement support is enabled"
+.import Rtm_CpuLoadMeasurementFunction
+#endif
+
+.import _osTaskStartHook
+.import osTaskStopHook
+.import osStarDispatchtMetric
+.import _osTaskResumeHook
+
+
+
+.macro _osDisableFEINT
+   .if osdUseFEINT==1
+   stsr    PSW, r13        -- r13 = PSW
+   ori     0x80, r13, r11  -- r11 = r13 | 0x80
+   ldsr    r11, PSW        -- PSW = r11 -> disable FE level interrupts
+    .endif   
+.endm
+.macro _osEnableFEINT
+   .if osdUseFEINT==1
+   ldsr    r13, PSW        -- PSW = r13 -> enable FE level interrupts
+   .endif   
+.endm
+
+---+--------------------------------------------------------------------------
+-- osuint32 osSuspendInterruptsAsm()
+------------------------------------------------------------------------------
+.globl _osSuspendInterruptsAsm
+_osSuspendInterruptsAsm:
+    stsr  PSW, r10        -- r10 = PSW
+    di                    -- disable global interrupts
+    andi  0x20, r10, r10  -- r10 = r10 & 0x20
+    jmp [lp]
+   
+---+--------------------------------------------------------------------------
+--  osResumeInterruptsAsm(osuint32)
+------------------------------------------------------------------------------
+.globl _osResumeInterruptsAsm
+_osResumeInterruptsAsm:
+    -- r6 = OsCtrlParam.IntSaveStatus
+    andi    0x20, r6, r6  -- r10 = r10 & 0x20
+    cmp     0x20,r6
+    be      osPrvSkipIntEnable
+    ei
+osPrvSkipIntEnable:
+   jmp [lp]
+
+
+---+--------------------------------------------------------------------------
+-- osDisableGlobalInterruptAsm                                                
+------------------------------------------------------------------------------
+.globl _osDisableGlobalInterruptAsm
+_osDisableGlobalInterruptAsm:
+    di
+    jmp [lp]
+
+---+--------------------------------------------------------------------------
+-- osEnableGlobalInterruptAsm                                                
+------------------------------------------------------------------------------
+.globl _osEnableGlobalInterruptAsm
+_osEnableGlobalInterruptAsm:
+    ei
+    jmp [lp]
+
+
+.globl _osStartOSasm
+_osStartOSasm:
+    di             
+
+    -- ldsr    r0, MPM                    
+    -- jarl    _osInitialize, lp          
+    -- mov     osdSystemLevelMask, r11    
+    -- ldsr    r11, PMR                   
+
+    ei                                 
+    jarl    _osStartOS, lp           
+
+.section ".oscode", "ax"
+    .align  4
+    .globl  _osCat2ISREntryASM
+_osCat2ISREntryASM:
+   -- r1, r2 and r4 ... r31 are already saved onto stack by CAT2 ISR prologue
+   -- r6 contains the application ISR Handler
+   -- r8 contains the index of the ISR
+   
+    stsr    EIPC,  r11                  -- r11 = EIPC 
+    stsr    EIPSW, r12                  -- r12 = EIPSW
+    stsr    CTPC,  r13                  -- r13 = CTPC 
+    stsr    CTPSW, r14                  -- r14 = CTPSW
+    --stsr    MPLA0, r15                  -- r15 = MPLA0
+    --stsr    MPUA0, r16                  -- r16 = MPUA0
+    pushsp  r11-r14                     -- push r11 ... r14 onto stack
+    .if osdFPUSupport == 1
+    stsr    FPSR,  r11                  -- r11 = FPSR
+    stsr    FPEPC, r12                  -- r12 = FPEPC
+    pushsp  r11-r12                     -- push FPSR and FPEPC onto stack    
+    .endif
+
+    mov     _OsCtrlParam,r9
+    mov     r9,r4
+    --mov     r9,r5
+    
+    add     OffsetOf(OsCtrlParamType, LockDispatcher),r4
+    addi    OffsetOf(OsCtrlParamType, CurrentContext),r9,r5
+    
+    --ld.bu    OffsetOf(OsCtrlParamType, LockDispatcher)[r9],r4
+    --ld.hu    OffsetOf(OsCtrlParamType, CurrentContext)[r9],r5
+    
+    --increment the LockDispatcher
+    ld.bu   0[r4],r1                    -- r1 = *(uint8*)r4
+    mov     1,r2
+    add     r2,r1                       -- 
+    st.b   r1,0[r4]                    -- *(uint8*)r4 = r1 -- OsCtrlParam.LockDispatcher++
+    
+    --push the current context into stack
+    ld.hu   0[r5],r1                    -- r1 = *(uint8*)r5
+    pushsp  r1-r1
+    
+    --set the OsContext as osdCat2IsrContext
+    mov     osdCtxISRCat2,r1
+    st.h    r1,0[r5]                    -- *(uint8*)r5 = r1 -- OsCtrlParam.CurrentContext=osdCtxISRCat2
+    
+    
+    _osDisableFEINT                     -- disable FE level interrupts
+    
+    mov     sp, r11                         -- back up the current stack pointer to r11
+    mov     _IsrStackConfig, r9                    -- move the interrupt stack pointer to r8
+    shl     2,r8
+    add     r8,r9
+    ld.w    0[r9],sp                       -- load the SP with the interrupt stack 
+    pushsp  r11-r11                     -- push r11 onto stack -> save old stack pointer
+    _osEnableFEINT                      -- enable FE level interrupts
+
+    jarl    [r6], lp          -- call osCallCat2ISR with r6 = ISRID
+
+_osCat2ISRExitASM:
+
+    _osDisableFEINT                     -- disable FE level interrupts
+    ld.w    0[sp], sp                   -- sp = *(sp) -> switch back to previous stack
+    _osEnableFEINT                      -- enable FE level interrupts
+    -- clear the interrupt hold
+    --mov     1,r1
+    --ldsr    r1,INTCFG
+    --mov     0,r1
+    --ldsr    r1,ISPR
+    
+    -- check if there is a valid request to call the osDispatcher
+    -- r9 should hold the address of OsCtrlParam
+    popsp   r1-r1
+    st.h    r1,0[r5]                    -- *(uint8*)r5 = r1 -- OsCtrlParam.CurrentContext=TaskContext
+    
+    --decrement the LockDispatcher
+    ld.b    0[r4],r1                    -- r1 = *(uint8*)r4
+    mov     1,r2
+    sub     r2,r1                       -- r1 = r1-r2
+    st.b    r1,0[r4]                    -- *(uint8*)r4 = r1 -- OsCtrlParam.LockDispatcher--
+    
+    bne     osPrvCat2ExitNoDispatch     --anything other than 0 means dispatcher is locked, jump to osPrvCat2ExitNoDispatch
+    
+    mov     _OsCtrlParam,r9
+    mov     r9,r2
+    add     OffsetOf(OsCtrlParamType,RequestScheduler),r2
+    
+    ld.b    0[r2],r1
+    cmp     0,r1
+    be     osPrvCat2ExitNoDispatch     --Request Scheduler NotSet, jump to osPrvCat2ExitNoDispatch
+    
+    --we reach here only if RequestScheduler==0 && LockDispatcher==0
+    -- Get the ActiveTaskIndex in r6 as this register will be used directly
+    -- in the Dispatcher fallback osPrvDispatcherContextPushed
+    mov     r9,r10
+    add     OffsetOf(OsCtrlParamType,ActiveTaskIndex),r10
+    ld.bu    0[r10],r6
+    cmp     INVALID_TASK,r6
+    be       _osPrvFromInActiveTask                   --we do not have a valid ActiveTask 
+    br       osPrvDispatcherContextPushed            --we reach here to suspend the ActiveTask
+    
+osPrvCat2ExitNoDispatch:
+    .if osdFPUSupport == 1
+    popsp   r11-r12                     -- restore FPSR and FPEPC from stack       
+    ldsr    r11, FPSR                   -- FPSR = r11
+    ldsr    r12, FPEPC                  -- FPEPC = r12
+    .endif
+    popsp   r11-r14                     -- restore r11 ... r14 from stack
+    ldsr    r11, EIPC                   -- EIPC  = r11 
+    ldsr    r12, EIPSW                  -- EIPSW = r12 
+    ldsr    r13, CTPC                   -- CTPC  = r13 
+    ldsr    r14, CTPSW                  -- CTPSW = r14 
+    --ldsr    r15, MPLA0                  -- MPLA0 = r15 
+    --ldsr    r16, MPUA0                  -- MPUA0 = r16 
+    popsp   r4-r31                      -- restore r4 to r31 from stack
+    popsp   r6-r6
+    popsp   r1-r2                       -- restore r1 and r2 from stack
+    eiret                               -- return from exception
+   
+
+.globl _osDispatchApi
+_osDispatchApi:
+osPrvDispatcher:
+    --coming here, we assume that the Dispatcher is Unlocked
+    --are we coming from an inactive task
+    --(ossActiveTaskIndex != 0)? osFromActiveTask: osFromInActiveTask--
+    pushsp  r1-r2
+    pushsp  r6-r6
+    mov     _OsCtrlParam,r6
+    add     OffsetOf(OsCtrlParamType,ActiveTaskIndex),r6   --Fetch the address of ActiveTaskIndex
+    -- TBD -- to check if remaining bytes will be 0
+    ld.bu   0[r6],r6                    --Load the Active Task Index to R1
+    cmp     INVALID_TASK,r6                       --Check whether the ActiveTaskIndex is Idle
+    be      _osPrvFromInActiveTask       --If the Dispatcher is called from Idle Task go to osPrvFromInActiveTask
+
+osPrvComingFromActiveTask:
+    --Coming from active task So we have to  save the context here
+    pushsp r4-r31
+    stsr    EIPC,  r11
+    stsr    EIPSW, r12
+    stsr    CTPC,  r13
+    stsr    CTPSW, r14
+    pushsp  r11-r14
+    -- TBD -- disable FE level interrupts - to check if its required
+
+osPrvDispatcherContextPushed:
+    --All the registers are pushed into the stack pointer.
+    --Which means the context has been stored.
+    --Now the Store the current stack address(After context storage)
+    --in the respective TaskParam structure. So that we can resume from there
+
+    -- Now r6 = ActiveTaskIndex even if this is a fallback or a jump from Cat2IsrExit
+    mov     _TaskParam,r9               -- r9 = &TaskParam
+    mov     sizeof(TaskParamType),r10   -- r10 = Sizeof(TaskParam) 
+    mul     r6,r10,r8                   -- r8r10 = r6 * r10 (Lowest 32bits of mul result will be stored in r10)
+    add     r9,r10                      -- r10 = &(_TaskParam)[r9] + [r10]  :: &_TaskParam[ActiveTaskIndex] is retrived
+    mov     r10,r8                      -- to store &_TaskParam[ActiveTaskIndex] in r8
+
+    pushsp  r10-r10
+    jarl    _mOS_GetTaskParam_Stackaddress, lp
+	add     r10,r8
+    popsp   r10-r10
+--vasu    add     OffsetOf(TaskParamType,StackAddress),r8      --&(TaskParam[ActiveTaskIndex].StackAddress) is retrived
+
+    st.w    r3,0[r8]                    --store the current task stack pointer here
+    
+   mov     r10,r8                       --reload &_TaskParam[ActiveTaskIndex] in r8
+
+    pushsp  r10-r10
+    jarl    _mOS_GetTaskParam_Task, lp
+	add     r10,r8
+    popsp   r10-r10
+
+--vasu   add     OffsetOf(TaskParamType,State),r8
+   ld.bu   0[r8],r7
+    
+   cmp     RUNNING,r7
+   bne     _osPrvFromInActiveTask
+    --Now we have to make the current task to READY state
+    bl      osPrvAsmPostTaskHook               --call Post Task Hook as the current task gets inactivated
+    mov     READY,r7
+    st.b    r7,0[r8]                            --osState[ossActiveTaskIndex] = READY
+    --Implicit continuation of execution if the current task was RUNNING
+
+_osPrvFromInActiveTask:
+osPrvFromNoTask:
+    mov     _OsCtrlParam,r6
+    mov     r6,r7
+    add     OffsetOf(OsCtrlParamType,ActiveTaskIndex),r7          -- r7 = &OsCtrlParamType.ActiveTaskIndex
+    mov     r6,r8
+    add     OffsetOf(OsCtrlParamType,RequestedTaskIndex),r8       -- r8 = &OsCtrlParamType.RequestedTaskIndex
+    mov     r6,r9
+    add     OffsetOf(OsCtrlParamType,ActiveTaskPriority),r9       -- r9 = &OsCtrlParamType.ActiveTaskPriority
+    mov     r6,r10
+    add     OffsetOf(OsCtrlParamType,RequestedTaskPriority),r10   -- r10 = &OsCtrlParamType.RequestedTaskPriority
+
+    ld.bu   0[r8],r8
+    ld.bu   0[r10],r10
+    st.b    r8,0[r7]
+    st.b    r8,0[r7]            --ActiveTaskIndex    = RequestedTaskIndex
+    st.b    r10,0[r9]           --ActiveTaskPriority = RequestedTaskPriority
+
+    --RequestScheduler = 0
+    mov     r6,r8
+    -- TBD -- to check how to get offset address
+    add     OffsetOf(OsCtrlParamType,RequestScheduler),r8       -- r8 = &OsCtrlParamType.RequestScheduler
+    --TBD -- to check if r0 can be used
+    st.b    r0,0[r8]
+    
+    --do we have a valid task?
+    ld.bu   0[r7],r8                                            -- r8 = OsCtrlParamType.ActiveTaskIndex
+    cmp     INVALID_TASK,r8
+    be     osPrvIdleTask                       --No Active Task, so go Idle
+    
+    --We have a valid task to dispatch
+    --Now look if we need to Start or Resume
+   mov     _TcbTaskConfig,r9
+   mov     sizeof(TcbConfigType),r10
+   mul     r8,r10,r11                    --r10 = sizeof(TcbConfigType)[r10] * ActiveTaskIndex[r8]
+   add     r9,r10                       --r10 = &(_TcbTaskConfig)[r9] + [r11]  :: &_TcbTaskConfig[ActiveTaskIndex] is retrived
+   mov     r10,r12                      -- store &_TcbTaskConfig[ActiveTaskIndex] in r12
+   add     OffsetOf(TcbConfigType,TaskCategory),r10      --&(TcbTaskConfig[ActiveTaskIndex].TaskCategory) is retrived
+   ld.bu 0[r10],r10
+    -- cmp     TASK_PREEMPTIVE,r10
+    -- be      osTaskCatContinue
+    mov     r6,r9
+    add     OffsetOf(OsCtrlParamType,LockDispatcher),r9          -- r9 = &OsCtrlParamType.ActiveTaskIndex
+
+    --r10 - TaskCategory
+    --r9  - &LockDispatcher
+    --TASK_PREEMPTIVE=1
+    --TASK_NONPREEMPTIVE=0
+    mov     1,r6
+    --if current task is preemptive, unlock the dispatcher
+    xor     r10,r6                          --r6=r6 ^ r10
+    --store back r6 to LockDispatcher
+    st.b    r6,0[r9]    
+
+    mov     _TaskParam,r9
+    mov     sizeof(TaskParamType),r10 
+    mul     r8,r10,r11                      -- r11(higher 32bits) r10(lower 32bits) = r8*r10
+                                      -- r10 = sizeof(_TaskParam)[r7] * ActiveTaskIndex[r1]
+    add     r9,r10                       --r8 = &(_TaskParam)[r6] + [r8]  :: &_TaskParam[ActiveTaskIndex] is retrived
+    mov     r10,r9                       -- to store &_TaskParam[ActiveTaskIndex] in r9
+
+    pushsp  r10-r10
+    jarl    _mOS_GetTaskParam_Task, lp
+	mov     r10,r6
+    popsp   r10-r10
+    add r6,r10
+
+--vasu To check   add     OffsetOf(TaskParamType,State),r10
+    ld.bu   0[r10],r11
+    cmp     PRE_READY,r11
+    mov     RUNNING,r11
+    st.b    r11,0[r10]
+    be      osPrvStartTask
+
+osPrvResumeTask:
+    --The TaskState should be READY
+    --Implicit continuation to Resume the task
+    --Change state to RUNNING
+    --mov     r3,#RUNNING
+    --str     r3,[r4,OffsetOf(TaskParamType,State)]
+    
+    --****** Restore Context ******
+    mov     r9,r11                       -- to store &_TaskParam[ActiveTaskIndex] in r11
+
+    pushsp  r10-r10
+    jarl    _mOS_GetTaskParam_Stackaddress, lp
+	add     r10,r11
+    popsp   r10-r10
+
+--vasu    add     OffsetOf(TaskParamType,StackAddress),r11
+    ld.w    0[r11],r3                    --load the task stack pointer to r3
+
+    -- restore task context from task stack
+    .if osdFPUSupport == 1
+
+    .endif
+    -- task context on Task stack: (lowest) ... R0-R9, R11, R12, LRusr, R10, PCusr, CPSRusr, ... task stack ... (highest address)
+    popsp   r6-r9                   -- restore r6 ... r9 from stack 
+    ldsr    r6, EIPC                 
+    ldsr    r7, EIPSW                
+    ldsr    r8, CTPC                 
+    ldsr    r9, CTPSW                
+    popsp   r4-r31                    -- restore r4 ... r31 from stack
+    popsp   r6-r6                     -- pushed by dispatcher
+    popsp   r1-r2                     -- restore r1 and r2 from stack
+
+	   pushsp r4-r31
+	   pushsp r1-r2
+	   jarl    _osTaskResumeHook, lp
+	   popsp r1-r2
+	   popsp r4-r31
+
+    eiret                             -- return from exception 
+    
+osPrvStartTask:
+    --state of task is updated as RUNNING
+    --cps     #osUserMode
+   mov     _osMissingTerminateError,r31
+   mov     r9,r11                       -- to store &_TaskParam[ActiveTaskIndex] in r11
+
+    pushsp  r10-r10
+    jarl    _mOS_GetTaskParam_Stackaddress, lp
+	add     r10,r11
+    popsp   r10-r10
+
+--vasu   add     OffsetOf(TaskParamType,StackAddress),r11
+   ld.w    0[r11],r3                    --load the task stack pointer to r3
+   mov     r12,r11                       -- to store &_TaskParam[ActiveTaskIndex] in r11
+   add     OffsetOf(TcbConfigType,TaskStartAddress),r11
+   ld.w    0[r11],r10                    --load the task stack pointer to r3
+
+    --we do not need a legal comeback to this place
+    --leave the LR as corrupted
+	   pushsp r4-r31
+	   pushsp r1-r2
+	   jarl    _osTaskStartHook, lp
+	   popsp r1-r2
+	   popsp r4-r31
+    ldsr    r10,EIPC
+    stsr    EIPSW, r8                        -- r8 = EIPSW
+    mov     0xBFFFFF5F, r7                   -- r7 = 0xBFFFFF5F -> prepare mask for supervisor mode with global EI and FE interrupts enabled
+    and     r7, r8                           -- r8 = r7 & r8 
+    ldsr    r8, EIPSW                        -- EIPSW = r8
+
+    eiret
+
+.endf osPrvDispatcher
+
+
+
+
+
+
+osPrvIdleTask:
+
+    mov     _OsSYSStack,r6
+    add     OffsetOf(OsStackType,startAddr),r6          -- r6 = &OsCtrlParamType.LockDispatcher
+    ld.w    0[r6],r3                    --load the task stack pointer to r3
+
+    mov     _OsCtrlParam,r6
+    add     OffsetOf(OsCtrlParamType,LockDispatcher),r6          -- r6 = &OsCtrlParamType.LockDispatcher
+    st.b    r0,0[r6]
+    
+    mov     _osIdleLoop,r10
+    ldsr    r10,EIPC
+    
+    stsr    EIPSW, r8                        -- r8 = EIPSW
+    mov     0xBFFFFF5F, r7                   -- r7 = 0xBFFFFF5F -> prepare mask for supervisor mode with global EI and FE interrupts enabled
+    and     r7, r8                           -- r8 = r7 & r8 
+    ldsr    r8, EIPSW                        -- EIPSW = r8
+   
+    eiret
+
+.globl _osIdleLoop
+_osIdleLoop:
+    #ifdef RTM_ENABLED
+        jarl     Rtm_CpuLoadMeasurementFunction,lp
+    #endif
+    br       _osIdleLoop
+
+.endf osPrvIdleTask
+
+osPrvAsmPostTaskHook:
+    --For debug and measurement support
+    mov r31,r3
+

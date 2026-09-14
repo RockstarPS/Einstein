@@ -1,0 +1,81 @@
+root@am62pxx-7xxd-b@18:49:/usr/bin/wdg_test_FT# ./testcase41_partof_dependency.sh
+------------------------------------------------------------------
+----- Test Case 41 - PartOf dependency handling -------------------
+
+Expected behavior:
+    test_19_4.service has PartOf=test_19_1.service
+    Stopping test_19_1.service also stops test_19_4.service
+    test_19_4.service does not restart during dependency-driven stop
+------------------------------------------------------------------
+-----------------------------------------------
+--- Preparing services ------------------------
+-----------------------------------------------
+-----------------------------------------------
+--- Verifying PartOf configuration ------------
+-----------------------------------------------
+[*] test_19_4.service PartOf=test_19_1.service
+[+] test_19_4.service has PartOf dependency on test_19_1.service
+-----------------------------------------------
+--- PartOf stop propagation -------------------
+-----------------------------------------------
+[>] Starting test_19_1.service ...
+[+] test_19_1.service started
+[>] Starting test_19_4.service ...
+[+] test_19_4.service started
+[*] test_19_1.service ActiveState=active
+[+] test_19_1.service is active
+[*] test_19_4.service ActiveState=active
+[+] test_19_4.service is active
+[>] Stopping parent service test_19_1.service ...
+[*] test_19_1.service ActiveState=inactive
+[+] test_19_1.service is inactive
+[*] test_19_4.service ActiveState=inactive
+[+] test_19_4.service is inactive
+[*] test_19_4.service NRestarts before=0 after=0
+[+] test_19_4.service did not restart
+-----------------------------------------------
+--- Service status ----------------------------
+-----------------------------------------------
+* test_19_4.service - Test application 19_4
+     Loaded: loaded (/usr/lib/systemd/system/test_19_4.service; static)
+     Active: inactive (dead)
+
+May 29 18:49:13 am62pxx-7xxd-b systemd[1]: Started Test application 19_4.
+May 29 18:49:13 am62pxx-7xxd-b test_05[702]: Start - Test Case: 19, sleep time 10
+May 29 18:49:13 am62pxx-7xxd-b test_05[702]: Test Case 19: calling connect()
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopping Test application 19_4...
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_19_4.service: Deactivated successfully.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopped Test application 19_4.
+* test_19_1.service - Test application 19_1
+     Loaded: loaded (/usr/lib/systemd/system/test_19_1.service; static)
+     Active: inactive (dead)
+
+May 29 18:49:12 am62pxx-7xxd-b systemd[1]: Started Test application 19_1.
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: Start - Test Case: 19
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: SIG MIN: 34
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: SIG MAX: 64
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopping Test application 19_1...
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_19_1.service: Deactivated successfully.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopped Test application 19_1.
+-----------------------------------------------
+--- Journal logs ------------------------------
+-----------------------------------------------
+[*] Logs for test_19_4.service
+May 29 18:49:13 am62pxx-7xxd-b systemd[1]: Started Test application 19_4.
+May 29 18:49:13 am62pxx-7xxd-b test_05[702]: Start - Test Case: 19, sleep time 10
+May 29 18:49:13 am62pxx-7xxd-b test_05[702]: Test Case 19: calling connect()
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopping Test application 19_4...
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_19_4.service: Deactivated successfully.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopped Test application 19_4.
+[*] Logs for test_19_1.service
+May 29 18:49:12 am62pxx-7xxd-b systemd[1]: Started Test application 19_1.
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: Start - Test Case: 19
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: SIG MIN: 34
+May 29 18:49:12 am62pxx-7xxd-b test_01[696]: SIG MAX: 64
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopping Test application 19_1...
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: test_19_1.service: Deactivated successfully.
+May 29 18:49:14 am62pxx-7xxd-b systemd[1]: Stopped Test application 19_1.
+-----------------------------------------------
+--- Cleanup -----------------------------------
+-----------------------------------------------
+[PASS] Test Case 41 PartOf dependency handling passed

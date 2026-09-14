@@ -1,0 +1,46 @@
+; Define the start address and size of the shared memory
+PRIVATE &SHARED_MEMORY_START
+PRIVATE &SHARED_MEMORY_SIZE
+&SHARED_MEMORY_START=0x08031E00 ; Replace with the actual start address
+&SHARED_MEMORY_SIZE=0x30        ; Size in bytes
+
+; Open the test file
+OPEN #1 testfile.csv /Create
+; Print header (CSV formatted)
+WRITE #1 "Address,Time(ms),Signature,Text"
+
+; Initialize loop variables
+PRIVATE &i
+PRIVATE &address
+PRIVATE &time
+PRIVATE &signature
+&i=0
+
+; Start the while loop
+WHILE (&i<&SHARED_MEMORY_SIZE)
+(
+    ; Calculate the current address
+    &address=(&SHARED_MEMORY_START+&i)
+
+    ; Read 16 bytes from the current address
+    &data0=CONVert.HEXTOINT(Data.Byte(EAHB:&address))
+    &data1=CONVert.HEXTOINT(Data.Byte(EAHB:(&address+0x01)))
+    &data2=CONVert.HEXTOINT(Data.Byte(EAHB:(&address+0x02)))
+    &data3=CONVert.HEXTOINT(Data.Byte(EAHB:(&address+0x03)))
+    &data4=CONVert.HEXTOINT(Data.Byte(EAHB:(&address+0x04)))
+    &data5=CONVert.HEXTOINT(Data.Byte(EAHB:(&address+0x05)))
+
+    ; Combine bytes for different components
+    &time=((&data3<<24)+(&data2<<16)+(&data1<<8)+(&data0))
+    &signature=((&data5<<8)+(&data4))
+
+    ; Print the formatted output as CSV
+    WRITE #1 "&address,&time,&signature,"
+    Data.WRITESTRING #1 (&address+0x06)--(&address+0x0F)
+
+    ; Increment the counter by 16 (0x10)
+    &i=&i+0x10
+)
+
+; Close the test file
+CLOSE #1

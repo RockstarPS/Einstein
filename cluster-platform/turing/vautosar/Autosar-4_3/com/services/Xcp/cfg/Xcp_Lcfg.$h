@@ -1,0 +1,130 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file Xcp_Lcfg.h
+*    @ingroup XcpConfiguration
+*    @brief This is Xcp link time configuration header file. It contains definitions of link time
+*    configuration parameters for the Xcp module.
+*    @defgroup XcpConfiguration
+*    @brief This contains the link time configurations for the Xcp module.
+********************************************************************************************************************/
+#ifndef XCP_LCFG_H
+#define XCP_LCFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "Xcp_Cfg.h"
+/********************************************************************************************************************
+* #! Xcp types                                                                                                      *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/*! @brief Defines the type for Xcp channel configuration*/
+typedef struct 
+{
+    /* !@brief Defines the max size for unlock key */
+    uint8 UnlockKeySizeMax;
+    /* !@brief Defines the max size for upload  */
+    uint8 UploadSizeMax;
+    /* !@brief Defines the max size for download  */
+    uint8 DownloadSizeMax;
+    /* !@brief Defines the network channel id mapped for this xcp channel  */
+    NetworkHandleType NetworkChannelId;
+}Xcp_ChannelConfigType;
+
+/*! @brief Defines the type for the transport layer service api */
+typedef P2FUNC(uint8,XCP_CODE,Xcp_TlServiceFunctPtrType)(uint8 Xcp_Channel, P2CONST(uint8, AUTOMATIC, XCP_APPL_DATA) pCmd);
+/*! @brief Defines the type for the transport layer send api */
+typedef P2FUNC(void,XCP_CODE,Xcp_TlSendFunctPtrType)(uint8 Xcp_Channel, uint16 Len, P2CONST(uint8, AUTOMATIC, XCP_APPL_DATA) msg);
+/*! @brief Defines the type for the transport layer send flush api */
+typedef P2FUNC(void,XCP_CODE,Xcp_TlSendFlushFunctPtrType)(uint8 Xcp_Channel,uint8 FlushType);
+/*! @brief Defines the type for transport layer configuration */
+typedef struct 
+{
+    /*! @brief Defines the transport layer service function */
+    Xcp_TlServiceFunctPtrType   TlServiceFunctPtr;
+    /*! @brief Defines the transport layer send function */
+    Xcp_TlSendFunctPtrType      TlSendFunctPtr;
+    /*! @brief Defines the transport layer send flush function */
+    Xcp_TlSendFlushFunctPtrType TlSendFlushFunctPtrType;
+}Xcp_TlConfigType;
+
+/*! @brief Defines the type for the Event ctrl status type */
+typedef struct 
+{
+    /*! @brief Defines the event direction */
+    uint8 EventDirection;
+    /*! @brief Defines the event number for the DAQ */
+    uint8 EventNumOfDaq;
+    /*! @brief Defines the event time cycle */
+    uint8 EventTimeCycle;
+    /*! @brief Defines the event time unit */
+    uint8 EventTimeUnit;
+    /*! @brief Defines the event time priority */
+    uint8 EventPriority;
+    /*! @brief Defines the event name length */
+    uint8 EventNameLength;
+    /*! @brief Defines the event name(address ) */
+    Xcp_AddressPtrType EventName;
+}Xcp_EventCtrlStatusType;
+
+/*! @brief Defines the type for the Daq Queue */
+typedef struct 
+{
+    boolean OverloadFlag; /*! @brief Defines the overload flag status of the DaqQueue */
+    uint32 ReadIdx; /*! @brief Defines the read idx of the DaqQueue */
+    uint32 WriteIdx; /*! @brief Defines the write idx of the DaqQueue */
+    uint32 EntrySize; /*! @brief Defines the entry size of the DaqQueue */
+    uint32 QueueSizeLimit; /*! @brief Defines the queue size limit of the DaqQueue */
+    uint32 QueueSize; /*! @brief Defines the queue size of the DaqQueue */
+}Xcp_DaqQueueType;
+
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+/*! @brief Defines the control state of Xcp.This is used to enable/disable the functionality of Xcp */
+extern VAR(Xcp_ControlStateType,XCP_VAR_INIT) Xcp_ControlState;
+/*! @brief Defines the ctrl status for the xcp channel */
+extern VAR(Xcp_ChannelCtrlStatusType,XCP_VAR_NOINIT) Xcp_ChannelCtrlStatus[XCP_NUM_OF_CHANNELS];
+/*! @brief Defines the STIM mode supported for the XCP */
+extern VAR(Xcp_StimModeType,XCP_VAR_NOINIT) Xcp_StimMode;
+/*! @brief Defines the transmission mode for the Xcp channels */
+extern VAR(Xcp_TransmissionModeType,XCP_VAR_NOINIT)  Xcp_TransmissionMode[XCP_NUM_OF_CHANNELS];
+/*! @brief Defines the Xcp event control status */
+extern VAR(Xcp_EventCtrlStatusType,XCP_VAR_NOINIT) Xcp_EventCtrlStatus[XCP_MAX_EVENT];
+/* @brief Defines the Xcp STIM buffer */
+extern VAR(Xcp_DtoBufferType,XCP_VAR_NOINIT) Xcp_StimBuffer[XCP_NUM_OF_CHANNELS][XCP_MAX_ODT_STIM];
+/* @brief Defines the Xcp DAQ queue type */
+extern VAR(Xcp_DaqQueueType,XCP_VAR_NOINIT)  Xcp_DaqSendQueue[XCP_NUM_OF_CHANNELS];
+/* @brief Defines the Xcp DAQ queue reference */
+extern VAR(uint8,XCP_VAR_NOINIT) Xcp_DaqSendQueueRef[XCP_DAQ_SEND_QUEUE_SIZE];
+/********************************************************************************************************************
+* #! Xcp const config  data                                                                                     *
+********************************************************************************************************************/
+/*! @brief Defines the Xcp channel configuration  */ 
+extern CONST(Xcp_ChannelConfigType,XCP_CONST) Xcp_ChannelConfig[XCP_NUM_OF_CHANNELS];
+/*! @brief Defines the transport layer configuration for the each TL */
+extern CONST(Xcp_TlConfigType,XCP_CONST) Xcp_TlConfig[XCP_NUM_OF_TL_SUPPORTED];
+/*! @brief Defines the program sector configuration for each sector . */
+extern CONST(Xcp_PgmSectorConfigType,XCP_CONST) Xcp_PgmSectorConfig[XCP_MAX_PGM_SECTOR];
+/*! @brief Defines the program sector address for each sector.*/
+extern CONST(uint32,XCP_CONST) Xcp_PgmSectorAddress[XCP_MAX_PGM_SECTOR];
+/*! @brief Defines the length of program sector address for each sector. */
+extern CONST(uint8,XCP_CONST) Xcp_PgmSectorNameLength[XCP_MAX_PGM_SECTOR];
+/*! @brief Defines the a2l file name */
+extern CONST(char, XCP_CONST) Xc_StationId[];
+#endif /* XCP_LCFG_H */
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

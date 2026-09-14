@@ -1,0 +1,55 @@
+//
+// VISTEON CORPORATION CONFIDENTIAL
+// ________________________________
+//
+// [2017] Visteon Corporation
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+//---------------------------------------------------------------------------------------------------------------------
+
+
+#ifndef WDGPROXY_CFG_H
+#define WDGPROXY_CFG_H
+
+#include "wdg_proxy_types.h"
+#include "dk_runtime_messages.h"
+
+#define WDG_VMF_GID                       ({{WDG_VMF_GID}})
+#define WDG_VMF_HEALTHY_EID               ({{WDG_VMF_HEALTHY_EID}})
+#define WDG_VMF_FATAL_ERROR_EID           ({{WDG_VMF_FATAL_ERROR_EID}})
+#define WDG_VMF_HEALTH_EVENT_RECORD_EID   ({{WDG_VMF_HEALTH_EVENT_RECORD_EID}})
+
+#define WDG_COMP_ID                       ({{WDG_COMP_ID}})
+#define WDG_DOMAIN_ID                     ({{WDG_DOMAIN_ID}})
+#define WDG_VMF_MSG_PERIODICITY           ({{WDG_VMF_MSG_PERIODICITY}})
+
+#define PROCESS_MONITOR_LIST_SIZE       ({{PROCESS_MONITOR_LIST|length}}U)
+
+#define PROCESS_MONITOR_LIST    \
+ 
+{%- set Entity_Name_length = PROCESS_MONITOR_LIST | max_string_property_length("Entity_Name")+7 -%}
+{%- set HB_Enabled_length = PROCESS_MONITOR_LIST | max_string_property_length("HB_Enabled")+4 -%}
+{%- set HB_Low_Miss_Action_length = PROCESS_MONITOR_LIST | max_string_property_length("HB_Low_Miss_Action")+4 -%}
+{%- set HB_High_Miss_Action_length = PROCESS_MONITOR_LIST | max_string_property_length("HB_High_Miss_Action")+4 -%}
+{%- set Death_Action_length = PROCESS_MONITOR_LIST | max_string_property_length("Death_Action")+4 -%}
+{%- set Restart_Count_length = PROCESS_MONITOR_LIST | max_string_property_length("Restart_Count") -%}
+{%- set fmt = '{:<'+Entity_Name_length|string+'}{:<'+HB_Enabled_length|string+'}{:<'+HB_Low_Miss_Action_length|string+'}{:<'+HB_High_Miss_Action_length|string+'}{:<'+Death_Action_length|string+'}{:<'+Restart_Count_length|string+'}' -%}
+{%- for field in PROCESS_MONITOR_LIST -%}
+    {% if loop.last %}
+    {{fmt.format('{"'+field.Entity_Name|string+'",',field.HB_Enabled|string+',',field.HB_Low_Miss_Action|string+',',field.HB_High_Miss_Action|string+',',field.Death_Action|string+',',field.Restart_Count|string+'},')}}{% elif loop.first %}
+  {{"/*"+fmt.format('Entity Name','HB Enabled','HB Low Miss Action','HB High Miss Action','Death Action','Restart Count')+"*/ \\"}}
+    {{fmt.format('{"'+field.Entity_Name|string+'",',field.HB_Enabled|string+',',field.HB_Low_Miss_Action|string+',',field.HB_High_Miss_Action|string+',',field.Death_Action|string+',',field.Restart_Count|string+'},')}} \{% else %}
+    {{fmt.format('{"'+field.Entity_Name|string+'",',field.HB_Enabled|string+',',field.HB_Low_Miss_Action|string+',',field.HB_High_Miss_Action|string+',',field.Death_Action|string+',',field.Restart_Count|string+'},')}} \
+    {%- endif -%}
+{% endfor %}
+
+#endif /* WDGPROXY_CFG_H */

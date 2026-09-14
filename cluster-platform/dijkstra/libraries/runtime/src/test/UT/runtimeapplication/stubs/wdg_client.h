@@ -1,0 +1,5 @@
+#ifndef _WATCHDOGCLIENT_H_
+#define _WATCHDOGCLIENT_H_
+
+
+#endif /* _WATCHDOGCLIENT_H_ */

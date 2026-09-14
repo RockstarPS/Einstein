@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dc:DcProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.visteon.com/vmt/dc/types" xmlns:dc="http://www.visteon.com/vmt/dc" e_id="30338" Name="RUNTIME_TEST_imported" Description="HONDA BEV Sample">
+  <Types xsi:type="DcBaseType" e_id="30339" Name="uint32"/>
+  <Types xsi:type="DcBaseType" e_id="30340" Name="bool"/>
+  <Types xsi:type="DcBaseType" e_id="30341" Name="uint8"/>
+  <Types xsi:type="DcBaseType" e_id="30342" Name="uint16"/>
+  <Types xsi:type="DcBaseType" e_id="30343" Name="float64"/>
+  <Types xsi:type="DcTypedef" e_id="30344" Name="bool_t" Type="30341"/>
+  <MessageTypes e_id="30345" Name="DkMsgTestMsg_t">
+    <Signals e_id="30346" Name="var1" Type="30339"/>
+    <Signals e_id="30347" Name="var2" Type="30339"/>
+  </MessageTypes>
+  <MessageTypes e_id="30348" Name="DkMsgTestTransmit_t">
+    <Signals e_id="30349" Name="var_uint8" Type="30341"/>
+    <Signals e_id="30350" Name="var_uint16" Type="30342"/>
+    <Signals e_id="30351" Name="var_bool" Type="30344"/>
+  </MessageTypes>
+  <MessageTypes e_id="30352" Name="DkMsgTestTransmitU32_t">
+    <Signals e_id="30353" Name="var_u32" Type="30339"/>
+  </MessageTypes>
+  <MessageTypes e_id="30354" Name="DkMsgTestTransmitF64_t">
+    <Signals e_id="30355" Name="var_f64" Type="30343"/>
+  </MessageTypes>
+  <MessageTypes e_id="30356" Name="DkMsgTestTransmitU16_t">
+    <Signals e_id="30357" Name="var_u16" Type="30342"/>
+  </MessageTypes>
+  <MessageTypes e_id="30358" Name="DkMsgTest2Rcv_t">
+    <Signals e_id="30359" Name="var_ru8" Type="30341"/>
+    <Signals e_id="30360" Name="var_ru16" Type="30342"/>
+  </MessageTypes>
+  <MessageTypes e_id="31497" Name="DkMsg1byte_t">
+    <Signals e_id="31498" Name="uint8_t" Type="30341"/>
+  </MessageTypes>
+  <MessageTypes e_id="31507" Name="DkMsgT4_1_t">
+    <Signals e_id="31508" Name="uint16_t" Type="30342"/>
+  </MessageTypes>
+  <MessageTypes e_id="31512" Name="DkMsgT4_2_t">
+    <Signals e_id="31517" Name="uint8t" Type="30341"/>
+  </MessageTypes>
+  <Messages e_id="30361" Name="DkMsgTestMsgReceive" Id="13826" Type="30345"/>
+  <Messages e_id="30362" Name="DkMsgTestTransmitF64" Id="13830" Type="30354"/>
+  <Messages e_id="30363" Name="DkMsgTestTransmitU16" Id="13832" Type="30356"/>
+  <Messages e_id="30364" Name="DkMsgTestApp2Receive" Id="13833" Type="30348"/>
+  <Messages e_id="30365" Name="DkMsgTestApp2Transmit" Id="13835" Type="30345"/>
+  <Messages e_id="30366" Name="DkMsgTestMsgTransmit" Id="13836" Type="30348"/>
+  <Messages e_id="30367" Name="DkMsgTestTransmitU32" Id="13837" Type="30352"/>
+  <Messages e_id="30368" Name="DkMsgTest2Receive" Id="13838" Type="30358"/>
+  <Messages e_id="30369" Name="DkMsgTestApp2Rcv" Id="13834" Type="30356"/>
+  <Messages e_id="31499" Name="DkMsgT4Con1Comp1P" Id="13839" Type="31497"/>
+  <Messages e_id="31501" Name="DkMsgT4Con1Comp2P" Id="13840" Type="31497"/>
+  <Messages e_id="31502" Name="DkMsgT4Con2Comp1P" Id="13841" Type="31497"/>
+  <Messages e_id="31503" Name="DkMsgT4Con2Comp2P" Id="13842" Type="31497"/>
+  <Messages e_id="31509" Name="DkMsgT4Con1comp1Tx" Id="13843" Type="31497"/>
+  <Messages e_id="31514" Name="DkMsgT4Con1Comp2Tx" Id="13844" Type="31497"/>
+  <Messages e_id="31518" Name="DkMsgT4Con1Comp1Rx" Id="13845" Type="31497"/>
+  <Messages e_id="31519" Name="DkMsgT4Con2Comp2Rx" Id="13846" Type="31497"/>
+  <Components e_id="30370" Name="test_app1_comp1" RxMessages="30361" TxMessages="30362 30366 30367 30368"/>
+  <Components e_id="30371" Name="test_app1_comp2" RxMessages="30368" TxMessages="30364"/>
+  <Components e_id="30372" Name="test_app2_comp1" RxMessages="30364" TxMessages="30365"/>
+  <Components e_id="30373" Name="test_app3_com1"/>
+  <Components e_id="31489" Name="T11" RxMessages="31518" TxMessages="31499 31509"/>
+  <Components e_id="31490" Name="T12" RxMessages="31509" TxMessages="31501 31514"/>
+  <Components e_id="31491" Name="T21" RxMessages="31514" TxMessages="31502"/>
+  <Components e_id="31492" Name="T22" RxMessages="31519" TxMessages="31503"/>
+  <Configurations e_id="30374" Name="A35_M4">
+    <Systems e_id="30375" Name="VIP" Description="Vehicle Processing" Kind="AUTOSAR Classic">
+      <GwProxies e_id="30377" Name="VIP::UCL_CDD"/>
+    </Systems>
+    <Systems e_id="30378" Name="GIP" Description="Graphical Processing" Id="1">
+      <GwProxies e_id="30381" Name="GIP::UCL_CDD"/>
+      <CmpDepl e_id="30382" Name="GIP::test_app1_comp1" Component="30370">
+        <RxMessages e_id="30383" Message="30361"/>
+        <TxMessages e_id="30384" Message="30362"/>
+        <TxMessages e_id="30385" Message="30366"/>
+        <TxMessages e_id="30386" Message="30367"/>
+        <TxMessages e_id="30387" Message="30368"/>
+      </CmpDepl>
+      <CmpDepl e_id="30388" Name="GIP::test_app1_comp2" Component="30371">
+        <RxMessages e_id="30389" Message="30368"/>
+        <TxMessages e_id="30390" Message="30364"/>
+      </CmpDepl>
+      <CmpDepl e_id="30391" Name="GIP::test_app2_comp1" Component="30372">
+        <RxMessages e_id="30392" Message="30364"/>
+        <TxMessages e_id="30393" Message="30365"/>
+      </CmpDepl>
+      <CmpDepl e_id="30394" Name="GIP::test_app3_com1" Component="30373"/>
+      <CmpDepl e_id="31493" Name="GIP::T11" Component="31489">
+        <RxMessages e_id="31520" Message="31518"/>
+        <TxMessages e_id="31500" Message="31499"/>
+        <TxMessages e_id="31510" Message="31509"/>
+      </CmpDepl>
+      <CmpDepl e_id="31494" Name="GIP::T12" Component="31490">
+        <RxMessages e_id="31511" Message="31509"/>
+        <TxMessages e_id="31504" Message="31501"/>
+        <TxMessages e_id="31515" Message="31514"/>
+      </CmpDepl>
+      <CmpDepl e_id="31495" Name="GIP::T21" Component="31491">
+        <RxMessages e_id="31516" Message="31514"/>
+        <TxMessages e_id="31505" Message="31502"/>
+      </CmpDepl>
+      <CmpDepl e_id="31496" Name="GIP::T22" Component="31492">
+        <RxMessages e_id="31521" Message="31519"/>
+        <TxMessages e_id="31506" Message="31503"/>
+      </CmpDepl>
+    </Systems>
+    <Gateways e_id="30395" Name="UCL_CDD" System1="30375" System2="30378" ProxySys2="30381" ProxySys1="30377"/>
+  </Configurations>
+</dc:DcProject>

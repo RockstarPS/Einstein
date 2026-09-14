@@ -1,0 +1,271 @@
+U-Boot SPL 2023.04-gb0d717b732 (Dec 06 2023 - 15:11:45 +0000)
+SYSFW ABI: 3.1 (firmware rev 0x0009 '9.1.8--v09.01.08 (Kool Koala)')
+SPL initial stack usage: 17040 bytes
+Trying to boot from DFU
+########################################################DOWNLOAD ... OK
+Ctrl+C to exit ...
+Authentication passed
+Authentication passed
+Authentication passed
+init_env from device 10 not supported!
+Authentication passed
+Authentication passed
+Starting ATF on ARM64 core...
+
+NOTICE:  BL31: v2.9(release):v2.9.0-614-gd7a7135d32-dirty
+NOTICE:  BL31: Built : 09:34:15, Aug 24 2023
+
+U-Boot SPL 2023.04-gb0d717b732 (Dec 06 2023 - 15:11:45 +0000)
+SYSFW ABI: 3.1 (firmware rev 0x0009 '9.1.8--v09.01.08 (Kool Koala)')
+Trying to boot from DFU
+######DOWNLOAD ... OK
+Ctrl+C to exit ...
+Authentication passed
+Authentication passed
+
+
+U-Boot 2023.04-dirty (Apr 23 2024 - 18:09:30 +0530)
+
+SoC:   AM62PX SR1.0 HS-FS
+Model: Texas Instruments AM62P5 SK
+DRAM:  no bloblist found!2 GiB (effective 4 GiB)
+Core:  69 devices, 29 uclasses, devicetree: separate
+MMC:   mmc@fa10000: 0
+Loading Environment from nowhere... OK
+In:    serial
+Out:   serial
+Err:   serial
+Net:   Could not get PHY for ethernet@8000000port@1: addr 0
+am65_cpsw_nuss_port ethernet@8000000port@1: phy_connect() failed
+Could not get PHY for ethernet@8000000port@1: addr 1
+am65_cpsw_nuss_port ethernet@8000000port@2: phy_connect() failed
+No ethernet found.
+
+Hit any key to stop autoboot:  0
+=>
+=> setenv dfu_alt_info "qnx-ifs ram 0x80080000 0x5000000"
+=> dfu 0 ram 0 list
+DFU alt settings list:
+dev: RAM alt: 0 name: qnx-ifs layout: RAM_ADDR
+=> dfu 0 ram 0
+##############################################################################################################################################################################################################DOWNLOAD ... OK
+Ctrl+C to exit ...
+=> go 0x80080000
+## Starting application at 0x80080000 ...
+MMU: 16-bit ASID 40-bit PA TCR_EL1=b5183519
+ARM GIC-500 r1p1, arch v3.0 detected
+gic_v3_lpi_add_entry for vectors 8192 -> 8447, Ok
+gic_v3_lpi_add_entry for vectors 8448 -> 65535, Ok
+No SPI intrinfo. Add default entry for 32 -> 287 vectors, Ok
+LPI config table #1 @ 000000008000f000, callout vaddr: ffffff8040291000
+aarch64_cpuspeed: core speed 1200
+cpu0: MPIDR=80000000
+cpu0: MIDR=410fd034 Cortex-A53 r0p4
+cpu0: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu0: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu0: L1 Icache 32K linesz=64 set/way=256/2
+cpu0: L1 Dcache 32K linesz=64 set/way=128/4
+cpu0: L2 Unified 512K linesz=64 set/way=512/16
+Enabling ITS 0
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 0
+update CWRITER to 0x00000060
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 0000000001880000 for CPU0
+init_usb_host: USB0
+SYSFW ABI: 3.1 (firmware rev 9 '9.1.8--v09.01.08 (Kool Koala)'
+no DSS0 power: trying to turn it on
+no DSS_DSI0 power: trying to turn it on
+no DSS1 power: trying to turn it on
+init_oldi: Start to set pin-mux for OLDI0
+init_oldi: reg=0x000f40d4 val=0x00010007
+init_oldi: reg=0x000f4230 val=0x00010007
+init_oldi: reg=0x000f419c val=0x00010007
+init_oldi: Start to set pin-mux for OLDI0 completed
+no TISCI_DEV_OLDI0_VD power: trying to turn it on
+no TISCI_DEV_OLDI1_VD power: trying to turn it on
+Loading IFS...decompressing...done
+aarch64_cpuspeed: core speed 1200
+cpu1: MPIDR=80000001
+cpu1: MIDR=410fd034 Cortex-A53 r0p4
+cpu1: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu1: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu1: L1 Icache 32K linesz=64 set/way=256/2
+cpu1: L1 Dcache 32K linesz=64 set/way=128/4
+cpu1: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 1
+update CWRITER to 0x000000c0
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018a0000 for CPU1
+aarch64_cpuspeed: core speed 1200
+cpu2: MPIDR=80000002
+cpu2: MIDR=410fd034 Cortex-A53 r0p4
+cpu2: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu2: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu2: L1 Icache 32K linesz=64 set/way=256/2
+cpu2: L1 Dcache 32K linesz=64 set/way=128/4
+cpu2: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 2
+update CWRITER to 0x00000120
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018c0000 for CPU2
+aarch64_cpuspeed: core speed 1200
+cpu3: MPIDR=80000003
+cpu3: MIDR=410fd034 Cortex-A53 r0p4
+cpu3: CWG=4 ERG=4 Dminline=4 Iminline=4 VIPT
+cpu3: CLIDR=a200023 LoUU=1 LoC=2 LoUIS=1
+cpu3: L1 Icache 32K linesz=64 set/way=256/2
+cpu3: L1 Dcache 32K linesz=64 set/way=128/4
+cpu3: L2 Unified 512K linesz=64 set/way=512/16
+ITS 0 already Enabled
+ITS queue at 0000000080020000, num slots: 256
+Issue MAPC/SYNC/INVALL commands for ICID 3
+update CWRITER to 0x00000180
+Waiting for all commands to be processed ... Done in 1 tries
+Enable LPIs in GICR_CTLR @ 00000000018e0000 for CPU3
+
+System page at phys:0000000080023000 user:ffffff80402b5000 kern:ffffff80402b2000
+Starting next program at vffffff806008b4b0
+All ClockCycles offsets within tolerance
+
+Welcome to QNX Neutrino 7.1.0 on TI_AM62P_SK_EVM_Board !
+
+Starting I2C driver ...
+Configuring Resmgr DIO driver for TI AM62P
+[DLT] Cannot open file for logging! Using CommandLine
+[DLT] Registering Context ResMgrDio , ResMgr_DIO Component
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_RM.c:136 :main: Starting DIO Resmgr dio_rm
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:127 :dio_hw_init: Mapped address of banks for DIR 1 is 318bb038
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:138 :dio_hw_init: Mapped address of banks for DATA 1 for OUT is 318bc03c and for IN is 318bd048
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:164 :dio_hw_init: Mapped address of banks for DIR 2 is 318be060
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:175 :dio_hw_init: Mapped address of banks for DATA 2 for OUT is 318bf064 and for IN is 318c0070
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:90 :dio_hw_init: Mapped address of banks for DIR 3 is 318c1010
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:101 :dio_hw_init: Mapped address of banks for DATA 3 for OUT is 318c2014 and for IN is 318c3020
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:127 :dio_hw_init: Mapped address of banks for DIR 4 is 318c4038
+[ResMgrDio][ResMgrDio][Info] (20490|1) CDio_HwInit.c:138 :dio_hw_init: Mapped address of banks for DATA 4 for OUT is 318c503c and for IN is 318c6048
+start serial driver
+Starting MMC/SD memory card driver... eMMC
+Starting XHCI driver on USB3SS0 and USB3SS1
+Path=0 - am65x
+ target=0 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=1 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=2 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=3 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=4 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=5 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=6 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+ target=7 lun=0     Direct-Access(0) - SDMMC: G1M15L Rev: 1.0
+Partition already exists.
+Starting Screen Graphics...
+Starting shell ...
+#
+# pidin arg
+     pid Arguments
+       1 procnto-smp-instr -v
+       2 pipe
+   20483 slogger2
+   20484 dumper
+   20485 mqueue
+   20486 random -p -t
+   20487 i2c-omap35xx -p0x20000000 -i193 -d
+   20488 i2c-omap35xx -p0x20010000 -i194 -d
+   20489 i2c-omap35xx -p0x20020000 -i195 -d
+   20490 resmgr_dio -b0x00600000 -m0x00000000 -b0x00600000 -m0x00100741 -b0x00600000 -m0x000000FC -b0x00601000 -m0x000FBA00 -b0x00601000 -m0x000B2000
+   20491 devc-seromap -e -R -F 0x02800000,210
+   20492 devb-sdmmc-am65x qnx6 trim=enable cam cache,ra=128k:4096k,memory=/memory/below4G/ram/sysram,maxio=256,disk name=emmc blk maxio=1024,thread=14:3:12,naming=0#@ disk name=emmc sdmmc partitions=on,pwroff_notify=short sdio addr=0x0fa10000,irq=165,emmc,bs=sscfg=0x8000 disk name=emmc,naming=0#@
+   20493 io-usb-otg -d dwc3-xhci ioport=0x31000000,irq=220
+  151566 resmgr_display -p0 -t0 -llibdisplay.so
+  151567 screen -c /usr/lib/graphics/am62p/graphics-einstein4.conf
+  151568 ksh
+  151569 pidin arg
+#
+# cd dev/gpio
+#
+# ls
+export       gpio12       gpio21       gpio5        unexport
+#
+# echo 0 > export
+#
+# ls
+export       gpio12       gpio5
+gpio0        gpio21       unexport
+#
+# cat gpio0/direction
+in
+#
+# echo out > gpio
+gpio0/    gpio12/   gpio21/   gpio5/
+# echo out > gpio0/direction
+#
+# cat gpio0/direction
+out
+#
+# cat gpio0/value
+0
+#
+# echo 3 > gpio0/value
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_HwIf.c:235 :dio_write_channel: Write Failed : 0, bytes written : -1
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:933 :dio_io_write: l_ret_dio_write_chnl_S32 : -1, status : 1
+#
+# echo 1 > gpio0/value
+#
+# cat gpio0/value
+1
+#
+# dio_t
+ksh: dio_t: cannot execute - No such file or directory
+#
+# ifconfig
+ifconfig: getifaddrs: Address family not supported by protocol family
+#
+# ipconfig
+ksh: ipconfig: cannot execute - No such file or directory
+#
+# echo 45 > export
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:804 :dio_io_write: GPIO Pin 45 is invalid
+#
+# echo intppp > gpio0/direction
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:883 :dio_io_write: Failed in Strmcmp , status : 1
+#
+# echo in > gpio0/direction
+#
+# cat gpio0/value
+0
+#
+# resmgr_dio -b0x0060000 -m0x00000000
+[DLT] Cannot open file for logging! Using CommandLine
+[DLT] Registering Context ResMgrDio , ResMgr_DIO Component
+[ResMgrDio][ResMgrDio][Info] (225297|1) CDio_RM.c:136 :main: Starting DIO Resmgr dio_rm
+[ResMgrDio][ResMgrDio][Erro] (225297|1) CDio_RM.c:1335 :dio_options: Incorrect Options : Please re-check the options passed
+Usage: dio_rm [-b] base_address
+[-m]mask_address
+where:
+ b - base address of the dio_bank from 0-4
+ m - mask address of the dio bank from 0-4
+ U - set uid:gid
+#
+#
+#
+#
+# cd dev/gpio/
+# echo 0 > export
+#
+# cd gpio0/
+#
+# cat direction
+in
+#
+# echo dhdhgdhfgdhfgdhf > direction
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:896 :dio_io_write: Failed in Strmcmp , status : 1
+#
+# echo 8888 > value
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_HwIf.c:235 :dio_write_channel: Write Failed : 0, bytes written : -1
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:946 :dio_io_write: l_ret_dio_write_chnl_S32 : -1, status : 1
+#
+# echo 78 > export
+[ResMgrDio][ResMgrDio][Erro] (20490|1) CDio_RM.c:817 :dio_io_write: GPIO Pin 78 is invalid
+#

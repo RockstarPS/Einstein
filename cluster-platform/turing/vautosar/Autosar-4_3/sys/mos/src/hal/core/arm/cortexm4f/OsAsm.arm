@@ -1,0 +1,1054 @@
+;/*****************************************************************************
+;
+;                CONFIDENTIAL VISTEON CORPORATION                        
+;                                                                        
+;   This is an unpublished work of authorship, which contains trade      
+;   secrets, created in 2013. Visteon Corporation owns all rights to     
+;   this work and intends to maintain it in confidence to preserve       
+;   its trade secret status. Visteon Corporation reserves the right,     
+;   under the copyright laws of the United States or those of any        
+;   other country that may have jurisdiction, to protect this work       
+;   as an unpublished work, in the event of an inadvertent or            
+;   deliberate unauthorized publication. Visteon Corporation also        
+;   reserves its rights under all copyright laws to protect this         
+;   work as a published work, when appropriate. Those having access      
+;   to this work may not copy it, use it, modify it or disclose the      
+;   information contained in it without the written authorization        
+;   of Visteon Corporation.                                              
+;
+;
+;
+;
+;
+;   Project Name: vAutosar1.1
+;   File Name: OsAsm.arm;
+;
+;
+;   Description: Assembler functions for mOS ARM Cortex M4F (GHS compiler)
+;
+;
+;****************************************************************************/
+
+
+;-+--------------------------------------------------------------------------
+; File settings
+;----------------------------------------------------------------------------
+.section ".OsCode","ax"
+.thumb2
+
+
+;-+--------------------------------------------------------------------------
+; Includes
+;----------------------------------------------------------------------------
+.include "OsAsm.inc"
+.include "OsCoreDefine.inc"
+.inspect "OsInternal.h"
+.inspect "OsMain.h"
+.inspect "OsPrivate.h"
+
+;-+--------------------------------------------------------------------------
+; macros ;
+; ** temp solution as global define is not picked by GHS assembler
+;----------------------------------------------------------------------------
+.macro OS_CPU_HAL_ASM_SWITCH_STACK pObjRef, StackAddr
+    .if osdMPUProtection == 1
+        ;Switch Mpu setting for Active Task
+        ; Load MPU region number for stack into r1
+        ldr    r1, =osdMPUStackRegNum
+        ; Write region number to MPU_RNR
+        ldr    r2, =OS_INT_MPU_MPU_RNR               ; MPU_RNR
+        str    r1, [r2]
+        ; Disable the region first
+        ldr    r2, =OS_INT_MPU_MPU_RASR              ; MPU_RASR
+        mov    r1, #0x0                              ; Region disabled
+        str    r1, [r2]
+        ; Load StackStartAddress into R1
+        ldr    r1, [pObjRef, OffsetOf(OsObjConfigType,StackStartAddress)]
+        ; Write base address to MPU_RBAR
+        ldr    r2, =OS_INT_MPU_MPU_RBAR              ; MPU_RBAR
+        str    r1, [r2]
+        ; Load StackRegAttribute into R1
+        ldr    r1, [pObjRef, OffsetOf(OsObjConfigType,StackRegAttribute)]
+        ; Load StackRegnSizeAndEnable into R3
+        ldr    r2, [pObjRef, OffsetOf(OsObjConfigType,StackRegnSizeAndEnable)]
+        ; Combine attribute and size/enable
+        orr    r1, r1, r2
+        ; Write final RASR value
+        ldr    r2, =OS_INT_MPU_MPU_RASR              ; MPU_RASR
+        str    r1, [r2]
+    .endif
+    ;switch stack pointer
+    mov sp, StackAddr
+    dsb    ;data barrier sync
+    isb    ;instruction barrier sync
+.endm
+
+;-+--------------------------------------------------------------------------
+; Symbol export                                                             
+;----------------------------------------------------------------------------
+.export osStartOSasmArm
+.export osDispatchAsm
+.export osDispatchApi
+.export osSetBitsARMCoreSCTLR
+.export osClearBitsARMCoreSCTLR
+;.export osGetBitsARMCoreSCTLR
+.export osSetupExceptionStacks
+.export osEnableNMIandAborts
+.export osGetCPSR
+.export osGetCONTROL
+.export osSuspendInterruptsAsm
+.export osResumeInterruptsAsm
+.export osCat2ISREntryASM
+.export osEnableGlobalInterruptAsm
+.export osDisableGlobalInterruptAsm
+.export osSVCHandlerAsm
+.export osGetPRIMASK
+.export osGetBASEPRI
+.export osInitFpu
+.export osSetPrivilegeModeAsm
+.export osExitPrivilegeModeAsm
+.export HardFault_Handler
+.export MemManage_Handler
+.export BusFault_Handler
+.export UsageFault_Handler
+;-+--------------------------------------------------------------------------
+; Symbol import                                                             
+;----------------------------------------------------------------------------
+.import SysTick_Handler
+.import osStartOS
+.import osTimerInterrupt
+.import osIntSP
+.import IsrStackConfig
+.import osPrvLastLR
+.import osMissingTerminateError
+.import OsMemProt_MpuSwitch
+.import OsPrvSetTaskActiveParam
+.import OsPrvSetIsrActiveParam
+.import OsMemProt_ClearOSStateCntr
+.import OsCheckIntDisEnPair
+.import OsErr_InvalidSvcCallHook
+.import OsPrvGetDynApp
+.import OsPrvSetDynApp
+.import OsMemProt_MpuSwitchFromISR
+.import OsPrvGetCurrAppAccessLevel
+
+
+.import osTaskStartHook
+.import osTaskStopHook
+.import osTaskResumeHook
+.import osCheckTaskStackOverflow
+.import osCheckISRStackOverflow
+;-+--------------------------------------------------------------------------
+; osStartOSasmArm                                                             
+;---------------------------------------------------------------------------- 
+osStartOSasmArm::
+   ; ensure that the interupt vector table in not dead-stripped
+
+    ; Switch to system mode and set the system stack pointer
+    ; all other stack pointers are set it osInitialize()
+
+    bl      osDisableGlobalInterruptAsm
+    
+    ldr     r1,=OsSYSStack
+    ldr     sp,[r1,OffsetOf(OsStackType,startAddr)]
+    
+    ldr r0,[r1,OffsetOf(OsStackType,endAddr)]
+    mov r1,sp
+    ldr r2,=osdStackCheckPattern
+    
+osPrvFillLoop:
+    stmfd   r1!,{r2}
+    cmp     r1,r0
+    bne     osPrvFillLoop
+
+    ldr     r0,=osStartOS
+    bx      r0
+    ; this call never returns
+.endf osStartOSasmArm
+
+;-+--------------------------------------------------------------------------
+;  ARM Core SCTLR register
+;----------------------------------------------------------------------------
+; set some bits in the SCTLR register
+osSetBitsARMCoreSCTLR::
+   MOV        R1, #0                   ; R1 = 0
+   MRC        p15, 0, R1, c1, c0, 0    ; R1 = SCTLR
+   ORR        R1, R1, R0               ; R1 |= R0   (R0 is the passed parameter) 
+   MCR        p15, 0, R1, c1, c0, 0    ; SCTLR = R1
+   ret
+.endf osSetBitsARMCoreSCTLR
+
+; clear some bits in the SCTLR register
+osClearBitsARMCoreSCTLR::
+   MOV        R1, #0                   ; R1 = 0
+   MRC        p15, 0, R1, c1, c0, 0    ; R1 = SCTLR
+   BIC        R1, R1, R0               ; R1 &= ~R0   (R0 is the passed parameter) 
+   MCR        p15, 0, R1, c1, c0, 0    ; SCTLR = R1
+   ret
+.endf osClearBitsARMCoreSCTLR
+
+;-+--------------------------------------------------------------------------
+; osuint32 osInitFpu()
+;----------------------------------------------------------------------------
+osInitFpu::
+    movw    r0, 0xED88   ;#0xE000ED88
+    movt    r0, 0xE000
+    ldr     r1,[r0]
+    orr     r1,r1,#(15<<20)     ;Enable CP10 and CP11
+    str     r1,[r0]
+    ret
+
+
+;-+--------------------------------------------------------------------------
+; osuint32 osGetCPSR()
+;----------------------------------------------------------------------------
+osGetCPSR::
+   mrs    R0,XPSR
+   ret
+.endf osGetCPSR
+
+;-+--------------------------------------------------------------------------
+; osuint32 osGetPRIMASK()
+;----------------------------------------------------------------------------
+osGetPRIMASK::
+   mrs    R0,PRIMASK
+   ret
+.endf osGetPRIMASK
+
+osGetBASEPRI::
+    mrs   r0,basepri
+    ret
+.endf osGetBASEPRI
+
+;-+--------------------------------------------------------------------------
+; osuint32 osGetCONTROL()
+;----------------------------------------------------------------------------
+osGetCONTROL::
+   mrs    R0,CONTROL
+   ret
+.endf osGetCONTROL
+
+;-+--------------------------------------------------------------------------
+; osuint32 osSuspendInterruptsAsm()
+;----------------------------------------------------------------------------
+osSuspendInterruptsAsm::
+    mrs     r0,basepri
+    push    {r1}
+    mov     r1,#osdIntCfgMaxSystemPriority
+    msr     basepri,r1                      ;BasePri = osdIntCfgMaxSystemPriority => Disable Level
+    pop     {r1}
+    isb
+    dsb
+    ret
+.endf osSuspendInterruptsAsm
+   
+;-+--------------------------------------------------------------------------
+;  osResumeInterruptsAsm(osuint32)
+;----------------------------------------------------------------------------
+osResumeInterruptsAsm::
+    cmp     r0,#osdIntCfgMaxSystemPriority
+    beq     osPrvSkipIntEnable
+    push    {r1}
+    mov     r1,#0
+    msr     basepri,r1
+    pop     {r1}
+    isb
+    dsb
+osPrvSkipIntEnable:
+   ret
+.endf osResumeInterruptsAsm
+
+
+;-+--------------------------------------------------------------------------
+; osDisableGlobalInterruptAsm                                                
+; caution: This service disables the global interrupts and does not save
+;          the interrupt status.
+;           For Critical Sections use Suspend and Resume services
+;----------------------------------------------------------------------------
+osDisableGlobalInterruptAsm::
+    push    {r0}
+    mov     r0,#osdIntCfgMaxSystemPriority
+    msr     basepri,r0
+    pop     {r0}
+    ret
+.endf osDisableGlobalInterruptAsm
+
+;-+--------------------------------------------------------------------------
+; osEnableGlobalInterruptAsm                                                
+; Caution: This service enables the global interrupts irrespective of the
+;           previous interrupt state.
+;           For Critical Sections use Suspend and Resume services
+;----------------------------------------------------------------------------
+osEnableGlobalInterruptAsm::
+    push    {r0}
+	mov     r0,#0
+    msr     basepri,r0
+    pop     {r0}
+    isb
+    dsb
+    ret
+.endf osEnableGlobalInterruptAsm
+
+
+
+;-+--------------------------------------------------------------------------
+; osSetupExceptionStacks 
+;----------------------------------------------------------------------------
+; This function must be called before allowing NMIs and Exceptions
+; It must be called in System or SVC mode
+; Since this function is only called by osInitialize, this is ensured: 
+; If user calls it before StartOS, then is is in System Mode. 
+; If the StartOS calls it calls, we are in SVC mode
+osSetupExceptionStacks:: 
+    push     {r2}
+    push     {r1}
+
+    ldr      r2,=OffsetOf(OsStackType,startAddr)
+    ldr      r1,=OsSYSStack
+    ldr      sp, [r2,r1]
+    ;we only use Main Stack Pointer for both application and interrupt mode
+    pop      {r1}
+    pop      {r2}
+   
+   ret
+.endf osSetupExceptionStacks
+
+
+;-+--------------------------------------------------------------------------
+; osEnableNMIandAborts
+;----------------------------------------------------------------------------
+osEnableNMIandAborts:: 
+   ret
+.endf osEnableNMIandAborts
+
+
+;---------------;
+; osDispatchAsm ;
+;---------------;
+osPrvDispatchAsm:
+    ;we reached here to dispatch a task (may be idle task too)
+    bl osDisableGlobalInterruptAsm
+    bl osPrvDispatcher
+    bl osEnableGlobalInterruptAsm
+    
+    ret
+.endf osPrvDispatchAsm
+
+;-----------------;
+; osPrvDispatcher ;
+;-----------------;
+osDispatchApi:
+osPrvDispatcher:
+    ;todo: Check Our Assumptions are TRUE, else throw Error ***
+    ;coming here, we assume that the Dispatcher is Unlocked and Interrupt is always in enable state
+    ;and hence we blindly disable interrupt and enable interrupt on exit of the Dispatcher
+    ;are we coming from an inactive task
+    ;   (ossActiveTaskIndex != 0)? osFromActiveTask: osFromInActiveTask;
+    ;push    {r1-r2}				;M4 core pushes r0-r3 during exception entry, HENCE COMMENTED
+    
+    mrs     r2,basepri                      ;r2 = basepri
+    mov     r1,#osdIntCfgMaxSystemPriority
+    msr     basepri,r1                      ;Disable all interrupts
+    mrs     r1, control                     ;r1 = control
+    push    {r1-r2}                         ;push control and basepri to stack
+    mov     r2, #0
+    msr     control, r2
+    isb                                     ;barrier for control register write
+
+    push    {r10}         ;register to work with
+
+    ldr     r10,=OsCtrlParam+OffsetOf(OsCtrlParamType,ActiveTaskIndex)
+    ldrb     r10,[r10]   ;r10 = ActiveTaskIndex
+    cmp     r10,#INVALID_TASK
+    beq     osPrvFromInActiveTask
+
+osPrvComingFromActiveTask:
+    stmfd sp!,{r0-r9,r11,r12,lr}
+    .if osdFPUSupport == 1
+        vmrs   r0, FPSCR
+        push   {r0}
+        vpush  {d0-d15}
+    .endif
+
+    ; Enable the stack Monitoring during contex swtich. May cause MPU violation if MPU is enabled. Should Only be used for SC1.
+    .if osdEnableStackMonitoring == 1  
+    mov r0, r10
+    bl osCheckTaskStackOverflow
+    .endif
+
+osPrvDispatcherContextPushed:
+    ;save ths SP in TcbTaskRefConfig[ActiveTaskIndex]->TaskParamRef->StackAddress
+    ldr     r1,=TcbTaskRefConfig
+    mov     r2,sizeof(OsTaskConfigRefType)
+    mla     r3,r10,r2,r1    ;r3 = (r10 * r2) + r1 => r3 = &TcbTaskRefConfig[ActiveTaskIndex]
+    ldr     r3,[r3]                                           ;r3 = OsTaskConfig of Active Task
+    add     r3,r3,OffsetOf(OsTaskConfigType, TaskParamRef)    ;r3 = &TcbTaskRefConfig[ActiveTaskIndex]->TaskParamRef
+    ldr     r3,[r3]                                           ;r3 = TaskParam of ActiveTask
+    add     r4,r3,OffsetOf(OsTaskParamType,StackAddress)      ;= &(ActiveTask->TaskParamRef->StackAddress)
+    ;ldr     r4,[r4]
+    str     sp,[r4]       ;store the current task stack pointer here
+    add     r3,r3,OffsetOf(OsTaskParamType,State)
+    ldrb    r4,[r3]
+    cmp     r4,#RUNNING
+    bne     osPrvFromInActiveTask
+    ;Now we have to make the current task to READY state
+	;call Post Hook Now
+	push	{lr}
+    bl      osPrvAsmPostTaskHook               ;call Post Task Hook as the current task gets inactivated
+	pop		{lr}
+    mov     r4,#READY
+    strb     r4,[r3]                            ;osState[ossActiveTaskIndex] = READY
+    ;Implicit continuation of execution if the current task was RUNNING
+
+osPrvFromInActiveTask:
+osPrvFromNoTask:
+    ldr     r0,=OsCtrlParam
+    add     r1,r0,OffsetOf(OsCtrlParamType,ActiveTaskIndex)
+    add     r2,r0,OffsetOf(OsCtrlParamType,RequestedTaskIndex)
+    add     r3,r0,OffsetOf(OsCtrlParamType,ActiveTaskPriority)
+    add     r4,r0,OffsetOf(OsCtrlParamType,RequestedTaskPriority)
+
+    ldrb     r2,[r2]
+    ldrb     r4,[r4]
+    strb     r2,[r1]   ;ActiveTaskIndex    = RequestedTaskIndex
+    strb     r4,[r3]   ;ActiveTaskPriority = RequestedTaskPriority
+
+    push    {r0-r4}
+    bl       OsPrvSetTaskActiveParam
+    pop     {r0-r4}
+    ;RequestScheduler = 0
+    mov     r4,#0
+    strb     r4,[r0,OffsetOf(OsCtrlParamType,RequestScheduler)]
+    
+    ;do we have a valid task?
+    ldrb     r1,[r1]     ;now r1 = ActiveTaskIndex
+    cmp     r1,#INVALID_TASK
+    beq     osPrvIdleTask                       ;No Active Task, so go Idle
+    
+    ;We have a valid task to dispatch
+    ;Now look if we need to Start or Resume
+    ldr     r2,=TcbTaskRefConfig
+    mov     r3,sizeof(OsTaskConfigRefType)     ;#osSizeOfOsTaskConfigRefType
+    mla    r4,r1,r3,r2     ;r4=(r1*r3)+r2 =>  r4 = &TcbTaskRefConfig[ActiveTaskIndex]
+    ldr    r4,[r4]
+    mov     r5,r4           ;copy r4 to r5 we may need it if we are going to start
+                            ;a new task
+    add     r3,r4,OffsetOf(OsTaskConfigType,TaskCategory)
+    ldrb    r3,[r3]
+    add     r2,r0,OffsetOf(OsCtrlParamType,LockDispatcher)
+    eor     r3,r3,#1    ;(OsTaskConfig_ActiveTask.TaskCategory==PREEMPTIVE)?Unlock Dispatcher : LockDisptacher
+    strb    r3,[r2]
+    
+    ;we have the ActiveTaskIndex still in r1
+    ldr     r2,=TcbTaskRefConfig
+    mov     r3,sizeof(OsTaskConfigRefType)    ;#osSizeOfOsTaskConfigRefType
+    mla    r4,r3,r1,r2     ;r4 = (r3 * r1) + r2 (ie., r4 = &TcbTaskRefConfig[ActiveTaskIndex])
+    ldr    r4,[r4]                                           ;r4 = OsTaskConfig of Active Task 
+    add    r4,r4,OffsetOf(OsTaskConfigType, TaskParamRef)    ;r4 = &TcbTaskRefConfig[ActiveTaskIndex]->TaskParamRef
+    ldr    r4,[r4]                                           ;r4 = TaskParam of ActiveTask
+    ldrb     r3,[r4,OffsetOf(OsTaskParamType,State)]
+    cmp     r3,#PRE_READY
+    
+    mov     r3,#RUNNING
+    strb     r3,[r4,OffsetOf(OsTaskParamType,State)]
+    
+    beq     osPrvStartTask
+osPrvResumeTask:
+    ;The TaskState should be READY
+    ;Implicit continuation to Resume the task
+
+    ; Enable the stack Monitoring during contex swtich. May cause MPU violation if MPU is enabled. Should Only be used for SC1.
+    .if osdEnableStackMonitoring == 1  
+    mov r0, r1
+    bl osCheckTaskStackOverflow
+    .endif
+
+    ;switch MPU so that we have access to the Task MPU setting from here
+    ;OsCtrlParam.pLastObjRef-> Points to the object active before the dispatcher entry
+    ;OsCtrlParam.pActiveObjRef -> Points to the New Object that is scheduled to RUN
+    bl      OsMemProt_MpuSwitch
+    
+    ;Get Current Active Object
+    ldr    r0,=OsCtrlParam
+    ldr    r0, [r0,OffsetOf(OsCtrlParamType, pActiveObjRef)]
+    ;Stack pointer to restore context
+    ldr    r3,[r4,OffsetOf(OsTaskParamType,StackAddress)]
+    ;Switch stack MPU setting for Active Object
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r3
+
+    ; restore task context from task stack
+    .if osdFPUSupport == 1
+        vpop   {d0-d15}
+        pop    {r0}
+        vmsr   FPSCR, r0
+    .endif
+    ; task context on Task stack: (lowest) ... R0-R9, R11, R12, LRusr, R10, PCusr, CPSRusr, ... task stack ... (highest address)
+    
+    bl		OsMemProt_ClearOSStateCntr
+	
+    push {lr}
+    bl osTaskResumeHook
+    pop  {lr}
+	
+	ldmfd  sp!,{r0-r9,r11,r12,lr}
+    isb
+    dsb
+    pop    {r10}
+    pop     {r1-r2}
+	msr     control,r1
+    isb                                     ;barrier for control register write
+    msr     basepri,r2    
+    ;pop     {r1-r2}		;we are not pushing r1-r2, so pop is not reqd
+	   
+	bx		lr
+osResumeTaskError:
+    bl      osResumeTaskError
+    ;not expected to reach here
+    
+    ;********** end of Resume Task Routine *********************
+
+osPrvStartTask:
+    ;state of task is updated as RUNNING
+    ;r4 points to TaskParam[ActiveTaskIndex]
+    ;r5 points to TcbTaskConfig[ActiveTaskIndex]
+
+    ;switch MPU so that we have access to the Task MPU setting from here
+    ;OsCtrlParam.pLastObjRef-> Points to the object active before the dispatcher entry
+    ;OsCtrlParam.pActiveObjRef -> Points to the New Object that is scheduled to RUN
+    bl      OsMemProt_MpuSwitch
+
+    ldr     r0,[r5,OffsetOf(OsTaskConfigType,TaskStackStartAddress)] ;r0= TcbTaskConfig[ActiveTaskIndex].TaskStackStartAddress
+    add     r1,r4,OffsetOf(OsTaskParamType,StackAddress)      ; r1= &TcbTaskConfig[ActiveTaskIndex]->TaskParamRef->StackAddress
+    str     r0,[r1]
+    
+    ;Get Current Active Object
+    ldr     r0,=OsCtrlParam
+    ldr     r0, [r0,OffsetOf(OsCtrlParamType, pActiveObjRef)]
+    ;Stack pointer to start task
+    ldr     r3,[r4,OffsetOf(OsTaskParamType,StackAddress)]
+    ;Switch stack MPU setting for Active Object
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r3
+    
+    ;ldr     r0,[r5,OffsetOf(OsTaskConfigType,TaskStartAddress)]
+
+	bl		OsMemProt_ClearOSStateCntr
+	
+    push {lr}
+    bl osPrvAsmPreTaskHook
+    pop  {lr}
+	
+    ;Construct Exception Return Frame
+    ;-------------------------------
+    ;             xPSR              |
+    ;-------------------------------
+    ;        ReturnAddress          |
+    ;-------------------------------
+    ;             R14               |
+    ;-------------------------------
+    ;             R12               |
+    ;-------------------------------
+    ;             R3                |
+    ;-------------------------------
+    ;             R2                |
+    ;-------------------------------
+    ;             R1                |
+    ;-------------------------------
+    ;             R0                |
+    ;-------------------------------
+    mov     r0, #0x01000000         ;Prepare XPSR with T bit set
+    push    {r0}                    ;SP+0x1C -> XPSR
+    
+    ldr     r0,[r5,OffsetOf(OsTaskConfigType,TaskStartAddress)]
+    push    {r0}                    ;SP+0x14 -> TaskStartAddress
+    
+    mov     r0,osPrvMissingTerminateError
+    push    {r0}                    ;SP+0x10 -> OsError Routine to handle error cases if 
+                                    ;TermiateTask() is not called.
+
+    mov     r12,#0
+    mov     r3,#0
+    mov     r2,#0
+    mov     r1,#0
+    mov     r0,#0
+    
+    push    {r0-r3,r12}
+
+    bl      OsPrvGetCurrAppAccessLevel  ;get access level from App config of this obj
+    mov		lr,#0xFFFFFFF9
+	
+    ;Reset the basepri and control
+
+    msr     control,r0
+    isb                                 ;barrier for control register write
+    mov     r0,#0
+    msr     basepri,r0                  ;Interrupts are enabled 
+    bx      lr                          ;Unstack the Exception Frame and Jump to "ReturnAddress"
+
+.endf osPrvDispatcher
+
+osPrvMissingTerminateError:
+	bl		osMissingTerminateError
+	mov		pc,lr
+    
+osPrvIdleTask:
+
+    ldr      r2,=OffsetOf(OsStackType,startAddr)
+    ldr      r1,=OsSYSStack
+    ldr      sp, [r2,r1]
+    
+    ldr     r0,=OsCtrlParam
+    add     r0,r0,OffsetOf(OsCtrlParamType,LockDispatcher)
+    mov     r1,#0
+    strb    r1,[r0]
+
+    ;Reset the basepri and control
+    ;todo - this should be based on a task's recommended value - from OsTaskConfigType
+    mov     r0,#0
+    msr     basepri,r0                  ;Interrupts are enabled from now
+    msr     control,r0
+    isb                                 ;barrier for control register write
+    
+    ;Construct the Return from exception stack for Idle Task
+    ldr     r14,=osIdleLoop
+    mov     r0, #0x21000000             ;xpsr
+    push    {r0}                        ;xpsr
+    ldr     r0,=osIdleLoop
+    push    {r0}
+    push    {r14}
+    push    {r12}
+    push    {r0-r3}
+
+    mov     r0, #0xFFFFFFF9
+    bx r0
+
+
+    
+osIdleLoop:
+;    mov     r0,#1
+;    MSR CONTROL, #r0
+
+    b       osIdleLoop
+
+.endf osPrvIdleTask
+
+osPrvAsmPostTaskHook:
+    ;For debug and measurement support
+	push {r0-r12,lr}
+    bl  osTaskStopHook
+	
+	pop  {r0-r12,lr}
+	mov  pc,lr
+    
+osPrvAsmPreTaskHook:
+	push {r0-r12,lr}
+    bl osTaskStartHook
+	pop  {r0-r12,lr}
+    mov pc,lr
+
+
+osCat2ISREntryASM:
+    ;we get here with user registers r0-r12,lr pushed to interrupted process' stack
+    ;except
+    ;r0     - address of this function
+    ;r8     - logical index of the interrupt
+    ;r9     - CPSR value from ISR Wrapper
+    ;r11    - Address of the Application Interrupt Routine
+    ;rest registers are free for work
+    push    {r10}                         ; push the registers r0-r12 and lr to interrupted process' stack
+    stmfd   sp!,{r0-r9,r11,r12,lr}            ; r10 must be pushed first so that we have the same order as in the dispatcher
+    
+    .if osdFPUSupport == 1
+        ;FPU save and restore is done by the hardware
+        vmrs   r0, FPSCR
+        push   {r0}
+        vpush  {d0-d15}
+    .endif
+    
+    mov     r11,r1
+    
+    ldr     r6,=OsCtrlParam
+    add     r4,r6,OffsetOf(OsCtrlParamType, LockDispatcher)
+    add     r5,r6,OffsetOf(OsCtrlParamType, CurrentContext)
+    add     r7,r6,OffsetOf(OsCtrlParamType, ActiveISRId)
+    add     r2,r6,OffsetOf(OsCtrlParamType, pActiveObjRef)
+    add     r3,r6,OffsetOf(OsCtrlParamType, pLastObjRef)
+
+    ;push the current context into stack
+    ldrb    r1,[r5]
+    push    {r1}
+    ;set the OsContext as osdCat2IsrContext
+    mov     r1,#osdCtxISRCat2
+    strh    r1,[r5]
+
+    ;push the current ObjRef to stack
+    ldr     r1,[r2]
+    push    {r1}
+
+    ;increment the LockDispatcher
+    ldrb    r1,[r4]
+    add     r1,r1,#1
+    strb    r1,[r4]
+        
+    ;Update the ActiveISRId
+    mov     r8,#0           ;todo: delete this line once we get the IsrId in r8 from intvect_asm file
+    str     r8,[r7]
+
+    ;todo - Below commented block for clearing the sw int flag need to be analyzed and reverted back.
+    ;movw   r1, #osIRQ0_IRQR0
+    ;movt   r1, #osIRQ_BASE
+    ;mov    r3, #0
+    ;str    r3, [r1]                 ;clear the Software interrupt flag
+    
+    ; Save the DynApp of CurrObj
+    bl      OsPrvGetDynApp
+    push    {r0}
+
+    ;assuming no nesting of interrupt happens, save current sp to r4
+    ldr    r4,=osIntSP
+    str    sp,[r4]
+
+    ;Update the Active App and Obj references
+    bl      OsPrvSetIsrActiveParam
+
+    ; Enable the stack Monitoring during contex swtich. May cause MPU violation if MPU is enabled. Should Only be used for SC1.
+    .if osdEnableStackMonitoring == 1  
+    mov r0, #0
+    bl osCheckISRStackOverflow
+    .endif
+
+    ;We have updated the active app and objects
+    ;Now, switch MPU so that we have ISR Memory protection settings
+    bl      OsMemProt_MpuSwitchFromISR
+
+    ;Get Current Active Object
+    ldr     r0,=OsCtrlParam
+    ldr     r0, [r0,OffsetOf(OsCtrlParamType, pActiveObjRef)]
+
+    ;todo: Interrupt routines to work only in dedicated ISR stack
+    ldr    r3,=IsrStackConfig
+    ;ldr    sp,[r3, r8, lsl #2]     ;Todo: Update intvect_asm to pass the Isr Id in register
+    ;Interim: As Isr Id is unavailable and Nesting is not supported, all Isrs run in IsrStackConfig[0]
+    ldr     r3,[r3]
+    ;Switch stack MPU setting for Active Object
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r3
+	
+    ;mov     r10,lr
+    push    {lr}
+    ;service the application ISR
+    ldr    lr,=osCat2ISRExitASM
+    bx     r11
+    
+    ;from hereon r11 can be used as working register
+osCat2ISRExitASM:
+    bl      OsCheckIntDisEnPair
+    
+    ; Enable the stack Monitoring during contex swtich. May cause MPU violation if MPU is enabled. Should Only be used for SC1.
+    .if osdEnableStackMonitoring == 1  
+    mov r0, #0
+    bl osCheckISRStackOverflow
+    .endif
+
+    pop     {lr}         ;pop LR
+    
+    ;Getback to the OS Stack
+    ldr    r4,=osIntSP
+    ldr    r4, [r4]
+
+    ;Get Last Object before Interrupt
+    ldr     r0,=OsCtrlParam
+    ldr     r0, [r0,OffsetOf(OsCtrlParamType, pLastObjRef)]
+    ;Switch stack MPU setting for Last Object
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r4
+
+    ldr     r10,=osPrvLastLR
+    str     lr,[r10]
+
+    
+    pop     {r0}   ;Get stored DynApp from stack    
+    mov     r2,r0 ; save r0(DynApp) to r2 as we are going to use r0 for next call
+
+    ;restore the previous object
+    pop     {r0}  ;pObjRef
+    push    {r2} ; push the r2 (DynApp) to stack
+
+    ;Get the ActiveObjRef updated through the C Handlers
+    bl      OsPrvSetActiveParam         ;OsPrvSetActiveParam(pObjRef)
+    
+    pop     {r2}  ;Get stored DynApp from stack 
+    mov     r0,r2 ;Pass r0(DynApp) to OsPrvSetDynApp
+    ; Restore the DynApp of CurrObj
+    bl      OsPrvSetDynApp
+    bl      OsMemProt_MpuSwitchFromISR
+	
+    ldr     r10,=OsCtrlParam
+    
+    ;Decrement the LockDispatcher
+    add     r0,r10,OffsetOf(OsCtrlParamType,LockDispatcher)
+    ldrb    r2,[r0]
+    subs    r2,r2,#1    ;OsCtrlParam.LockDispatcher--
+    strb    r2,[r0]     ;r2 has the new LockDispatcher Value
+
+    ;restore the OsContext
+    pop     {r1}
+    add     r0,r10,OffsetOf(OsCtrlParamType,CurrentContext)
+    strh    r1,[r0]
+
+    ;from hereon:
+    ;pActiveObjRef-> Active Object before this ISR
+    ;pLastObjRef-> This ISR Object
+    ;Check if we are in a nested interrupt sequence
+    cmp     lr,#0xFFFFFFF1
+    beq     osPrvCat2ExitNoDispatch
+    
+    ;if we reach here: (No nested Interrupt occured and LockDispatcher is decremented and stored to r2)
+    ;r10 = OsCtrlParam
+    ;r2  = LockDispatcher
+    cmp     r2,#0                       ;Check if LockDispatcher = 0
+    bne     osPrvCat2ExitNoDispatch     ;anything other than 0 means dispatcher is locked, jump to osPrvCat2ExitNoDispatch
+    
+    ldrb    r0,[r10,OffsetOf(OsCtrlParamType,RequestScheduler)]
+    cmp     r0,#0
+    beq     osPrvCat2ExitNoDispatch     ;Request Scheduler NotSet, jump to osPrvCat2ExitNoDispatch
+
+
+    ;we reach here only if RequestScheduler!=0 && LockDispatcher==0
+    ldrb    r10,[r10,OffsetOf(OsCtrlParamType,ActiveTaskIndex)]
+    cmp     r10,#INVALID_TASK
+    beq     osPrvFromInActiveTask                   ;we do not have a valid ActiveTask
+    b       osPrvDispatcherContextPushed            ;we reach here to suspend the ActiveTask
+    
+
+osPrvCat2ExitNoDispatch:
+    
+    ;we will reach here if dispatch is not required
+    ;return from interrupt normally
+    .if osdFPUSupport == 1
+        ;FPU save and restore done by Hardware
+        vpop   {d0-d15}
+        pop    {r0}
+        vmsr   FPSCR, r0
+    .endif
+        
+	    ;we are free to use r0 to r3 as these reg will be pushed/poped during exception entry/return
+    ;Check if we came here from an interrupt context
+    ;If yes, we have to jump back to Handler Mode and serve the pending work
+    ;Probably we have to jump to Thread Mode when we are not from an interrupt context
+    ldr     r1,=OsCtrlParam
+    mov     r0,#0
+    add     r0,r1,OffsetOf(OsCtrlParamType,CurrentContext)
+    ldrb    r1,[r0]
+
+    ;We have updated the active Obj
+    ;Now, switch MPU so that we Restore the ActiveObj Memory protection settings
+    ;bl      OsMemProt_MpuSwitch
+    ldmfd  sp!, {r0-r9,r11,r12,lr}          ; restore all registers
+    isb
+    dsb
+    pop     {r10}
+    
+    pop     {r1-r2}    
+    msr     control,r1
+    isb                                     ;barrier for control register write
+	msr     basepri,r2
+    ;pop     {r1-r2}
+
+    bx lr   ;Jump to mode from where we came here
+.endf osCat2ISREntryASM
+
+;-----------------;
+; osPrvDispatcher ;
+;-----------------;
+osSVCHandlerAsm::
+    mov r3,sp   ;for extracting the svc call index
+    ldr	 r3, [r3, #24]    ;traversing the stack frame
+    ldrb r3, [r3, #-2]    ;traversing the stack frame
+    cmp  r3,#SVC_TRAP_ENTRY
+    beq osTrapEntryAsm
+    cmp  r3,#SVC_TRAP_EXIT
+    beq  osTrapExitAsm
+    cmp  r3,#SVC_SET_PRIVILEGE
+    beq  osSetPrivilegeModeAsm 
+    cmp  r3,#SVC_DISPATCH 
+    bne  osInvalidSvcCall
+    b osDispatchApi
+    bx lr
+.endf osSVCHandlerAsm
+
+osTrapEntryAsm::
+
+    mov     r3, r1                          ;move Trap FuctionParam to r3 to push control                        
+    mrs     r2, basepri                     ;r2=basepri
+    mov     r1, #osdIntCfgMaxSystemPriority     
+    msr     basepri,r1                      ; move osdIntCfgMaxSystemPriority to basepri to disable the interrupts
+    mrs     r1, control                     ;r1 = control
+    push    {r1-r2}                         ;push control and basepri to stack
+    mov     r2, #0
+    msr     control, r2
+    isb                                     ;barrier for control register write
+    mov    r1, r3                           ;move back Trap FunctionParam to r1
+
+    mov     r3, #0x01000000 ;xpsr           
+    push    {r3}            ;xpsr
+    ldr     r3,=OsHal_TrapHandler
+    push    {r3}
+    ldr     r3,=OsHal_ExitTrap
+    push    {r3}
+    push    {r12}
+    push    {r0-r3}
+    ldr     r2,=OsCtrlParam          ;r2 = OsCtrlParam
+    ldrb    r3,[r2,OffsetOf(OsCtrlParamType,IntSaveDisableRequestCounter)]       ;r3  = IntSaveDisableRequestCounter
+    cmp     r3,#0
+    beq writebasepri
+    bx lr                               ;Exit to trap handler
+
+.endf osTrapEntryAsm
+
+osTrapExitAsm:
+    mov     r3, #osdIntCfgMaxSystemPriority     
+    msr     basepri,r3                      ; move osdIntCfgMaxSystemPriority to basepri to disable the interrupts
+    add sp, sp, #32        ;Offset added to skip exit privilege exception frame
+
+    ldr r2,=OsCtrlParam          ;r2 = OsCtrlParam
+    ldrb    r3,[r2,OffsetOf(OsCtrlParamType,LockDispatcher)]       ;r3  = LockDispatcher
+    cmp     r3,#0                       ;Check if LockDispatcher = 0
+    bne     osTrapExitNoDispatch     ;anything other than 0 means dispatcher is locked, jump to osTrapExitNoDispatch
+    
+    ldrb    r3,[r2,OffsetOf(OsCtrlParamType,RequestScheduler)]
+    cmp     r3,#0
+    beq     osTrapExitNoDispatch     ;Request Scheduler NotSet, jump to osTrapExitNoDispatch
+
+    ;we reach here only if RequestScheduler!=0 && LockDispatcher==0
+    push    {r10}                   ;r10 pushed to have same order during pop
+    ldrb    r10,[r2,OffsetOf(OsCtrlParamType,ActiveTaskIndex)]
+    cmp     r10,#INVALID_TASK
+    beq     osPrvFromInActiveTask                   ;we do not have a valid ActiveTask
+    stmfd   sp!, {r0-r9,r11,r12,lr}          ; push to caller stack
+    .if osdFPUSupport == 1
+        vmrs   r0, FPSCR
+        push   {r0}
+        vpush  {d0-d15}
+    .endif
+    b       osPrvDispatcherContextPushed            ;we reach here to suspend the ActiveTask
+
+.endf osTrapExitAsm
+
+osTrapExitNoDispatch::
+    ;No dispatch is required, return from trap
+    pop     {r1-r2}
+    msr     control,r1
+    isb                                 ;barrier for control register write
+    ldr r2,=OsCtrlParam          ;r2 = OsCtrlParam
+    ldrb    r3,[r2,OffsetOf(OsCtrlParamType,IntSaveDisableRequestCounter)]       ;r3  = IntSaveDisableRequestCounter
+    cmp    r3,#0
+    beq writebasepri
+
+    bx lr
+.endf osTrapExitNoDispatch
+
+writebasepri:
+    msr     basepri,r3
+    bx lr
+
+osInvalidSvcCall::
+    ldr r1,=OsErr_InvalidSvcCallHook
+    str r1,[sp,#0x18]
+    bx lr
+    
+osSetPrivilegeModeAsm ::
+    mov r3,#0
+    msr control,r3
+    isb                                 ;barrier for control register write
+    bx lr
+
+.endf osSetPrivilegeModeAsm 
+
+osExitPrivilegeModeAsm :: 
+   
+    mov r0,#1
+    msr control,r0
+    isb                                 ;barrier for control register write
+    ret
+	
+.endf osExitPrivilegeModeAsm  
+
+
+osDispatchAsm::
+   ;stmfd      sp!,{r4,r8,r10,lr}  ; push to caller stack
+   ;mov        r4, #0
+   cpsie i
+   svc #0
+   ;ldmfd      sp!,{r4,r8,r10,lr}
+   ret
+.endf osDispatchAsm
+
+OsHal_ExitTrap::
+   svc #2    ;Call to exit trap
+   ret
+.endf OsHal_ExitTrap
+
+MemManage_Handler::
+    b HardFault_Handler
+    ret
+.endf MemManage_Handler
+
+BusFault_Handler::
+    b HardFault_Handler
+    ret
+.endf BusFault_Handler
+
+UsageFault_Handler::
+    b HardFault_Handler
+    ret
+.endf UsageFault_Handler
+
+HardFault_Handler::
+    movs r12, #4
+    mov r0, lr      ;copy LR to r0
+    tst r12, r0      ;Identify the stack pointer used MSP or PSP
+    beq L_MSP       ; Branch to L_MSP if MSP was used (bit 2 is 0)
+    mrs r12, PSP     ; If PSP was used, move PSP value into r12
+    b L_API_call   
+    L_MSP:
+    mrs r12, MSP     ; If MSP was used, move MSP value into r12
+    L_API_call:
+    mov r2, #0
+    msr control,r2  ;write control register with value 0
+    ldr     r1,=OsCtrlParam
+    ldr     r1,[r1,OffsetOf(OsCtrlParamType,pActiveObjRef)]
+    ldrb    r1,[r1,OffsetOf(OsObjConfigType,CoreId)]     ;now r1 = ActiveObj CoreId
+    ldr     r0,=OsCoreRefConfig
+    mov     r2,sizeof(OsCoreConfigRefType)
+    mla     r3,r1,r2,r0    ;r3 = (r1 * r2) + r0 => r3 = &OsCoreRefConfig[ActiveObjCoreId]
+    ldr     r3,[r3]                                           ;r3 = OsCoreConfig of Active Obj Core Id
+    ldr     r0,[r3,OffsetOf(OsCoreConfigType, pOsCoreObjRef)] ;r0 = Os kernel Object for active core
+    ;switch stack pointer
+    ldr    r1, [r0, OffsetOf(OsObjConfigType,StackStartAddress)]
+    ldr    r2, [r0, OffsetOf(OsObjConfigType,StackSize)]
+    add    r3, r1, r2
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r3
+    push {r12}    ;push the fault exception stack address
+    push {lr}
+    mov r0, r12   ;mov fault stack address to r0 for next function call 
+    ldr  r1, =OsFaultHandler
+    blx  r1
+    pop {lr}
+    pop {r3}    ;pop the fault exception stack address
+    ldr    r0,=OsCtrlParam
+    ldr    r0,[r0,OffsetOf(OsCtrlParamType,pActiveObjRef)]
+    ;Registers r0-r2 modified in the below macro
+    OS_CPU_HAL_ASM_SWITCH_STACK r0, r3
+    bl     OsPrvGetCurrAppAccessLevel  ;get access level from App config of Active obj
+    mov	   lr,#0xFFFFFFF9
+	ldr    r1, [sp, #0x18]         ;load PC value during exception entry
+    add    r1, r1, #2              ;skip the faulting instruction (Thumb mode)
+    str    r1, [sp, #0x18]         ;store xpsr value during exception entry
+    ;Update the control register
+    msr     control,r0
+    isb                                 ;barrier for control register write
+    bx		lr
+.endf HardFault_Handler

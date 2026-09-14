@@ -1,0 +1,20 @@
+
+
+#include <stdio.h>
+#include "dk_bspal_pwm.h"
+
+/*BackLight*/
+
+int main ( int argc, char *argv[] )
+{
+	uint32_t ret;
+	int pin_num = atoi(argv[1]);
+    printf ( "Start: %s\n", argv[0] );
+    dk_bspal_pwm_init();
+    ret = dk_bspal_pwm_set_enable( pin_num, 1 );
+    printf ( "Return value is :%d\n", ret );
+    dk_bspal_pwm_deinit();
+    printf ( "Exit: %s\n", argv[0] );
+
+    return 0;
+}

@@ -1,0 +1,174 @@
+diff --git a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/mcu-r5fss0-0_freertos/ti-arm-clang/linker.cmd b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/mcu-r5fss0-0_freertos/ti-arm-clang/linker.cmd
+index 00010a750b..8dc4cfa74b 100644
+--- a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/mcu-r5fss0-0_freertos/ti-arm-clang/linker.cmd
++++ b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/mcu-r5fss0-0_freertos/ti-arm-clang/linker.cmd
+@@ -112,5 +112,5 @@ MEMORY
+      As the C7x binary is taken from vision apps, C7x will be writing to this memory.
+      So, for MCU+SDK we are using memory which is not used by Vision apps RTOS IPC.
+      */
+-    DDR_IPC_VRING_RTOS               : ORIGIN = 0xA0400000, LENGTH = 0x300000   /* IPC VRING for RTOS/NoRTOS */
++    DDR_IPC_VRING_RTOS               : ORIGIN = 0xA0000000, LENGTH = 0x300000   /* IPC VRING for RTOS/NoRTOS */
+ }
+diff --git a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/r5fss0-0_freertos/ti-arm-clang/linker.cmd b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/r5fss0-0_freertos/ti-arm-clang/linker.cmd
+index 08532dac71..d5fd2251db 100644
+--- a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/r5fss0-0_freertos/ti-arm-clang/linker.cmd
++++ b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/am62ax-sk/r5fss0-0_freertos/ti-arm-clang/linker.cmd
+@@ -173,5 +173,5 @@ MEMORY
+      As the C7x binary is taken from vision apps, C7x will be writing to this memory.
+      So, for MCU+SDK we are using memory which is not used by Vision apps RTOS IPC.
+      */
+-    DDR_IPC_VRING_RTOS          : ORIGIN = 0xA0400000 LENGTH = 0x300000   /* IPC VRING for RTOS/NoRTOS */
++    DDR_IPC_VRING_RTOS          : ORIGIN = 0xA0000000 LENGTH = 0x300000   /* IPC VRING for RTOS/NoRTOS */
+ }
+diff --git a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/ipc_rpmsg_echo_qnx.c b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/ipc_rpmsg_echo_qnx.c
+index fc646ba6b1..c55c769ba9 100755
+--- a/examples/drivers/ipc/ipc_rpmsg_echo_qnx/ipc_rpmsg_echo_qnx.c
++++ b/examples/drivers/ipc/ipc_rpmsg_echo_qnx/ipc_rpmsg_echo_qnx.c
+@@ -148,7 +148,7 @@ uint32_t gRemoteCoreId[] = {
+  * pick any unique value on that core between 0..RPMESSAGE_MAX_LOCAL_ENDPT-1
+  * the value need not be unique across cores
+  */
+-uint16_t gRemoteServiceEndPt = 13u;
++uint16_t gRemoteServiceEndPt = 14u;
+ 
+ /* maximum size that message can have in this example */
+ #define MAX_MSG_SIZE        (64u)
+diff --git a/source/drivers/ipc_notify/v0/soc/am62ax/ipc_notify_v0_cfg.c b/source/drivers/ipc_notify/v0/soc/am62ax/ipc_notify_v0_cfg.c
+index 159d891cb9..6fc2f31a0d 100644
+--- a/source/drivers/ipc_notify/v0/soc/am62ax/ipc_notify_v0_cfg.c
++++ b/source/drivers/ipc_notify/v0/soc/am62ax/ipc_notify_v0_cfg.c
+@@ -32,6 +32,14 @@
+ 
+ #include <drivers/ipc_notify/v0/ipc_notify_v0.h>
+ 
++/* PDK core IDs for IPC*/
++#define    IPC_MPU1_0           (0U)    /**< ARM A53 - VM0 */
++#define    IPC_MCU1_0           (1U)    /**< ARM Main R5F0 - core0 */
++#define    IPC_C7X_1            (2U)    /**< DSP C7x - core0 */
++#define    IPC_MCU2_0           (3U)    /**< ARM MCU R5 - core0 */
++#define    IPC_MAX_PROCS        (4U)    /**< Maximum Processors */
++#define    IPC_INVALID          (0xFFFFFFFFU)    /**< Invalid core ID */
++
+ /* values to use when a mailbox config is not used in gIpcNotifyMailboxConfig */
+ #define MAILBOX_UNUSED      0U, 0U, 0U
+ 
+@@ -417,3 +425,39 @@ IpcNotify_InterruptConfig gIpcNotifyInterruptConfig_c75ss0_0[IPC_NOFTIY_INTERRUP
+     },
+ };
+ uint32_t gIpcNotifyInterruptConfigNum_c75ss0_0 = IPC_NOFTIY_INTERRUPT_CONFIG_C75SS0_0_NUM;
++
++static uint8_t gIsRemoteCoreUsingPdk[CSL_CORE_ID_MAX] =
++{
++    0,
++    0,
++    1,
++    0,
++    0,
++    0,
++    0,
++    0,
++};
++
++static uint32_t gIpcPdkCoreId[CSL_CORE_ID_MAX] =
++{
++    IPC_MCU2_0,
++    IPC_MCU1_0,
++    IPC_MPU1_0,
++    IPC_INVALID,
++    IPC_INVALID,
++    IPC_INVALID,
++    IPC_INVALID,
++    IPC_C7X_1,
++};
++
++uint32_t IpcNotify_getPDKCoreID(uint32_t coreIdMcuPlus, uint32_t remoteCoreId)
++{
++    if (gIsRemoteCoreUsingPdk[remoteCoreId] == 1U)
++    {
++        return gIpcPdkCoreId[coreIdMcuPlus];
++    }
++    else
++    {
++        return coreIdMcuPlus;
++    }
++}
+diff --git a/source/drivers/ipc_rpmsg/ipc_rpmsg.c b/source/drivers/ipc_rpmsg/ipc_rpmsg.c
+index e0943afb83..cb4ec5c11b 100755
+--- a/source/drivers/ipc_rpmsg/ipc_rpmsg.c
++++ b/source/drivers/ipc_rpmsg/ipc_rpmsg.c
+@@ -208,14 +208,25 @@ void RPMessage_notifyCallback(uint16_t remoteCoreId, uint16_t localClientId, uin
+         {
+             if (gIpcRpmsgCtrl.vringAllocationPDK == 1U)
+             {
+-                if(remoteCoreId > IpcNotify_getSelfCoreId())
+-                {
+-                    rxMsgValue = 0u;
+-                }
+-                else
+-                {
+-                    rxMsgValue = 1u;
+-                }
++                #if defined(SOC_AM62AX)
++                    if(remoteCoreId > IpcNotify_getSelfCoreId())
++                    {
++                        rxMsgValue = 1u;
++                    }
++                    else
++                    {
++                        rxMsgValue = 0u;
++                    }
++                #else
++                    if(remoteCoreId > IpcNotify_getSelfCoreId())
++                    {
++                        rxMsgValue = 0u;
++                    }
++                    else
++                    {
++                        rxMsgValue = 1u;
++                    }
++                #endif
+             }
+         }
+         if(msgValue == rxMsgValue)
+@@ -271,7 +282,12 @@ int32_t RPMessage_send( void*    data,
+ 
+             header->srcEndPt = (uint32_t)localEndPt;
+             header->dstEndPt = (uint32_t)remoteEndPt;
++#if defined (SOC_AM62AX)
++            int32_t IpcNotify_getPDKCoreID(uint32_t coreIdMcuPlus, uint32_t remoteCoreId);
++            header->srcCoreId = IpcNotify_getPDKCoreID(gIpcRpmsgCtrl.selfCoreId, remoteCoreId);
++#else
+             header->srcCoreId = (uint32_t)gIpcRpmsgCtrl.selfCoreId;
++#endif
+             header->flags = 0;
+             header->dataLen = dataLength;
+ 
+diff --git a/source/drivers/ipc_rpmsg/ipc_rpmsg_vring.c b/source/drivers/ipc_rpmsg/ipc_rpmsg_vring.c
+index 8005a1193c..351161e23c 100644
+--- a/source/drivers/ipc_rpmsg/ipc_rpmsg_vring.c
++++ b/source/drivers/ipc_rpmsg/ipc_rpmsg_vring.c
+@@ -114,6 +114,16 @@ void RPMessage_vringPutFullTxBuf(uint16_t remoteCoreId, uint16_t vringBufId, uin
+     {
+         if (gIpcRpmsgCtrl.vringAllocationPDK == 1u)
+         {
++            #if defined(SOC_AM62AX)
++            if(remoteCoreId > IpcNotify_getSelfCoreId())
++            {
++               txMsgValue = 0u;
++            }
++            else
++            {
++                txMsgValue = 1u;
++            }
++            #else
+             if(remoteCoreId > IpcNotify_getSelfCoreId())
+             {
+                 txMsgValue = 1u;
+@@ -122,6 +132,7 @@ void RPMessage_vringPutFullTxBuf(uint16_t remoteCoreId, uint16_t vringBufId, uin
+             {
+                 txMsgValue = 0u;
+             }
++            #endif
+         }
+     }
+ 

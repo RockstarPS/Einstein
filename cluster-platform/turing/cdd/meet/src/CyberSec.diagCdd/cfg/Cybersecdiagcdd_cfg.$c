@@ -1,0 +1,2289 @@
+/*=================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==================================================================================================================
+**
+** Name:           Cybersecdiagcdd_cfg.c
+**
+** Description:    contains configurable functions to call RTE /API for each service
+**                 
+**
+**===================================================================================================================*/
+
+#ifndef CYBERSECDIAGCDD_CFG_C
+#define CYBERSECDIAGCDD_CFG_C
+
+/*====================================================================================================================
+**                 I N C L U D E   F I L E S
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+#include "Cybersecdiagcdd_cfg.h"
+//#include "Rte_MeetCdd.h"
+#include "Rte_CMeetCdd.h"
+//#include "Csm.h"
+//#include "Crypto_KeyManagement.h"
+//#include "Crypto_SecureDebug.h"
+//#include <VisteonObfuscateLib.h>
+//#include "IpcCryptInc.h"
+
+#if defined(CYBERSECDIAG_JTAG_LOCK_ENABLE) && defined(SHAREDIAG_SERVICE_ENABLE_3)
+#ifndef CRYPTO_KEY_MANAGEMENT_IMX8
+#include "SharedBootDiagcdd.h"
+#include "SharedBootDiagcdd_cfg.h"
+#endif
+#endif
+/*====================================================================================================================
+**   I N T E R N A L   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+/*=====================================================================================================================
+**  T Y P E    D E C L A R A T I O N S 
+**====================================================================================================================*/
+
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+static Std_ReturnType Cybersecdiag_SecureFuse_programming(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_SecureFuse_Reading(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_SecureLock_programming(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_SecureLock_programmingResult(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_SecureLock_Reading(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+static Std_ReturnType Cybersecdiag_SymmetricKey_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+static Std_ReturnType CybersecDiagCfg_SHESlots_Read(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+static Std_ReturnType Cybersecdiag_SecureSymmetricKey_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+static Std_ReturnType Cybersecdiag_BackupBankVer_Start(uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_BackupBankVer_Result(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+static Std_ReturnType Cybersecdiag_SecureSymmetricAESKey_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+static Std_ReturnType Cybersecdiag_SecureASymmetricKey_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+static Std_ReturnType Cybersecdiag_JtagLocking_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+static Std_ReturnType Cybersecdiag_UART_UnLocking_Start(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#if defined(CYBERSECDIAG_DATA_LOCK_AES_IV) || defined(CYBERSECDIAG_DATA_LOCK_RSA) || defined(CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV)
+static Std_ReturnType WorkFlash_Protection_Write_Sector1(boolean status);
+static void WorkFlash_Protection_Read_Sector1(uint8 *Data);
+static Std_ReturnType WorkFlash_Protection_Write_Sector2(boolean status);
+static void WorkFlash_Protection_Read_Sector2(uint8 *Data);
+#endif
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+static Std_ReturnType CybersecDiag_Verify_GIP_Key(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef MEET_GIP_ENABLED
+static GIPDataRquestState Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_Write(uint8 *Data);
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_Read(uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_SetStatus(uint8 *Data);
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_ROUTINE_LOCK_ENABLE
+static Std_ReturnType Cybersecdiag_JtagPswdLockRoutine_Start(uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_JtagPswdLockRoutine_Status(uint8 *Data, uint8 *ErrorCode);
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE) || defined(CYBERSECDIAG_JTAG_PASSWORD_READ_LOCK)
+static Std_ReturnType Cybersecdiag_JtagPasswordLocking_Write(uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_JtagPasswordLocking_Status(uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_JtagPasswordLocking_VerifySafeKeyNumber(uint8 *Data, uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+static Std_ReturnType Cybersecdiag_Secure_SymmetricKey_Start (uint8 *Data,uint8 *ErrorCode);
+static Std_ReturnType Cybersecdiag_Secure_SymmetricKey_Result(uint8 *Data,uint8 *ErrorCode);
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+static Std_ReturnType CybersecDiag_Symmetric_Key_Verification_Start (uint8 *Data, uint8 *ErrorCode);
+static Std_ReturnType CybersecDiag_Symmetric_Key_Verification_Status(uint8 *Data, uint8 *ErrorCode);
+#endif
+
+/*=====================================================================================================================
+**  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**====================================================================================================================*/
+
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+const Cybersecdiag_SecureFuseProgrammingtype Cybersecdiag_SecureFuseConfig = 
+{
+  &Cybersecdiag_SecureFuse_programming,&Cybersecdiag_SecureFuse_Reading,
+};
+
+const Cybersecdiag_SecureFuseProgrammingtype Cybersecdiag_SecureLockConfig = 
+{
+  &Cybersecdiag_SecureLock_programming,&Cybersecdiag_SecureLock_Reading,
+};
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+const Cybersecdiag_SymmetricKeyProgrammingtype Cybersecdiag_SymmetricKeyConfig = 
+{
+  &Cybersecdiag_SymmetricKey_Start,
+};
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+const CybersecDiag_SHESlotsType CybersecDiag_SHESlotsConfig =
+{
+  &CybersecDiagCfg_SHESlots_Read,
+};
+
+static uint8 CybersecDiag_ResultPtr[CYBERSECDIAG_M4M5_SLOTLENGTH];
+static boolean CybersecDiag_FlagResultPtr = FALSE;
+static boolean CybersecDiag_FlagReadSHESlot = FALSE;
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+const Cybersecdiag_IVSecureSymmetricKeyProgrammingtype Cybersecdiag_IV_SecureSymmetricKeyConfig = 
+{
+  &Cybersecdiag_SecureSymmetricKey_Start,
+};
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+const Cybersecdiag_BackupBankVerificationtype Cybersecdiag_BackupBankConfig = 
+{
+  &Cybersecdiag_BackupBankVer_Start, &Cybersecdiag_BackupBankVer_Result,
+};
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+const Cybersecdiag_AESSecureSymmetricKeyProgrammingtype Cybersecdiag_AES_SecureSymmetricKeyConfig = 
+{
+  &Cybersecdiag_SecureSymmetricAESKey_Start,
+};
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+const Cybersecdiag_SecureASymmetricKeyProgrammingtype Cybersecdiag_AES_SecureASymmetricKeyConfig = 
+{
+  &Cybersecdiag_SecureASymmetricKey_Start,
+};
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+const Cybersecdiag_JtagLockingtype Cybersecdiag_Password_JtagLockingConfig = 
+{
+  &Cybersecdiag_JtagLocking_Start,
+};
+#endif
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+const Cybersecdiag_UART_UnLockingtype Cybersecdiag_Password_UART_UnLockingConfig = 
+{
+  &Cybersecdiag_UART_UnLocking_Start,
+};
+#endif
+
+#if defined(CYBERSECDIAG_DATA_LOCK_AES_IV) || defined(CYBERSECDIAG_DATA_LOCK_RSA) || defined(CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV)
+const Cybersecdiag_WorkFlashSectorProtectiontype WorkFlashProtectionConfig[NO_OF_WORKFLASH_SECTORS_USED] =
+{
+ {&WorkFlash_Protection_Write_Sector1,&WorkFlash_Protection_Read_Sector1},
+ {&WorkFlash_Protection_Write_Sector2,&WorkFlash_Protection_Read_Sector2},
+};
+#endif
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+const uint8 Valid_AES_CMAC_KeyIDs[NO_OF_VALID_CMAC_KEYS]={0x04,0x07,0x0A}; 								/* configure only CMAC Key IDs here*/
+const uint8 ALL_VALID_VERIFIABLE_KEYIDs [NO_OF_VALID_ENC_DEC_KEYS+NO_OF_VALID_CMAC_KEYS]={0x04,0x06,0x08,0x07,0x0B,0x0C,0x0D,0x05,0x09,0x0A}; 	/*configure valid Encryption,Decryption purpose and CMAC KeyIds here*/
+
+const Cybersecdiag_KeyVerificationtype Cybersecdiag_KeyVerify = 
+{
+  &CybersecDiag_Verify_GIP_Key,
+};
+#endif
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+const Cybersecdiag_SafeKeyNumbertype Cybersecdiag_SafeKeyNumberConfig = 
+{
+  &Cybersecdiag_SafeKeyNumber_Write,
+  &Cybersecdiag_SafeKeyNumber_Read,
+  &Cybersecdiag_SafeKeyNumber_SetStatus
+};
+static boolean CybersecDiag_FlagReadSafeKeyNum = FALSE;
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_ROUTINE_LOCK_ENABLE
+const Cybersecdiag_JtagPswdLockRoutinetype Cybersecdiag_JtagPswdLockRoutineConfig =
+{
+    &Cybersecdiag_JtagPswdLockRoutine_Start,
+    &Cybersecdiag_JtagPswdLockRoutine_Status,
+};
+
+static uint8 JtagPassword_SecureDebug_CBK = JTAG_CBK_NOT_RECEIVED;
+static Csm_ReturnType JtagPassword_SecureDebug_CBK_Result = CSM_E_NOT_OK;
+static Cybersecdiag_JtagPswdLockStatetype Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_IDLE;
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE) || defined(CYBERSECDIAG_JTAG_PASSWORD_READ_LOCK)
+const Cybersecdiag_JtagPasswordLockingtype Cybersecdiag_JtagPasswordLockingConfig =
+{
+    &Cybersecdiag_JtagPasswordLocking_Write,
+    &Cybersecdiag_JtagPasswordLocking_Status,
+    &Cybersecdiag_JtagPasswordLocking_VerifySafeKeyNumber,
+};
+
+static uint8 DecryptJTAG[JTAG_DECRYPT_KEY_SIZE] = {0U};
+static uint8 Jtag_Enc_Key_array[JTAG_ENCRYPT_BLOB_LENGTH];
+static uint8 Jtag_Dec_Key_array[JTAG_DECRYPT_KEY_SIZE] = {	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06 ,0x07, 
+															0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+const Cybersecdiag_SecureSymmetricKeyProgrammingtype Cybersecdiag_SecureSymmetricKeyConfig = 
+{
+  &Cybersecdiag_Secure_SymmetricKey_Start,
+  &Cybersecdiag_Secure_SymmetricKey_Result,
+};
+
+static uint8 CSM_Enc_Key_array[CYBERSECDIAG_KEY_PROGRAMMING_LENGTH];
+static uint8 CSM_Dec_Key_array[CSM_DECRYPT_KEY_SIZE];
+static uint32 CybersecDiag_Key_ID;
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+const Cybersecdiag_SymmetricKeyVerificationtype Cybersecdiag_SymmetricKeyVerify = 
+{
+	&CybersecDiag_Symmetric_Key_Verification_Start,
+	&CybersecDiag_Symmetric_Key_Verification_Status,
+};
+
+static uint8 CybersecDiag_Verification_Result = CYBERSECDIAG_IDLE;
+#endif
+
+/*=====================================================================================================================
+**  PRIVATE
+**====================================================================================================================*/
+#ifdef CYBERSECDIAG_SECURE_FUSE_PROGRAMMING
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureFuse_programming   .done
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Secure Fuse Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SecureFuseProgramming_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+                            
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SecureFuse_programming(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+	    DiagReqType DiagReq;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_FUSE_PROGRAMMING;
+	    DiagReq.LengthP = SecureFuse_Programming_Length + 1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+			    Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)	
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;	
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+	            }
+				
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+    }
+    #endif        
+    return ret;		
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureFuse_Reading
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read status of Secure Fuse Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SecureFuse_Reading_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType Cybersecdiag_SecureFuse_Reading(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+    #if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+	   	DiagReqType DiagReq;
+		SDiagResponse_t DiagResp;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_FUSE_READING;
+	    DiagReq.LengthP = SecureFuse_reading_Length+1u;
+		DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+		for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;	
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+	            }
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+		if(DCM_E_OK == ret)
+		{
+			DiagResp = *Diag_TIGIP_GetDiagResponse();
+			if(4u == DiagResp.Length)
+			{
+				Data[DATA_BYTE_1] = DiagResp.DiagRespBuffer[DATA_BYTE_0];
+				Data[DATA_BYTE_2] = DiagResp.DiagRespBuffer[DATA_BYTE_1];
+				Data[DATA_BYTE_3] = DiagResp.DiagRespBuffer[DATA_BYTE_2];
+				Data[DATA_BYTE_4] = DiagResp.DiagRespBuffer[DATA_BYTE_3];
+			
+			}
+			else
+			{
+				//Size mismatch or i/p KeyID's out of range
+				ret = DCM_E_NOT_OK;
+				Data[DATA_BYTE_1] = 0u;
+				Data[DATA_BYTE_2] = 0u;
+				Data[DATA_BYTE_3] = 0u;
+				Data[DATA_BYTE_4] = 0u;
+			}
+		}
+	}
+	#endif 
+    return ret;  
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureLock_programming
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to Lock/unlock Secure boot
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SecureLock_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+                            
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SecureLock_programming(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+	    DiagReqType DiagReq;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_LOCK_PROGRAMMING;
+	    DiagReq.LengthP = SecureLock_Programming_Length + 1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)	
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;	
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+					
+	            }
+				
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+    }
+    #endif        
+    return ret;		
+}
+
+static Std_ReturnType Cybersecdiag_SecureLock_programmingResult(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+        DiagReqType DiagReq;
+	    SDiagResponse_t DiagResp;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_LOCK_PROGRAMMING;
+	    DiagReq.LengthP =  1u;
+	    DiagReq.DataP[0] = DIAGRC_RESULTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)	
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;	
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+					
+	            }
+				
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+		if(DCM_E_OK == ret)
+		{
+			DiagResp = *Diag_TIGIP_GetDiagResponse();
+			if(1u == DiagResp.Length)
+			{
+				Data[DATA_BYTE_0] = DiagResp.DiagRespBuffer[0];
+			}
+			else
+			{
+				//Size mismatch
+				ret = DCM_E_NOT_OK;
+			}
+		}
+    }
+    #endif        
+    return ret;		
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureLock_Reading
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read Data of Secure boot fuse to know Locked/unlocked
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SecureLock_Read_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType Cybersecdiag_SecureLock_Reading(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+    #if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+	   	DiagReqType DiagReq;
+		SDiagResponse_t DiagResp;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_LOCK_READING;
+	    DiagReq.LengthP = SecureLock_reading_Length + 1u;
+		DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+		for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+					
+	            }
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+		if(DCM_E_OK == ret)
+		{
+			DiagResp = *Diag_TIGIP_GetDiagResponse();
+			if(4u == DiagResp.Length)
+			{
+				Data[DATA_BYTE_1] = DiagResp.DiagRespBuffer[DATA_BYTE_0];
+				Data[DATA_BYTE_2] = DiagResp.DiagRespBuffer[DATA_BYTE_1];
+				Data[DATA_BYTE_3] = DiagResp.DiagRespBuffer[DATA_BYTE_2];
+				Data[DATA_BYTE_4] = DiagResp.DiagRespBuffer[DATA_BYTE_3];
+			
+			}
+			else
+			{
+				//Size mismatch
+				ret = DCM_E_NOT_OK;
+			}
+		}
+	}
+	#endif 
+    return ret;  
+}
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_PROGRAMMING
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SymmetricKey_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SymmetricKeyProgramming_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SymmetricKey_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SYMMETRIC_KEY_PROGRAMMING;
+	    DiagReq.LengthP = SymmetricKey_Start_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#ifdef CYBERSECDIAG_SHESLOTS_READ
+/*=====================================================================================================================
+**
+** Function Name    :  CybersecDiagCfg_SHESlots_Read
+**
+** Visibility       :  Public
+**
+** Description      :  This function reads the M4/M5 of SlotX(*1).
+** 					   This shall be used to confirm the written key when the record of its keys is lost.
+**
+** Invocation       :  Cybersecdiagcdd.c , Function: CybersecDiag_SHESlots_Read
+**
+** Inputs           :  Data[In]: M4/M5 slot number
+**
+** Outputs          :  Data[Out]: Read key
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType CybersecDiagCfg_SHESlots_Read(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	uint8 idx;
+    uint32 keyId, keyElementId, keyLengthPtr;
+
+	/*On pending request CSM interface should not be called again*/
+	if (CybersecDiag_FlagReadSHESlot == FALSE)
+	{
+		/*Clearing buffer*/
+		for (idx = 0U; idx < CYBERSECDIAG_M4M5_SLOTLENGTH; idx++)
+		{
+			Data[idx] = 0U;
+		}
+
+		/*If read request is for SafeKey Number*/
+		if (CybersecDiag_FlagReadSafeKeyNum == TRUE)
+		{
+			keyId = SAFE_KEY_ID;
+			keyElementId = SAFE_KEY_ELEMENT_ID;
+			keyLengthPtr = SAFE_KEY_LENGTH;
+
+			/*This interface will trigger call-back interface which will provide Safekey number from slot-7*/
+			//ret = Crypto_KeyElementGet(keyId, keyElementId, Data, &keyLengthPtr);
+		}
+		else
+		{
+			keyId = (uint32)Data[0U];
+			keyElementId = (CYBERSECDIAG_KEYMASK | keyId);
+			keyLengthPtr = CYBERSECDIAG_WRITTENKEY_LENGTH;
+
+			/*This interface will trigger call-back interface which will provide M4M5 values of requested slot*/
+			//ret = Csm_KeyElementGet(keyId, keyElementId, Data, &keyLengthPtr);
+		}
+
+		if(ret == (uint8)E_NOT_OK)
+		{
+			/*If failure on SafeKey number read then clear its flag*/
+			CybersecDiag_FlagReadSafeKeyNum = FALSE;
+			*ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+		}
+		else if(ret == (uint8)E_KEYNOT_AVAILABLE)
+		{
+			/*Key is not available in required slot*/
+			/*Data values will be shown as 0*/
+			ret = E_OK;
+		}
+		else if(ret == (uint8)E_OK)
+		{
+			/* One time successfully trigered CSM get function
+			 * Wait for M4M5 values from call-back function*/
+			CybersecDiag_FlagReadSHESlot = TRUE;
+			ret = DCM_E_PENDING;
+		}
+		else
+		{
+			ret = DCM_E_PENDING;
+		}
+	}
+	else
+	{
+		/*Result is available from call-back function*/
+		if (CybersecDiag_FlagResultPtr == TRUE)
+		{
+			if (CybersecDiag_FlagReadSafeKeyNum == TRUE)
+			{
+				/*Copy SafeKey number from global variable to CAN data bufer*/
+				for (idx = 0U; idx < SAFE_KEY_LENGTH; idx++)
+				{
+					Data[idx] = CybersecDiag_ResultPtr[idx];
+				}
+			}
+			else
+			{
+				/*Copy M4M5 values from global variable to CAN data bufer*/
+				for (idx = 0U; idx < CYBERSECDIAG_M4M5_SLOTLENGTH; idx++)
+				{
+					Data[idx] = CybersecDiag_ResultPtr[idx];
+				}
+			}
+
+			/*Clear flags to take new read request*/
+			CybersecDiag_FlagReadSHESlot = FALSE;
+			CybersecDiag_FlagReadSafeKeyNum = FALSE;
+			
+			/*Since result is available clear result flag*/
+			CybersecDiag_FlagResultPtr = FALSE;
+
+			ret = E_OK;
+		}
+		else
+		{
+			/*Result still not availabe from call-back function*/
+			ret = DCM_E_PENDING;
+		}
+	}
+
+	return ret;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Csm_KeyservicefinishNotification
+**
+** Visibility       :  Public
+**
+** Description      :  Call-back interface to get M4M5 values
+**
+** Invocation       :  Csm_KeyElementGet()
+**
+** Inputs           :  resultptr - contains M4M5 values
+**
+** Outputs          :  void
+**
+** Critical Section :  Yes/No
+**
+**====================================================================================================================*/
+//void Csm_KeyservicefinishNotification(uint8 result,uint8 *resultptr)
+//{
+//	UNUSED(result);
+//	uint8 idx;
+//
+//	/*Copy M4M5 values to global variable*/
+//	for(idx = 0U; idx < CYBERSECDIAG_M4M5_SLOTLENGTH; idx++)
+//	{
+//		CybersecDiag_ResultPtr[idx] = resultptr[idx];
+//	}
+//	
+//	/*Set the flag to notify that result is availalbe from this call-back function*/
+//	CybersecDiag_FlagResultPtr = TRUE;
+//}
+
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureSymmetricKey_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_AES_IV_Key_Storage_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SecureSymmetricKey_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_SYMMETRIC_KEY_PROGRAMMING;
+	    DiagReq.LengthP = Secure_SymmetricKey_Start_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#if (defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION_ONLY_CMAC) || defined(CYBERSECDIAG_BACKUPBANK_VERIFICATION))
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_BackupBankVer_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_Backup_bank_verification_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_BackupBankVer_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_BACKUP_BANK_VERIFICATION_PROGRAMMING;
+	    DiagReq.LengthP = Backup_Bank_VerificationStart_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_BackupBankVer_Result
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Backup_Bank_Verification Result
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_Backup_bank_verification_RCStatus
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_BackupBankVer_Result(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+		SDiagResponse_t DiagResp;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_BACKUP_BANK_VERIFICATION_PROGRAMMING;
+	    DiagReq.LengthP = 1u;
+	    DiagReq.DataP[0] = DIAGRC_RESULTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+		if(DCM_E_OK == ret)
+		{
+			DiagResp = *Diag_TIGIP_GetDiagResponse();
+			if(2u == DiagResp.Length)
+			{
+				Data[DATA_BYTE_0] = DiagResp.DiagRespBuffer[0];
+				Data[DATA_BYTE_1] = DiagResp.DiagRespBuffer[1];
+			}
+			else
+			{
+				//Size mismatch
+				ret = DCM_E_NOT_OK;
+			}
+		}
+	     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureSymmetricAESKey_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_AES_Key_Storage_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SecureSymmetricAESKey_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_SYMMETRIC_AESKEY_PROGRAMMING;
+	    DiagReq.LengthP = Secure_SymmetricAESKey_Start_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_KEY_PROGRAMMING_RSA
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SecureASymmetricKey_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_RSA_Key_Storage_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SecureASymmetricKey_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_SECURE_ASYMMETRIC_KEY_PROGRAMMING;
+	    DiagReq.LengthP = Secure_ASymmetricKey_Start_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_LOCK_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagLocking_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_RSA_Key_Storage_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_JtagLocking_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_JTAG_PASSWORD_LOCKING;
+	    DiagReq.LengthP = JtagPassword_Lock_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+#ifdef CYBERSECDIAG_UART_UNLOCK_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_UART_UnLocking_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to unlock UART
+**
+** Invocation       :  
+**
+** Inputs           :  Data[In]:data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_UART_UnLocking_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	#if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+		//DiagReqType DiagReq;
+	    uint8 Data_idx = 0u;
+		Std_ReturnType DataP_idx;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_UART_PASSWORD_UNLOCKING;
+	    DiagReq.LengthP = UART_Password_UnLock_Length+1u;
+	    DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+	    for(DataP_idx=1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+	            if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;		
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+
+				}
+	            break;
+	        default:
+					/*NULL*/
+	            break;
+	    }
+     }
+     #endif      
+    return ret;		
+}
+#endif
+
+#if defined(CYBERSECDIAG_DATA_LOCK_AES_IV) || defined(CYBERSECDIAG_DATA_LOCK_RSA) || defined(CYBERSECDIAG_SECURE_KEY_PROGRAMMING_AES_IV)
+/* Protect or Unprotect workflash flash for device S6J33xx, S6J34xx, S6J35xx Series */
+static Std_ReturnType WorkFlash_Protection_Write_Sector1(boolean status)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	uint32 markervalue =0x00UL; 
+    uint32 marker_eccstatus;
+    marker_eccstatus = 0; //ECC status Register     
+    if ( 0x10000UL != (0x10000UL & marker_eccstatus) )
+    {  
+        if (SECTOR_RANGE_THIRTY_TWO > AES_IV_KEY_SECTOR_NUMBER )
+    	{
+	       markervalue = 0; 
+	       if (FALSE != status) 
+	       { 
+	          markervalue = ((1UL << AES_IV_KEY_SECTOR_NUMBER) | markervalue); 
+	       }
+	       else  
+	       { 
+	          markervalue = ( (~(1UL << AES_IV_KEY_SECTOR_NUMBER)) & markervalue); 
+	       } 
+	        // TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; 
+	        // TCFCFG0_WSWP0 = markervalue; 
+    	} 
+    	else if ((SECTOR_LOW_RANGE < AES_IV_KEY_SECTOR_NUMBER) && (SECTOR_HIGH_RANGE > AES_IV_KEY_SECTOR_NUMBER)) 
+    	{
+	       // markervalue = TCFCFG0_WSWP1; 
+	       if ( FALSE != status) 
+	       { 
+	          markervalue = ((1UL << AES_IV_KEY_SECTOR_NUMBER) | markervalue); 
+	       }
+	       else  
+	       { 
+	          markervalue = ( (~(1UL << AES_IV_KEY_SECTOR_NUMBER)) & markervalue); 
+	       } 
+	        // TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; 
+	        // TCFCFG0_WSWP0 = markervalue; 
+    	}
+    	else
+    	{
+			/*NULL*/
+    	}		
+    }
+    marker_eccstatus = 0; //ECC status Register     
+    if ( 0x10000UL != (0x10000UL & marker_eccstatus) )
+    {
+      ret = E_OK;
+    }  
+    return ret;
+}
+static void WorkFlash_Protection_Read_Sector1(uint8 *Data)
+{
+	uint32 markervalue =0x00UL; 
+    if (SECTOR_RANGE_THIRTY_TWO > AES_IV_KEY_SECTOR_NUMBER )
+    {
+       // markervalue = TCFCFG0_WSWP0; 
+       if ((0x1UL << AES_IV_KEY_SECTOR_NUMBER) & markervalue) 
+       {
+           Data[0U] = 0x0u; 									 //since ACTIVE LOW
+       }
+       else
+       { 
+           Data[0U] = 0x1u;
+       }
+    } 
+    else if ((SECTOR_LOW_RANGE < AES_IV_KEY_SECTOR_NUMBER) && (SECTOR_HIGH_RANGE > AES_IV_KEY_SECTOR_NUMBER)) 
+    {
+       // markervalue = TCFCFG0_WSWP1; 
+       if ((0x1UL << AES_IV_KEY_SECTOR_NUMBER) & markervalue) 
+       {
+           Data[0U] = 0x0u;
+       }
+       else
+       { 
+           Data[0U] = 0x1u;
+       }
+    }
+	else
+	{
+		/*NULL*/
+	}
+}
+static Std_ReturnType WorkFlash_Protection_Write_Sector2(boolean status)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	uint32 markervalue =0x00UL; 
+    uint32 marker_eccstatus;
+    marker_eccstatus = 0; //ECC status Register     
+    if ( 0x10000UL != (0x10000UL & marker_eccstatus) )
+    {  
+        if (SECTOR_RANGE_THIRTY_TWO > RSA_KEY_SECTOR_NUMBER)
+    	{
+	       // markervalue = TCFCFG0_WSWP0; 
+	       if (FALSE != status) 
+	       { 
+	          markervalue = ((1UL << RSA_KEY_SECTOR_NUMBER) | markervalue); 
+	       }
+	       else  
+	       { 
+	          markervalue = ( (~(1UL << RSA_KEY_SECTOR_NUMBER)) & markervalue); 
+	       } 
+	        // TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; 
+	        // TCFCFG0_WSWP0 = markervalue; 
+    	} 
+    	else if ((SECTOR_LOW_RANGE < RSA_KEY_SECTOR_NUMBER) && (SECTOR_HIGH_RANGE > RSA_KEY_SECTOR_NUMBER)) 
+    	{
+	       // markervalue = TCFCFG0_WSWP1; 
+	       if (FALSE != status) 
+	       { 
+	          markervalue = ((1UL << RSA_KEY_SECTOR_NUMBER) | markervalue); 
+	       }
+	       else  
+	       { 
+	          markervalue = ( (~(1UL << RSA_KEY_SECTOR_NUMBER)) & markervalue); 
+	       } 
+	        // TCFCFG0_FCPROTKEY = 0xCF61F1A5UL; 
+	        // TCFCFG0_WSWP0 = markervalue; 
+    	}
+    	else
+    	{
+			/*NULL*/
+    	}		 
+    }
+    marker_eccstatus = 0; //ECC status Register     
+    if ( 0x10000UL != (0x10000UL & marker_eccstatus) )
+    {
+      ret = E_OK;
+    }  
+    return ret;
+
+}
+static void WorkFlash_Protection_Read_Sector2(uint8 *Data)
+{
+	uint32 markervalue =0x00UL; 
+    if (SECTOR_RANGE_THIRTY_TWO > RSA_KEY_SECTOR_NUMBER)
+    {
+       // markervalue = TCFCFG0_WSWP0; 
+       if ((0x1UL << RSA_KEY_SECTOR_NUMBER) & markervalue) 
+       {
+           Data[0U] = 0x0u;
+       }
+       else
+       { 
+           Data[0U] = 0x1u;
+       }
+    } 
+    else if ((SECTOR_LOW_RANGE < RSA_KEY_SECTOR_NUMBER) && (SECTOR_HIGH_RANGE > RSA_KEY_SECTOR_NUMBER)) 
+    {
+       // markervalue = TCFCFG0_WSWP1; 
+       if ((0x1UL << RSA_KEY_SECTOR_NUMBER) & markervalue) 
+       {
+           Data[0U] = 0x0u;
+       }
+       else
+       { 
+           Data[0U] = 0x1u;
+       }
+    }
+	else
+	{								
+		/*NULL*/
+	}
+
+}
+#endif
+
+#ifdef CYBERSECDIAG_CRYPTO_KEY_VERIFICATION
+/*=====================================================================================================================
+**
+** Function Name    :  CybersecDiag_GIP_Key_Verification
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to Verify Gip Cybersecurity keys
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_key_verification_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :    	DCM_E_PENDING - 10
+                            DIAG_POSITIVERESPONSE - 0
+                            DIAG_CONDITIONSNOTCORRECT - 34
+                            DIAG_INCORRECTMESSAGELENGTHORINVALIDFORMAT - 19
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+
+static Std_ReturnType CybersecDiag_Verify_GIP_Key(uint8 *Data,uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+    #if defined (MEET_GIP_ENABLED) && defined(MEET_GIP_ENABLED_CRYPTO)
+	{
+	   	DiagReqType DiagReq;
+		SDiagResponse_t DiagResp;
+		Std_ReturnType DataP_idx;
+		uint8 Data_idx = 0u;
+	    DiagReq.ActionP = DiagActionType_RoutineCtrl;
+	    DiagReq.ServiceId = cROUTINE_CYBERSECURITY_KEY_VERIFICATION;
+	    DiagReq.LengthP = CyberSecuritykeyVerify_Length + 1u;
+		DiagReq.DataP[0] = DIAGRC_STARTROUTINE;
+		for(DataP_idx = 1u;DataP_idx < DiagReq.LengthP;DataP_idx++)
+	    {
+	        DiagReq.DataP[DataP_idx] = Data[Data_idx];
+			Data_idx++;	   
+	    }
+	    switch(Cybersecdiag_GIPDataReqState)
+	    {
+	        case eGIP_InitiateRequest:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				Cybersecdiag_GIPDataReqState = eGIP_WaitForResponse;
+	            break;
+	        case eGIP_WaitForResponse:
+	            ret = Meet_Process_Gip_Diag_Request_Crypto(Cybersecdiag_GIPDataReqState, &DiagReq, ErrorCode);
+				if(ret != DCM_E_PENDING)
+	            {
+	                Cybersecdiag_GIPDataReqState = eGIP_InitiateRequest;	
+					DiagReq.ActionP = 255U;
+					Diag_TIGIP_SendDiagRequest(&DiagReq);					
+	            }
+	            break;
+	        default:
+				/*NULL*/
+	            break;
+	    }
+		if(DCM_E_OK == ret)
+		{
+			DiagResp = *Diag_TIGIP_GetDiagResponse();
+			if(1u == DiagResp.Length)
+			{
+				Data[DATA_BYTE_1] = DiagResp.DiagRespBuffer[DATA_BYTE_0];			
+			}
+			else
+			{
+				//Size mismatch
+				ret = DCM_E_NOT_OK;
+				Data[DATA_BYTE_1] = 0u;
+
+			}
+		}
+	}
+	#endif 
+    return ret;  
+}
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_LOCK_ENABLE) && defined(SHAREDIAG_SERVICE_ENABLE_3)
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_Assign_JTAG_Data
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to assign JTAG password and security enable bytes in corresponding offset 
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JTAG_passwordWrite_Lock
+**
+** Inputs           :  uint8 *password
+**
+** Outputs          :  uint8 *JTAGwritedata
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+void Cybersecdiag_Assign_JTAG_Data(uint8 *password,uint8 *JTAGwritedata)
+{
+	MemLib_MemSet(&JTAGwriteData[0U], 0xFF, SHAREDIAG_SIZE_5);					//erase
+    MemLib_MemCpy(&JTAGwriteData[0U], (uint32 *)FBL_BOOTROM_BASE, SHAREDIAG_SIZE_5);	//copy current Data from bootROM
+	//overwrite RAM bytes of required location
+
+	/*TCFlash security write enable */	
+        JTAGwritedata[0x88] = 0x34;
+        JTAGwritedata[0x89] = 0x12;
+        JTAGwritedata[0x8A] = 0xF7;
+        JTAGwritedata[0x8B] = 0x59;
+		
+	/*JTAG password - 16bytes*/
+        JTAGwritedata[0x90] = password[DATA_BYTE_0];
+        JTAGwritedata[0x91] = password[DATA_BYTE_1];	
+        JTAGwritedata[0x92] = password[DATA_BYTE_2];
+        JTAGwritedata[0x93] = password[DATA_BYTE_3];
+
+        JTAGwritedata[0x98] = password[DATA_BYTE_4];
+        JTAGwritedata[0x99] = password[DATA_BYTE_5];
+        JTAGwritedata[0x9A] = password[DATA_BYTE_6];
+        JTAGwritedata[0x9B] = password[DATA_BYTE_7];
+
+
+        JTAGwritedata[0xA0] = password[DATA_BYTE_8];
+        JTAGwritedata[0xA1] = password[DATA_BYTE_9];
+        JTAGwritedata[0xA2] = password[DATA_BYTE_10];
+        JTAGwritedata[0xA3] = password[DATA_BYTE_11];
+
+
+        JTAGwritedata[0xA8] = password[DATA_BYTE_12];
+        JTAGwritedata[0xA9] = password[DATA_BYTE_13];
+        JTAGwritedata[0xAA] = password[DATA_BYTE_14];
+        JTAGwritedata[0xAB] = password[DATA_BYTE_15];
+
+	/*JTAG set lock bits*/
+        JTAGwritedata[0x0] = 0x01;
+        JTAGwritedata[0x1] = 0x00;
+        JTAGwritedata[0x2] = 0x00;
+        JTAGwritedata[0x3] = 0x00;
+
+        JTAGwritedata[0x8] = 0x01;
+        JTAGwritedata[0x9] = 0x00;
+        JTAGwritedata[0xa] = 0x00;
+        JTAGwritedata[0xb] = 0x00;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_Verify_Serial_Number
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to verify input serial number with serial number stored in cluster
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JTAG_passwordWrite_Lock
+**
+** Inputs           :  uint8 *Data
+**
+** Outputs          :  Std_ReturnType E_OK - SAME; E_NOT_OK - Different
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+Std_ReturnType Cybersecdiag_Verify_Serial_Number(uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	uint8 Serial_Number[2*SERIAL_NUMBER_SIZE] = {0};	//includes PCB serial number and assembly manufacturing Data
+
+	//read serial number
+	//ret = Rte_Call_rp_CS_MemAbsGet_Get_NV_Assembly_Manufacturing_date(Serial_Number);
+
+	//compare stored serial number with input serial number
+	if(TRUE == MemLib_MemCmp(Serial_Number+SERIAL_NUMBER_SIZE,Data,SERIAL_NUMBER_SIZE))
+	{
+		//input serial number is same as stored serial number
+		ret = E_OK;
+	}
+	else
+	{
+		//input serial number is different from stored serial number
+		ret = E_NOT_OK;
+	}
+	return ret;
+}
+#endif
+
+
+#ifdef CYBERSECDIAG_CSM_SAFE_KEY_NUMBER
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SafeKeyNumber_Write
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write safe key number
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SafeKey_Write
+**
+** Inputs           :  uint8 *Data
+**
+** Outputs          :  Std_ReturnType E_OK/E_NOT_OK
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_Write(uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+
+	/* For writing Safe Key number Key ID is configured as 7, Key Elelment ID is 4, Data written is 16 Bytes */
+	//ret = Csm_KeyElementSet (SAFE_KEY_ID, SAFE_KEY_ELEMENT_ID, Data, SAFE_KEY_LENGTH); 
+ 
+    return ret;		
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SafeKeyNumber_SetStatus
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to validate safe key number
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SafeKey_Write
+**
+** Inputs           :  uint8 *Data
+**
+** Outputs          :  Std_ReturnType E_OK/E_NOT_OK
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_SetStatus(uint8 *Data)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	
+	//ret = Csm_KeySetValid(SAFE_KEY_ID);
+ 
+    return ret;		
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_SafeKeyNumber_Read
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to read safe key number
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SafeKey_Read
+**
+** Inputs           :  uint8 *Data, uint8 *ErrorCode
+**
+** Outputs          :  Std_ReturnType E_OK/E_NOT_OK
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_SafeKeyNumber_Read(uint8 *Data, uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+ 
+	CybersecDiag_FlagReadSafeKeyNum = TRUE;
+	
+	//ret = CybersecDiagCfg_SHESlots_Read(Data, ErrorCode);
+	
+	return ret;	
+}
+#endif
+
+#ifdef CYBERSECDIAG_JTAG_PASSWORD_ROUTINE_LOCK_ENABLE
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPswdLockRoutine_Start
+**
+** Visibility       :  Private
+**
+** Description      :  Start Jtag lock lifecycle
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JtagPasswordLock_RCStart
+**
+** Inputs           :  uint8 *Data, uint8 *ErrorCode
+**
+** Outputs          :  Std_ReturnType E_OK - Pass; E_NOT_OK - Fail
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_JtagPswdLockRoutine_Start(uint8 *Data, uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+
+    // Read jtag password status
+    ret = Cybersecdiag_JtagPasswordLocking_Status(Data, ErrorCode);
+
+    // If jtag is unlocked then proceed for locking otherwise provide NRC
+    if ((ret == (uint8)E_OK) && (Data[0U] == JTAG_UNLOCKED))
+    {
+        // Intimation of jtag password lock has triggered via RID
+        Cybersecdiag_JtagPswdLockState = eJTAG_LOCK;
+    }
+    else if((ret == (uint8)E_OK) && (Data[0U] == JTAG_LOCKED))
+    {
+        // Jtage already locked
+        Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_FINISH;
+    }
+    else
+    {
+        *ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+    }
+    
+    return ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPswdLockRoutine_Task
+**
+** Visibility       :  Private
+**
+** Description      :  Jtag lock lifecycle
+**
+** Invocation       :  Cybersec.diagcdd , Function: meetcdd-->cmpActive
+**
+** Inputs           :  void
+**
+** Outputs          :  void
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+void Cybersecdiag_JtagPswdLockRoutine_Task(void)
+{
+    Csm_ReturnType Ret_Cry_HSM = CSM_E_NOT_OK;
+
+    switch (Cybersecdiag_JtagPswdLockState)
+    {
+    case eJTAG_LOCK:
+        JtagPassword_SecureDebug_CBK = JTAG_CBK_NOT_RECEIVED;
+        JtagPassword_SecureDebug_CBK_Result = CSM_E_NOT_OK;
+
+        //Ret_Cry_HSM = Cry_Hsm_Lock_JTAG();
+
+        if (CSM_E_OK == Ret_Cry_HSM)
+        {
+            Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_WAIT;
+        }
+        else
+        {
+            Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_ERROR;
+        }
+        break;
+
+    case eJTAG_LOCK_WAIT:
+        if (JTAG_CBK_RECEIVED == JtagPassword_SecureDebug_CBK)
+        {
+            if (JtagPassword_SecureDebug_CBK_Result == CSM_E_OK)
+            {
+                Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_FINISH;
+            }
+            else
+            {
+                Cybersecdiag_JtagPswdLockState = eJTAG_LOCK_ERROR;
+            }
+        }
+        else
+        {
+            //(void)Cry_Hsm_SecureDebugMainFunction();
+            //(void)vHsmIpc_HostManager_PeriodicCheck();
+            //(void)CySldIpc_Isr_IpcDrv_Cat2();
+        }
+        break;
+
+    default:
+        // Do Nothing
+        break;
+    }
+
+}
+/*=====================================================================================================================
+**
+** Function Name    :  SecureDebug_callback
+**
+** Visibility       :  Public
+**
+** Description      :  Callback from HSM to get status of Jtag lock
+**
+** Invocation       :  HSM
+**
+** Inputs           :  Csm_ReturnType Result
+**
+** Outputs          :  void
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+void SecureDebug_callback(Csm_ReturnType Result)
+{
+    // Jtag call-back received
+    JtagPassword_SecureDebug_CBK = JTAG_CBK_RECEIVED;
+
+    // Store jtag locking result
+    JtagPassword_SecureDebug_CBK_Result = Result;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPswdLockRoutine_Status
+**
+** Visibility       :  Private
+**
+** Description      :  Provides result of jtag password lock routine
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JtagPasswordLock_RCStatus
+**
+** Inputs           :  uint8 *Data, uint8 *ErrorCode
+**
+** Outputs          :  Std_ReturnType E_OK - Pass; E_NOT_OK - Fail
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_JtagPswdLockRoutine_Status(uint8 *Data, uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+
+    if (Cybersecdiag_JtagPswdLockState == eJTAG_LOCK_FINISH)
+    {
+        ret = E_OK;
+    }
+    else if (Cybersecdiag_JtagPswdLockState == eJTAG_LOCK_ERROR)
+    {
+        ret = E_NOT_OK;
+    }
+    else
+    {
+        ret = E_PENDING;
+    }
+
+    return ret;
+}
+#endif
+
+#if defined(CYBERSECDIAG_JTAG_PASSWORD_WRITE_LOCK_ENABLE) || defined(CYBERSECDIAG_JTAG_PASSWORD_READ_LOCK)
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPasswordLocking_VerifySafeKeyNumber
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to verify input SafeKey number with SafeKey number stored in M0
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JTAG_passwordProtection_Write
+**
+** Inputs           :  uint8 *Data
+**
+** Outputs          :  Std_ReturnType E_OK - SAME; E_NOT_OK - Different
+**
+** Critical Section :  No
+**
+**====================================================================================================================*/
+Std_ReturnType Cybersecdiag_JtagPasswordLocking_VerifySafeKeyNumber(uint8 *Data, uint8 *ErrorCode)
+{
+	Std_ReturnType ret = E_NOT_OK;
+	uint8 SafekeyNumber_Stored[CYBERSECDIAG_M4M5_SLOTLENGTH] = {0U};
+	uint8 SafekeyNumber_Provided[JTAG_SAFE_KEY_LENGTH] = {0U};
+	boolean compareRes = FALSE;
+	uint8 idx = 0U;
+
+	//ret = Cybersecdiag_SafeKeyNumber_Read(SafekeyNumber_Stored, ErrorCode);
+	
+	if(ret == (uint8)E_NOT_OK)
+	{
+		*ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+		ret = E_NOT_OK;
+	}
+	else if(ret == (uint8)E_OK)
+	{
+		for (idx = 0U; idx < JTAG_SAFE_KEY_LENGTH; idx++)
+		{
+			SafekeyNumber_Provided[idx] = Data[idx];
+		}
+
+		/* Compare Safe Key already stored with input Data */
+		compareRes = MemLib_MemCmp((uint8 *)SafekeyNumber_Stored, (uint8 *)SafekeyNumber_Provided, (uint32)JTAG_SAFE_KEY_LENGTH);
+		
+		if(TRUE == compareRes)
+		{
+			/* Input Safe Key number is same as already stored Safe key number */
+			ret = E_OK;
+		}
+		else
+		{
+			/* Input Safe Key number is different from already stored Safe key number */
+			*ErrorCode = DCM_E_GENERALPROGRAMMINGFAILURE;
+			ret = E_NOT_OK;
+		}
+	}
+	else
+	{
+		ret = DCM_E_PENDING;
+	}
+
+	return ret;
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPasswordLocking_Write
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JTAG_passwordProtection_Write
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :  E_OK : Success
+**					   E_NOT_OK: Fail
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_JtagPasswordLocking_Write(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+	uint8 idx = 0U;
+    uint8 key_start_idx = 16U;
+	
+	for(idx = 0u; idx < JTAG_ENCRYPT_BLOB_LENGTH; idx++)
+	{			
+		Jtag_Enc_Key_array[idx] = Data[key_start_idx];               
+		key_start_idx++;
+	}		
+		
+	//ret = VisteonObfuscateLib_DecryptItem_v2(Jtag_Enc_Key_array, JTAG_ENCRYPT_BLOB_LENGTH, Jtag_Dec_Key_array, JTAG_DECRYPT_KEY_SIZE);
+			
+	if((uint8)E_NOT_OK == ret)
+	{
+		/* Key Decryption Failed */
+		*ErrorCode = DCM_E_GENERALPROGRAMMINGFAILURE;	
+	}
+	else
+	{
+		//ret = Crypto_Hsm_SetJtag_Password(Jtag_Dec_Key_array, JTAG_DECRYPT_KEY_SIZE);
+	}	
+		
+    return ret;		
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_JtagPasswordLocking_Status
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_JTAG_passwordProtection_Status
+**
+** Inputs           :  Data[In]:
+**
+** Outputs          :  0x00 (locked) - success case.
+**					   0x01 (unlocked) - need to execute JTAG password protection again
+**					   other than above (unknown status) - need to execute JTAG password protection again.
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_JtagPasswordLocking_Status(uint8 *Data, uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+    uint8 jtagResult = JTAG_DECRYPT_KEY_SIZE;
+
+    //ret = Cry_Hsm_CheckJtag_Password(DecryptJTAG, &jtagResult);
+
+    if (ret == (uint8)E_NOT_OK)
+    {
+        *ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+    }
+    else
+    {
+        /* Unlocked -  0 - if keys are not matching, key is registered, protection context is normal
+         * Unlocked -  1 - if no key is registered
+         * Locked   -  2 - if key is registered and protection context is secure
+         * Unlocked - 16 - if keys are matching and registered, protection context is normal
+         * Locked   - 18 - if keys are matching and registered, protection context is secure
+         */
+
+        switch (jtagResult)
+        {
+        case PASSWORD_PRESENT:
+        case PASSWORD_NOT_PRESENT:
+        case PASSWORD_MATCHED:
+            Data[0U] = JTAG_UNLOCKED;
+            break;
+
+        case PASSWORD_PRESENT_LIFECYCLED:
+        case PASSWORD_MATCH_LIFECYCLED:
+            Data[0U] = JTAG_LOCKED;
+            break;
+
+        default:
+            Data[0U] = JTAG_UNLOCKED;
+            break;
+        }
+    }
+
+    return ret;
+}
+#endif
+
+#ifdef CYBERSECDIAG_SECURE_SYMMETRIC_KEY_PROGRAMMING
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_Secure_SymmetricKey_Start
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SymmetricKeyProgramming_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :  DCM_E_PENDING
+**                     DCM_E_NOT_OK
+**                     DCM_E_CONDITIONSNOTCORRECT
+**                     DCM_E_OK
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_Secure_SymmetricKey_Start(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+
+	uint8 idx = 0U;
+	uint32 Key_length = 0U;
+    Key_length = Data[1U];
+	
+    if(CYBERSECDIAG_KEY_PROGRAMMING_LENGTH == Key_length)
+	{
+		for(idx = 0u; idx < (uint8)Key_length; idx++)
+		{			
+			CSM_Enc_Key_array[idx] = Data[idx + 2U];
+		}
+		
+		//ret = VisteonObfuscateLib_DecryptItem_v2(CSM_Enc_Key_array, CYBERSECDIAG_KEY_PROGRAMMING_LENGTH, CSM_Dec_Key_array, CSM_DECRYPT_KEY_SIZE);
+		if((uint8)E_NOT_OK == ret)
+		{
+			/* Key Decryption Failed */
+			*ErrorCode = DCM_E_GENERALPROGRAMMINGFAILURE;	
+		}
+		else
+		{
+			//ret = Csm_KeyElementSet(CybersecDiag_Key_ID, KEY_PROGRAMMING_ELEMENT_ID, CSM_Dec_Key_array, CSM_DECRYPT_KEY_SIZE);
+			if ((uint8)E_OK == ret)
+			{
+				ret = Csm_KeySetValid(CybersecDiag_Key_ID);
+			}
+		}
+	}
+	else
+	{
+		*ErrorCode = DCM_E_CONDITIONSNOTCORRECT;
+	}
+
+    return ret;		
+}
+/*=====================================================================================================================
+**
+** Function Name    :  Cybersecdiag_Secure_SymmetricKey_Result
+**
+** Visibility       :  Private
+**
+** Description      :  calls API to write Symmetric Key
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_SymmetricKeyProgramming_RCStart
+**
+** Inputs           :  Data[In]:Data
+**
+** Outputs          :  DCM_E_PENDING
+**                     DCM_E_NOT_OK
+**                     DCM_E_CONDITIONSNOTCORRECT
+ **                    DCM_E_OK
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType Cybersecdiag_Secure_SymmetricKey_Result(uint8 *Data,uint8 *ErrorCode)
+{
+    Std_ReturnType ret = E_NOT_OK;
+ 
+	Data[1U] = (uint8)CybersecDiag_Key_ID;
+	
+	//ret = CybersecDiagCfg_SHESlots_Read(&Data[1], ErrorCode);
+	
+	return ret;
+}
+#endif
+
+#ifdef CYBERSECDIAG_SYMMETRIC_KEY_VERIFICATION
+/*=====================================================================================================================
+**
+** Function Name    :  CybersecDiag_Symmetric_Key_Verification_Start
+**
+** Visibility       :  Private
+**
+** Description      :  Provide status of key verification
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_key_verification_RCStart
+**
+** Inputs           :  Data[In]: Data
+**
+** Outputs          :  E_OK / E_NOT_OK
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType CybersecDiag_Symmetric_Key_Verification_Start(uint8 *Data, uint8 *ErrorCode)
+{
+	UNUSED(ErrorCode);
+	Std_ReturnType ret = E_NOT_OK;
+	uint32 key_ID = 0U;
+
+	key_ID = (uint32)Data[0U];
+	
+	//ret = Crypto_KeyVerify(key_ID, &Data[1U], CYBERSECDIAG_KEYVERIFICATION_LENGTH);
+
+    if((ret == (uint8)E_NOT_OK) || (ret == (uint8)E_KEYNOT_AVAILABLE))
+    {
+		CybersecDiag_Verification_Result = CYBERSECDIAG_FAIL;
+    }
+	else
+	{
+		CybersecDiag_Verification_Result = CYBERSECDIAG_PASS;
+	}
+	return E_OK;
+}
+
+/*=====================================================================================================================
+**
+** Function Name    :  CybersecDiag_Symmetric_Key_Verification_Status
+**
+** Visibility       :  Private
+**
+** Description      :  Provide status of key verification
+**
+** Invocation       :  Cybersec.diagcdd , Function:Cybersecdiag_key_verification_RCStatus
+**
+** Inputs           :  Data[In]: Data
+**
+** Outputs          :  E_OK / E_NOT_OK
+**
+** Critical Section : Yes/No
+**
+**====================================================================================================================*/
+static Std_ReturnType CybersecDiag_Symmetric_Key_Verification_Status(uint8 *Data, uint8 *ErrorCode)
+{
+	UNUSED(Data);
+	UNUSED(ErrorCode);
+	Std_ReturnType ret = E_NOT_OK;
+
+	if(CybersecDiag_Verification_Result == CYBERSECDIAG_PASS)
+	{
+		/*Verification result is pass from the start interface*/
+		ret = E_OK;
+	}
+
+	return ret;
+}
+#endif
+
+/*=====================================================================================================================
+**  for each change to this file, be sure to record:                     
+**  1.  who made the change and when the change was made                 
+**  2.  why the change was made and the intended result                
+**  Following block needs to be repeated for each change
+**====================================================================================================================*/
+/*=====================================================================================================================
+**   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  26/May/2023
+** CDSID             :  spalan11
+** Traceability      :  RTC - 2021383
+** Change Description:  New feature implemented UART UNLOCK
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  16/April/2021
+** CDSID             :  razhakes
+** Traceability      :  RTC - 1214721
+** Change Description:  New feature implemented JTAG_LOCK_ENABLE
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  05/Aug/2020
+** CDSID             :  razhakes
+** Traceability      :  RTC - 880214
+** Change Description:  Cybersecurity Key Verification implementation
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  10/March/2020
+** CDSID             :  razhakes,bbaliga and dkasiman
+** Traceability      :  RTC 
+** Change Description:  Initial version of security DID implementation
+**====================================================================================================================*/
+#endif

@@ -1,0 +1,90 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2019. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :  OsScheduleTable_Cfg.c                                    *
+*  Module Short Name :  OsScheduleTable_Cfg                                      *
+*  Description       :  This file contains implementations of the Os Schedule*
+*                       Table functionality                                  *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS                                                    *
+* Target Hardware  :  Platform Independent                                   *
+*                                                                            *
+******************************************************************************/
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+
+#include "OsScheduleTable_Cfg.h"
+
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+/*      {Os_Task} */
+#define EXPIRY_POINT0_TASKLIST \
+		{SampleApplicationTask_10ms}
+
+/*      {Number of Tasks, TaskList, Number of Events, ScheduleTable Events, Offset} */
+/* Offset cannot be set to 0 */
+#define ST0_EXPIRY_POINT_CONFIG_PARAM_LIST \
+		{1, 0, ST0_ExpiryPoint0_TaskList, NULL, 10}, \
+		{1, 0, ST0_ExpiryPoint0_TaskList, NULL, 10}
+		
+
+/*      {AutoStartEnabled, ExpiryPointListRef, Kind of SchTable, OsCounter, Number of Expiry Points, Final Delay, SyncType} */
+#define ST_CONFIG_PARAM_LIST \
+        {FALSE, ExpiryPointConfigParam_ST0, SCHEDULETABLE_CONTINOUS, ScheduleTableTimer, ST0_NUMBER_OF_EXPIRY_POINTS, 0, SCHEDULETABLE_SYNC_IMPLICIT}
+
+
+const ExpiryPointTaskListType		ST0_ExpiryPoint0_TaskList[1] = {EXPIRY_POINT0_TASKLIST};
+const ExpiryPointConfigType       	ExpiryPointConfigParam_ST0[ST0_NUMBER_OF_EXPIRY_POINTS] = \
+                                    {ST0_EXPIRY_POINT_CONFIG_PARAM_LIST} ;
+
+const ScheduleTableConfigType       ScheduleTableConfigParam[ST_NUMBER_OF_SCHEDULE_TABLES] = \
+                                    {ST_CONFIG_PARAM_LIST} ;
+
+/*============================================================================
+**============================================================================
+** R E V I S I O N    N O T E S
+**============================================================================
+**
+** For each change to this file, be sure to record:
+** 1.  Who made the change and when the change was made.
+** 2.  Why the change was made and the intended result.
+**
+**===========================================================================*/
+/*---------------------------------------------------------------------------
+Date               : 26-Jul-19
+CDSID              : ssebast1
+Traceability       : 
+Change Description : Initial version
+-----------------------------------------------------------------------------*/
+/* end of file =============================================================*/

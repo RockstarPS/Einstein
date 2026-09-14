@@ -1,0 +1,64 @@
+//---------------------------------------------------------------------------------------------------------------------
+//
+// VISTEON CORPORATION CONFIDENTIAL
+// ________________________________
+//
+// [2016] Visteon Corporation
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+//---------------------------------------------------------------------------------------------------------------------
+
+#ifndef RTCDRVCDD_CFG_H
+#define RTCDRVCDD_CFG_H
+
+#include "RtcDrvCdd.h"
+#include "EcuMExt.h"
+//=====================================================================================================================
+//  CONSTANTS & TYPES
+//=====================================================================================================================
+
+#define RTCDRVCDD_EXTERNAL_COMM_METHOD                                      RTCCDD_ASYNC_API
+
+#define RTCDRVCDD_BATTERY_SWITCH_TYPE                                       RTCDRVCDD_BATTERY_SWITCHOVER_IN_DIRECTMODE_BATERY_LOW_DETECTION_ENABLED
+
+#define RTCDRVCDD_TEMP_COMPENSATION                                         RTCDRVCDD_TEMP_COMP_ENABLE
+
+#define RTCDRVCDD_TEMP_MEASUREMENT_TIME                                     RTCDRVCDD_TEMP_MEASUREMENT_TIME_4MIN
+
+#define RTCDRVCDD_ENABLE_MONTH_YEAR                                         STD_OFF
+
+#define RTCDRVCDD_16BITCONVERSION                                           STD_OFF
+
+#define RTCDRVCDD_EXTERNAL_BUS_ADDRESS_WRITE                                0xA6u
+#define RTCDRVCDD_EXTERNAL_BUS_ADDRESS_READ                                 RTCDRVCDD_EXTERNAL_BUS_ADDRESS_WRITE + 0x01u
+
+#define RTCDRVCDD_EXTERNAL_COMM_READY                        (Get_EcuM_Ext_DeInit_Status() == FALSE)
+
+#define RtcDrcCdd_External_Comm_Bus_Async_Interface_Write_Api(addr,data,len) I2C_SyncSendData(addr,data,len,0)
+#define RtcDrcCdd_External_Comm_Bus_Async_Interface_Read_Api(addr,data,len)  I2C_SyncReceiveData(addr,data,len)
+
+//=====================================================================================================================
+//  FORWARD DECLARATIONS
+//=====================================================================================================================
+
+
+
+//=====================================================================================================================
+//  PRIVATE
+//=====================================================================================================================
+
+//=====================================================================================================================
+//  PUBLIC
+//=====================================================================================================================
+
+#endif
+

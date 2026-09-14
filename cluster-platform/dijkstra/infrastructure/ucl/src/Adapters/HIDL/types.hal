@@ -1,0 +1,69 @@
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+/// @mainpage UCL Channel Based APIs
+///
+/// @section intro Introduction
+///
+///
+/// @section features Features
+///
+/// @section api API Reference
+///
+/// <a href="modules.html">Modules</a>
+///
+/// @file types.hal 
+///
+package android.hardware.ucl@2.0;
+
+typedef int32_t ucl_fd_t;              
+typedef uint8_t ucl_ch_t;             
+
+struct ucl_ioctl_notify_info_t
+{ 
+    struct event_info
+    {
+        uint8_t  enabled;               
+        uint8_t  reserved;             
+        uint16_t comp_id;               
+        uint32_t event_mask;          
+    };   
+  event_info[4] event_infoList;
+
+};
+
+struct ucl_ioctl_channel_param_t
+{
+    uint8_t priority_level;           
+    uint8_t security_level;             
+    uint16_t time_to_live_ms;           
+};
+
+
+struct  ucl_ioctl_channel_stats_t
+{
+    struct dl
+    {
+        uint32_t tx_bytes;              
+        uint32_t rx_bytes;              
+        uint32_t tx_msgs;               
+        uint32_t rx_msgs;             
+        uint32_t tx_kbps;               
+        uint32_t rx_kbps;               
+        uint32_t avg_ack_latency;       
+    }dL;                               
+
+    struct il
+    {
+        uint32_t num_open_channels;     
+        uint32_t num_open_fds;          
+    }iL;                              
+};

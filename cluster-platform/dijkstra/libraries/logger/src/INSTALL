@@ -1,0 +1,12 @@
+# CMake Options
+DK_DLT_ENABLED=ON
+DK_SLOG2_ENABLED=ON
+CMAKE_TOOLCHAIN_FILE=qnx700_aarch64_linux.cmake
+CMAKE_INSTALL_PREFIX=../rel/qnx700_aarch64
+CMAKE_INSTALL_LIBDIR=aarch64le/usr/lib
+
+# Build Instructions
+mkdir build
+cd build
+cmake -G"Unix Makefiles" -DDK_DLT_ENABLED=OFF -DCMAKE_TOOLCHAIN_FILE=../src/qnx700_aarch64_linux.cmake -DCMAKE_INSTALL_PREFIX=../rel/qnx700_aarch64 -DCMAKE_INSTALL_LIBDIR=aarch64le/usr/lib -DCMAKE_INSTALL_BINDIR=aarchle64/usr/bin ../src
+make install

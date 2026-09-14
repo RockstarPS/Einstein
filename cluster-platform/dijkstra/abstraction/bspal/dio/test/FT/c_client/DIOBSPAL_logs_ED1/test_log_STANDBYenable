@@ -1,0 +1,76 @@
+
+# set_dir_out 30
+Start: set_dir_out
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=139268 _=/usr/sbin/set_dir_out
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=139268 _=/usr/sbin/set_dir_out ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: set_dir_out
+# dio_set_pin 30
+Start: dio_set_pin
+[DLT] Cannot Use DLT Logging, disabled during build! Using CommandLine
+[DLT] Registering AppID DkApp , PID=147460 _=/usr/sbin/dio_set_pin
+Application doesn't call Logger::createInstance!!!
+-> Logger::getInstance registers DLT application [ DkApp | PID=147460 _=/usr/sbin/dio_set_pin ]
+[DLT] Registering Context DIO , BSPAL_DIO_CONTEXT
+Return value is :0
+Exit: dio_set_pin
+# gles3-gears
+
+#
+#
+#
+# slog2info | grep ResMrg_DIO
+# slog2info | grep ResMgr_DIO
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log*     0  dio_io_write:636 got write of 2 bytes, data: 30
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log      0  dio_export:1425 CExport is successful for the pin 30 & status is : 0
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1250 Bank Number for DIO pin 30 is 1
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log      0  dio_data_extract:1272 Channel Number for DIO pin 30 is 30
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log      0  dio_io_write:678 dio_data_extract success
+Jan 01 00:03:07.045               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:904 direction 1 write using devctl is successful and status is 0
+Jan 01 00:03:30.061               ResMgr_DIO.32781              dio_log      0  dio_io_write:636 got write of 2 bytes, data: 30
+Jan 01 00:03:30.061               ResMgr_DIO.32781              dio_log      0  dio_io_write:684 GPIO Pin already exported
+Jan 01 00:03:30.061               ResMgr_DIO.32781              dio_log      0  dio_io_devctl:983 Value 1 write using devctl is successful and status is 0
+#
+
+# gles3-gears &
+[1] 196612
+#
+#
+##
+#
+# pidin a
+     pid Arguments
+       1 procnto-smp-instr -ae -m~x -mr
+       2 ksh /proc/boot/.console.sh
+       3 slm -r none /etc/slm.xml -vvvvvvv
+    8197 /usr/sbin/ham
+    8198 /bin/slogger2
+    8199 /sbin/pipe
+   12297 /sbin/sc-imx8
+   20488 /usr/sbin/ham -g
+   20491 /usr/sbin/dumper -d /data/core_dumps -s 10M -I -N 10 -w -z 9
+   24586 /sbin/devc-sermx8 -e -F -S -u 1 0x5A060000,257
+   24589 /bin/wdtkick-sc-imx8 -t 5000
+   28686 /usr/sbin/resmgr_dio -b0x5D080000 -m0xE828FFFE -b0x5D090000 -m0xF9980084 -b0x5D0A0000 -m0x00000001 -b0x5D0B0000 -m0x01C281FF -b0x5D0C0000 -m0x1FF8007F -b0x5D0D0000 -m0x00000200
+   36876 /sbin/screen -c /usr/lib/graphics/iMX8QXP/graphics.conf
+   49167 //usr/sbin/vpu-decoder-mx8
+   57361 /sbin/io-pkt-v4-hc -ptcpip pkt_typed_mem=below4G,mclbytes=4096
+   65540 /sbin/mq
+   73747 /sbin/devb-sdmmc-mx8x qnx6 trim=enable cam cache,quiet blk automount=emmc0t179:/data,ra=128k:4096k,memory=sysram&below4G:sysram,maxio=256,cache=16m disk name=emmc sdmmc poweroff_notify=short,bkops=auto sdio idx=0,bs=emmc:bw=8:tuning=standard
+  114704 ksh ksh
+  118802 /usr/bin/vmf
+  118804 /usr/sbin/resmgr_display -p0 -t0 -llibdisplay.so
+  139286 /usr/bin/power_mgr
+  139287 /usr/bin/ucl_proxy_vmf
+  139289 /usr/bin/display_mgr
+  163861 /app/usr/bin/hmi_app
+  163864 /system/usr/sbin/random -p
+  163866 /system/bin/dlt-daemon -c /system/etc/dlt.conf
+  163869 /system/usr/sbin/fs-nfs2 192.168.1.5:X: /share
+  163870 /system/bin/res_mon -p -u
+  200731 /system/bin/dlt-qnx-system -c /system/etc/dlt-qnx-system.conf
+  204828 /usr/bin/wdg_proxy
+  454687 pidin a

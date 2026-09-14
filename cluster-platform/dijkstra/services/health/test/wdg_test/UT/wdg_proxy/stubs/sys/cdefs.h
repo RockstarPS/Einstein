@@ -1,0 +1,147 @@
+#ifndef __CDEFS_H_INCLUDED
+#define __CDEFS_H_INCLUDED
+
+/* Try to keep host system's version from coming in */
+#ifndef _SYS_CDEFS_H_INCLUDED
+# define    _SYS_CDEFS_H_INCLUDED
+#endif
+
+#if defined(__cplusplus)
+# define _EXTERN_C			extern "C" {
+# define _END_EXTERN_C		}
+#else
+# define _EXTERN_C
+# define _END_EXTERN_C
+#endif
+#define _C_LIB_DECL	_EXTERN_C
+#define _END_C_LIB_DECL	_END_EXTERN_C
+#ifndef __BEGIN_DECLS
+#define __BEGIN_DECLS	_EXTERN_C
+#endif
+#ifndef __END_DECLS
+#define __END_DECLS	_END_EXTERN_C
+#endif
+
+ /* for compatibility with code that used this macro */
+ #define _CSTD
+
+#if defined(__GNUC__) && (__GNUC__ <= 2)
+# define __deprecated__
+#endif
+
+/*
+ * The __CONCAT macro is used to concatenate parts of symbol names, e.g.
+ * with "#define OLD(foo) __CONCAT(old,foo)", OLD(foo) produces oldfoo.
+ * The __CONCAT macro is a bit tricky -- make sure you don't put spaces
+ * in between its arguments.  __CONCAT can also concatenate double-quoted
+ * strings produced by the __STRING macro, but this only works with ANSI C.
+ */
+#if defined(__STDC__) || defined(__cplusplus) || defined(__CPLUSPLUS__)
+# undef __P
+# define    __P(protos) protos      /* full-blown ANSI C */
+# define    __CONCAT(x,y)   x ## y
+# define    __STRING(x)     #x
+
+# define    __const     const       /* define reserved names to standard */
+# define    __signed    signed
+# define    __volatile  volatile
+
+# if defined(__cplusplus)
+#  define   __inline    inline      /* convert to C++ keyword */
+# else
+#  if !defined(__GNUC__) && !defined(__INTEL_COMPILER)
+#   define  __inline            /* delete GCC keyword */
+#  endif /* !__GNUC__ && !__INTEL_COMPILER */
+# endif /* !__cplusplus */
+
+# if __STDC_VERSION__ >= 199901L
+#  define __restrict    restrict
+# elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || (__INTEL_COMPILER >= 800)
+/* __restrict is valid */
+# else
+#  define __restrict
+# endif
+
+#else   /* !(__STDC__ || __cplusplus) */
+
+# define    __P(protos) ()      /* traditional C preprocessor */
+# define    __CONCAT(x,y)   x/**/y
+# define    __STRING(x) "x"
+
+# if !defined(__GNUC__) && !defined(__INTEL_COMPILER)
+
+#  define   __const             /* delete pseudo-ANSI C keywords */
+#  define   __inline
+#  define   __signed
+#  define   __volatile
+#  define   __restrict
+
+/*
+ * In non-ANSI C environments, new programs will want ANSI-only C keywords
+ * deleted from the program and old programs will want them left alone.
+ * When using a compiler other than gcc, programs using the ANSI C keywords
+ * const, inline etc. as normal identifiers should define -DNO_ANSI_KEYWORDS.
+ * When using "gcc -traditional", we assume that this is the intent; if
+ * __GNUC__ is defined but __STDC__ is not, we leave the new keywords alone.
+ */
+#  ifndef   NO_ANSI_KEYWORDS
+#   define  const               /* delete ANSI C keywords */
+#   define  inline
+#   define  signed
+#   define  volatile
+#   define  restrict
+#  endif
+
+# endif /* !__GNUC__ && !__INTEL_COMPILER */
+
+#endif  /* !(__STDC__ || __cplusplus) */
+
+/*
+ * GCC1 and some versions of GCC2 declare dead (non-returning) and
+ * pure (no side effects) functions using "volatile" and "const";
+ * unfortunately, these then cause warnings under "-ansi -pedantic".
+ * GCC2 uses a new, peculiar __attribute__((attrs)) style.  All of
+ * these work for GNU C++ (modulo a slight glitch in the C++ grammar
+ * in the distribution version of 2.5.5).
+ */
+#if (!defined(__GNUC__) && !defined(__INTEL_COMPILER)) || (defined(__GNUC__) && __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
+# define    __attribute__(x)    /* delete __attribute__ if non-gcc or gcc1 */
+# if (defined(__GNUC__) || defined(__INTEL_COMPILER)) && !defined(__STRICT_ANSI__)
+#  define   __dead      __volatile
+#  define   __pure      __const
+# endif
+#elif defined(__GNUC__) && __GNUC__ >= 4
+# define __dead __attribute__((__noreturn__))
+# define __pure __attribute__((__pure__))
+#endif
+
+#if defined(__GNUC__) && (__GNUC__ >= 4) && !defined(__DARWIN__)
+# define __HAVE_WEAK_ALIAS
+# define __WEAK_ALIAS(__name) __attribute__((__weak__,__alias__(#__name)))
+# define __HAVE_LINK_ALIAS
+# define __LINK_ALIAS(__name) __attribute__((__alias__(#__name)))
+# define __HAVE_CODE_ALIAS
+# define __CODE_ALIAS(__name) __asm__(#__name)
+#else
+# define __WEAK_ALIAS(__name)
+# define __LINK_ALIAS(__name)
+# define __CODE_ALIAS(__name)
+#endif
+
+/* Delete pseudo-keywords wherever they are not available or needed. */
+#ifndef __dead
+# define __dead
+#endif
+#ifndef __pure
+# define __pure
+#endif
+
+#define _Restrict __restrict
+
+#if !defined(__GNUC__) || (__GNUC__ > 2 && !defined(__cplusplus))
+# define _Restrict_arr __restrict
+#else
+# define _Restrict_arr
+#endif
+
+#endif /* !__CDEFS_H_ */

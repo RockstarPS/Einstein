@@ -1,0 +1,5 @@
+#define TCPCTL_KEEPCNT 1
+#define TCPCTL_KEEPINTVL 0
+#define F_GETFL 3
+#define SO_REUSEPORT   1
+#define  SO_BINDTODEVICE 1

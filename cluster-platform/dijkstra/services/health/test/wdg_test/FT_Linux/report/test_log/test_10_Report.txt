@@ -1,0 +1,71 @@
+root@am62pxx-7xxd-b@23:50:/system/usr/bin/wdg_test_FT# ./testcase10_restart_alway_wdg.sh
+------------------------------------------------------------------
+----- Test Case 10 - Restart type: always --------------------------
+  Cause of termination:
+        Watchdog timeout (process stops sending keep-alive ping)
+
+  Expected behavior:
+        The process shall always be restarted after watchdog timeout.
+
+  Error Notification Fatal (Yes/No): No
+  Process Restart (Yes/No): Yes
+  [*] Configuration:
+        Restart=always
+        WatchdogSec=1
+------------------------------------------------------------------
+[>] Starting test_05.service...
+[+] test_05.service started successfully.
+[>] Starting wdg_proxy_test_05.service...
+Error: Failed to start wdg_proxy_test_05.service.
+.......................................................
+       Test: trigger watchdog timeout (via signal 35)
+.......................................................
+[!] Sending signal 35 to test_05.service (PID: 44773)...
+.......................................................
+       Test: trigger watchdog timeout again
+.......................................................
+[!] Sending signal 35 to test_05.service (PID: 44796)...
+-----------------------------------------------
+    Recent journal entries
+-----------------------------------------------
+May 29 23:50:07 am62pxx-7xxd-b systemd[1]: Started Test application 05.
+May 29 23:50:07 am62pxx-7xxd-b test_05[44773]: Start - Test Case: 5, sleep time 10
+May 29 23:50:07 am62pxx-7xxd-b test_05[44773]: Test Case 5: calling connect()
+May 29 23:50:09 am62pxx-7xxd-b test_05[44773]: Interrupt signal (35) received.
+May 29 23:50:09 am62pxx-7xxd-b test_05[44773]: Test case 5: calling start()
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Watchdog timeout (limit 1s)!
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44773 (test_05) with signal SIGABRT.
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: State 'stop-watchdog' timed out. Killing.
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44773 (test_05) with signal SIGKILL.
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44775 (dlt_housekeeper) with signal SIGKILL.
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Main process exited, code=killed, status=9/KILL
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Failed with result 'watchdog'.
+May 29 23:50:11 am62pxx-7xxd-b systemd[1]: test_05.service: Scheduled restart job, restart counter is at 1.
+May 29 23:50:12 am62pxx-7xxd-b systemd[1]: Started Test application 05.
+May 29 23:50:12 am62pxx-7xxd-b test_05[44796]: Start - Test Case: 5, sleep time 10
+May 29 23:50:12 am62pxx-7xxd-b test_05[44796]: Test Case 5: calling connect()
+May 29 23:50:12 am62pxx-7xxd-b test_05[44796]: Interrupt signal (35) received.
+May 29 23:50:12 am62pxx-7xxd-b test_05[44796]: Test case 5: calling start()
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Watchdog timeout (limit 1s)!
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44796 (test_05) with signal SIGABRT.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: State 'stop-watchdog' timed out. Killing.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44796 (test_05) with signal SIGKILL.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44797 (n/a) with signal SIGKILL.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Killing process 44798 (WdgClientMon) with signal SIGKILL.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Main process exited, code=killed, status=9/KILL
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Failed with result 'watchdog'.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: test_05.service: Scheduled restart job, restart counter is at 2.
+May 29 23:50:14 am62pxx-7xxd-b systemd[1]: Started Test application 05.
+May 29 23:50:14 am62pxx-7xxd-b test_05[44814]: Start - Test Case: 5, sleep time 10
+May 29 23:50:14 am62pxx-7xxd-b test_05[44814]: Test Case 5: calling connect()
+-----------------------------------------------
+    Capturing DLT logs for 5 seconds...
+-----------------------------------------------
+-----------------------------------------------
+[*] Checking status: test_05.service
+[!] test_05.service is running. Stopping for a clean state...
+-----------------------------------------------
+[*] Checking status: wdg_proxy_test_05.service
+--- Test complete. DLT logging stopped. ---
+******************************************************
+root@am62pxx-7xxd-b@23:50:/system/usr/bin/wdg_test_FT#

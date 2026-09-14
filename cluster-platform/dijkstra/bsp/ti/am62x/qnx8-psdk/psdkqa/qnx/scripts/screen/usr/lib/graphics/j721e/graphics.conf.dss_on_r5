@@ -1,0 +1,40 @@
+begin khronos
+
+  begin egl display 1
+    egl-dlls = libsrv_um.so libglslcompiler.so libIMGegl.so
+    glesv1-dlls = libsrv_um.so libglslcompiler.so libIMGegl.so libIMGGLESv1_CM.so
+    glesv2-dlls = libsrv_um.so libglslcompiler.so libIMGegl.so libIMGGLESv2.so
+    cl-dlls = libsrv_um.so libufwriter.so libPVROCL.so
+    vk-icds = libsrv_um.so libufwriter.so rgx_vulkan_icd.json
+    vk-exps = /usr/lib/graphics/vulkan/VkLayer_khronos_validation.json
+    gpu-dlls = libsrv_km.so
+  end egl display
+
+  begin wfd device 1
+    pipeline-ids = 1
+    display-ids = 1
+    wfd-dlls = libwfdcfg-sample.so libWFDdummy.so
+  end wfd device
+
+end khronos
+
+begin winmgr
+
+  begin globals
+    blit-config = gles2blt
+    alloc-config = stdbuf
+  end globals
+
+  begin display 1
+    video-mode = 1920 x 1080 @ 60
+    cursor = off
+  end display
+
+  begin class framebuffer
+    display = 1
+    pipeline = 1
+    format = rgba8888
+    usage = gles2blt
+  end class
+
+end winmgr

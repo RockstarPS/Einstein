@@ -1,0 +1,10 @@
+#ifndef _CERRNO_H_INCLUDED
+#define _CERRNO_H_INCLUDED
+#define _CERRNO_H_DECLARED
+
+int *__get_errno_ptr(void) __attribute__((__const__));
+# define errno (*__get_errno_ptr())
+
+#define ENOENT 2
+
+#endif

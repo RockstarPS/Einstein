@@ -1,0 +1,436 @@
+/*===================================================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2001. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**===================================================================================================================
+**
+** Name:           Ioctrlrd_analog_diagcdd_cfg.h
+**
+** Description:    
+**                
+**
+**====================================================================================================================*/
+#ifndef IOCTRLRD_ANALOG_DIAGCDD_CFG_H
+#define IOCTRLRD_ANALOG_DIAGCDD_CFG_H
+
+/*====================================================================================================================
+** INCLUDE FILES
+**===================================================================================================================*/
+#include "Mgrdiagcdd_cfg.h"
+/*====================================================================================================================
+**   M A C R O   D E F I N I T I O N S
+**===================================================================================================================*/
+
+#define Meet_IoHwAbSafe_AIn_MaxChannelsInGroup 2
+#define AdcConf_AdcGroup_IoHwAbSafe  AdcConf_AdcGroup_AdcGroup_IoHwAbSafe
+
+#ifdef  IOCTRlRD_ALALOGIC_SIGNAL_CTRL
+#define UNUSED_PWM_CHANNEL_ID    (255U)
+#define MEET_MAX_DUTY_CHANNELS   (1U)    //Update this value if new pwm channel(going out from cluster) with 0.1 resolution is added in future
+#endif
+#define DUTY_ACCURACY	 (1000U)    //Update this value if new pwm channel(going out from cluster) with 0.1 resolution is added in future
+
+
+#ifdef IOCTRLRD_ANALOG_DIAG
+#define MANUF_ANA_NUM_CHANNELS	        (6U)  //(DID - F1 00)
+#define MANUF_ANA_MAX_NUM_SAMPLES       (10U)
+#define IOCTRLRD_ZERO_SAMPLE			(0U)
+#define ADC_RESULTION_FACTOR			(1U)
+
+#define MANUF_ALL_CHANNEL_SUPPORT_REQUIRED
+#ifdef MANUF_ALL_CHANNEL_SUPPORT_REQUIRED
+#define MANUF_ANA_ALL_CHANNELS			(0xFFU)
+#define MANUF_MAX_NO_OF_SAMPLES 	   	(10U)
+#endif
+
+#endif
+
+#if defined (IOCTRLRD_ANALOG_DIAG) || defined (IOCTRLRD_ANALOG_DIAG_BY_UNIT)
+#define ANA_UNUSED_CHANNEL_ID          (254U)//Repeat from IOCTRLRD_ANALOG_DIAG
+#define SAMPLE_COLLECTION 			   (9U)//Repeat from IOCTRLRD_ANALOG_DIAG
+#endif
+
+
+#ifdef IOCTRLRD_ANALOG_DIAG_BY_UNIT
+#define IOCTRLRD_MAX_NO_OF_SAMPLES_BY_UNIT 	(0xFFU)
+#define IOCTRLRD_ZERO_SAMPLE_BY_UNIT		(uint8)0
+#define IOCTRLRD_ANA_NUM_CHANNELS_UNIT	    ((uint8)0x0F)
+#define IOCTRLRD_INDEX_0    				(uint8)0
+#define IOCTRLRD_CLR_0						(uint8)0
+#define IOCTRLRD_RES_LEN_1    				(uint8)1
+#endif
+
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_BY_UNIT_WCalib
+#ifndef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+
+#define IOCTRLRD_ZERO_SAMPLE_BY_UNIT_WCalib		(uint8)0
+#define IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib	((uint8)1)
+#define IOCTRLRD_ANALOG_RES_LEN_1_WCalib		(uint8)1
+#define IOCTRLRD_ANA_UNUSED_CHANNEL_ID_WCalib   (254U)
+#define IOCTRLRD_ANALOG_INDEX_0_WCalib			(uint8)0
+#define IOCTRLRD_ANALOG_CLR_0_WCalib			(uint8)0
+#define IOCTRLRD_ANALOG_SET_1_WCalib			((uint8)0x01)
+
+#define IOCTRLRD_NFUEL_CAL_CMPLT		((uint8)1U)
+#define IOCTRLRD_NFUEL_CAL_REQD		((uint8)2U)
+#define IOCTRLRD_FUEL_SAMPLING_TIME	((uint8)170U)
+#define IOCTRLRD_FUEL_SAMPLING_ACQUISITION	((uint8)12U)
+#define IOCTRLRD_FUEL_INPUT_BY_UNIT_WITH_CALIB		((uint8)0)
+#define IOCTRLRD_FUEL_INPUT_BY_UNIT_WITHOUT_CALIB	((uint8)1)
+#define IOCTRLRD_SHIFT_BY_8 8
+#define IOCTRLRD_FF_MASK_BYTE (0xFFU)
+
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+#define IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB			((uint8)2)
+#define IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib				((uint8)1)
+#define IOCTRLRD_ANA_UNUSED_CHL_ID_THREE_POINT_CALIB   		(254U)
+#define IOCTRLRD_ANALOG_CLR_0_WCalib						(uint8)0
+#define IOCTRLRD_THREE_POINT_CALIB_SHIFT_BY_8 				8U
+#define IOCTRLRD_THREE_POINT_CALIB_SHIFT_BY_16 				16U
+#define IOCTRLRD_THREE_POINT_CALIB_SHIFT_BY_24 				24U
+#define IOCTRLRD_THREE_POINT_CALIB_FF_MASK_BYTE 			(0xFFU)
+#define MANUF_CALIB_NUM_POINTS_FUEL 						3U
+#define MANUF_CALIB_NUM_POINTS_OIL	 						2U
+#endif
+#endif
+
+#define Ioctrlrd_analog_Adc_SetupResultBuffer TrustF_Call_Adc_SetupResultBuffer
+#ifdef IOCTRL_ANALOG_READ_ALL_ADC
+#define MAXANALOGPORTS  24u
+#define MAXDATAARRAY    48u
+#define MAX_ADC_CHANNEL_INDEX    9u /*among the MAXANALOGPORTS, in SRD at max till which index has Adc channel*/
+#define RESERVED_CHANNEL 0xFF
+#endif
+/*======================================================================================================================
+** T Y P E  D E F I N I T I O N S
+**======================================================================================================================*/
+#ifdef  IOCTRlRD_ALALOGIC_SIGNAL_CTRL
+typedef struct
+{
+ void (*DutyControlFunction) (uint16 DutyValue);
+}Meet_DutyControlConfigType;
+
+#endif
+#ifdef IOCTRLRD_ANALOG_DIAG
+
+typedef struct
+{
+    void (*ADC_ReadFunction) (uint32 *Adc_channel_voltage);
+
+}MeetADCControlService_ctl;
+
+
+typedef enum {
+    RawAdc_MAI_CH0=0U,
+    RawAdc_MAI_CH1=1U,
+    RawAdc_MAI_CH2=2U,
+    RawAdc_MAI_CH3=3U,
+    RawAdc_MAI_CH4=4U,
+    RawAdc_MAI_CH5=5U,
+}eAdcRaw_channels;
+
+#endif
+
+#ifdef IOCTRL_ANALOG_READ_ALL_ADC
+typedef struct
+{
+    Std_ReturnType (*ADC_channel_ReadFunction) (uint16 *Adc_channel_voltage);
+
+}sMeetADCreadService;
+#endif
+
+#ifdef IOCTRLRD_ANALOG_DIAG_BY_UNIT
+
+typedef enum {
+    RawAdc_MAI_Unit_CH5 = 0x05U,
+    RawAdc_MAI_Unit_CH6 = 0x06U,
+    RawAdc_MAI_Unit_CH10 = 0x0AU,
+    RawAdc_MAI_Unit_CH11 = 0x0BU,
+    RawAdc_MAI_Unit_CH12 = 0x0CU,
+    RawAdc_MAI_Unit_CH13 = 0x0DU,
+	RawAdc_MAI_Unit_CH14 = 0x0EU,
+	RawAdc_MAI_Unit_CH15 = 0x0FU,
+}eAdcRaw_channels_by_unit;
+
+typedef struct
+{
+    void (*ADC_Conversion_Function) (uint16 Adc_Read_Value,uint16 *Result);
+
+}Ioctrlrd_ADC_GetByUnit_Formula;
+
+typedef struct
+{
+    void (*ADC_ReadFunction) (uint16 *Adc_channel_voltage);
+
+}Ioctrlrd_ADCControlService_ctl_by_unit;
+
+
+
+extern const Ioctrlrd_ADC_GetByUnit_Formula ADC_GetByUnit_Formula_by_unit[IOCTRLRD_ANA_NUM_CHANNELS_UNIT];
+
+#endif
+
+#if defined (IOCTRLRD_ANALOG_DIAG) || defined(IOCTRLRD_ANALOG_DIAG_BY_UNIT) || defined(IOCTRLRD_FUEL_INPUT_READING_BY_UNIT_WCalib) || defined(IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB)
+typedef struct tManuf_RoutineSts
+{
+    uint8 ADCInputReading;
+}sManuf_RoutineSts;//Repeat from IOCTRLRD_ANALOG_DIAG
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_BY_UNIT_WCalib
+
+typedef enum {
+    RawAdc_MAI_Unit_WCalib_CH1 = 0x01U,
+}eAdcRaw_channels_by_unit_WCalib;
+
+typedef struct
+{
+    void (*ADC_ReadFunction) (uint16 *Adc_channel_voltage);
+
+}Ioctrlrd_ADCControlService_ctl_by_unit_WCalib;
+
+typedef struct
+{
+    uint16 (*Ioctrlrd_GetByUnit_StateMachine) (uint32 nfuel); 
+}Ioctrlrd_analog_GetByUnit_StateMachine;
+
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+typedef enum {
+    RawAdc_MAI_Unit_Three_Point_Calib_CH1 = 0x01U,
+	RawAdc_MAI_Unit_Three_Point_Calib_CH2 = 0x02U,
+}eAdcRaw_channels_Three_Point_Calib;
+
+typedef struct
+{
+    void (*ADC_ReadFunction) (uint16 *Adc_channel_voltage);
+
+}Ioctrlrd_ADCControlService_ctl_Three_Point_Calib;
+
+/*typedef struct Ioctrlrd_Analog_intpolTable
+{
+	sint32 (*Func)(uint32,uint8,uint8*);
+	uint8	division_factor;
+}Ioctrlrd_Analog_intpolTable_Three_Point_Calib;
+
+typedef enum {
+	Mai_Fuel_Level=0U,
+}eAdcUnit_channels;*/
+
+/*static const uint16 Ioctrl_ANAMap_Three_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB] = {
+		RawAdc_MAI_Unit_Three_Point_Calib_CH1,
+}; */
+
+//Set timeout for DID F106 - 5ms task
+/*static const uint8 Ioctrl_ANAMap_Three_Point_Calib_TimeOut[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB] = {
+		100,
+};*/
+
+/*sint32 Ioctrl_GetByUnit_StateMachine(uint32 ADC_Val,uint8 index,uint8 *status); */
+
+//FUEL LEVEL INPUT 		0
+/*static const Ioctrlrd_Analog_intpolTable_Three_Point_Calib intpolTableThree_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB] ={
+		{Ioctrl_GetByUnit_StateMachine,1},
+};*/
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+typedef struct 
+{
+	uint32 (*Read_NVMAverageADC_value)();
+}Manuf_NVMAverageValue;
+
+typedef struct 
+{
+	uint32 (*Read_NVMRealpoint_value)();
+}Manuf_NVMRealpointValue;
+
+typedef struct
+{
+	uint32 (*Read_NVMExpectedADC_value)();
+}Manuf_NVMExpectedValue;
+#endif
+#ifdef  IOCONTOLRD_ADC_READ_GROUP
+#if IOCONTOLRD_ADC_READ_GROUP>0
+typedef struct
+{
+	void (*ADCGroupReadFunction) (sint32 *Data);
+}MeetADCReadServicegroup;
+#endif
+#endif
+/*=====================================================================================================================
+*  C O N S T A N T    A N D   V A R I A B L E S    D E C L A R A T I O N S
+**===================================================================================================================*/
+#ifdef IOCTRLRD_ANALOG_DIAG
+extern sManuf_RoutineSts Manuf_RoutineControlStatus[MANUF_ANA_NUM_CHANNELS];
+extern const uint16 Manuf_ANAMap[MANUF_ANA_NUM_CHANNELS] ;
+extern const MeetADCControlService_ctl MEET_Direct_ANAMap_fun[MANUF_ANA_NUM_CHANNELS];
+#endif
+
+#ifdef IOCTRLRD_ANALOG_DIAG_BY_UNIT
+extern const Ioctrlrd_ADCControlService_ctl_by_unit Ioctrlrd_Direct_ANAMap_fun_by_unit[IOCTRLRD_ANA_NUM_CHANNELS_UNIT];
+extern sManuf_RoutineSts Ioctrlrd_RoutineControlStatus_Unit[IOCTRLRD_ANA_NUM_CHANNELS_UNIT];
+extern const uint16 Ioctrlrd_ANAMap_BY_UNIT[IOCTRLRD_ANA_NUM_CHANNELS_UNIT];
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_BY_UNIT_WCalib
+extern sManuf_RoutineSts Ioctrlrd_analog_RoutineControlStatus_Unit_WCalib[IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib];
+extern const Ioctrlrd_ADCControlService_ctl_by_unit_WCalib Ioctrlrd_analog_fun_by_unit_WCalib[IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib];
+extern const uint16 Ioctrlrd_analog_BY_UNIT_WCalib[IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib];
+extern const Ioctrlrd_analog_GetByUnit_StateMachine Ioctrlrd_analog_GetByUnit_StateMachine_WCalib[IOCTRLRD_ANA_NUM_CHANNELS_UNIT_WCalib];
+
+#endif
+
+#ifdef IOCTRLRD_FUEL_INPUT_READING_THREE_POINT_CALIB
+extern const uint16 Ioctrl_ANAMap_Three_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB];
+extern const uint8 Ioctrl_ANAMap_Three_Point_Calib_TimeOut[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB];
+extern const uint16 Ioctrlrd_analog_Three_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB];
+extern sManuf_RoutineSts Ioctrlrd_analog_RoutineControlStatus_Three_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB];
+extern const Ioctrlrd_ADCControlService_ctl_Three_Point_Calib Ioctrlrd_analog_fun_Three_Point_Calib[IOCTRLRD_ANA_NUM_CHANNELS_THREE_POINT_CALIB];
+
+extern const Manuf_NVMAverageValue Ioctrlrd_analog_Read_Fuel_Average_Value[MANUF_CALIB_NUM_POINTS_FUEL];
+extern const Manuf_NVMExpectedValue Ioctrlrd_analog_Read_Fuel_Expected_Value[MANUF_CALIB_NUM_POINTS_FUEL];
+extern const Manuf_NVMRealpointValue Ioctrlrd_analog_Read_Fuel_RealPoint_Value[MANUF_CALIB_NUM_POINTS_FUEL];
+
+extern const Manuf_NVMAverageValue Ioctrlrd_analog_Read_Oil_Average_Value[MANUF_CALIB_NUM_POINTS_OIL];
+extern const Manuf_NVMExpectedValue Ioctrlrd_analog_Read_Oil_Expected_Value[MANUF_CALIB_NUM_POINTS_OIL];
+extern const Manuf_NVMRealpointValue Ioctrlrd_analog_Read_Oil_RealPoint_Value[MANUF_CALIB_NUM_POINTS_OIL];
+
+#endif
+
+#ifdef  IOCTRlRD_ALALOGIC_SIGNAL_CTRL
+extern const Meet_DutyControlConfigType Meet_DutyControlConfig[MEET_MAX_DUTY_CHANNELS];
+#endif
+#ifdef  IOCONTOLRD_ADC_READ_GROUP
+#if IOCONTOLRD_ADC_READ_GROUP>0
+extern const MeetADCReadServicegroup Meet_ADCReadConfig_group[IOCONTOLRD_ADC_READ_GROUP];
+#endif
+#endif
+#ifdef IOCTRL_ANALOG_READ_ADC_SINGLE_CH
+Std_ReturnType Ioctrld_analog_Read_ADC_channel(uint8 channel_id,uint16* AdcValue);
+#endif
+
+#ifdef IOCTRL_ANALOG_READ_ALL_ADC
+extern const sMeetADCreadService MEET_Read_Direct_ANAMap_fun[MAX_ADC_CHANNEL_INDEX];
+#endif
+
+#ifdef IOCTRL_FILTER_BYPASS_MODE_ENABLE
+static boolean fs_bFilterBypassModeCtrlStatus = FALSE;
+Std_ReturnType Ioctrlrd_Filter_Bypass_Mode_Adjust(uint8 * Data);
+Std_ReturnType Ioctrlrd_Filter_Bypass_Mode_Return_Ctrl(uint8 * Data);
+Std_ReturnType Ioctrld_Filter_Bypass_Mode_Read(uint8 * Data);
+#endif
+
+#ifdef IOCTRL_FUEL_SENDER_READ_ENABLE
+Std_ReturnType Ioctrld_Fuel_Sender_1_Read(uint8 *Data);
+
+#endif
+#ifdef IOCTRL_FUEL_LEVEL_SENDER_READ_ENABLE
+Std_ReturnType Ioctrld_Read_Fuel_Level_Sender_AD_Count(uint8 *Data);
+#endif
+
+uint32 Ioctrlrd_MathLib_AbsDelta( const uint32 Value1, const uint32 Value2 );
+
+#ifdef IOCTRL_FUEL_SENDER_2_READ_ENABLE
+Std_ReturnType Ioctrld_Fuel_Sender_2_Read(uint8 *Data);
+#endif
+#ifdef IOCTRL_FUEL_LEVEL_SENDER_2_AD_READ_ENABLE
+Std_ReturnType Ioctrld_Read_Fuel_Level_Sender2_AD_Count(uint8 *Data);
+#endif
+
+/*=====================================================================================================================
+*   P U B L I C
+**=====================================================================================================================*/
+
+/*======================================================================================================================
+**  for each change to this file, be sure to record:
+**  1.who made the change and when the change was made
+**  2.why the change was made and the intended result
+**  following block needs to be repeated for each change
+**======================================================================================================================*/
+/*   Note: In the traceability column we need to trace back to the Design Doc.
+**   For the initial version it is traced to the Design Document section.     
+**   For further changes it shall trace to the source of the change which may
+**   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  
+**   other reason                                                             
+**======================================================================================================================*/ 
+/*=====================================================================================================================
+** Date              :  24/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1744046
+** Change Description:  Interfaces are binded with correct macros and misra fix.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  03/Aug/2022
+** CDSID             :  ddanecha
+** Traceability      :  RTC-1707104
+** Change Description:  MeetCdd Coverity-MISRA fix
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  17/05/2019
+** CDSID             :  dkasiman
+** Traceability      :  RTC 1310400
+** Change Description:  Three point fuel measurement added.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  11/1/2019
+** CDSID             :  athiyag2
+** Traceability      :  RTC 1262821
+** Change Description:  Dimming control update
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  01/11/2018
+** CDSID             :  gdhilipr
+** Traceability      :  RTC 1229036 
+** Change Description:  Implementation : Fuel Input Reading - F106
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  05/10/2018
+** CDSID             :  gdhilipr
+** Traceability      :  RTC 1210657  
+** Change Description:  Analog input reading by Unit
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              :  05/09/2018
+** CDSID             :  rkathir1
+** Traceability      :  RTC 1190004
+** Change Description:  New implementation for handling and read ADC values
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 12/07/2018
+** CDSID             : rkathir1
+** Traceability      : RTC 1159221
+** Change Description: ADC Group wise or individual Channel read function implemented.
+**====================================================================================================================*/
+/*=====================================================================================================================
+** Date              : 08/06/2018
+** CDSID             : rkathir1
+** Traceability      : RTC 1148613
+** Change Description: Power related ADC channel read function implemented.
+**====================================================================================================================*/
+/*======================================================================================================================
+** Date              : 23/05/2018
+** CDSID             : rkathir1
+** Traceability      : RTC 1113544
+** Change Description: Initial version - Ioctrl analog Implementation for Turing Bookshelf.
+**=======================================================================================================================*/
+
+#endif
+
+

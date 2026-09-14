@@ -1,0 +1,400 @@
+/******************************************************************************
+**              CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2012. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have  jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation
+**
+******************************************************************************/
+
+/******************************************************************************
+
+File Name        :  Ea_Cfg.c
+Module Short Name:  Ea_Cfg.c
+VOBName          :  
+Author           :  
+Description      :  Generated File
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+
+#ifndef EA_CFG_C
+#define EA_CFG_C
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Ea_Cfg.h"
+
+ #define EA_CODE_SEC_START   
+ #include "MemMap.h"
+     
+ #define EA_DATA_SEC_START   
+ #include "MemMap.h"
+     
+ #define EA_CONST_SEC_START  
+ #include "MemMap.h"
+     
+/*****************************************************************************
+*                                 Macro Definitions                          *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+
+/*****************************************************************************
+*                                Globally  accessed Variable Declarations    *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+const uint8 Ea_DatasetSelectionBits  = 0;
+
+const Ea_FunctionPointerType Ea_DeviceFunctionPointer[EA_NUMBER_OF_DEVICES_SUPPORTED] =
+{
+        {
+        EepDrv_SetMode,
+        EepDrv_Read,
+        EepDrv_Write,
+        EepDrv_Compare,
+        EepDrv_Erase,
+        EepDrv_Cancel,
+        EepDrv_GetStatus,
+        EepDrv_GetJobResult,
+        }
+};
+
+const Ea_ConfigType Ea_Config[EA_NUM_BLOCKS]=
+{
+    {
+        0,                       /* BlockBaseAddress */
+        8,                       /* BlockSize        */
+        1,                       /* NoOfInstances    */
+        0,                        /* Bit0 - ImmediateData, Bit1 - Verification Enabled   */
+        0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1   */
+    {
+          0,            /*   uint16 BlockBaseAddress;    */
+          261,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_1   */
+    {
+          263,            /*   uint16 BlockBaseAddress;    */
+          261,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2   */
+    {
+          526,            /*   uint16 BlockBaseAddress;    */
+          206,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_2   */
+    {
+          734,            /*   uint16 BlockBaseAddress;    */
+          206,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3   */
+    {
+          942,            /*   uint16 BlockBaseAddress;    */
+          30,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_3   */
+    {
+          974,            /*   uint16 BlockBaseAddress;    */
+          30,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4   */
+    {
+          1006,            /*   uint16 BlockBaseAddress;    */
+          92,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_4   */
+    {
+          1100,            /*   uint16 BlockBaseAddress;    */
+          92,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5   */
+    {
+          1194,            /*   uint16 BlockBaseAddress;    */
+          218,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_5   */
+    {
+          1414,            /*   uint16 BlockBaseAddress;    */
+          218,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6   */
+    {
+          1634,            /*   uint16 BlockBaseAddress;    */
+          6,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_6   */
+    {
+          1642,            /*   uint16 BlockBaseAddress;    */
+          6,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7   */
+    {
+          1650,            /*   uint16 BlockBaseAddress;    */
+          32,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_7   */
+    {
+          1684,            /*   uint16 BlockBaseAddress;    */
+          32,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8   */
+    {
+          1718,            /*   uint16 BlockBaseAddress;    */
+          14,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_8   */
+    {
+          1734,            /*   uint16 BlockBaseAddress;    */
+          14,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9   */
+    {
+          1750,            /*   uint16 BlockBaseAddress;    */
+          6,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_9   */
+    {
+          1758,            /*   uint16 BlockBaseAddress;    */
+          6,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10   */
+    {
+          1766,            /*   uint16 BlockBaseAddress;    */
+          298,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_10   */
+    {
+          2066,            /*   uint16 BlockBaseAddress;    */
+          298,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11   */
+    {
+          2366,            /*   uint16 BlockBaseAddress;    */
+          11,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_11   */
+    {
+          2379,            /*   uint16 BlockBaseAddress;    */
+          11,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12   */
+    {
+          2392,            /*   uint16 BlockBaseAddress;    */
+          13,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_12   */
+    {
+          2407,            /*   uint16 BlockBaseAddress;    */
+          13,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13   */
+    {
+          2422,            /*   uint16 BlockBaseAddress;    */
+          290,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_13   */
+    {
+          2714,            /*   uint16 BlockBaseAddress;    */
+          290,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14   */
+    {
+          3006,            /*   uint16 BlockBaseAddress;    */
+          292,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_Sample_Block_14   */
+    {
+          3300,            /*   uint16 BlockBaseAddress;    */
+          292,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemAdmin   */
+    {
+          3594,            /*   uint16 BlockBaseAddress;    */
+          16,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemStatus   */
+    {
+          3612,            /*   uint16 BlockBaseAddress;    */
+          14,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_000   */
+    {
+          3628,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_001   */
+    {
+          3708,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_002   */
+    {
+          3788,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_003   */
+    {
+          3868,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_004   */
+    {
+          3948,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_005   */
+    {
+          4028,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+    /*  NvMBlockDescriptor_NvBlockSwComponentTypeNVBlockDescriptor_DemPrimary_006   */
+    {
+          4108,            /*   uint16 BlockBaseAddress;    */
+          78,           /*   uint16 BlockSize;      */
+          1,            /*   uint8  NoOfInstances;    */
+          0,             /*   uint8 BlockFlags; */
+          0,                       /* Device Index    */
+    },
+};
+#define EA_CONST_SEC_END
+ #include "MemMap.h"
+
+#define EA_DATA_SEC_END
+ #include "MemMap.h"
+
+#define EA_CODE_SEC_END
+ #include "MemMap.h"
+
+
+#endif    /* */
+/* end of file */
+/****************************************************************
+Created Time: 4/12/2021 3:16:35 PM
+****************************************************************/

@@ -1,0 +1,23 @@
+obj/am62px/ti-arm-clang/release/r5f/freertos_fat//ff_dir.obj: \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/ff_dir.c \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_headers.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/portable/nortos/FreeRTOS.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/kernel/dpl/DebugP.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/portable/nortos/task.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/portable/nortos/semphr.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/config/FreeRTOSFATConfig.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/FreeRTOSFATConfigDefaults.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/FreeRTOS_errno_FAT.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_error.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_string.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_ioman.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_fat.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_fatdef.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_memory.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_time.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_crc.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_file.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_dir.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_format.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_locking.h \
+  /home/gsoundar/WORKSPACE/NewNew/cluster-platform/dijkstra/bsp/ti/am62x/mcu-sdk/source/fs/freertos_fat/FreeRTOS-FAT/include/ff_old_config_defines.h

@@ -1,0 +1,12 @@
+[Unit]
+Description=Test application 01
+
+[Service]
+Type=simple
+Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
+ExecStart=/system/usr/bin/wdg_test_FT/test_01 1
+Restart=no
+SuccessExitStatus=255 SIGABRT
+
+StandardOutput=journal
+StandardError=journal
