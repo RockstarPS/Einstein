@@ -1,0 +1,1485 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+
+	package
+	E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES
+
+	stereotype DesignUnit
+
+	type ECmpCmd enum {
+		eCmpCmd_Init
+		eCmpCmd_DeInit = 1
+		eCmpCmd_Activate = 2
+		eCmpCmd_DeActivate = 3
+	}
+
+	type eIODutyOutId enum {
+		ILL_SW_L_PWM
+	}
+
+	type eIOPulseInputId enum {
+		eIOPulseInputIdCount
+	}
+
+	type IoHwAb_AdcSignalIdType enum {
+		eIO_ADC_ADC_FUEL_5V_MON = 16
+		eIO_ADC_ADC_FUEL_MAIN = 17
+		eIO_ADC_IGN_AD = 2
+		eIO_ADC_FUEL_SEND_SUB_MICRO_AD = 3
+		eIO_ADC_AI_BATTERY = 4
+		eIO_ADC_AI_LCD_NTC = 5
+		eIO_ADC_AI_TEMP_RTC = 6
+		eIO_ADC_Flasher_Diag_sense_1 = 7
+		eIO_ADC_STR_SW2_ADIN = 8
+		eIO_ADC_STR_SW1_ADIN = 9
+		eIO_ADC_RHEO_SW_IN_ADIN = 10
+		eIO_ADC_ADC_RHEO_5V_MON_ADIN = 11
+		eIO_ADC_Flasher_Diag_sense_2 = 12
+		eIO_ADC_AdcChannel_Vdb = 13
+		eIO_ADC_AdcChannel_Vtemp = 14
+		eIO_ADC_MAX = 15
+		eIO_ADC_AI_SAMPLE_1
+		eIO_ADC_AI_SAMPLE_2 = 1
+	}
+
+	type IoHwAb_DInGroupIdType enum {
+		eIO_DInGroupIdCount
+	}
+
+	type IoHwAb_DInSignalIdType enum {
+		eIO_DIN_DI_AL_HAZARD
+		eIO_DIN_DI_AH_IGNITION = 1
+		eIO_DIN_DI_SMPS_3V3_PG = 2
+		eIO_DIN_STOP_LAMP_MCU = 3
+		eIO_DIN_DI_AL_BRAKE_LEVEL = 4
+		eIO_DIN_DI_AL_OIL_W = 5
+		eIO_DIN_DI_AL_DRV_SEAT_BUCKLE = 6
+		eIO_DIN_DI_AL_WASHER_LEVEL_SW = 7
+		eIO_DIN_ODO_TripKnobInput = 8
+		eIO_DIN_DI_AL_VACUUM = 9
+		eIO_DIN_DI_LCD_BL_PWR_FAULT = 10
+		eIO_DIN_DI_AL_FUEL_LID_EFI_ECU = 11
+		eIO_DIN_DI_TT_SHIFT_ERR = 12
+		eIO_DIN_MAX = 13
+		eIO_DIN_DI_PMIC_INTN = 14
+		eIO_DIN_DI_MCU_PORZ = 15
+	}
+
+	type IoHwAb_DOutGroupIdType enum {
+		eIO_DOutGroupIdCount
+	}
+
+	type IoHwAb_DOutSignalIdType enum {
+		eIO_DOUT_DO_5VSW2_3V3_EN
+		eIO_DOUT_PARK_BRAKE_TT_OUT = 1
+		eIO_DOUT_DO_SYC1 = 2
+		eIO_DOUT_SEAT_BELT_TT_MCUOUT = 3
+		eIO_DOUT_TURN_LEFT_TT_MCUOUT = 4
+		eIO_DOUT_DO_LCD_BL_PWR_EN = 5
+		eIO_DOUT_DO_3V3_DISP_SW_EN = 6
+		eIO_DOUT_AMP_SHTD = 7
+		eIO_DOUT_FUEL_RHEO_SUP_EN = 8
+		eIO_DOUT_DO_LCD_STBYB = 9
+		eIO_DOUT_SBATT2_EN = 10
+		eIO_DOUT_BRAKE_TT_MCUOUT = 11
+		eIO_DOUT_AIRBAG_TT_MCUOUT = 12
+		eIO_DOUT_TURN_RIGHT_TT_MCUOUT = 13
+		eIO_DOUT_DO_SMPS_5V_SW_EN = 14
+		eIO_DOUT_PCS_OFF_TT_MCUOUT = 15
+		eIO_DOUT_ABS_TT_MCUOUT = 16
+		eIO_DOUT_SLIP_TT_MCUOUT = 17
+		eIO_DOUT_VCS_OFF_TT_MCUOUT = 18
+		eIO_DOUT_ECB_EPB_TT_MCUOUT = 19
+		eIO_DOUT_Flasher_FL_RL_OUT = 20
+		eIO_DOUT_Flasher_DEN1 = 21
+		eIO_DOUT_Flasher_DSEL1 = 22
+		eIO_DOUT_Flasher_FR_RR_OUT = 23
+		eIO_DOUT_DO_LCD_RST = 24
+		eIO_DOUT_DO_SMPS_1V2_EN = 25
+		eIO_DO_MAX = 26
+		eIO_DOUT_DO_DISP_RESET = 27
+		eIO_DOUT_DO_DISP_STBY = 28
+		eIO_DOUT_DO_TFT_BL_EN = 29
+		eIO_DOUT_DO_PWM_DIMMING = 30
+		eIO_DOUT_DO_RTC_INTN = 31
+		eIO_DOUT_DO_SOC_PWR_LATCH = 32
+		eIO_DOUT_DO_1V2_EN = 33
+		eIO_DOUT_DO_EN_5V = 34
+		eIO_DOUT_DO_ENET_EN = 35
+		eIO_DOUT_DO_LIN_NSLP = 36
+	}
+
+	type IoHwAb_ErrorType enum {
+		E_NO_ERROR = 2
+		E_ERROR = 3
+		E_ADC_ERROR = 4
+		E_DOUT_ID_INVALID = 5
+		E_DIN_ID_INVALID = 6
+		E_ADC_ID_INVALID = 7
+		IOHWAB_E_ADC_ERROR = 8
+		IOHWAB_E_ADC_ID_INVALID = 9
+		IOHWAB_E_ERROR = 10
+		IOHWAB_E_DOUT_ID_INVALID = 11
+		IOHWAB_E_NO_ERROR = 12
+		IOHWAB_E_DIN_ID_INVALID = 13
+	}
+
+	type IoHwAb_PwmSignalIdType enum {
+		eIO_PWM_MCU_BUZZER_AMPLCTRL
+		eIO_PWM_HIGH_BEAM_TT_MCUOUT = 1
+		eIO_PWM_FUEL_TEMP_GAUG_TEXT_PWM_OUT = 2
+		eIO_PWM_PWM_OUT_ILL2 = 3
+		eIO_PWM_PWM_OUT_ILL1 = 4
+		eIO_PWM_BG_Dimming_PWM = 5
+		eIO_PWM_PWM_GREEN_TT_DIMMING = 6
+		eIO_PWM_CXPI_CLK = 7
+		eIO_PWM_PWM_LCD_BL_DIMMING = 8
+		eIO_PWM_MAX = 9
+	}
+
+	type SPulseInputConfigParam struct {
+		MissingRecoveryTimeoutInMicroSec:uint32
+		ValidPeriodMinInMicroSec:uint32
+		ValidPeriodMaxInMicroSec:uint32
+		HystLimitForPeriodMinInMicroSec:uint32
+		HystRcvryForPeriodMinInMicroSec:uint32
+		HystLimitForPeriodMaxInMicroSec:uint32
+		HystRcvryForPeriodMaxInMicroSec:uint32
+		ValidDutyMinInPercentage:uint16
+		ValidDutyMaxInPercentage:uint16
+		HystLimitForDutyMinInPercentage:uint16
+		HystRcvryForDutyMinInPercentage:uint16
+		HystLimitForDutyMaxInPercentage:uint16
+		HystRcvryForDutyMaxInPercentage:uint16
+		InValidTimeoutInMilliSec:uint16
+		InValidRecoveryTimeoutInMilliSec:uint16
+		MissingTimeoutInMilliSec:uint16
+	}
+
+	type SSpeedCalcParam struct {
+		Pulses_Per_Revolution:uint32
+		Revolutions_Per_Unit:uint32
+		Tuning_Factor:uint32
+	}
+
+	type NvM_BlockIdType[0..65535] from uint16
+	type NvM_RequestResultType[0..255] from uint8
+
+	type HTimer enum {
+		eWarningMask_Timerhandle
+		eOWC_Timerhandle = 1
+		eNWD_Timerhandle = 2
+		eWarningBulbCheckMask_Timerhandle = 3
+		eInitWarning_TimerHandle = 4
+		eInitChimeTimerHandle = 5
+		eProgrammingTimerHandle = 6
+		eStubCounter_TimerHanlde = 7
+		eModeMgrDisplayPowerDownUp = 8
+		eModeMgrDisplayFaultAction = 9
+		eModeMgrDomanResetAction = 10
+		eModeMgrPowerFaultAction = 11
+		eEtm4SecTimer = 12
+		eEtm1200msecTimer = 13
+		eEtm3SecTimer = 14
+		eCallbackTimerOdoMdl = 15
+		eThrottleTimerOdoMdl = 16
+		eChangeupCallbackTimerodoMdl = 17
+		eTimerVehicleState = 18
+		eTimerVariantConfig = 19
+		WARNING_DISPLAY_TIMER_ID = 20
+		WARNING_HOLD_TIMER_ID = 21
+		WARNING_CYCLE_TIMER_ID = 22
+		WARNING_DISPLAYHOLD_TIMER_ID = 23
+		WARNING_ACK_TIMER_ID = 24
+		eTimerHandle_Sleep = 25
+		eInStartCount_TimerHandle = 26
+		eVehicleModeCount_TimerHandle = 27
+		e10secTimer = 28
+		e3secTimer = 29
+		e30secTimer = 30
+		e2_6secTimer = 31
+		eDcmApp5secTimer = 32
+		eDcmApp1secTimer = 33
+		eLidopen_OFFTimer = 34
+		eLidopen_ONTimer = 35
+		POPUP_DISPLAY_TIMER_ID = 36
+		POPUP_GRP_TAB_TIMER_ID = 37
+		eDrvRec5_6Timer = 38
+		eDrvRec3_6Timer = 39
+		eIDS_1SecTimer = 40
+		eIDS3_1SecTimer = 41
+		eIDS_3SecTimer = 42
+		ePerDispSet100msTimer = 43
+		eDrvRec1_2secTimer = 44
+		eDrvRec0_8secTimer = 45
+		eHMI_Initial_Blank_timer_ID = 46
+		eHMI_Fade_in_delay_timer_ID = 47
+		eKM6secTimer = 48
+		eKM5_8secTimer = 49
+		eKM0_6secTimer = 50
+		eKM0_2secTimer = 51
+		eIgnCANMode_3SecTimer = 52
+		eDem2_6secTimer = 53
+		eDem5secTimer = 54
+		e2FRheo5secTimer = 55
+		e2FSTSW5secTimer = 56
+		eLSTM3_Timer = 57
+		eLSTM4_Timer = 58
+		eDem_AFS_5sec_Timer = 59
+		WARNING_MSGTIMEOUT_1SEC_TIMER_ID = 60
+		eDCMApp_30Sec_Timer = 61
+		WRN_ACK_REDISPLAY_TIMER_ID = 62
+		eMenuScrollStart1sTimer = 63
+		eType4_6secTimer = 64
+		eDcmApp_0_35secTimer = 65
+		eDcmApp_0_35_1secTimer = 66
+		eRemoteCarFindCtrlStateTimer = 67
+		eBrake_Red_100msecTimer = 68
+		eStreeingSw_ReleaseTimer = 69
+		POPUP_SETTING_TIMER_ID = 70
+		eMenu100msTimer = 71
+		eBuzzerMiddleEast_6secs = 72
+		eBuzzerMiddleEast_6secs_2 = 73
+		eMaxNumof16BitTimers = 74
+		eSleepMaxTimer = 75
+		eRentACarTimer = 76
+		eDoorWarn_Timer = 77
+		eSample32BitTimer = 78
+		eTimerMax = 79
+	}
+
+	type TPulseClientId[0..255] from uint8
+	type EcuM_UserType[0..255] from uint8
+	type Dcm_OpStatusType[0..255] from uint8
+	type Dcm_DspDidIdentifierTableType[0..65535] from uint16
+	type Dcm_NegativeResponseCodeType[0..255] from uint8
+	type Dcm_MsgLenType[0..4294967295] from uint32
+	type Dcm_DspRidIdentifierTableType[0..65535] from uint16
+	type Dcm_MsgItemType[0..255] from uint8
+	type Dcm_MsgType[0..255] from Dcm_MsgItemType
+	type Dcm_SesCtrlType[0..255] from uint8
+	type Dem_EventIdType[0..65535] from uint16
+	type Dem_UdsStatusByteType[0..255] from uint8
+	type Dem_DebouncingStateType[0..255] from uint8
+	type Dem_DTCFormatType[0..255] from uint8
+	type Dem_DTCOriginType[0..255] from uint8
+	type Dem_EventStatusType[0..255] from uint8
+	type Dem_OperationCycleStateType[0..255] from uint8
+
+	importable transportedInterface if_CS_EcuAppM {
+		Init() {
+		}
+		EcuAppM_SetWakeupSources(WakeupSource:uint32) {
+		}
+		call
+			required
+				Init.CALL_CLNT_CLIENTMODE =
+				A2TClientMode::A2TSynchronous
+				EcuAppM_SetWakeupSources.CALL_CLNT_CLIENTMODE =
+				A2TClientMode::A2TSynchronous
+				data
+					provided
+						any.DATA_SND_CAN_INVALIDATE =
+						A2TBoolean::A2TFalse
+						any.DATA_SND_IMPLICIT_SEND =
+						A2TBoolean::A2TFalse
+						required
+							any.DATA_RCV_IMPLICIT_RECEIVE =
+							A2TBoolean::A2TFalse
+						}
+						importable transportedInterface if_CS_ModeOnCommand {
+							Impl_OnCommand(cmdP:ECmpCmd):Std_ReturnType {
+							}
+							call
+								required
+									Impl_OnCommand.CALL_CLNT_CLIENTMODE =
+									A2TClientMode::A2TSynchronous
+									data
+										provided
+											any.DATA_SND_CAN_INVALIDATE =
+											A2TBoolean::A2TFalse
+											any.DATA_SND_IMPLICIT_SEND =
+											A2TBoolean::A2TFalse
+											required
+												any.DATA_RCV_IMPLICIT_RECEIVE =
+												A2TBoolean::A2TFalse
+											}
+											importable transportedInterface TI_IOHWAB_GetAdc {
+												GetAsyncRawAdc(AdcId:IoHwAb_AdcSignalIdType, out
+												AsyncRawAdc:uint16, out
+												ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+												}
+												GetSyncRawAdc(AdcId:IoHwAb_AdcSignalIdType, out SyncRawAdc:uint16,
+												out ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+												}
+												GetProcessedAdc(AdcId:IoHwAb_AdcSignalIdType, out
+												ProcessedAdc:sint32, out
+												ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+												}
+												call
+													required
+														GetAsyncRawAdc.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														GetSyncRawAdc.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														GetProcessedAdc.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														data
+															provided
+																any.DATA_SND_CAN_INVALIDATE =
+																A2TBoolean::A2TFalse
+																any.DATA_SND_IMPLICIT_SEND =
+																A2TBoolean::A2TFalse
+																required
+																	any.DATA_RCV_IMPLICIT_RECEIVE =
+																	A2TBoolean::A2TFalse
+																}
+																importable transportedInterface TI_IOHWAB_GetDIn {
+																	GetAsyncRawInput(InputId:IoHwAb_DInSignalIdType, out
+																	AsyncInput:boolean, out
+																	ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																	}
+																	GetProcessedInput(InputId:IoHwAb_DInSignalIdType, out
+																	InputSignal:boolean, out
+																	ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																	}
+																	GetSyncRawInput(InputId:IoHwAb_DInSignalIdType, out
+																	SyncInput:boolean, out
+																	ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																	}
+																	GetInputGroup(InputId:IoHwAb_DInGroupIdType, out
+																	SyncInput:uint32, out
+																	ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																	}
+																	call
+																		required
+																			GetAsyncRawInput.CALL_CLNT_CLIENTMODE =
+																			A2TClientMode::A2TSynchronous
+																			GetProcessedInput.CALL_CLNT_CLIENTMODE =
+																			A2TClientMode::A2TSynchronous
+																			GetSyncRawInput.CALL_CLNT_CLIENTMODE =
+																			A2TClientMode::A2TSynchronous
+																			GetInputGroup.CALL_CLNT_CLIENTMODE =
+																			A2TClientMode::A2TSynchronous
+																			data
+																				provided
+																					any.DATA_SND_CAN_INVALIDATE =
+																					A2TBoolean::A2TFalse
+																					any.DATA_SND_IMPLICIT_SEND =
+																					A2TBoolean::A2TFalse
+																					required
+																						any.DATA_RCV_IMPLICIT_RECEIVE =
+																						A2TBoolean::A2TFalse
+																					}
+																					importable transportedInterface TI_IOHWAB_Pulse {
+																						GetCurrentSignalStatus_PulseInput(PulseInputId:eIOPulseInputId,
+																						out SignalStatus:uint16, out
+																						ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						GetCurrentSpeed_PulseInput(PulseInputId:eIOPulseInputId,
+																						out SpeedVal:uint32, out
+																						ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						GetRollingCount_PulseInput(PulseInputId:eIOPulseInputId,
+																						out EdgeCount:uint8, out
+																						ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						ResetRollingCount_PulseInput(PulseInputId:eIOPulseInputId,
+																						out ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						Start_Signal_Measurement_PulseInput(PulseInputId:eIOPulseInputId,
+																						out PulseInputChnlCfgParam:SPulseInputConfigParam, out
+																						SpdCalParam:SSpeedCalcParam, out
+																						ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						Stop_Signal_Measurement_PulseInput(PulseInputId:eIOPulseInputId,
+																						out ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						Update_CalibParam_PulseInput(PulseInputId:eIOPulseInputId,
+																						out SpdCalParam:SSpeedCalcParam, out
+																						ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																						}
+																						call
+																							required
+																								GetCurrentSignalStatus_PulseInput.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								GetCurrentSpeed_PulseInput.CALL_CLNT_CLIENTMODE =
+																								A2TClientMode::A2TSynchronous
+																								GetRollingCount_PulseInput.CALL_CLNT_CLIENTMODE =
+																								A2TClientMode::A2TSynchronous
+																								ResetRollingCount_PulseInput.CALL_CLNT_CLIENTMODE =
+																								A2TClientMode::A2TSynchronous
+																								Start_Signal_Measurement_PulseInput.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								Stop_Signal_Measurement_PulseInput.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								Update_CalibParam_PulseInput.CALL_CLNT_CLIENTMODE =
+																								A2TClientMode::A2TSynchronous
+																								data
+																									provided
+																										any.DATA_SND_CAN_INVALIDATE =
+																										A2TBoolean::A2TFalse
+																										any.DATA_SND_IMPLICIT_SEND =
+																										A2TBoolean::A2TFalse
+																										required
+																											any.DATA_RCV_IMPLICIT_RECEIVE =
+																											A2TBoolean::A2TFalse
+																										}
+																										importable transportedInterface TI_IOHWAB_PWM {
+																											PwmSetDuty(PwmId:IoHwAb_PwmSignalIdType,
+																											Pwm_Duty:uint16, out
+																											ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																											}
+																											PwmSetDutyAndPeriod(PwmId:IoHwAb_PwmSignalIdType,
+																											Pwm_Period:uint32, Pwm_Duty:uint16, out
+																											ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																											}
+																											PwmSetIdeal(PwmId:IoHwAb_PwmSignalIdType, out
+																											ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																											}
+																											call
+																												required
+																													PwmSetDuty.CALL_CLNT_CLIENTMODE =
+																													A2TClientMode::A2TSynchronous
+																													PwmSetDutyAndPeriod.CALL_CLNT_CLIENTMODE =
+																													A2TClientMode::A2TSynchronous
+																													PwmSetIdeal.CALL_CLNT_CLIENTMODE =
+																													A2TClientMode::A2TSynchronous
+																													data
+																														provided
+																															any.DATA_SND_CAN_INVALIDATE =
+																															A2TBoolean::A2TFalse
+																															any.DATA_SND_IMPLICIT_SEND =
+																															A2TBoolean::A2TFalse
+																															required
+																																any.DATA_RCV_IMPLICIT_RECEIVE =
+																																A2TBoolean::A2TFalse
+																															}
+																															importable transportedInterface
+																															TI_IOHWAB_SetDout {
+																																SetOutputGroup(InputId:IoHwAb_DOutGroupIdType,
+																																OutputGroup:uint32, out
+																																ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																																}
+																																SetOutputPin(InputId:IoHwAb_DOutSignalIdType,
+																																OutputSignal:boolean, out
+																																ErrorStatus:IoHwAb_ErrorType):Std_ReturnType {
+																																}
+																																call
+																																	required
+																																		SetOutputGroup.CALL_CLNT_CLIENTMODE =
+																																		A2TClientMode::A2TSynchronous
+																																		SetOutputPin.CALL_CLNT_CLIENTMODE =
+																																		A2TClientMode::A2TSynchronous
+																																		data
+																																			provided
+																																				any.DATA_SND_CAN_INVALIDATE =
+																																				A2TBoolean::A2TFalse
+																																				any.DATA_SND_IMPLICIT_SEND =
+																																				A2TBoolean::A2TFalse
+																																				required
+																																					any.DATA_RCV_IMPLICIT_RECEIVE =
+																																					A2TBoolean::A2TFalse
+																																				}
+																																				importable transportedInterface
+																																				TI_EcuMExt_ReleaseRUN {
+																																					ReleaseRUN(user:EcuM_UserType):Std_ReturnType
+																																					{
+																																					}
+																																					call
+																																						required
+																																							ReleaseRUN.CALL_CLNT_CLIENTMODE =
+																																							A2TClientMode::A2TSynchronous
+																																							data
+																																								provided
+																																									any.DATA_SND_CAN_INVALIDATE =
+																																									A2TBoolean::A2TFalse
+																																									any.DATA_SND_IMPLICIT_SEND =
+																																									A2TBoolean::A2TFalse
+																																									required
+																																										any.DATA_RCV_IMPLICIT_RECEIVE =
+																																										A2TBoolean::A2TFalse
+																																									}
+																																									importable transportedInterface
+																																									TI_EcuMExt_RequestRUN {
+																																										RequestRUN(user:EcuM_UserType):Std_ReturnType
+																																										{
+																																										}
+																																										call
+																																											required
+																																												RequestRUN.CALL_CLNT_CLIENTMODE =
+																																												A2TClientMode::A2TSynchronous
+																																												data
+																																													provided
+																																														any.DATA_SND_CAN_INVALIDATE =
+																																														A2TBoolean::A2TFalse
+																																														any.DATA_SND_IMPLICIT_SEND =
+																																														A2TBoolean::A2TFalse
+																																														required
+																																															any.DATA_RCV_IMPLICIT_RECEIVE =
+																																															A2TBoolean::A2TFalse
+																																														}
+																																														importable transportedInterface
+																																														TI_NvMExt_GetErrorStatus {
+																																															NvMExt_GetErrorStatus(NvmBlockId:NvM_BlockIdType,
+																																															inout
+																																															RequestResultPtr:NvM_RequestResultType):Std_ReturnType
+																																															{
+																																															}
+																																															call
+																																																required
+																																																	NvMExt_GetErrorStatus.CALL_CLNT_CLIENTMODE
+																																																	=
+																																																	A2TClientMode::A2TSynchronous
+																																																	data
+																																																		provided
+																																																			any.DATA_SND_CAN_INVALIDATE
+																																																			=
+																																																			A2TBoolean::A2TFalse
+																																																			any.DATA_SND_IMPLICIT_SEND
+																																																			=
+																																																			A2TBoolean::A2TFalse
+																																																			required
+																																																				any.DATA_RCV_IMPLICIT_RECEIVE
+																																																				=
+																																																				A2TBoolean::A2TFalse
+																																																			}
+																																																			importable
+																																																			transportedInterface
+																																																			TI_NvmExt_GetPendingStatus
+																																																			{
+																																																				NvMExt_GetPendingStatus(NvmBlockID:uint8,
+																																																				out
+																																																				Status:uint8):Std_ReturnType
+																																																				{
+																																																				}
+																																																				call
+																																																					required
+														NvMExt_GetPendingStatus.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														data
+															provided
+																any.DATA_SND_CAN_INVALIDATE =
+																A2TBoolean::A2TFalse
+																any.DATA_SND_IMPLICIT_SEND =
+																A2TBoolean::A2TFalse
+																required
+																	any.DATA_RCV_IMPLICIT_RECEIVE =
+																	A2TBoolean::A2TFalse
+																}
+																importable transportedInterface TI_NvMExt_GetReadAllStatus {
+																	NvmExt_GetNvMReadAllStatus(out Status:boolean) {
+																	}
+																	call
+																		required
+																			NvmExt_GetNvMReadAllStatus.CALL_CLNT_CLIENTMODE =
+																			A2TClientMode::A2TSynchronous
+																			data
+																				provided
+																					any.DATA_SND_CAN_INVALIDATE =
+																					A2TBoolean::A2TFalse
+																					any.DATA_SND_IMPLICIT_SEND =
+																					A2TBoolean::A2TFalse
+																					required
+																						any.DATA_RCV_IMPLICIT_RECEIVE =
+																						A2TBoolean::A2TFalse
+																					}
+																					importable transportedInterface
+																					TI_NvmExt_PhaseCompletionNotification {
+																						Phase1ReadCompletionNotification(Status:uint8) {
+																						}
+																						Phase2ReadCompletionNotification(Status:uint8) {
+																						}
+																						Phase3ReadCompletionNotification(Status:uint8) {
+																						}
+																						call
+																							required
+																								Phase1ReadCompletionNotification.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								Phase2ReadCompletionNotification.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								Phase3ReadCompletionNotification.CALL_CLNT_CLIENTMODE
+																								=
+																								A2TClientMode::A2TSynchronous
+																								data
+																									provided
+																										any.DATA_SND_CAN_INVALIDATE =
+																										A2TBoolean::A2TFalse
+																										any.DATA_SND_IMPLICIT_SEND =
+																										A2TBoolean::A2TFalse
+																										required
+																											any.DATA_RCV_IMPLICIT_RECEIVE =
+																											A2TBoolean::A2TFalse
+																										}
+																										importable transportedInterface TI_NvMExt_ReadBlock
+																										{
+																											NvMExt_ReadBlock(NvmBlockId:NvM_BlockIdType, inout
+																											NvMDstPtr:uint8):Std_ReturnType {
+																											}
+																											call
+																												required
+																													NvMExt_ReadBlock.CALL_CLNT_CLIENTMODE =
+																													A2TClientMode::A2TSynchronous
+																													data
+																														provided
+																															any.DATA_SND_CAN_INVALIDATE =
+																															A2TBoolean::A2TFalse
+																															any.DATA_SND_IMPLICIT_SEND =
+																															A2TBoolean::A2TFalse
+																															required
+																																any.DATA_RCV_IMPLICIT_RECEIVE =
+																																A2TBoolean::A2TFalse
+																															}
+																															importable transportedInterface
+																															TI_NvMExt_RestoreBlockDefaults {
+																																NvMExt_RestoreBlockDefaults(NvmBlockId:NvM_BlockIdType,
+																																inout NvMDstPtr:uint8):Std_ReturnType {
+																																}
+																																call
+																																	required
+																																		NvMExt_RestoreBlockDefaults.CALL_CLNT_CLIENTMODE
+																																		=
+																																		A2TClientMode::A2TSynchronous
+																																		data
+																																			provided
+																																				any.DATA_SND_CAN_INVALIDATE =
+																																				A2TBoolean::A2TFalse
+																																				any.DATA_SND_IMPLICIT_SEND =
+																																				A2TBoolean::A2TFalse
+																																				required
+																																					any.DATA_RCV_IMPLICIT_RECEIVE =
+																																					A2TBoolean::A2TFalse
+																																				}
+																																				importable transportedInterface
+																																				TI_NvMExt_SleepOperations {
+																																					NvMExt_ReadytoSleep():Std_ReturnType {
+																																					}
+																																					NvMExt_RequestSleep():Std_ReturnType {
+																																					}
+																																					NvMExt_CancelSleep():Std_ReturnType {
+																																					}
+																																					call
+																																						required
+																																							NvMExt_ReadytoSleep.CALL_CLNT_CLIENTMODE
+																																							=
+																																							A2TClientMode::A2TSynchronous
+																																							NvMExt_RequestSleep.CALL_CLNT_CLIENTMODE
+																																							=
+																																							A2TClientMode::A2TSynchronous
+																																							NvMExt_CancelSleep.CALL_CLNT_CLIENTMODE
+																																							=
+																																							A2TClientMode::A2TSynchronous
+																																							data
+																																								provided
+																																									any.DATA_SND_CAN_INVALIDATE =
+																																									A2TBoolean::A2TFalse
+																																									any.DATA_SND_IMPLICIT_SEND =
+																																									A2TBoolean::A2TFalse
+																																									required
+																																										any.DATA_RCV_IMPLICIT_RECEIVE =
+																																										A2TBoolean::A2TFalse
+																																									}
+																																									importable transportedInterface
+																																									TI_NvmExt_StartNvmReadAll {
+																																										NvMExt_ReadAll() {
+																																										}
+																																										call
+																																											required
+																																												NvMExt_ReadAll.CALL_CLNT_CLIENTMODE
+																																												=
+																																												A2TClientMode::A2TSynchronous
+																																												data
+																																													provided
+																																														any.DATA_SND_CAN_INVALIDATE =
+																																														A2TBoolean::A2TFalse
+																																														any.DATA_SND_IMPLICIT_SEND =
+																																														A2TBoolean::A2TFalse
+																																														required
+																																															any.DATA_RCV_IMPLICIT_RECEIVE =
+																																															A2TBoolean::A2TFalse
+																																														}
+																																														importable transportedInterface
+																																														TI_NvMExt_WakeupStatus {
+																																														
+
+
+WakeupFlag:boolean
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_NvMExt_WriteBlock {
+																																																		NvMExt_WriteBlock(NvmBlockId:NvM_BlockIdType,
+																																																		inout
+																																																		NvM_SrcPtr:uint8):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				NvMExt_WriteBlock.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface TI_If_TmExt_Timer_GetElapsedTime
+														{
+															Timer_GetElapsedTime(hTimer:HTimer, out ElapsedTime:uint32) {
+															}
+															call
+																required
+																	Timer_GetElapsedTime.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface TI_If_TmExt_Timer_IsElapsed
+																			{
+																				Timer_IsElapsed(hTimer:HTimer, Timeout:uint32, out
+																				IsElapsed:boolean) {
+																				}
+																				call
+																					required
+																						Timer_IsElapsed.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface
+																								TI_If_TmExt_Timer_IsStarted {
+																									Timer_IsStarted(hTimer:HTimer, out IsStarted:boolean)
+																									{
+																									}
+																									call
+																										required
+																											Timer_IsStarted.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}
+																													importable transportedInterface
+																													TI_If_TmExt_Timer_Start {
+																														Timer_Start(hTimer:HTimer) {
+																														}
+																														call
+																															required
+																																Timer_Start.CALL_CLNT_CLIENTMODE =
+																																A2TClientMode::A2TSynchronous
+																																data
+																																	provided
+																																		any.DATA_SND_CAN_INVALIDATE =
+																																		A2TBoolean::A2TFalse
+																																		any.DATA_SND_IMPLICIT_SEND =
+																																		A2TBoolean::A2TFalse
+																																		required
+																																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																																			A2TBoolean::A2TFalse
+																																		}
+																																		importable transportedInterface
+																																		TI_If_TmExt_Timer_Stop {
+																																			Timer_Stop(hTimer:HTimer) {
+																																			}
+																																			call
+																																				required
+																																					Timer_Stop.CALL_CLNT_CLIENTMODE =
+																																					A2TClientMode::A2TSynchronous
+																																					data
+																																						provided
+																																							any.DATA_SND_CAN_INVALIDATE =
+																																							A2TBoolean::A2TFalse
+																																							any.DATA_SND_IMPLICIT_SEND =
+																																							A2TBoolean::A2TFalse
+																																							required
+																																								any.DATA_RCV_IMPLICIT_RECEIVE =
+																																								A2TBoolean::A2TFalse
+																																							}
+																																							importable transportedInterface
+																																							TI_DcmExt_SecLevel1GetSeed {
+																																								DcmExt_SecLevel1GetSeed(OpStatus:Dcm_OpStatusType,
+																																								Buff:Dcm_MsgType, SubFunction:uint8,
+																																								inout
+																																								NegRes:Dcm_NegativeResponseCodeType,
+																																								session:Dcm_SesCtrlType):Std_ReturnType
+																																								{
+																																								}
+																																								call
+																																									required
+																																										DcmExt_SecLevel1GetSeed.CALL_CLNT_CLIENTMODE
+																																										=
+																																										A2TClientMode::A2TSynchronous
+																																										data
+																																											provided
+																																												any.DATA_SND_CAN_INVALIDATE =
+																																												A2TBoolean::A2TFalse
+																																												any.DATA_SND_IMPLICIT_SEND =
+																																												A2TBoolean::A2TFalse
+																																												required
+																																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																																													A2TBoolean::A2TFalse
+																																												}
+																																												importable transportedInterface
+																																												TI_DcmExt_SecLevel1CmpKey {
+																																													DcmExt_SecLevel1CmpKey(OpStatus:Dcm_OpStatusType,
+																																													Buff:Dcm_MsgType,
+																																													SubFunction:uint8, inout
+																																													NegRes:Dcm_NegativeResponseCodeType,
+																																													session:Dcm_SesCtrlType):Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															DcmExt_SecLevel1CmpKey.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_DcmExt_Service_Iocontrol {
+																																																		DcmExt_Service_Iocontrol(OpStatus:Dcm_OpStatusType,
+																																																		inout DataPointer:uint8,
+																																																		inout
+																																																		pNrc:Dcm_NegativeResponseCodeType,
+																																																		did:Dcm_DspDidIdentifierTableType):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				DcmExt_Service_Iocontrol.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface TI_DcmExt_Services_CndChk {
+															DcmExt_Services_CndChk(OpStatus:Dcm_OpStatusType, inout
+															pNrc:Dcm_NegativeResponseCodeType,
+															did:Dcm_DspDidIdentifierTableType):Std_ReturnType {
+															}
+															call
+																required
+																	DcmExt_Services_CndChk.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface TI_DcmExt_Services_DataRead
+																			{
+																				DcmExt_Services_DataRead(OpStatus:Dcm_OpStatusType, inout
+																				pDataPointer:uint8, did:Dcm_DspDidIdentifierTableType,
+																				inout pNrc:Dcm_NegativeResponseCodeType):Std_ReturnType {
+																				}
+																				call
+																					required
+																						DcmExt_Services_DataRead.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface
+																								TI_DcmExt_Services_DataWrite {
+																									DcmExt_Services_DataWrite(OpStatus:Dcm_OpStatusType,
+																									inout DataPointer:uint8, inout
+																									pNrc:Dcm_NegativeResponseCodeType,
+																									did:Dcm_DspDidIdentifierTableType):Std_ReturnType {
+																									}
+																									call
+																										required
+																											DcmExt_Services_DataWrite.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}
+																													importable transportedInterface
+																													TI_DcmExt_Services_LenChk {
+																														DcmExt_Services_LenChk(OpStatus:Dcm_OpStatusType,
+																														inout pNrc:Dcm_NegativeResponseCodeType, inout
+																														Length:Dcm_MsgLenType,
+																														did:Dcm_DspDidIdentifierTableType):Std_ReturnType
+																														{
+																														}
+																														call
+																															required
+																																DcmExt_Services_LenChk.CALL_CLNT_CLIENTMODE =
+																																A2TClientMode::A2TSynchronous
+																																data
+																																	provided
+																																		any.DATA_SND_CAN_INVALIDATE =
+																																		A2TBoolean::A2TFalse
+																																		any.DATA_SND_IMPLICIT_SEND =
+																																		A2TBoolean::A2TFalse
+																																		required
+																																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																																			A2TBoolean::A2TFalse
+																																		}
+																																		importable transportedInterface
+																																		TI_DcmExt_Services_RoutineResults {
+																																			DcmExt_Services_RoutineResults(OpStatus:Dcm_OpStatusType,
+																																			inout pOut_RoutineInfo:uint8, inout
+																																			Out_Results_Response:uint8, inout
+																																			DataLength:uint32, inout
+																																			pNrc:Dcm_NegativeResponseCodeType,
+																																			Rid:Dcm_DspRidIdentifierTableType):Std_ReturnType
+																																			{
+																																			}
+																																			call
+																																				required
+																																					DcmExt_Services_RoutineResults.CALL_CLNT_CLIENTMODE
+																																					=
+																																					A2TClientMode::A2TSynchronous
+																																					data
+																																						provided
+																																							any.DATA_SND_CAN_INVALIDATE =
+																																							A2TBoolean::A2TFalse
+																																							any.DATA_SND_IMPLICIT_SEND =
+																																							A2TBoolean::A2TFalse
+																																							required
+																																								any.DATA_RCV_IMPLICIT_RECEIVE =
+																																								A2TBoolean::A2TFalse
+																																							}
+																																							importable transportedInterface
+																																							TI_DcmExt_Services_RoutineStart {
+																																								DcmExt_Services_RoutineStart(OpStatus:Dcm_OpStatusType,
+																																								inout pOut_RoutineInfo:uint8, inout
+																																								DataLength:uint32, inout
+																																								pNrc:Dcm_NegativeResponseCodeType,
+																																								Rid:Dcm_DspRidIdentifierTableType):Std_ReturnType
+																																								{
+																																								}
+																																								call
+																																									required
+																																										DcmExt_Services_RoutineStart.CALL_CLNT_CLIENTMODE
+																																										=
+																																										A2TClientMode::A2TSynchronous
+																																										data
+																																											provided
+																																												any.DATA_SND_CAN_INVALIDATE =
+																																												A2TBoolean::A2TFalse
+																																												any.DATA_SND_IMPLICIT_SEND =
+																																												A2TBoolean::A2TFalse
+																																												required
+																																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																																													A2TBoolean::A2TFalse
+																																												}
+																																												importable transportedInterface
+																																												TI_DcmExt_Services_RoutineStop {
+																																													DcmExt_Services_RoutineStop(OpStatus:Dcm_OpStatusType,
+																																													inout pOut_RoutineInfo:uint8,
+																																													inout DataLength:uint32, inout
+																																													pNrc:Dcm_NegativeResponseCodeType,
+																																													Rid:Dcm_DspRidIdentifierTableType):Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															DcmExt_Services_RoutineStop.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_DemExt_ClearDTC {
+																																																		DemExt_ClearDTC(ClientId:uint8):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				DemExt_ClearDTC.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface TI_DemExt_GetDebouncingOfEvent {
+															DemExt_GetDebouncingOfEvent(EventId:Dem_EventIdType, out
+															DebouncingState:Dem_DebouncingStateType):Std_ReturnType {
+															}
+															call
+																required
+																	DemExt_GetDebouncingOfEvent.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface TI_DemExt_GetDTCOfEvent {
+																				DemExt_GetDTCOfEvent(EventId:Dem_EventIdType,
+																				DTCFormat:Dem_DTCFormatType, out
+																				DTCOfEvent:uint32):Std_ReturnType {
+																				}
+																				call
+																					required
+																						DemExt_GetDTCOfEvent.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface
+																								TI_DemExt_GetDTCSelectionResult {
+																									DemExt_GetDTCSelectionResult(ClientId:uint8):Std_ReturnType
+																									{
+																									}
+																									call
+																										required
+																											DemExt_GetDTCSelectionResult.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}
+																													importable transportedInterface
+																													TI_DemExt_GetDTCSelectionResultForClearDTC {
+																														DemExt_GetDTCSelectionResultForClearDTC(ClientId:uint8):Std_ReturnType
+																														{
+																														}
+																														call
+																															required
+																																DemExt_GetDTCSelectionResultForClearDTC.CALL_CLNT_CLIENTMODE
+																																=
+																																A2TClientMode::A2TSynchronous
+																																data
+																																	provided
+																																		any.DATA_SND_CAN_INVALIDATE =
+																																		A2TBoolean::A2TFalse
+																																		any.DATA_SND_IMPLICIT_SEND =
+																																		A2TBoolean::A2TFalse
+																																		required
+																																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																																			A2TBoolean::A2TFalse
+																																		}
+																																		importable transportedInterface
+																																		TI_DemExt_GetEventExtendedDataRecordEx {
+																																			DemExt_GetEventExtendedDataRecordEx(EventId:Dem_EventIdType,
+																																			RecordNumber:uint8, out DestBuffer:uint8,
+																																			inout BufSize:uint16):Std_ReturnType {
+																																			}
+																																			call
+																																				required
+																																					DemExt_GetEventExtendedDataRecordEx.CALL_CLNT_CLIENTMODE
+																																					=
+																																					A2TClientMode::A2TSynchronous
+																																					data
+																																						provided
+																																							any.DATA_SND_CAN_INVALIDATE =
+																																							A2TBoolean::A2TFalse
+																																							any.DATA_SND_IMPLICIT_SEND =
+																																							A2TBoolean::A2TFalse
+																																							required
+																																								any.DATA_RCV_IMPLICIT_RECEIVE =
+																																								A2TBoolean::A2TFalse
+																																							}
+																																							importable transportedInterface
+																																							TI_DemExt_GetEventFreezeFrameDataEx {
+																																								DemExt_GetEventFreezeFrameDataEx(EventId:Dem_EventIdType,
+																																								RecordNumber:uint8, DataId:uint16, out
+																																								DestBuffer:uint8, inout
+																																								BufSize:uint16):Std_ReturnType {
+																																								}
+																																								call
+																																									required
+																																										DemExt_GetEventFreezeFrameDataEx.CALL_CLNT_CLIENTMODE
+																																										=
+																																										A2TClientMode::A2TSynchronous
+																																										data
+																																											provided
+																																												any.DATA_SND_CAN_INVALIDATE =
+																																												A2TBoolean::A2TFalse
+																																												any.DATA_SND_IMPLICIT_SEND =
+																																												A2TBoolean::A2TFalse
+																																												required
+																																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																																													A2TBoolean::A2TFalse
+																																												}
+																																												importable transportedInterface
+																																												TI_DemExt_GetEventUdsStatus {
+																																													DemExt_GetEventUdsStatus(EventId:Dem_EventIdType,
+																																													out
+																																													UDSStatusByte:Dem_UdsStatusByteType):Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															DemExt_GetEventUdsStatus.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_DemExt_GetFaultDetectionCounter
+																																																	{
+																																																		DemExt_GetFaultDetectionCounter(EventId:Dem_EventIdType,
+																																																		out
+																																																		FaultDetectionCounter:sint8):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				DemExt_GetFaultDetectionCounter.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface
+														TI_DemExt_GetNumberOfEventMemoryEntries {
+															DemExt_GetNumberOfEventMemoryEntries(ClientId:uint8,
+															DTCOrigin:Dem_DTCOriginType, out
+															NumberOfEventMemoryEntries:uint8):Std_ReturnType {
+															}
+															call
+																required
+																	DemExt_GetNumberOfEventMemoryEntries.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface
+																			TI_DemExt_GetOperationCycleState {
+																				DemExt_GetOperationCycleState(OperationCycleId:uint8, out
+																				CycleState:Dem_OperationCycleStateType):Std_ReturnType {
+																				}
+																				call
+																					required
+																						DemExt_GetOperationCycleState.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface TI_DemExt_SelectDTC {
+																									DemExt_SelectDTC(ClientId:uint8, DTC:uint32,
+																									DTCFormat:Dem_DTCFormatType,
+																									DTCOrigin:Dem_DTCOriginType):Std_ReturnType {
+																									}
+																									call
+																										required
+																											DemExt_SelectDTC.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}
+																													importable transportedInterface
+																													TI_DemExt_SetEnableCondition {
+																														DemExt_SetEnableCondition(EnableConditionID:uint8,
+																														ConditionFulfilled:boolean):Std_ReturnType {
+																														}
+																														call
+																															required
+																																DemExt_SetEnableCondition.CALL_CLNT_CLIENTMODE
+																																=
+																																A2TClientMode::A2TSynchronous
+																																data
+																																	provided
+																																		any.DATA_SND_CAN_INVALIDATE =
+																																		A2TBoolean::A2TFalse
+																																		any.DATA_SND_IMPLICIT_SEND =
+																																		A2TBoolean::A2TFalse
+																																		required
+																																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																																			A2TBoolean::A2TFalse
+																																		}
+																																		importable transportedInterface
+																																		TI_DemExt_SetEventAvailable {
+																																			DemExt_SetEventAvailable(EventId:Dem_EventIdType,
+																																			AvailableStatus:boolean):Std_ReturnType {
+																																			}
+																																			call
+																																				required
+																																					DemExt_SetEventAvailable.CALL_CLNT_CLIENTMODE
+																																					=
+																																					A2TClientMode::A2TSynchronous
+																																					data
+																																						provided
+																																							any.DATA_SND_CAN_INVALIDATE =
+																																							A2TBoolean::A2TFalse
+																																							any.DATA_SND_IMPLICIT_SEND =
+																																							A2TBoolean::A2TFalse
+																																							required
+																																								any.DATA_RCV_IMPLICIT_RECEIVE =
+																																								A2TBoolean::A2TFalse
+																																							}
+																																							importable transportedInterface
+																																							TI_DemExt_SetEventStatus {
+																																								DemExt_SetEventStatus(EventId:Dem_EventIdType,
+																																								EventStatus:Dem_EventStatusType):Std_ReturnType
+																																								{
+																																								}
+																																								call
+																																									required
+																																										DemExt_SetEventStatus.CALL_CLNT_CLIENTMODE
+																																										=
+																																										A2TClientMode::A2TSynchronous
+																																										data
+																																											provided
+																																												any.DATA_SND_CAN_INVALIDATE =
+																																												A2TBoolean::A2TFalse
+																																												any.DATA_SND_IMPLICIT_SEND =
+																																												A2TBoolean::A2TFalse
+																																												required
+																																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																																													A2TBoolean::A2TFalse
+																																												}
+																																												importable transportedInterface
+																																												TI_DemExt_SetOperationCycleState {
+																																													DemExt_SetOperationCycleState(OperationCycleId:uint8,
+																																													CycleState:Dem_OperationCycleStateType):Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															DemExt_SetOperationCycleState.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_DemExt_SetStorageCondition
+																																																	{
+																																																		DemExt_SetStorageCondition(StorageConditionID:uint8,
+																																																		ConditionFulfilled:boolean):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				DemExt_SetStorageCondition.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface TI_DI_Did_Diag_Action {
+															DI_Did_Diag_Action(OpStatus:Dcm_OpStatusType, Did_action:uint8,
+															Did:Dcm_DspDidIdentifierTableType, ReqLength:Dcm_MsgLenType,
+															Buff:Dcm_MsgType, inout Length:Dcm_MsgLenType, inout
+															NegRes:Dcm_NegativeResponseCodeType):Std_ReturnType {
+															}
+															call
+																required
+																	DI_Did_Diag_Action.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface TI_DI_Rid_Diag_Action {
+																				DI_Rid_Diag_Action(OpStatus:Dcm_OpStatusType,
+																				Rid_action:uint8, Rid:Dcm_DspRidIdentifierTableType,
+																				ReqLength:Dcm_MsgLenType, Buff:Dcm_MsgType, inout
+																				RespLength:Dcm_MsgLenType, inout
+																				NegRes:Dcm_NegativeResponseCodeType):Std_ReturnType {
+																				}
+																				call
+																					required
+																						DI_Rid_Diag_Action.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface TI_DcmExt_Confirmation
+																								{
+																									DcmExt_Confirmation(Result:Std_ReturnType) {
+																									}
+																									call
+																										required
+																											DcmExt_Confirmation.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}

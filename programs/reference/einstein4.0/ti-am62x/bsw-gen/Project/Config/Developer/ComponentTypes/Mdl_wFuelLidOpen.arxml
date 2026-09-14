@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="927D405B-6705-432A-A838-65C92BDBE996">
+              <SHORT-NAME>Mdl_wFuelLidOpen</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="03F12B95-B71D-48D4-AC5E-8B6030294F7B">
+                  <SHORT-NAME>pp_Init</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="D75F632E-E733-4656-AB67-32D11512E9ED">
+                  <SHORT-NAME>rpIgnSubstate</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate/IgnitionSubstate</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpenIgnitionSubstateValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="7EA6507F-0EC5-4FB6-A50A-004C1448EDAE">
+                  <SHORT-NAME>rpUpdateFuelLidOpenWarning</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_Ctrl_Warning_UpdateWarningStatus/UpdateWarningStatus</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_Ctrl_Warning_UpdateWarningStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="6CF8CB35-26B0-43F5-9276-D6BD08D714B6">
+                  <SHORT-NAME>rp_CS_RxCanAdapterMdl</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_GetSignalValue</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_GetSignalValueU8Arr</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SetSignalInitValue</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SetSignalInitValueU8Arr</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalClearJustRcvdStatus</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalGetJustRcvdStatus</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalInvalidProcessingControl</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalMissingProcessingControl</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalNRProcessingControl</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="54932F44-17D5-4922-B6F8-62148AF2C6DC">
+                  <SHORT-NAME>rp_ClusterMode</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpenWSSCurrentClusterModeValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="B1719487-37BB-4BD0-9848-B7BC8153ED7F">
+                  <SHORT-NAME>IB_Mdl_wFuelLidOpen</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="65E56D69-B34C-4926-B9EB-AE51095CDFB5">
+                      <SHORT-NAME>OIE_pp_Init_Mdl_wFuelLidOpen_InitTrigByInit</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/IB_Mdl_wFuelLidOpen/Mdl_wFuelLidOpen_Init</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/pp_Init</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="A9D5F4B5-26A8-433B-A35B-13F2F8174CB6">
+                      <SHORT-NAME>TEMdl_wFuelLidOpen_Task</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/IB_Mdl_wFuelLidOpen/Mdl_wFuelLidOpen_Task</START-ON-EVENT-REF>
+                      <PERIOD>0.032</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/pp_Init</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rpIgnSubstate</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rpUpdateFuelLidOpenWarning</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_ClusterMode</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="8B1A13E5-E287-464B-AEC0-A2D9F3D3AD76">
+                      <SHORT-NAME>Mdl_wFuelLidOpen_Init</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_wFuelLidOpen_Init</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="1C82A01C-3CD5-4901-A9D8-E0604B82B912">
+                      <SHORT-NAME>Mdl_wFuelLidOpen_Task</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                        <VARIABLE-ACCESS UUID="A6DDED1E-A2BD-4A6A-AB9A-72A4BC3E5AE0">
+                          <SHORT-NAME>DRA_rpIgnSubstate_IgnitionSubstate</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rpIgnSubstate</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate/IgnitionSubstate</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="3A45164A-835D-40A9-BD93-B0DFFB2E7BCD">
+                          <SHORT-NAME>DRA_rp_ClusterMode_WSSCurrentClusterMode</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_ClusterMode</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                      <SERVER-CALL-POINTS>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="769A64C2-9385-4B27-B9BA-595B9F1AC3AB">
+                          <SHORT-NAME>OA_rpUpdateFuelLidOpenWarning_UpdateWarningStatus</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rpUpdateFuelLidOpenWarning</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_Ctrl_Warning_UpdateWarningStatus/UpdateWarningStatus</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="045D68E9-E5AB-47B5-9949-01DEC662DA6F">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_GetSignalValueU8Arr</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_GetSignalValueU8Arr</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="8D4C2A60-69C2-4BD0-8F03-5CAEE90A9C24">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SetSignalInitValue</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SetSignalInitValue</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="AD7A4FBA-5B6D-4FB7-B5FF-40F6CBBB4546">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SetSignalInitValueU8Arr</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SetSignalInitValueU8Arr</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="C057A679-4A64-4EA8-AD2D-49877DB67AF8">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SignalInvalidProcessingControl</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalInvalidProcessingControl</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="2EC2C470-58AE-4EE3-A5A8-E348D43E9400">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SignalMissingProcessingControl</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalMissingProcessingControl</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="C3B048FB-9F24-4132-8C9B-8DDD99C1454D">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SignalNRProcessingControl</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalNRProcessingControl</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="339E74CB-DA73-4C50-9B54-999D979AB478">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SignalGetJustRcvdStatus</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalGetJustRcvdStatus</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="C38053A5-2005-4236-835E-7A5760D27FA9">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_SignalClearJustRcvdStatus</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_SignalClearJustRcvdStatus</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="D23F1854-7C13-40AD-B007-10E0947F106F">
+                          <SHORT-NAME>OA_rp_CS_RxCanAdapterMdl_RxCan_GetSignalValue</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/rp_CS_RxCanAdapterMdl</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ComAbsRx/RxCan_GetSignalValue</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                      </SERVER-CALL-POINTS>
+                      <SYMBOL>Mdl_wFuelLidOpen_Task</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="8A2C7215-DF5B-4DC8-9D7A-D01074EC8BE9">
+              <SHORT-NAME>IMPL_Mdl_wFuelLidOpen</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/Mdl_wFuelLidOpen/IB_Mdl_wFuelLidOpen</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

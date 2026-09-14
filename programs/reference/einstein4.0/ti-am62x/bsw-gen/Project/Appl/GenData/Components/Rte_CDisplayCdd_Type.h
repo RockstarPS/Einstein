@@ -1,0 +1,481 @@
+/**********************************************************************************************************************
+ *  COPYRIGHT
+ *  -------------------------------------------------------------------------------------------------------------------
+ *
+ *                This software is copyright protected and proprietary to Vector Informatik GmbH.
+ *                Vector Informatik GmbH grants to you only those rights as set out in the license conditions.
+ *                All other rights remain with Vector Informatik GmbH.
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  -------------------------------------------------------------------------------------------------------------------
+ *          File:  Rte_CDisplayCdd_Type.h
+ *        Config:  BMW.dpa
+ *   ECU-Project:  IC
+ *
+ *     Generator:  MICROSAR RTE Generator Version 4.19.0
+ *                 RTE Core Version 1.19.0
+ *       License:  CBD1800851
+ *
+ *   Description:  Application types header file for SW-C <CDisplayCdd>
+ *********************************************************************************************************************/
+
+/* double include prevention */
+#ifndef _RTE_CDISPLAYCDD_TYPE_H
+# define _RTE_CDISPLAYCDD_TYPE_H
+
+# ifdef __cplusplus
+extern "C"
+{
+# endif /* __cplusplus */
+
+# include "Rte_Type.h"
+
+# ifndef RTE_CORE
+
+/**********************************************************************************************************************
+ * Range, Invalidation, Enumeration and Bit Field Definitions
+ *********************************************************************************************************************/
+
+#  ifndef eCmpCmd_Init
+#   define eCmpCmd_Init (0U)
+#  endif
+
+#  ifndef eCmpCmd_DeInit
+#   define eCmpCmd_DeInit (1U)
+#  endif
+
+#  ifndef eCmpCmd_Activate
+#   define eCmpCmd_Activate (2U)
+#  endif
+
+#  ifndef eCmpCmd_DeActivate
+#   define eCmpCmd_DeActivate (3U)
+#  endif
+
+#  ifndef eDeviceNotReady
+#   define eDeviceNotReady (0U)
+#  endif
+
+#  ifndef eDeviceInitialized
+#   define eDeviceInitialized (1U)
+#  endif
+
+#  ifndef eDeviceReady
+#   define eDeviceReady (2U)
+#  endif
+
+#  ifndef eDeviceBusy
+#   define eDeviceBusy (3U)
+#  endif
+
+#  ifndef eDeviceFault
+#   define eDeviceFault (4U)
+#  endif
+
+#  ifndef eDeviceMaxState
+#   define eDeviceMaxState (5U)
+#  endif
+
+#  ifndef eDisplayNotReady
+#   define eDisplayNotReady (0U)
+#  endif
+
+#  ifndef eDisplayReady
+#   define eDisplayReady (1U)
+#  endif
+
+#  ifndef eDisplayBusy
+#   define eDisplayBusy (2U)
+#  endif
+
+#  ifndef eDisplayFaultHandle
+#   define eDisplayFaultHandle (3U)
+#  endif
+
+#  ifndef eDisplayMaxStatus
+#   define eDisplayMaxStatus (4U)
+#  endif
+
+#  ifndef EDisplayPower_Off
+#   define EDisplayPower_Off (0U)
+#  endif
+
+#  ifndef EDisplayPower_On
+#   define EDisplayPower_On (1U)
+#  endif
+
+#  ifndef EDisplayPower_Last
+#   define EDisplayPower_Last (2U)
+#  endif
+
+#  ifndef eDisplayIdle
+#   define eDisplayIdle (0U)
+#  endif
+
+#  ifndef eDisplayPowerON
+#   define eDisplayPowerON (1U)
+#  endif
+
+#  ifndef eDisplayNormal
+#   define eDisplayNormal (2U)
+#  endif
+
+#  ifndef eDisplayPowerOFF
+#   define eDisplayPowerOFF (3U)
+#  endif
+
+#  ifndef eDisplayFault_Handle
+#   define eDisplayFault_Handle (4U)
+#  endif
+
+#  ifndef eDisplayMaxPowerState
+#   define eDisplayMaxPowerState (5U)
+#  endif
+
+#  ifndef EDisplayState_Off
+#   define EDisplayState_Off (0U)
+#  endif
+
+#  ifndef EDisplayState_On
+#   define EDisplayState_On (1U)
+#  endif
+
+#  ifndef EDisplayState_Error
+#   define EDisplayState_Error (2U)
+#  endif
+
+#  ifndef EDisplayState_Disconnected
+#   define EDisplayState_Disconnected (3U)
+#  endif
+
+#  ifndef EDisplayState_Last
+#   define EDisplayState_Last (4U)
+#  endif
+
+#  ifndef e_Display10Inch
+#   define e_Display10Inch (0U)
+#  endif
+
+#  ifndef e_DisplayMaxDevice
+#   define e_DisplayMaxDevice (1U)
+#  endif
+
+#  ifndef eDisplayCdd_GammaCorrection_None
+#   define eDisplayCdd_GammaCorrection_None (0U)
+#  endif
+
+#  ifndef eDisplayCdd_GammaCorrection_OnGoing
+#   define eDisplayCdd_GammaCorrection_OnGoing (1U)
+#  endif
+
+#  ifndef eDisplayCdd_GammaCorrection_Success
+#   define eDisplayCdd_GammaCorrection_Success (2U)
+#  endif
+
+#  ifndef eDisplayCdd_GammaCorrection_Failure
+#   define eDisplayCdd_GammaCorrection_Failure (3U)
+#  endif
+
+#  ifndef eIO_DOutGroupIdCount
+#   define eIO_DOutGroupIdCount (0)
+#  endif
+
+#  ifndef eIO_DOUT_DO_5VSW2_3V3_EN
+#   define eIO_DOUT_DO_5VSW2_3V3_EN (0U)
+#  endif
+
+#  ifndef eIO_DOUT_PARK_BRAKE_TT_OUT
+#   define eIO_DOUT_PARK_BRAKE_TT_OUT (1U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SYC1
+#   define eIO_DOUT_DO_SYC1 (2U)
+#  endif
+
+#  ifndef eIO_DOUT_SEAT_BELT_TT_MCUOUT
+#   define eIO_DOUT_SEAT_BELT_TT_MCUOUT (3U)
+#  endif
+
+#  ifndef eIO_DOUT_TURN_LEFT_TT_MCUOUT
+#   define eIO_DOUT_TURN_LEFT_TT_MCUOUT (4U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_LCD_BL_PWR_EN
+#   define eIO_DOUT_DO_LCD_BL_PWR_EN (5U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_3V3_DISP_SW_EN
+#   define eIO_DOUT_DO_3V3_DISP_SW_EN (6U)
+#  endif
+
+#  ifndef eIO_DOUT_AMP_SHTD
+#   define eIO_DOUT_AMP_SHTD (7U)
+#  endif
+
+#  ifndef eIO_DOUT_FUEL_RHEO_SUP_EN
+#   define eIO_DOUT_FUEL_RHEO_SUP_EN (8U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_LCD_STBYB
+#   define eIO_DOUT_DO_LCD_STBYB (9U)
+#  endif
+
+#  ifndef eIO_DOUT_SBATT2_EN
+#   define eIO_DOUT_SBATT2_EN (10U)
+#  endif
+
+#  ifndef eIO_DOUT_BRAKE_TT_MCUOUT
+#   define eIO_DOUT_BRAKE_TT_MCUOUT (11U)
+#  endif
+
+#  ifndef eIO_DOUT_AIRBAG_TT_MCUOUT
+#   define eIO_DOUT_AIRBAG_TT_MCUOUT (12U)
+#  endif
+
+#  ifndef eIO_DOUT_TURN_RIGHT_TT_MCUOUT
+#   define eIO_DOUT_TURN_RIGHT_TT_MCUOUT (13U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SMPS_5V_SW_EN
+#   define eIO_DOUT_DO_SMPS_5V_SW_EN (14U)
+#  endif
+
+#  ifndef eIO_DOUT_PCS_OFF_TT_MCUOUT
+#   define eIO_DOUT_PCS_OFF_TT_MCUOUT (15U)
+#  endif
+
+#  ifndef eIO_DOUT_ABS_TT_MCUOUT
+#   define eIO_DOUT_ABS_TT_MCUOUT (16U)
+#  endif
+
+#  ifndef eIO_DOUT_SLIP_TT_MCUOUT
+#   define eIO_DOUT_SLIP_TT_MCUOUT (17U)
+#  endif
+
+#  ifndef eIO_DOUT_VCS_OFF_TT_MCUOUT
+#   define eIO_DOUT_VCS_OFF_TT_MCUOUT (18U)
+#  endif
+
+#  ifndef eIO_DOUT_ECB_EPB_TT_MCUOUT
+#   define eIO_DOUT_ECB_EPB_TT_MCUOUT (19U)
+#  endif
+
+#  ifndef eIO_DOUT_Flasher_FL_RL_OUT
+#   define eIO_DOUT_Flasher_FL_RL_OUT (20U)
+#  endif
+
+#  ifndef eIO_DOUT_Flasher_DEN1
+#   define eIO_DOUT_Flasher_DEN1 (21U)
+#  endif
+
+#  ifndef eIO_DOUT_Flasher_DSEL1
+#   define eIO_DOUT_Flasher_DSEL1 (22U)
+#  endif
+
+#  ifndef eIO_DOUT_Flasher_FR_RR_OUT
+#   define eIO_DOUT_Flasher_FR_RR_OUT (23U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_LCD_RST
+#   define eIO_DOUT_DO_LCD_RST (24U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SMPS_1V2_EN
+#   define eIO_DOUT_DO_SMPS_1V2_EN (25U)
+#  endif
+
+#  ifndef eIO_DO_MAX
+#   define eIO_DO_MAX (26U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_DISP_RESET
+#   define eIO_DOUT_DO_DISP_RESET (27U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_DISP_STBY
+#   define eIO_DOUT_DO_DISP_STBY (28U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TFT_BL_EN
+#   define eIO_DOUT_DO_TFT_BL_EN (29U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_PWM_DIMMING
+#   define eIO_DOUT_DO_PWM_DIMMING (30U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_RTC_INTN
+#   define eIO_DOUT_DO_RTC_INTN (31U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SOC_PWR_LATCH
+#   define eIO_DOUT_DO_SOC_PWR_LATCH (32U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_1V2_EN
+#   define eIO_DOUT_DO_1V2_EN (33U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_EN_5V
+#   define eIO_DOUT_DO_EN_5V (34U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_ENET_EN
+#   define eIO_DOUT_DO_ENET_EN (35U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_LIN_NSLP
+#   define eIO_DOUT_DO_LIN_NSLP (36U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MCU_RESETSTAZ
+#   define eIO_DOUT_DO_MCU_RESETSTAZ (37U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_3V3_DISP
+#   define eIO_DOUT_DO_3V3_DISP (38U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MD_TOUCH_RST
+#   define eIO_DOUT_DO_MD_TOUCH_RST (39U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_VPP_EN
+#   define eIO_DOUT_DO_VPP_EN (40U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MD_GNSS_BOOT_EN
+#   define eIO_DOUT_DO_MD_GNSS_BOOT_EN (41U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MD_GNSS_RESETP
+#   define eIO_DOUT_DO_MD_GNSS_RESETP (42U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MD_GNSS_PWR_EN
+#   define eIO_DOUT_DO_MD_GNSS_PWR_EN (43U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_BLU_OPAMP_PWR_EN
+#   define eIO_DOUT_DO_BLU_OPAMP_PWR_EN (44U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_BLU_DWALED_EN
+#   define eIO_DOUT_DO_BLU_DWALED_EN (45U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TCON_BYPASS_MODE
+#   define eIO_DOUT_DO_TCON_BYPASS_MODE (46U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TCON_BYPASS_SEL0
+#   define eIO_DOUT_DO_TCON_BYPASS_SEL0 (47U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TCON_BYPASS_SEL1
+#   define eIO_DOUT_DO_TCON_BYPASS_SEL1 (48U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SOC_FPDLINK3_PDB
+#   define eIO_DOUT_DO_SOC_FPDLINK3_PDB (49U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SOC_FPDLINK3_INTB
+#   define eIO_DOUT_DO_SOC_FPDLINK3_INTB (50U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SOC_FPDLINK3_BISTEN
+#   define eIO_DOUT_DO_SOC_FPDLINK3_BISTEN (51U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_ENET_RSTB
+#   define eIO_DOUT_DO_ENET_RSTB (52U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_EN_BUCK_FALD
+#   define eIO_DOUT_DO_EN_BUCK_FALD (53U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MCU_AMUX_S1
+#   define eIO_DOUT_DO_MCU_AMUX_S1 (54U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_MCU_AMUX_S0
+#   define eIO_DOUT_DO_MCU_AMUX_S0 (55U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TCON_SPI0_CS0
+#   define eIO_DOUT_DO_TCON_SPI0_CS0 (56U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SPI_CAN_CS
+#   define eIO_DOUT_DO_SPI_CAN_CS (57U)
+#  endif
+
+#  ifndef eIO_DOUT_DESER_SPI1_DO
+#   define eIO_DOUT_DESER_SPI1_DO (58U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_SOC_TCON_GRBN
+#   define eIO_DOUT_DO_SOC_TCON_GRBN (59U)
+#  endif
+
+#  ifndef eIO_DOUT_DO_TFT_CSB
+#   define eIO_DOUT_DO_TFT_CSB (60U)
+#  endif
+
+#  ifndef E_NO_ERROR
+#   define E_NO_ERROR (2U)
+#  endif
+
+#  ifndef E_ERROR
+#   define E_ERROR (3U)
+#  endif
+
+#  ifndef E_ADC_ERROR
+#   define E_ADC_ERROR (4U)
+#  endif
+
+#  ifndef E_DOUT_ID_INVALID
+#   define E_DOUT_ID_INVALID (5U)
+#  endif
+
+#  ifndef E_DIN_ID_INVALID
+#   define E_DIN_ID_INVALID (6U)
+#  endif
+
+#  ifndef E_ADC_ID_INVALID
+#   define E_ADC_ID_INVALID (7U)
+#  endif
+
+#  ifndef IOHWAB_E_ADC_ERROR
+#   define IOHWAB_E_ADC_ERROR (8U)
+#  endif
+
+#  ifndef IOHWAB_E_ADC_ID_INVALID
+#   define IOHWAB_E_ADC_ID_INVALID (9U)
+#  endif
+
+#  ifndef IOHWAB_E_ERROR
+#   define IOHWAB_E_ERROR (10U)
+#  endif
+
+#  ifndef IOHWAB_E_DOUT_ID_INVALID
+#   define IOHWAB_E_DOUT_ID_INVALID (11U)
+#  endif
+
+#  ifndef IOHWAB_E_NO_ERROR
+#   define IOHWAB_E_NO_ERROR (12U)
+#  endif
+
+#  ifndef IOHWAB_E_DIN_ID_INVALID
+#   define IOHWAB_E_DIN_ID_INVALID (13U)
+#  endif
+
+# endif /* RTE_CORE */
+
+# ifdef __cplusplus
+} /* extern "C" */
+# endif /* __cplusplus */
+
+#endif /* _RTE_CDISPLAYCDD_TYPE_H */

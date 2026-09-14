@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="D0959907-8043-4D25-846B-CA6045315C6E">
+              <SHORT-NAME>DcmApp</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="F719133F-7D8C-4FBE-B4D3-E869472FB9BB">
+                  <SHORT-NAME>pp_CS_DID_App_Diag_Action</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_DID_App_Diag_Action/DID_DiagAction</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_DID_App_Diag_Action</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="D3193719-7C11-4EEE-87B4-1B430528DF6D">
+                  <SHORT-NAME>pp_CS_DiagEntryStatus</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_DiagEntrySts/Diag_Entry_Status</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_DiagEntrySts</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="DFDBC9DC-A7E6-4763-A095-EC5CA452AF2D">
+                  <SHORT-NAME>pp_CS_RID_App_Diag_Action</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_RID_App_Diag_Action/RID_DiagAction</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_RID_App_Diag_Action</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="71E7CA48-314F-4B34-A00E-A402D7B14940">
+                  <SHORT-NAME>pp_CmpLibCmd_CDcmApp</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="177F5027-CFBF-4FD2-ACDB-2FC62F41D0D1">
+                  <SHORT-NAME>IB_DcmApp</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="B2159C0B-A0AD-4584-877C-0E057085EE64">
+                      <SHORT-NAME>OIE_pp_CS_DID_App_Diag_Action_CDcmApp_DID_DiagActionTrigByDID_DiagAction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp/CDcmApp_DID_DiagAction</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_DID_App_Diag_Action</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_DID_App_Diag_Action/DID_DiagAction</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="0742243A-15CC-4EFF-9D7D-F8572CB3B97B">
+                      <SHORT-NAME>OIE_pp_CS_DiagEntryStatus_CDcmApp_Diag_Entry_StatusTrigByDiag_Entry_Status</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp/CDcmApp_Diag_Entry_Status</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_DiagEntryStatus</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_DiagEntrySts/Diag_Entry_Status</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="23CFB262-9531-4A74-A501-DEF3E097EEB4">
+                      <SHORT-NAME>TECDcmApp_Impl_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp/CDcmApp_Impl_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.01</PERIOD>
+                    </TIMING-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="BBE689D1-427F-4962-9AAA-C4EF049A6559">
+                      <SHORT-NAME>OIE_pp_CmpLibCmd_CDcmApp_CDcmApp_Impl_OnCommandTrigByImpl_OnCommand</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp/CDcmApp_Impl_OnCommand</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CmpLibCmd_CDcmApp</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="1EFBC90E-09CC-401B-9A87-0A36E887B0D9">
+                      <SHORT-NAME>OIE_pp_CS_RID_App_Diag_Action_CDcmApp_RID_DiagActionTrigByRID_DiagAction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp/CDcmApp_RID_DiagAction</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_RID_App_Diag_Action</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_RID_App_Diag_Action/RID_DiagAction</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_DID_App_Diag_Action</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_DiagEntryStatus</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CS_RID_App_Diag_Action</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/DcmApp/pp_CmpLibCmd_CDcmApp</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="7C68162A-D38A-481E-9833-4725220AD210">
+                      <SHORT-NAME>CDcmApp_DID_DiagAction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDcmApp_DID_DiagAction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="2893685B-7701-4E7E-A1B3-C7E41318B656">
+                      <SHORT-NAME>CDcmApp_Diag_Entry_Status</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDcmApp_Diag_Entry_Status</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="BB7EBA6B-E9F3-4EAF-A05C-8B84744EBFEE">
+                      <SHORT-NAME>CDcmApp_Impl_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDcmApp_Impl_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="6F927B81-6CD0-47C5-972D-8472F7601309">
+                      <SHORT-NAME>CDcmApp_Impl_OnCommand</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDcmApp_Impl_OnCommand</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="C36900F3-D6EA-4BF5-BA60-D0A8421CE7CE">
+                      <SHORT-NAME>CDcmApp_RID_DiagAction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDcmApp_RID_DiagAction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="7E5540C9-37B4-4ABD-8C58-D564BEAC0393">
+              <SHORT-NAME>IMPL_DcmApp</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/DcmApp/IB_DcmApp</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

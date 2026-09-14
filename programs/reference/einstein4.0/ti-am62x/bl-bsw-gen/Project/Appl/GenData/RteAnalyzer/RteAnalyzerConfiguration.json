@@ -1,0 +1,954 @@
+{
+   "description" : "RTE Analyzer configuration file",
+   "version" : "1.2.1",
+   "BswOsApplication" : "SystemApplication_OsCore0",
+   "COMDirectory" : "C:/Vector/CBD1800851_D01_Traveo/BSW/Com",
+   "DataConsistencyAPIGroupList" : [
+      {
+         "CanBeNested" : "0",
+         "HandleIndex" : "-1",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "DisableAllInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^Suspend(All|OS)Interrupts",
+            "^GetResource",
+            "^osDisable.",
+            "^Schedule"
+         ],
+         "Type" : "INTERRUPT",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "EnableAllInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "0",
+         "HandleIndex" : "-1",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableGlobalAM",
+               "RequiresTrustedContext" : "0"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableGlobalKM",
+               "RequiresTrustedContext" : "1"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableGlobalUM",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^DisableAllInterrupts",
+            "^GetResource",
+            "^osDisable.",
+            "^Schedule"
+         ],
+         "Type" : "INTERRUPT",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableGlobalAM",
+               "RequiresTrustedContext" : "0"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableGlobalKM",
+               "RequiresTrustedContext" : "1"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableGlobalUM",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "0",
+         "HandleIndex" : "-1",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableLevelAM",
+               "RequiresTrustedContext" : "0"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableLevelKM",
+               "RequiresTrustedContext" : "1"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osDisableLevelUM",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^DisableAllInterrupts",
+            "^GetResource",
+            "^osDisable.",
+            "^Schedule"
+         ],
+         "Type" : "INTERRUPT",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableLevelAM",
+               "RequiresTrustedContext" : "0"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableLevelKM",
+               "RequiresTrustedContext" : "1"
+            },
+            {
+               "CanBeUsedInISRContext" : "0",
+               "Name" : "osEnableLevelUM",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "1",
+         "HandleIndex" : "-1",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "SuspendAllInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^DisableAllInterrupts",
+            "^GetResource",
+            "^osDisable.",
+            "^Schedule"
+         ],
+         "Type" : "INTERRUPT",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "ResumeAllInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "1",
+         "HandleIndex" : "-1",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "SuspendOSInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^DisableAllInterrupts",
+            "^GetResource",
+            "^osDisable.",
+            "^Schedule"
+         ],
+         "Type" : "INTERRUPT",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "ResumeOSInterrupts",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "0",
+         "HandleIndex" : "0",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "GetResource",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "0",
+         "LocksSameCore" : "1",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^Schedule"
+         ],
+         "Type" : "RESOURCE",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "ReleaseResource",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      },
+      {
+         "CanBeNested" : "0",
+         "HandleIndex" : "0",
+         "LockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "GetSpinlock",
+               "RequiresTrustedContext" : "0"
+            }
+         ],
+         "LocksOtherCores" : "1",
+         "LocksSameCore" : "0",
+         "ProhibitedAPIFunctions" : [
+            "^(Wait|Set)Event",
+            "^(Activate|Chain|Terminate)Task",
+            "^Schedule"
+         ],
+         "Type" : "SPINLOCK",
+         "UnlockAPIList" : [
+            {
+               "CanBeUsedInISRContext" : "1",
+               "Name" : "ReleaseSpinlock",
+               "RequiresTrustedContext" : "0"
+            }
+         ]
+      }
+   ],
+   "ISRList" : [
+      {
+         "ExecutedOnTaskLevel" : "0",
+         "NamePattern" : "Rte_LdComCbk.*"
+      },
+      {
+         "ExecutedOnTaskLevel" : "1",
+         "NamePattern" : "Rte_GetMirror.*"
+      },
+      {
+         "ExecutedOnTaskLevel" : "1",
+         "NamePattern" : "Rte_SetMirror.*"
+      },
+      {
+         "ExecutedOnTaskLevel" : "1",
+         "NamePattern" : "Rte_NvMNotifyJobFinished.*"
+      },
+      {
+         "ExecutedOnTaskLevel" : "1",
+         "NamePattern" : "Rte_NvMNotifyInitBlock.*"
+      }
+   ],
+   "InitFunctionNamePatternList" : [
+      "Rte_InitMemory",
+      "SchM_Init",
+      "Rte_Start",
+      "E2EXf_Init",
+      "Rte_SetMirror_"
+   ],
+   "InlineFunctionNamePatternList" : [
+      "Rte_QAddElement.*",
+      "Rte_QUnqueueElement.*",
+      "Rte_MemCmp.*",
+      "Rte_DecDisableFlags.*",
+      "Rte_IncDisableFlags.*",
+      "E2EXf_.*",
+      "Rte_TrustedWrite.*",
+      "TSC_Inline.*",
+      "Rte_IocReceive_Rte_M.*",
+      "Rte_IocPeek_Rte_M.*",
+      "Rte_IocSend_Rte_M.*"
+   ],
+   "MemCpyFunctionNamePatternList" : [
+      "^llvm.memcpy",
+      "^memcpy",
+      "^Rte_MemCpy.*",
+      "^Rte_PartialMemCpy",
+      "^SomeIpXf_MemCpy.*",
+      "^VStdMemCpy_Func",
+      "^CanTSyn_MemCpy",
+      "^CanTp_Util_MemCpy",
+      "^IpBase_Copy"
+   ],
+   "MemSetFunctionNamePatternList" : [
+      "^.*memset",
+      "^.*MemSet",
+      "^Rte_MemClr"
+   ],
+   "MemmapSectionNamePatternList" : [
+      "(RTE)_(START|STOP)_SEC_(.*)",
+      "(E2EXF|COMXF|DIAGXF|SOMEIPXF)_(START|STOP)_SEC_(.*)"
+   ],
+   "NonReentrantFunctionList" : [
+      {
+         "HandleIndex" : "0",
+         "NamePatternList" : [
+            "Com_SendSignal",
+            "Com_InvalidateSignal",
+            "Com_UpdateShadowSignal",
+            "Com_InvalidateSignalGroup"
+         ],
+         "NoConcurrentCallsOnDifferentCores" : "0",
+         "NoConcurrentCallsOnSameCore" : "1"
+      },
+      {
+         "HandleIndex" : "0",
+         "NamePatternList" : [
+            "Com_ReceiveShadowSignal",
+            "Com_ReceiveSignalGroup"
+         ],
+         "NoConcurrentCallsOnDifferentCores" : "0",
+         "NoConcurrentCallsOnSameCore" : "1"
+      },
+      {
+         "HandleIndex" : "0",
+         "NamePatternList" : [
+            "LdCom_TriggerTransmit"
+         ],
+         "NoConcurrentCallsOnDifferentCores" : "0",
+         "NoConcurrentCallsOnSameCore" : "1"
+      },
+      {
+         "HandleIndex" : "-1",
+         "NamePatternList" : [
+            "^IocSend_(.+)(_[:digit:]+)?",
+            "^IocWrite_(.+)(_[:digit:]+)?",
+            "^IocReceive_(.+)",
+            "^IocRead_(.+)"
+         ],
+         "NoConcurrentCallsOnDifferentCores" : "1",
+         "NoConcurrentCallsOnSameCore" : "1"
+      }
+   ],
+   "NotReportedConcurrentAccessList" : [
+      {
+         "Justification" : "Accesses to the server queue are synchronized with SetEvent and WaitEvent",
+         "NamePattern" : "Rte_CS_ServerQueue_.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Accesses to the client queue are synchronized with SetEvent and WaitEvent",
+         "NamePattern" : "Rte_CS_ClientQueue_.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Accesses to the client queue are synchronized with SetEvent and WaitEvent",
+         "NamePattern" : "Rte_CS_ClientQueue2_.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Only error in runnable stubs. Will be fixed with ESCAN00085617",
+         "NamePattern" : ".*_FctPtr",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "LDCOM TP API Buffers are protected with a separate busy flag",
+         "NamePattern" : "^Rte_LdCom_.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Indices are only modified in the TP Callbacks",
+         "NamePattern" : "^Rte_LdComTpIndices.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Accesses to the waiting task list are synchronized with SetEvent and WaitEvent",
+         "NamePattern" : "Rte_CS_WaitingTaskList_.*",
+         "Type" : "VARIABLE"
+      },
+      {
+         "Justification" : "Concurrent access is prevented by idle flags and sequence",
+         "NamePattern" : "^Ioc(Read|Write)_Rte_CS_OutParams_",
+         "Type" : "FUNCTION"
+      }
+   ],
+   "OsAPIFunctions" : [
+      "^os.",
+      "^Com_.",
+      "^LdCom_.",
+      "^(Get|Wait|Clear|Set)Event$",
+      "^(Disable|Enable|Suspend|Resume)AllInterrupts$",
+      "^(Suspend|Resume)OSInterrupts$",
+      "^(Activate|Terminate|Chain)Task$",
+      "^(SetRel|Cancel)Alarm$",
+      "^Get(Core|Task)ID$",
+      "^(Get|Release)(Resource|Spinlock)$",
+      "^Schedule$"
+   ],
+   "OsApplicationList" : [
+      {
+         "CoreId" : "0",
+         "IsTrusted" : "1",
+         "OsApplicationName" : "SystemApplication_OsCore0",
+         "SafetyLevel" : "0"
+      }
+   ],
+   "PlatformSettings" : {
+      "MaxAtomicMemoryAccess" : "4"
+   },
+   "SIPDirectories" : [
+      "C:\\Vector\\CBD1800851_D01_Traveo\\"
+   ],
+   "SourceFileList" : [
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TestControl"
+         ],
+         "SourceFile" : "Source/TestControl.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Rte"
+         ],
+         "SourceFile" : "../Rte.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Rte_SystemApplication_OsCore0"
+         ],
+         "SourceFile" : "../Rte_SystemApplication_OsCore0.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Dcm"
+         ],
+         "SourceFile" : "Source/Dcm.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_SchM_Dcm"
+         ],
+         "SourceFile" : "Source/TSC_SchM_Dcm.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Dem"
+         ],
+         "SourceFile" : "Source/Dem.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_SchM_Dem"
+         ],
+         "SourceFile" : "Source/TSC_SchM_Dem.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Ea"
+         ],
+         "SourceFile" : "Source/Ea.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_SchM_Ea"
+         ],
+         "SourceFile" : "Source/TSC_SchM_Ea.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/NvM"
+         ],
+         "SourceFile" : "Source/NvM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_SchM_NvM"
+         ],
+         "SourceFile" : "Source/TSC_SchM_NvM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/ComM"
+         ],
+         "SourceFile" : "Source/ComM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_ComM"
+         ],
+         "SourceFile" : "Source/TSC_ComM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/DemMaster_0"
+         ],
+         "SourceFile" : "Source/DemMaster_0.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_DemMaster_0"
+         ],
+         "SourceFile" : "Source/TSC_DemMaster_0.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/DemSatellite_0"
+         ],
+         "SourceFile" : "Source/DemSatellite_0.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_DemSatellite_0"
+         ],
+         "SourceFile" : "Source/TSC_DemSatellite_0.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/EcuAppM"
+         ],
+         "SourceFile" : "Source/EcuAppM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_EcuAppM"
+         ],
+         "SourceFile" : "Source/TSC_EcuAppM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/EcuM"
+         ],
+         "SourceFile" : "Source/EcuM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_EcuM"
+         ],
+         "SourceFile" : "Source/TSC_EcuM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/EcuMExt"
+         ],
+         "SourceFile" : "Source/EcuMExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_EcuMExt"
+         ],
+         "SourceFile" : "Source/TSC_EcuMExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/IoHwAb"
+         ],
+         "SourceFile" : "Source/IoHwAb.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_IoHwAb"
+         ],
+         "SourceFile" : "Source/TSC_IoHwAb.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/MemAbstractMdl"
+         ],
+         "SourceFile" : "Source/MemAbstractMdl.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_MemAbstractMdl"
+         ],
+         "SourceFile" : "Source/TSC_MemAbstractMdl.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/MemAbstractStub"
+         ],
+         "SourceFile" : "Source/MemAbstractStub.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_MemAbstractStub"
+         ],
+         "SourceFile" : "Source/TSC_MemAbstractStub.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_NvM"
+         ],
+         "SourceFile" : "Source/TSC_NvM.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/NvMExt"
+         ],
+         "SourceFile" : "Source/NvMExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_NvMExt"
+         ],
+         "SourceFile" : "Source/TSC_NvMExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Os_OsCore0_swc"
+         ],
+         "SourceFile" : "Source/Os_OsCore0_swc.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_Os_OsCore0_swc"
+         ],
+         "SourceFile" : "Source/TSC_Os_OsCore0_swc.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/Test_Comp"
+         ],
+         "SourceFile" : "Source/Test_Comp.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_Test_Comp"
+         ],
+         "SourceFile" : "Source/TSC_Test_Comp.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TmExt"
+         ],
+         "SourceFile" : "Source/TmExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_TmExt"
+         ],
+         "SourceFile" : "Source/TSC_TmExt.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/UclProxyCdd"
+         ],
+         "SourceFile" : "Source/UclProxyCdd.c"
+      },
+      {
+         "IncludeDirectoryList" : [
+            "C:/Vector/CBD1800851_D01_Traveo/Misc/RteAnalyzer/include",
+            "Source",
+            "..",
+            "../Components",
+            "../Components/TSC_UclProxyCdd"
+         ],
+         "SourceFile" : "Source/TSC_UclProxyCdd.c"
+      }
+   ],
+   "TaskList" : [
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "1",
+         "Priority" : "4294967295",
+         "TaskName" : "IdleTask_OsCore0"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "15",
+         "TaskName" : "OsTask_AppFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "11",
+         "TaskName" : "OsTask_AudioFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "0",
+         "TaskName" : "OsTask_CANFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "2",
+         "TaskName" : "OsTask_CddFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "18",
+         "TaskName" : "OsTask_Diagnostics"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "7",
+         "TaskName" : "OsTask_EthFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "1",
+         "Priority" : "16",
+         "TaskName" : "OsTask_FotaFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "9",
+         "TaskName" : "OsTask_GaugeFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "1",
+         "Priority" : "17",
+         "TaskName" : "OsTask_Graphics"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "12",
+         "TaskName" : "OsTask_IndFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "10",
+         "TaskName" : "OsTask_LinFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "5",
+         "TaskName" : "OsTask_Mcal"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "4",
+         "TaskName" : "OsTask_MemSer"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "1",
+         "TaskName" : "OsTask_ModeMgt"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "0",
+         "TaskName" : "OsTask_NvmSpeedup"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "1",
+         "Priority" : "0",
+         "TaskName" : "OsTask_OsTask1"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "1",
+         "Priority" : "0",
+         "TaskName" : "OsTask_OsTask2"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "8",
+         "TaskName" : "OsTask_SafeFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "14",
+         "TaskName" : "OsTask_TripFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "13",
+         "TaskName" : "OsTask_WarnFun"
+      },
+      {
+         "OsApplication" : "SystemApplication_OsCore0",
+         "Preemptive" : "0",
+         "Priority" : "3",
+         "TaskName" : "OsTask_WdgMngt"
+      }
+   ],
+   "TemplateDataBaseDirectory" : "C:\\Vector\\CBD1800851_D01_Traveo\\Generators\\Rte"
+}

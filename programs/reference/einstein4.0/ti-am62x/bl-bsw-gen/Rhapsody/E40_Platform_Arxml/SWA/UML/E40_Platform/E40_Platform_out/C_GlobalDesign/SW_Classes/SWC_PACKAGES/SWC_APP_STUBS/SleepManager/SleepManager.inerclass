@@ -1,0 +1,59 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_APP_STUBS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_APP_STUBS.SleepManager.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.SWC_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_APP_STUBS.SleepManager.P_SleepManager.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+
+																							package
+																							E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_APP_STUBS.SleepManager
+
+																							stereotype DesignUnit
+																							
+
+
+																							unique allocatable SleepManager swcName = CSleepManager
+																							{
+																								compositions
+																									CSleepManager:S_CSleepManager
+																								ports
+																									pp_CmpLibCmd:provided if_CS_ModeOnCommand
+																									ppSR_SleepStatus:provided If_SR_SleepStatus
+																							}
+
+																							package
+																							E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_APP_STUBS.SleepManager.P_SleepManager
+																							
+
+
+																							ExternalCode static class S_CSleepManager realizes
+																							If_SR_SleepStatus, if_CS_ModeOnCommand {
+																								attributes
+																									cTaskPeriod:uint8_Ref =
+																									10
+																									runnables
+																										Impl_MainFunction triggeredBy {
+																											TimingEvent cTaskPeriod
+																										}
+																										Impl_OnCommand triggeredBy {
+																											OperationInvokeEvent
+																											if_CS_ModeOnCommand.Impl_OnCommand
+																										}
+																										noPortAccess
+																								}

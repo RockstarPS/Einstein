@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="635FB1E5-A4C1-4988-A7D8-F8211832E627">
+              <SHORT-NAME>FlsTst</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV_SDG">
+                    <SD GID="DV_ReadOnly">1</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="73A7F570-B678-4181-AEB7-49F2089A95F2">
+                  <SHORT-NAME>pp_CmpLibCmd_FlsTst</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="529F950F-E03B-4F4C-8DAC-1D3E0296C4BC">
+                  <SHORT-NAME>IB_FlsTst</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="6BC06B2E-0EB0-46FE-9C6B-120E459F0071">
+                      <SHORT-NAME>OIE_pp_CmpLibCmd_FlsTst_FlsTst_Impl_OnCommandTrigByImpl_OnCommand</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/FlsTst/IB_FlsTst/FlsTst_Impl_OnCommand</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FlsTst/pp_CmpLibCmd_FlsTst</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="79FC8D1D-DE2A-40D2-B2A8-643F41F27FBB">
+                      <SHORT-NAME>TEFlsTst_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/FlsTst/IB_FlsTst/FlsTst_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.01</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FlsTst/pp_CmpLibCmd_FlsTst</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="0745CB7A-36A3-4F5B-8E6D-F5C014ABD5A8">
+                      <SHORT-NAME>FlsTst_Impl_OnCommand</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>FlsTst_Impl_OnCommand</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="A4FF5BD0-DBEA-4341-B852-E28A8D63C38A">
+                      <SHORT-NAME>FlsTst_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>FlsTst_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="E77197B7-CBE1-4160-B8F9-DAB7BAD079A4">
+              <SHORT-NAME>IMPL_FlsTst</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/FlsTst/IB_FlsTst</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

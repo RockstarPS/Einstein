@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="3f1f60c8-fa80-420b-98c9-c3d072a99897">
+      <SHORT-NAME>ZARXML_CMP</SHORT-NAME>
+      <ELEMENTS>
+        <COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE UUID="8d1a9945-a61e-4b12-a0a0-8bd10717fa9b">
+          <SHORT-NAME>UclProxyCdd</SHORT-NAME>
+          <PORTS>
+            <P-PORT-PROTOTYPE UUID="41563c01-640c-4392-ba09-9aee8c4a636c">
+              <SHORT-NAME>ppCS_UclInitShutdown</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclInitShutdown/Initialize</OPERATION-REF>
+                  <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                </SERVER-COM-SPEC>
+                <SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclInitShutdown/Shutdown</OPERATION-REF>
+                  <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                </SERVER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/ZARXML_PORT_IF/UclInitShutdown</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="6cc0d99d-fdc4-4806-b7be-4ca52a806958">
+              <SHORT-NAME>ppCS_UclCmplibCmd</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <SERVER-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclCmplibCmd/OnCommand</OPERATION-REF>
+                  <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                </SERVER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/ZARXML_PORT_IF/UclCmplibCmd</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="bd84b08b-cef7-471c-8120-22b41a8fc28b">
+              <SHORT-NAME>rCS_UclSystemCallbacks</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <CLIENT-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclSystemCallbacks/ErrorNotification</OPERATION-REF>
+                </CLIENT-COM-SPEC>
+                <CLIENT-COM-SPEC>
+                  <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclSystemCallbacks/LinkStatusChanged</OPERATION-REF>
+                </CLIENT-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/ZARXML_PORT_IF/UclSystemCallbacks</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="e1fad823-d4a7-4d5e-b87c-725b931a6b02">
+              <SHORT-NAME>pSR_HealthDomainHeartbeat</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDomainHeartbeat/HealthDomainHeartbeatData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthDomainHeartbeat</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint32</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthDomainHeartbeat</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="b09a74e8-6983-4684-abb9-08a61822a598">
+              <SHORT-NAME>pSR_HealthDomainFatalError</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDomainFatalError/HealthDomainFatalErrorData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthDomainFatalError</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint32</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthDomainFatalError</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="052e5445-0c49-403f-b7c2-8992391050b5">
+              <SHORT-NAME>pSR_HealthDumpHdrInfo</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpHdrInfo/HealthDumpHdrInfoData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthDumpHdrInfo</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint32</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthDumpHdrInfo</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="d2bd2bfa-dca4-4cf6-9f53-f3a458920747">
+              <SHORT-NAME>pSR_PowerSystemState</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerSystemState/PowerSystemStateData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>domainId</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>state</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/PowerSystemState</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="d7903809-b31e-409e-945d-5326ead3b9bc">
+              <SHORT-NAME>pSR_PowerExtendShutdownTime</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerExtendShutdownTime/PowerExtendShutdownTimeData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>domainId</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>timeoutMs</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/PowerExtendShutdownTime</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="e98cd40e-b440-422e-86e6-d381d5767d11">
+              <SHORT-NAME>pSR_HealthEventRecord</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthEventRecord/HealthEventRecordData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthEventRecord</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0X0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0X0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <ARRAY-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>data_u8_8</SHORT-LABEL>
+                          <ELEMENTS>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                          </ELEMENTS>
+                        </ARRAY-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthEventRecord</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="7da9aa5f-6740-465a-b571-0e232f4dd2ee">
+              <SHORT-NAME>pSR_EnetRegResp</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/EnetRegResp/EnetRegRespData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SEnetRegResp</SHORT-LABEL>
+                      <FIELDS>
+                        <TEXT-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>EnetReqCmd_t</SHORT-LABEL>
+                          <VALUE>EnetReqType_Last</VALUE>
+                        </TEXT-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <ARRAY-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>data_u8_32</SHORT-LABEL>
+                          <ELEMENTS>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                          </ELEMENTS>
+                        </ARRAY-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/EnetRegResp</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="de23a023-9fc5-4db3-ac48-d26d4167a39c">
+              <SHORT-NAME>pSR_DisplayCurrentState</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-COM-SPECS>
+                <NONQUEUED-SENDER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/DisplayCurrentState/DisplayCurrentStateData</DATA-ELEMENT-REF>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SDisplayCurrentState</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint32</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <TEXT-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>EDisplayStatus</SHORT-LABEL>
+                          <VALUE>EDisplayState_Last</VALUE>
+                        </TEXT-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-SENDER-COM-SPEC>
+              </PROVIDED-COM-SPECS>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/DisplayCurrentState</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="30be0238-ac6b-444b-bc39-243bc57c1873">
+              <SHORT-NAME>rSR_HealthDumpGetHdr</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetHdr/HealthDumpGetHdrData</DATA-ELEMENT-REF>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthDumpGetHdr</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthDumpGetHdr</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="d0059c61-d7fb-4421-870d-cf2a0a2d471f">
+              <SHORT-NAME>rSR_HealthDumpGetData</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetData/HealthDumpGetDataData</DATA-ELEMENT-REF>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SHealthDumpGetData</SHORT-LABEL>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/HealthDumpGetData</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="8fd64309-5df8-444a-b7e6-eb2723e5aa5d">
+              <SHORT-NAME>rSR_PowerSystemStateReqChange</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerSystemStateReqChange/PowerSystemStateReqChangeData</DATA-ELEMENT-REF>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>domainId</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>state</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/PowerSystemStateReqChange</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="b0c54efb-6a9b-4b86-861b-17f7fa5c73f8">
+              <SHORT-NAME>rSR_IgnState</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/IgnState/IgnStateData</DATA-ELEMENT-REF>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <FIELDS>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>state</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/IgnState</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <R-PORT-PROTOTYPE UUID="b7614c9c-eaef-481a-a19c-4426b57998db">
+              <SHORT-NAME>rSR_EnetRegReq</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <REQUIRED-COM-SPECS>
+                <NONQUEUED-RECEIVER-COM-SPEC>
+                  <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/EnetRegReq/EnetRegReqData</DATA-ELEMENT-REF>
+                  <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                  <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                  <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                  <INIT-VALUE>
+                    <RECORD-VALUE-SPECIFICATION>
+                      <SHORT-LABEL>SEnetRegReq</SHORT-LABEL>
+                      <FIELDS>
+                        <TEXT-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>EnetReqCmd_t</SHORT-LABEL>
+                          <VALUE>EnetReqType_Last</VALUE>
+                        </TEXT-VALUE-SPECIFICATION>
+                        <TEXT-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>EnetReqMode_t</SHORT-LABEL>
+                          <VALUE>EnetReqMode_Last</VALUE>
+                        </TEXT-VALUE-SPECIFICATION>
+                        <NUMERICAL-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>uint8</SHORT-LABEL>
+                          <VALUE>0</VALUE>
+                        </NUMERICAL-VALUE-SPECIFICATION>
+                        <ARRAY-VALUE-SPECIFICATION>
+                          <SHORT-LABEL>data_u8_8</SHORT-LABEL>
+                          <ELEMENTS>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                            <NUMERICAL-VALUE-SPECIFICATION>
+                              <SHORT-LABEL>uint8</SHORT-LABEL>
+                              <VALUE>0</VALUE>
+                            </NUMERICAL-VALUE-SPECIFICATION>
+                          </ELEMENTS>
+                        </ARRAY-VALUE-SPECIFICATION>
+                      </FIELDS>
+                    </RECORD-VALUE-SPECIFICATION>
+                  </INIT-VALUE>
+                </NONQUEUED-RECEIVER-COM-SPEC>
+              </REQUIRED-COM-SPECS>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/EnetRegReq</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <P-PORT-PROTOTYPE UUID="69282abd-eef8-43c4-bd6b-a96e021d5d57">
+              <SHORT-NAME>pSR_UclTxStatuses</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV:DEV">
+                    <SD GID="DV:ImportModePreset">Keep</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/ZARXML_PORT_IF/UclTxStatuses</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+          </PORTS>
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR UUID="08c6af74-567f-4e47-91d0-fbb0bd1bfbd6">
+              <SHORT-NAME>UclProxyCdd_IB</SHORT-NAME>
+              <EVENTS>
+                <TIMING-EVENT UUID="133b2c7b-163c-47ca-abae-f3cb6db114a5">
+                  <SHORT-NAME>TE_CUclProxyCdd_Impl_MainFunction</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/CUclProxyCdd_Impl_MainFunction</START-ON-EVENT-REF>
+                  <PERIOD>0.004</PERIOD>
+                </TIMING-EVENT>
+                <OPERATION-INVOKED-EVENT UUID="19ddb7c7-a775-4732-be2c-fe23e8a3ce19">
+                  <SHORT-NAME>OI_ppCS_UclInitShutdown_Initialize</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/CUclProxyCdd_Impl_Initialize</START-ON-EVENT-REF>
+                  <OPERATION-IREF>
+                    <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/ppCS_UclInitShutdown</CONTEXT-P-PORT-REF>
+                    <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclInitShutdown/Initialize</TARGET-PROVIDED-OPERATION-REF>
+                  </OPERATION-IREF>
+                </OPERATION-INVOKED-EVENT>
+                <OPERATION-INVOKED-EVENT UUID="fe96d5ce-d356-4978-8318-864c71a59b51">
+                  <SHORT-NAME>OI_ppCS_UclInitShutdown_Shutdown</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/CUclProxyCdd_Impl_Shutdown</START-ON-EVENT-REF>
+                  <OPERATION-IREF>
+                    <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/ppCS_UclInitShutdown</CONTEXT-P-PORT-REF>
+                    <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclInitShutdown/Shutdown</TARGET-PROVIDED-OPERATION-REF>
+                  </OPERATION-IREF>
+                </OPERATION-INVOKED-EVENT>
+                <OPERATION-INVOKED-EVENT UUID="2e76d6c0-43ea-402e-8f17-0d37c81af0ca">
+                  <SHORT-NAME>OI_ppCS_UclCmplibCmd_OnCommand</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/CUclProxyCdd_Impl_OnCommand</START-ON-EVENT-REF>
+                  <OPERATION-IREF>
+                    <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/ppCS_UclCmplibCmd</CONTEXT-P-PORT-REF>
+                    <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclCmplibCmd/OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                  </OPERATION-IREF>
+                </OPERATION-INVOKED-EVENT>
+                <DATA-RECEIVED-EVENT UUID="b760cc97-fe7d-442a-9877-3c740c1531ee">
+                  <SHORT-NAME>DRE_rSR_HealthDumpGetHdr_HealthDumpGetHdrData_OnDre_HealthDumpGetHdr</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/OnDre_HealthDumpGetHdr</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_HealthDumpGetHdr</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetHdr/HealthDumpGetHdrData</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+                <DATA-RECEIVED-EVENT UUID="5660a5dc-57b9-47e1-926a-b8cdad41e75a">
+                  <SHORT-NAME>DRE_rSR_HealthDumpGetData_HealthDumpGetDataData_OnDre_HealthDumpGetData</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/OnDre_HealthDumpGetData</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_HealthDumpGetData</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetData/HealthDumpGetDataData</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+                <DATA-RECEIVED-EVENT UUID="a2c011c3-1b1b-4348-8984-62b8eac3bd2d">
+                  <SHORT-NAME>DRE_rSR_PowerSystemStateReqChange_PowerSystemStateReqChangeData_OnDre_PowerSystemStateReqChange</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/OnDre_PowerSystemStateReqChange</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_PowerSystemStateReqChange</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerSystemStateReqChange/PowerSystemStateReqChangeData</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+                <DATA-RECEIVED-EVENT UUID="ab503d17-468b-41d2-a3b4-85204768ec61">
+                  <SHORT-NAME>DRE_rSR_IgnState_IgnStateData_OnDre_IgnState</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/OnDre_IgnState</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_IgnState</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/IgnState/IgnStateData</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+                <DATA-RECEIVED-EVENT UUID="5a35c1f9-6274-456c-9ab1-36a83b097d03">
+                  <SHORT-NAME>DRE_rSR_EnetRegReq_EnetRegReqData_OnDre_EnetRegReq</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB/OnDre_EnetRegReq</START-ON-EVENT-REF>
+                  <DATA-IREF>
+                    <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_EnetRegReq</CONTEXT-R-PORT-REF>
+                    <TARGET-DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/EnetRegReq/EnetRegReqData</TARGET-DATA-ELEMENT-REF>
+                  </DATA-IREF>
+                </DATA-RECEIVED-EVENT>
+              </EVENTS>
+              <RUNNABLES>
+                <RUNNABLE-ENTITY UUID="940efd62-610a-4ffe-96e5-1dcd3a0e74d7">
+                  <SHORT-NAME>CUclProxyCdd_Impl_MainFunction</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                    <VARIABLE-ACCESS UUID="271A2CE5-D09E-425C-9CC9-A3B77F85686F">
+                      <SHORT-NAME>READ_rSR_HealthDumpGetHdr_HealthDumpGetHdrData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_HealthDumpGetHdr</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetHdr/HealthDumpGetHdrData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="2FDCCD7B-9FA2-438A-972C-8BDCF120B996">
+                      <SHORT-NAME>READ_rSR_HealthDumpGetData_HealthDumpGetDataData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_HealthDumpGetData</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpGetData/HealthDumpGetDataData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="1C765D63-64B1-4966-B6DC-420461367E65">
+                      <SHORT-NAME>READ_rSR_PowerSystemStateReqChange_PowerSystemStateReqChangeData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_PowerSystemStateReqChange</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerSystemStateReqChange/PowerSystemStateReqChangeData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="0EB9FD10-B47E-42A4-ADF2-916BF69E1529">
+                      <SHORT-NAME>READ_rSR_IgnState_IgnStateData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_IgnState</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/IgnState/IgnStateData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="313B8384-F5EA-43D5-AFDC-263257FB8BAF">
+                      <SHORT-NAME>READ_rSR_EnetRegReq_EnetRegReqData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rSR_EnetRegReq</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/EnetRegReq/EnetRegReqData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                  <DATA-SEND-POINTS>
+                    <VARIABLE-ACCESS UUID="97B41F6F-BC9E-4D3B-AD87-611690323025">
+                      <SHORT-NAME>WRITE_pSR_HealthDomainHeartbeat_HealthDomainHeartbeatData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_HealthDomainHeartbeat</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDomainHeartbeat/HealthDomainHeartbeatData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="7916B875-81F9-48FB-8F06-3EE55B17F6F5">
+                      <SHORT-NAME>WRITE_pSR_HealthDomainFatalError_HealthDomainFatalErrorData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_HealthDomainFatalError</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDomainFatalError/HealthDomainFatalErrorData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="2CD38719-C77F-4AA5-A8AF-E2403F250D0E">
+                      <SHORT-NAME>WRITE_pSR_HealthDumpHdrInfo_HealthDumpHdrInfoData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_HealthDumpHdrInfo</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthDumpHdrInfo/HealthDumpHdrInfoData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="40F2F21C-8A38-411E-A7BD-5689235A82B7">
+                      <SHORT-NAME>WRITE_pSR_PowerSystemState_PowerSystemStateData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_PowerSystemState</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerSystemState/PowerSystemStateData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="158D8775-928A-415B-AE9B-46EBA9F4E762">
+                      <SHORT-NAME>WRITE_pSR_PowerExtendShutdownTime_PowerExtendShutdownTimeData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_PowerExtendShutdownTime</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/PowerExtendShutdownTime/PowerExtendShutdownTimeData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="DE01328F-4389-44D6-92A1-73BF9B158134">
+                      <SHORT-NAME>WRITE_pSR_HealthEventRecord_HealthEventRecordData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_HealthEventRecord</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/HealthEventRecord/HealthEventRecordData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="C1695BA5-DB7D-42B9-B05B-9DF99D927592">
+                      <SHORT-NAME>WRITE_pSR_EnetRegResp_EnetRegRespData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_EnetRegResp</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/EnetRegResp/EnetRegRespData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                    <VARIABLE-ACCESS UUID="0546884E-1614-4437-AB32-84B8B338B598">
+                      <SHORT-NAME>WRITE_pSR_DisplayCurrentState_DisplayCurrentStateData</SHORT-NAME>
+                      <ACCESSED-VARIABLE>
+                        <AUTOSAR-VARIABLE-IREF>
+                          <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/pSR_DisplayCurrentState</PORT-PROTOTYPE-REF>
+                          <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/ZARXML_PORT_IF/DisplayCurrentState/DisplayCurrentStateData</TARGET-DATA-PROTOTYPE-REF>
+                        </AUTOSAR-VARIABLE-IREF>
+                      </ACCESSED-VARIABLE>
+                    </VARIABLE-ACCESS>
+                  </DATA-SEND-POINTS>
+                  <SERVER-CALL-POINTS>
+                    <SYNCHRONOUS-SERVER-CALL-POINT UUID="347FEDC9-271B-4CBD-9BF2-98156B42D398">
+                      <SHORT-NAME>CALL_rCS_UclSystemCallbacks_ErrorNotification</SHORT-NAME>
+                      <OPERATION-IREF>
+                        <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rCS_UclSystemCallbacks</CONTEXT-R-PORT-REF>
+                        <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclSystemCallbacks/ErrorNotification</TARGET-REQUIRED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </SYNCHRONOUS-SERVER-CALL-POINT>
+                    <SYNCHRONOUS-SERVER-CALL-POINT UUID="D2805A02-6769-471E-9A05-7F4B4146417B">
+                      <SHORT-NAME>CALL_rCS_UclSystemCallbacks_LinkStatusChanged</SHORT-NAME>
+                      <OPERATION-IREF>
+                        <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/ZARXML_CMP/UclProxyCdd/rCS_UclSystemCallbacks</CONTEXT-R-PORT-REF>
+                        <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/ZARXML_PORT_IF/UclSystemCallbacks/LinkStatusChanged</TARGET-REQUIRED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </SYNCHRONOUS-SERVER-CALL-POINT>
+                  </SERVER-CALL-POINTS>
+                  <SYMBOL>CUclProxyCdd_Impl_MainFunction</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="16c456eb-23c9-4213-b7d0-8e44367e0961">
+                  <SHORT-NAME>CUclProxyCdd_Impl_Initialize</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>CUclProxyCdd_Impl_Initialize</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="7bc24823-85c1-4e9d-a126-11e46f6e5e3e">
+                  <SHORT-NAME>CUclProxyCdd_Impl_Shutdown</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>CUclProxyCdd_Impl_Shutdown</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="4b1a0f89-af5a-43fd-934d-ebb850b8e19a">
+                  <SHORT-NAME>CUclProxyCdd_Impl_OnCommand</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>CUclProxyCdd_Impl_OnCommand</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="b5e3c232-8124-4aad-a2f5-dec6832a2111">
+                  <SHORT-NAME>OnDre_HealthDumpGetHdr</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>OnDre_HealthDumpGetHdr</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="5c755b77-1f58-4e07-acfd-1c945f586c2e">
+                  <SHORT-NAME>OnDre_HealthDumpGetData</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>OnDre_HealthDumpGetData</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="db10cbe3-e22d-4c56-abeb-d5b09003fbde">
+                  <SHORT-NAME>OnDre_PowerSystemStateReqChange</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>OnDre_PowerSystemStateReqChange</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="a41d36b8-7994-4bd4-a5c9-17e29cfd4c31">
+                  <SHORT-NAME>OnDre_IgnState</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>OnDre_IgnState</SYMBOL>
+                </RUNNABLE-ENTITY>
+                <RUNNABLE-ENTITY UUID="8cf960ac-781e-40f0-b325-e584d98f653e">
+                  <SHORT-NAME>OnDre_EnetRegReq</SHORT-NAME>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>OnDre_EnetRegReq</SYMBOL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE>
+        <SWC-IMPLEMENTATION UUID="e6afff32-e726-4040-aa2d-048a6b011741">
+          <SHORT-NAME>UclProxyCdd_Implementation</SHORT-NAME>
+          <CODE-DESCRIPTORS>
+            <CODE UUID="DC513AA1-B1D8-4FDF-85A9-71D4A9D0C773">
+              <SHORT-NAME>Default</SHORT-NAME>
+              <ARTIFACT-DESCRIPTORS>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+              </ARTIFACT-DESCRIPTORS>
+            </CODE>
+          </CODE-DESCRIPTORS>
+          <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/ZARXML_CMP/UclProxyCdd/UclProxyCdd_IB</BEHAVIOR-REF>
+        </SWC-IMPLEMENTATION>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="3AD0CC97-41CA-4405-9FF8-67A901C21006">
+              <SHORT-NAME>CCDD_McuFit</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV_SDG">
+                    <SD GID="DV_ReadOnly">1</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="F0D2A937-C0F0-40BE-86E7-B5219CB96DB6">
+                  <SHORT-NAME>ppCS_FitHandler</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_FaultInjectionHandler/FaultInjectionHandler</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_FaultInjectionHandler</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="8E2E8CD0-73C0-4BBC-AAD6-4093D553E41F">
+                  <SHORT-NAME>rpCS_EcumExt_RequestRUN</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuMExt_RequestRUN/RequestRUN</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_EcuMExt_RequestRUN</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="7A410727-8247-47D5-BC37-BBCF9905E2E3">
+                  <SHORT-NAME>IB_CCDD_McuFit</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="10E53E4B-B276-4B54-A8BC-33B51E764825">
+                      <SHORT-NAME>OIE_ppCS_FitHandler_CDD_McuFit_FaultInjectionHandlerTrigByFaultInjectionHandler</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/IB_CCDD_McuFit/CDD_McuFit_FaultInjectionHandler</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/ppCS_FitHandler</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_FaultInjectionHandler/FaultInjectionHandler</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="61FFD98B-6004-406A-9EF8-A2AD5ADE9A27">
+                      <SHORT-NAME>TECCDD_McuFit_Impl_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/IB_CCDD_McuFit/CCDD_McuFit_Impl_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.02</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/ppCS_FitHandler</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/rpCS_EcumExt_RequestRUN</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="31E2B1CC-A7B1-4147-BAEB-99D1F3A6FF22">
+                      <SHORT-NAME>CDD_McuFit_FaultInjectionHandler</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CDD_McuFit_FaultInjectionHandler</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="0B10D7E1-79E3-483E-A510-D00064762992">
+                      <SHORT-NAME>CCDD_McuFit_Impl_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SERVER-CALL-POINTS>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="B52BD995-EB47-469E-B3DA-81D94CE77CBE">
+                          <SHORT-NAME>OA_rpCS_EcumExt_RequestRUN_RequestRUN</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/rpCS_EcumExt_RequestRUN</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuMExt_RequestRUN/RequestRUN</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                      </SERVER-CALL-POINTS>
+                      <SYMBOL>CCDD_McuFit_Impl_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="AD01B0C8-3D7A-484B-ACC1-59C39973F87B">
+              <SHORT-NAME>IMPL_CCDD_McuFit</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/CCDD_McuFit/IB_CCDD_McuFit</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

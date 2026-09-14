@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="DF2ED876-F636-498E-8A94-8FA8162C5248">
+              <SHORT-NAME>CIoExp</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="7726C43E-DFF6-4AFB-97F9-63A9B40992D5">
+                  <SHORT-NAME>pp_CmpLibCmd_CIoExp</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="625D3B66-100A-4872-988F-170D3D1C3C03">
+                  <SHORT-NAME>IB_CIoExp</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="3A6CCA30-8A14-4880-A755-7D4769543584">
+                      <SHORT-NAME>OIE_pp_CmpLibCmd_CIoExp_CIoExp_Impl_OnCommandTrigByImpl_OnCommand</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CIoExp/IB_CIoExp/CIoExp_Impl_OnCommand</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CIoExp/pp_CmpLibCmd_CIoExp</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="1961607E-0905-40C4-A5B6-CFAB0F8F104B">
+                      <SHORT-NAME>TEIoExp_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CIoExp/IB_CIoExp/IoExp_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.01</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CIoExp/pp_CmpLibCmd_CIoExp</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="418C259D-157C-4A9B-A8C0-15BBFA94A3BE">
+                      <SHORT-NAME>CIoExp_Impl_OnCommand</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CIoExp_Impl_OnCommand</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="27E589B5-FEC1-4033-8996-8B4B430E864C">
+                      <SHORT-NAME>IoExp_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>IoExp_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="68402DC1-98B4-4A6E-94EF-3FDB69F1C3F0">
+              <SHORT-NAME>IMPL_CIoExp</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/CIoExp/IB_CIoExp</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

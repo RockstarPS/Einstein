@@ -1,0 +1,78 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_TmExt.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_TmExt.P_BSW_TmExt.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																						package
+																						E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_TmExt
+
+																						stereotype DesignUnit
+																						
+
+
+																						unique allocatable BSW_TmExt swcName = TmExt {
+																							compositions
+																								TmExt:S_TmExt
+																							ports
+																								pp_CS_TmExt_Timer_GetElapsedTime:provided
+																								TI_If_TmExt_Timer_GetElapsedTime
+																								pp_CS_TmExt_Timer_IsElapsed:provided
+																								TI_If_TmExt_Timer_IsElapsed
+																								pp_CS_TmExt_Timer_IsStarted:provided
+																								TI_If_TmExt_Timer_IsStarted
+																								pp_CS_TmExt_Timer_Start:provided
+																								TI_If_TmExt_Timer_Start
+																								pp_CS_TmExt_Timer_Stop:provided TI_If_TmExt_Timer_Stop
+																						}
+
+																						package
+																						E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_TmExt.P_BSW_TmExt
+
+																						ExternalCode static class S_TmExt realizes
+																						TI_If_TmExt_Timer_GetElapsedTime,
+																						TI_If_TmExt_Timer_IsElapsed,
+																						TI_If_TmExt_Timer_IsStarted, TI_If_TmExt_Timer_Start,
+																						TI_If_TmExt_Timer_Stop {
+																							attributes
+																								MainFunctionPeriodicity:uint8 =
+																								10
+																								runnables
+																									MainFunction triggeredBy {
+																										TimingEvent MainFunctionPeriodicity
+																									}
+																									Timer_GetElapsedTime triggeredBy {
+																										OperationInvokeEvent
+																										TI_If_TmExt_Timer_GetElapsedTime.Timer_GetElapsedTime
+																									}
+																									noPortAccess Timer_IsElapsed triggeredBy {
+																										OperationInvokeEvent
+																										TI_If_TmExt_Timer_IsElapsed.Timer_IsElapsed
+																									}
+																									noPortAccess Timer_IsStarted triggeredBy {
+																										OperationInvokeEvent
+																										TI_If_TmExt_Timer_IsStarted.Timer_IsStarted
+																									}
+																									noPortAccess Timer_Start triggeredBy {
+																										OperationInvokeEvent
+																										TI_If_TmExt_Timer_Start.Timer_Start
+																									}
+																									noPortAccess Timer_Stop triggeredBy {
+																										OperationInvokeEvent
+																										TI_If_TmExt_Timer_Stop.Timer_Stop
+																									}
+																									noPortAccess
+																							}

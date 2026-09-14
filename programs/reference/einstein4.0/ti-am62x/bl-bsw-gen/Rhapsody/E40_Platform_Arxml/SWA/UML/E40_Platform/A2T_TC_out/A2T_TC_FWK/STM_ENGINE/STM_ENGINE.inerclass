@@ -1,0 +1,191 @@
+import autoCreatedTypes.*
+import A2T_TC.A2T_TC_FWK.*
+
+import A2T_TC.A2T_TC_FWK.STM_ENGINE.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+
+																						
+
+
+																						package A2T_TC.A2T_TC_FWK.STM_ENGINE
+
+																						stereotype DesignUnit
+																						
+
+
+type STMBool implicit
+
+
+
+type STMEvent implicit
+
+
+
+type STMEvent_Ref
+																						implicit
+																						
+
+
+																						type STMActionFct implicit
+																						
+
+
+																						type STMPredefinedEventID enum {
+																							STMNullEventID
+																							STMNonEventID = 1
+																						}
+																						
+
+
+																						type STMGuardFct implicit
+																						
+
+
+type STMPathItem struct {
+
+
+
+																							iTrans:uint16
+																							
+
+
+																							pVertex:STMStateVertex
+																						}
+																						
+
+
+																						type STMTransitionActionFct implicit
+																						
+
+
+class
+																						STMStateVertex {
+																							compositions
+																							
+
+
+																								Transitions:STMTransition[1..*]
+																						}
+																						
+
+
+class
+																						STMTransition {
+																							attributes
+																							
+
+
+																								Action:STMTransitionActionFct
+																								
+
+
+Guard:STMGuardFct
+
+
+
+Event:EventID
+																							associations
+																							
+
+
+																								Target:STMStateVertex
+																						}
+																						
+
+
+																						class STMState inherits STMStateVertex {
+																							attributes
+																							
+
+
+																								EntryAction:STMActionFct
+																								
+
+
+																								ExitAction:STMActionFct
+																							associations
+																							
+
+
+Parent:STMState
+																						}
+																						
+
+
+class
+																						STMCompositeState inherits STMState {
+																							associations
+																							
+
+
+																								EntryState:STMState
+																						}
+																						
+
+
+																						class STMCompositeHistoryState inherits
+																						STMCompositeState {
+																							attributes
+																							
+
+
+HistoryStateID:uint16
+																						}
+																						
+
+
+class
+																						STMRegion {
+																							attributes
+																							
+
+
+CurentStateID:uint16
+																							associations
+																								EntryState:STMState
+																						}
+																						
+
+
+																						class STMAndState inherits STMState {
+																							compositions
+																							
+
+
+																								Regions:STMRegion[1..*]
+																						}
+																						
+
+
+class
+																						STMConnector inherits STMStateVertex {
+																						}
+																						
+
+
+class
+																						STMStateChart realizes ISysEventNotification {
+																							attributes
+																							
+
+
+TheObject:void__
+																							compositions
+																							
+
+
+StateTable:STMState[1..*]
+																							associations
+																							
+
+
+																								RootRegion:STMRegion
+																						}
+																						
+
+
+class
+																						STMPath {
+																						}

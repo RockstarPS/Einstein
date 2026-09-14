@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="8A10E720-1D2F-47D5-A413-0CD7E700E924">
+              <SHORT-NAME>CView_Telltale</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="0DE6407D-FBA3-48F8-8169-69690AA96699">
+                  <SHORT-NAME>ppTelltaleSts</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <NONQUEUED-SENDER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TT_Status/TT_StatusData</DATA-ELEMENT-REF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleTT_StatusDataValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-SENDER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TT_Status</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="E9483B38-C2D4-4F95-BC68-6C85BF79827E">
+                  <SHORT-NAME>pp_CmpLibCmd</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="02C061D3-2174-44BD-9F8D-040ABBBA881C">
+                  <SHORT-NAME>pp_Init</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_SafeInit/Init</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SafeInit</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="09E40DE2-EBE3-4216-9793-605182FAB6A9">
+                  <SHORT-NAME>rpBlinkStatusArray</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleBlinkStatusArray/TTBlinkStatusArray</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleTTBlinkStatusArrayValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleBlinkStatusArray/TTdummyDataForTypes</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleTTdummyDataForTypesValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TITelltaleBlinkStatusArray</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="9C45F52D-2378-4256-A49C-7F84B3A78878">
+                  <SHORT-NAME>rpTelltaleStatusOP</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleStatusOutput/TelltaleOpArray</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleTelltaleOpArrayValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TITelltaleStatusOutput</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="E439D3FE-9926-4441-BDFB-189E1A8EE048">
+                  <SHORT-NAME>rpTelltlaeStatus_rp_Airbag_TT_Status</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleCurrentTelltaleStatusValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="BE16E6EB-EAF2-4EAD-A929-5FD232AC2698">
+                  <SHORT-NAME>rpTelltlaeStatus_rp_TurnHazard_LeftInd_Sts</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleCurrentTelltaleStatusValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="1F3BBA0B-2BCB-4037-9E4D-BB2CC6FF8524">
+                  <SHORT-NAME>rpTelltlaeStatus_rp_TurnHazard_RightInd_Sts</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleCurrentTelltaleStatusValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="C7BFB94C-4616-4D34-824D-43872048FD8F">
+                  <SHORT-NAME>rp_ClusterMode</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleWSSCurrentClusterModeValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="76A3ADDB-4124-4F7D-8951-099E106BFCAF">
+                  <SHORT-NAME>rp_HMIReady</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus/HMI_ReadyStatus</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/CView_TelltaleHMI_ReadyStatusValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="46242642-6173-4626-B8C6-F4DD5BF6D2ED">
+                  <SHORT-NAME>IB_CView_Telltale</SHORT-NAME>
+                  <EVENTS>
+                    <TIMING-EVENT UUID="3D67CA08-5BF0-419D-BFFC-371896CA1EEC">
+                      <SHORT-NAME>TECView_Telltale_Impl_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CView_Telltale/IB_CView_Telltale/CView_Telltale_Impl_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.03</PERIOD>
+                    </TIMING-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="C9C634F4-5E36-4CE4-8DDF-738DE1061C36">
+                      <SHORT-NAME>OIE_pp_CmpLibCmd_CView_Telltale_Impl_OnCommandTrigByImpl_OnCommand</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CView_Telltale/IB_CView_Telltale/CView_Telltale_Impl_OnCommand</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/pp_CmpLibCmd</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="7DBE6008-AD1F-4AE8-B322-136B9C16A102">
+                      <SHORT-NAME>OIE_pp_Init_CView_Telltale_InitTrigByInit</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CView_Telltale/IB_CView_Telltale/CView_Telltale_Init</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/pp_Init</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_SafeInit/Init</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/ppTelltaleSts</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/pp_CmpLibCmd</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/pp_Init</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpBlinkStatusArray</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltaleStatusOP</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_Airbag_TT_Status</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_TurnHazard_LeftInd_Sts</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_TurnHazard_RightInd_Sts</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rp_ClusterMode</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rp_HMIReady</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="2B85200E-7C80-43EA-8C5F-A89A6BC4053B">
+                      <SHORT-NAME>CView_Telltale_Impl_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                        <VARIABLE-ACCESS UUID="297DEC77-D454-4D02-A80F-84F9B5E2DEF5">
+                          <SHORT-NAME>DRA_rpBlinkStatusArray_TTBlinkStatusArray</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpBlinkStatusArray</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleBlinkStatusArray/TTBlinkStatusArray</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="84C2CB6A-0416-4DA3-B16C-56F301AA4941">
+                          <SHORT-NAME>DRA_rpBlinkStatusArray_TTdummyDataForTypes</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpBlinkStatusArray</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleBlinkStatusArray/TTdummyDataForTypes</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="046E6E6A-9A8D-4488-AB63-F0CA0A21A901">
+                          <SHORT-NAME>DRA_rpTelltaleStatusOP_TelltaleOpArray</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltaleStatusOP</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TITelltaleStatusOutput/TelltaleOpArray</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="7264D7BD-ACAF-4AB0-A36A-B081276B94E2">
+                          <SHORT-NAME>DRA_rpTelltlaeStatus_rp_Airbag_TT_Status_CurrentTelltaleStatus</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_Airbag_TT_Status</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="4A2E3D1D-7753-4AFE-BDA1-3F8969C2657D">
+                          <SHORT-NAME>DRA_rpTelltlaeStatus_rp_TurnHazard_LeftInd_Sts_CurrentTelltaleStatus</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_TurnHazard_LeftInd_Sts</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="3516915B-198D-4BB6-9BD0-AE9374D24546">
+                          <SHORT-NAME>DRA_rpTelltlaeStatus_rp_TurnHazard_RightInd_Sts_CurrentTelltaleStatus</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rpTelltlaeStatus_rp_TurnHazard_RightInd_Sts</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TIUpdateTelltaleStatus/CurrentTelltaleStatus</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="E27A7E82-1200-4A2C-AD5C-D6E71A42BE11">
+                          <SHORT-NAME>DRA_rp_ClusterMode_WSSCurrentClusterMode</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rp_ClusterMode</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="02E0233D-30AE-4EA8-B238-FC23C793B5BB">
+                          <SHORT-NAME>DRA_rp_HMIReady_HMI_ReadyStatus</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/rp_HMIReady</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus/HMI_ReadyStatus</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                      <DATA-SEND-POINTS>
+                        <VARIABLE-ACCESS UUID="9B32DEA0-451C-434D-AF3B-42B7E9F4E124">
+                          <SHORT-NAME>DWA_ppTelltaleSts_TT_StatusData</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CView_Telltale/ppTelltaleSts</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TT_Status/TT_StatusData</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-SEND-POINTS>
+                      <SYMBOL>CView_Telltale_Impl_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="654FE666-EE5F-4EE6-9CFC-E37A02C56D09">
+                      <SHORT-NAME>CView_Telltale_Impl_OnCommand</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CView_Telltale_Impl_OnCommand</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="1F4D07F8-266C-4C96-AEB1-307DCEA7673A">
+                      <SHORT-NAME>CView_Telltale_Init</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CView_Telltale_Init</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="C3A7EB81-A370-4146-ACAD-8533284F0C61">
+              <SHORT-NAME>IMPL_CView_Telltale</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/CView_Telltale/IB_CView_Telltale</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

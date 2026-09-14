@@ -1,0 +1,62 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.BattMdl.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.BattMdl.P_BattMdl.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																										package
+																										E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.BattMdl
+
+																										stereotype DesignUnit
+																										
+
+
+																										unique allocatable BattMdl swcName = CBattMdl {
+																											compositions
+																												CBattMdl:S_CBattMdl
+																											ports
+																												pp_CmpLibCmd_CBattMdl:provided if_CS_ModeOnCommand
+																												ppSR_BattMdl_AVP:provided TI_BattMdl_AVP
+																												ppSR_BattMdl_Voltage:provided TI_BattMdl_Voltage
+																												rpIoHwAb_Din:required TI_IOHWAB_GetDIn
+																												rpIoHwAb_DOut:required TI_IOHWAB_SetDout
+																												rpIoHwAb_ADC:required TI_IOHWAB_GetAdc
+																										}
+
+																										package
+																										E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.BattMdl.P_BattMdl
+																										
+
+
+																										ExternalCode static class S_CBattMdl realizes
+																										if_CS_ModeOnCommand, TI_BattMdl_AVP,
+																										TI_BattMdl_Voltage {
+																											attributes
+																												TimePeriod_MainFunction:uint8 =
+																												5
+																												TimePeriod_StateMachine:uint8 =
+																												5
+																												runnables
+																													Impl_MainFunction triggeredBy {
+																														TimingEvent TimePeriod_MainFunction
+																													}
+																													Impl_OnCommand triggeredBy {
+																														OperationInvokeEvent
+																														if_CS_ModeOnCommand.Impl_OnCommand
+																													}
+																											}

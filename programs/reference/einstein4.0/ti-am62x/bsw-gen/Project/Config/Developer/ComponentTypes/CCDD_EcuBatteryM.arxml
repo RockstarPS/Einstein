@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="DE973758-C497-483B-94BF-256163C52C1E">
+              <SHORT-NAME>CCDD_EcuBatteryM</SHORT-NAME>
+              <ADMIN-DATA>
+                <SDGS>
+                  <SDG GID="DV_SDG">
+                    <SD GID="DV_ReadOnly">1</SD>
+                  </SDG>
+                </SDGS>
+              </ADMIN-DATA>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="6574A525-E822-4875-A4C3-1B4582C486CA">
+                  <SHORT-NAME>ppCS_EcuBatteryOutData</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuBatteryMData/EcuBatteryM_GetChannelStatus</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuBatteryMData/EcuBatteryM_GetDIOStatus</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_EcuBatteryMData</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="9F89B8DD-70F1-427C-9175-F1C0A51DFCF3">
+                  <SHORT-NAME>pp_CmpLibCmd</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="90FE12AF-44D8-4321-899E-EA4E98AD7831">
+                  <SHORT-NAME>rpIoHwAb_ADC</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetAsyncRawAdc</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetProcessedAdc</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetSyncRawAdc</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="60220D39-370F-492E-B4A7-C984F7508FBF">
+                  <SHORT-NAME>rpIoHwAb_DOut</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_SetDout/SetOutputGroup</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_SetDout/SetOutputPin</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_SetDout</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="5DAA08A7-3E54-46E9-9374-7CEA88FD98BA">
+                  <SHORT-NAME>rpIoHwAb_Din</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetAsyncRawInput</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetInputGroup</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetProcessedInput</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetSyncRawInput</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="00277E5D-5FDD-48DA-A2DA-628022BB5F03">
+                  <SHORT-NAME>rpIoHwAb_PWM</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetDuty</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetDutyAndPeriod</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                    <CLIENT-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetIdeal</OPERATION-REF>
+                    </CLIENT-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="D26327D6-3295-4DFB-8168-113766528748">
+                  <SHORT-NAME>IB_CCDD_EcuBatteryM</SHORT-NAME>
+                  <EVENTS>
+                    <TIMING-EVENT UUID="D10AB290-3D28-4B15-B2EA-01EC6FF075C8">
+                      <SHORT-NAME>TECCDD_EcuBatteryM_Impl_MainFunction</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/IB_CCDD_EcuBatteryM/CCDD_EcuBatteryM_Impl_MainFunction</START-ON-EVENT-REF>
+                      <PERIOD>0.01</PERIOD>
+                    </TIMING-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="2DC61EAB-0E89-4CEA-8F93-0AAC82C25D61">
+                      <SHORT-NAME>OIE_ppCS_EcuBatteryOutData_EcuBatteryM_GetChannelStatusTrigByEcuBatteryM_GetChannelStatus</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/IB_CCDD_EcuBatteryM/EcuBatteryM_GetChannelStatus</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/ppCS_EcuBatteryOutData</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuBatteryMData/EcuBatteryM_GetChannelStatus</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="DDD7A590-416C-4E2B-B618-9269A41B1E64">
+                      <SHORT-NAME>OIE_ppCS_EcuBatteryOutData_EcuBatteryM_GetDIOStatusTrigByEcuBatteryM_GetDIOStatus</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/IB_CCDD_EcuBatteryM/EcuBatteryM_GetDIOStatus</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/ppCS_EcuBatteryOutData</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcuBatteryMData/EcuBatteryM_GetDIOStatus</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="B7756DC9-103E-4311-8F0E-01A1EF3AD045">
+                      <SHORT-NAME>OIE_pp_CmpLibCmd_CCDD_EcuBatteryM_Impl_OnCommandTrigByImpl_OnCommand</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/IB_CCDD_EcuBatteryM/CCDD_EcuBatteryM_Impl_OnCommand</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/pp_CmpLibCmd</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/if_CS_ModeOnCommand/Impl_OnCommand</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/ppCS_EcuBatteryOutData</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/pp_CmpLibCmd</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_ADC</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_DOut</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_Din</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_PWM</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="66E6EC88-E11D-493D-B7C9-A3515684A396">
+                      <SHORT-NAME>CCDD_EcuBatteryM_Impl_MainFunction</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SERVER-CALL-POINTS>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="3CA29707-FCA4-4C1F-8DBA-A9BCB1B0E026">
+                          <SHORT-NAME>OA_rpIoHwAb_ADC_GetAsyncRawAdc</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_ADC</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetAsyncRawAdc</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="ED0173D9-8356-45BC-A6F7-C2F0126B1457">
+                          <SHORT-NAME>OA_rpIoHwAb_ADC_GetSyncRawAdc</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_ADC</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetSyncRawAdc</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="81C2DF55-8DA2-424F-A3E2-E74637678607">
+                          <SHORT-NAME>OA_rpIoHwAb_ADC_GetProcessedAdc</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_ADC</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetAdc/GetProcessedAdc</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="814D0F38-E1EA-4B2F-BFC2-6EF3F98D6CA0">
+                          <SHORT-NAME>OA_rpIoHwAb_DOut_SetOutputGroup</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_DOut</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_SetDout/SetOutputGroup</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="0037843C-C86E-4CEA-B709-163FC09BBCAB">
+                          <SHORT-NAME>OA_rpIoHwAb_DOut_SetOutputPin</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_DOut</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_SetDout/SetOutputPin</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="7A3706F8-C697-4FB6-B8BB-C4AD7D87431C">
+                          <SHORT-NAME>OA_rpIoHwAb_Din_GetAsyncRawInput</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_Din</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetAsyncRawInput</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="5B44C46F-6757-48B6-9146-3C48038D8DD5">
+                          <SHORT-NAME>OA_rpIoHwAb_Din_GetProcessedInput</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_Din</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetProcessedInput</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="4BEFBB07-71EE-425F-98BD-82B1B8C4ECC5">
+                          <SHORT-NAME>OA_rpIoHwAb_Din_GetSyncRawInput</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_Din</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetSyncRawInput</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="D3531234-878F-4A82-BA73-BB2B68256E76">
+                          <SHORT-NAME>OA_rpIoHwAb_Din_GetInputGroup</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_Din</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_GetDIn/GetInputGroup</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="28949E8D-AC56-4B2E-8FB8-4AB5C253A928">
+                          <SHORT-NAME>OA_rpIoHwAb_PWM_PwmSetDuty</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_PWM</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetDuty</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="FA1D2C1E-AE8E-41F2-ABA4-10EAEC59B47A">
+                          <SHORT-NAME>OA_rpIoHwAb_PWM_PwmSetDutyAndPeriod</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_PWM</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetDutyAndPeriod</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                        <SYNCHRONOUS-SERVER-CALL-POINT UUID="6083F2FE-8052-4C7A-BDC0-8BF9FCDACB72">
+                          <SHORT-NAME>OA_rpIoHwAb_PWM_PwmSetIdeal</SHORT-NAME>
+                          <OPERATION-IREF>
+                            <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/rpIoHwAb_PWM</CONTEXT-R-PORT-REF>
+                            <TARGET-REQUIRED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_IOHWAB_PWM/PwmSetIdeal</TARGET-REQUIRED-OPERATION-REF>
+                          </OPERATION-IREF>
+                        </SYNCHRONOUS-SERVER-CALL-POINT>
+                      </SERVER-CALL-POINTS>
+                      <SYMBOL>CCDD_EcuBatteryM_Impl_MainFunction</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="BC1B7F8B-523E-4AD7-8A4C-E149307CC9E1">
+                      <SHORT-NAME>EcuBatteryM_GetChannelStatus</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>EcuBatteryM_GetChannelStatus</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="7D3EB804-4BE5-485E-9EB9-83127F185D2E">
+                      <SHORT-NAME>EcuBatteryM_GetDIOStatus</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>EcuBatteryM_GetDIOStatus</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="4702D299-0487-4DA1-A9B2-DDBC9EE0C5A1">
+                      <SHORT-NAME>CCDD_EcuBatteryM_Impl_OnCommand</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>CCDD_EcuBatteryM_Impl_OnCommand</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="6CAF83DA-D7AB-4025-A3BA-245EECEA0B50">
+              <SHORT-NAME>IMPL_CCDD_EcuBatteryM</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/CCDD_EcuBatteryM/IB_CCDD_EcuBatteryM</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

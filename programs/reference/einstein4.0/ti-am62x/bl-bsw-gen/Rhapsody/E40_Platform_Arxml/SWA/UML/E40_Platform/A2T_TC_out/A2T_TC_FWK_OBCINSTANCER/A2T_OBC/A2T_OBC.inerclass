@@ -1,0 +1,105 @@
+import autoCreatedTypes.*
+import A2T_TC.A2T_TC_FWK_OBCINSTANCER.*
+
+import A2T_TC.A2T_TC_FWK_OBCINSTANCER.A2T_OBC.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.Osal.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+																						
+
+
+																						package A2T_TC.A2T_TC_FWK_OBCINSTANCER.A2T_OBC
+
+																						stereotype DesignUnit
+																						
+
+
+type A2TCallTrigger enum {
+																							AsynchronousServerCallReturn
+																							OperationInvoke = 1
+																						}
+																						
+
+
+type A2TClientMode enum {
+																							A2TAsynchronous
+																							A2TSynchronous = 1
+																						}
+																						
+
+
+type A2TDataTrigger enum {
+																							DataReceive
+																							DataReceiveError = 1
+																							DataSendComplete = 2
+																						}
+																						
+
+
+type A2TEventTrigger enum {
+																							DataReceive
+																							DataSendComplete = 1
+																						}
+																						
+
+
+type A2TInvalidHandling enum {
+																							A2TKeep
+																							A2TReplace = 1
+																						}
+																						
+
+
+type A2TModeTrigger enum {
+																							ModeSwitchOnEntry
+																							ModeSwitchOnExit = 1
+																						}
+																						
+
+
+																						type A2TBoolean enum {
+																						
+
+
+																						A2TFalse
+																							
+
+
+																							A2TTrue = 1
+																						}
+																						
+
+
+																						type A2TDouble implicit
+																						
+
+
+																						type A2TLong implicit
+																						
+
+
+																						type A2TString implicit
+
+																						type A2TUniqueAllocatable enum {
+																							Automatic
+																							True = 1
+																							False = 2
+																						}
+
+																						type A2TPortAccess enum {
+																							All
+																							None = 1
+																						}
+
+																						package A2T_TC.A2T_TC_FWK_OBCINSTANCER.A2T_OBC.Osal
+																						
+
+
+																						abstract class CObcExclusiveArea inherits
+																						CSysExclusiveArea {
+																						}

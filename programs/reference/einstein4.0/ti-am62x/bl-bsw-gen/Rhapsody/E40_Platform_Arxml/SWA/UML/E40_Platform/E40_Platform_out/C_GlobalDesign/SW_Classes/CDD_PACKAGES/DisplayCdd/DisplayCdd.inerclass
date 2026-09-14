@@ -1,0 +1,79 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.DisplayCdd.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.DisplayCdd.P_Display_Cdd.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																					package
+																					E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.DisplayCdd
+
+																					stereotype DesignUnit
+																					
+
+
+																					unique allocatable Display_Cdd swcName = CDisplayCdd {
+																						compositions
+																							CDisplayCdd:S_CDisplayCdd
+																						ports
+																							ppCS_DisplayCdd_GammaSet:provided
+																							TI_Display_GammaCorrection
+																							pp_CmpLibCmd_CDisplayCdd:provided if_CS_ModeOnCommand
+																							ppCS_DisplayCdd_Cbk:provided TI_Display_I2cSeqCallback
+																							rp_CS_Backlight_Status:required TI_Backlight_Status
+																							rp_CS_Backlight_Notify:required
+																							TI_Backlight_NotifyDispaly
+																							rpIoHwAb_SetDout:required TI_IOHWAB_SetDout
+																							pp_CS_DisplayCdd_Status:provided TI_Display_Status
+																					}
+
+																					package
+																					E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.DisplayCdd.P_Display_Cdd
+
+																					ExternalCode static class S_CDisplayCdd realizes
+																					TI_Display_GammaCorrection, TI_Display_I2cSeqCallback,
+																					TI_Display_Status, if_CS_ModeOnCommand {
+																						attributes
+																							Display_TimePeriodMainFunction:uint8_Ref =
+																							10
+																							runnables
+																								Impl_MainFunction triggeredBy {
+																									TimingEvent Display_TimePeriodMainFunction
+																								}
+																								Impl_OnCommand triggeredBy {
+																									OperationInvokeEvent
+																									if_CS_ModeOnCommand.Impl_OnCommand
+																								}
+																								SetGammaCorrection triggeredBy {
+																									OperationInvokeEvent
+																									TI_Display_GammaCorrection.SetGammaCorrection
+																								}
+																								noPortAccess GetGammaCorrectionStatus triggeredBy {
+																									OperationInvokeEvent
+																									TI_Display_GammaCorrection.GetGammaCorrectionStatus
+																								}
+																								noPortAccess I2cSeqEndCallback triggeredBy {
+																									OperationInvokeEvent
+																									TI_Display_I2cSeqCallback.I2cSeqEndCallback
+																								}
+																								noPortAccess GetStatus triggeredBy {
+																									OperationInvokeEvent TI_Display_Status.GetStatus
+																								}
+																								SetState triggeredBy {
+																									OperationInvokeEvent TI_Display_Status.SetState
+																								}
+																						}

@@ -1,0 +1,101 @@
+import autoCreatedTypes.*
+import A2T_TC.A2T_TC_FWK.*
+
+import A2T_TC.A2T_TC_FWK.A2T_TST.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import A2T_TC.A2T_TC_FWK.A2T_TST.TstReporter.*
+
+import A2T_TC.A2T_TC_FWK.A2T_TST.TstReporter.TstStdlib.*
+
+import A2T_TC.A2T_TC_FWK.A2T_TST.UnitaryTest.*
+
+
+																						
+
+
+																						package A2T_TC.A2T_TC_FWK.A2T_TST
+
+																						stereotype DesignUnit
+																						
+
+
+type
+																						mCheck implicit
+																						
+
+
+abstract
+																						class CTstContext {
+																							attributes
+																								Description:String
+																						}
+																						
+
+
+abstract
+																						class CTstReporter {
+																						}
+																						
+
+
+																						class CTstCampain inherits CTstContext {
+																							associations
+																								ContextList:CTstContext[1..*]
+																						}
+																						
+
+
+																						class CTstRootCampain inherits CTstCampain {
+																							compositions
+																								Reporter:CTstReporter
+																						}
+
+																						package A2T_TC.A2T_TC_FWK.A2T_TST.TstReporter
+																						
+
+
+																						package
+																						A2T_TC.A2T_TC_FWK.A2T_TST.TstReporter.TstBasicConsoleReporter
+																						
+
+
+																						class CTstBasicConsoleReporter inherits CTstReporter {
+																						}
+																						
+
+
+																								package
+																								A2T_TC.A2T_TC_FWK.A2T_TST.TstReporter.TstStdlib
+
+																						stereotype ExternalLibrary
+
+																						package A2T_TC.A2T_TC_FWK.A2T_TST.UnitaryTest
+																						
+
+
+																						class CTstRootCampainUTest inherits CTstRootCampain {
+																							compositions
+																								cTstRootCampainUTestRef:CTstRootCampainUTest
+																						}
+																						
+
+
+																						allocatable CSwcUTest {
+																							compositions
+																								ItsTstRootCampainUTest:CTstRootCampainUTest
+																								ItsTstContextList:CTstContext[0..*]
+																						}
+																						
+
+
+																						class CUTestSystem {
+																							compositions
+																								ItsSwcUTest:CSwcUTest
+																						}
+
+																								package
+																								A2T_TC.A2T_TC_FWK.A2T_TST.UnitaryTest.SwcUTestD
+
+																						stereotype ExternalLibrary

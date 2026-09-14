@@ -1,0 +1,261 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: IC
+VAL_TABLE_ Vtsig_GearMode 1 "Auto" 0 "Manual" ;
+VAL_TABLE_ DayNightMode 1 "Night" 0 "Day" ;
+VAL_TABLE_ TransportMode 1 "Transport Link Active" 0 "Transport Link Off" ;
+VAL_TABLE_ PowerMode 4 "Run(Engine_or_Motor_on)" 3 "Ignition On" 2 "Accessory" 1 "Awake" 0 "Off" ;
+
+
+BO_ 776 Cluster_Secure_Rx: 8 Vector__XXX
+ SG_ SecureRxByte3 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureRxByte2 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureRxByte1 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureRxByte0 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ FV_Rx : 28|4@1+ (1,0) [0|15] "No Unit" Vector__XXX
+ SG_ MAC_Rx : 0|28@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 768 Cluster_Secure_Tx: 8 IC
+ SG_ SecureTxByte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureTxByte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureTxByte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ SecureTxByte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ MAC_Tx : 32|28@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ FV_Tx : 60|4@1+ (1,0) [0|15] "No Unit" Vector__XXX
+
+BO_ 514 Cluster_Tx_Normal_COM_LS: 4 IC
+ SG_ Odometer : 0|32@1+ (1,0) [0|1609343] "km" Vector__XXX
+
+BO_ 513 Cluster_Tx_Normal_COM_MS: 2 IC
+ SG_ VehicleSpeedIC : 0|16@1+ (0.0625,0) [0|300] "kmph" Vector__XXX
+
+BO_ 1364 Debug_Frame5: 8 IC
+ SG_ Debug5_Byte7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug5_Byte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1363 Debug_Frame4: 8 IC
+ SG_ Debug4_Byte7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug4_Byte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1362 Debug_Frame3: 8 IC
+ SG_ Debug3_Byte7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug3_Byte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1361 Debug_Frame2: 8 IC
+ SG_ Debug2_Byte7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug2_Byte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1360 Debug_Frame1: 8 IC
+ SG_ Debug1_Byte7 : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte6 : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte5 : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte4 : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte3 : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte2 : 16|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte1 : 8|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Debug1_Byte0 : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 528 Cluster_Tx_Reduced_Com: 1 IC
+ SG_ Illumination_PWM : 0|8@1+ (1,0) [0|100] "%" Vector__XXX
+
+BO_ 512 Cluster_Tx_Normal_COM_HS: 1 IC
+ SG_ Battery_Voltage : 0|8@1+ (0.25,0) [0|63.75] "V" Vector__XXX
+
+BO_ 1544 Diag_Resp_UUDT: 8 IC
+ SG_ Diag_Buffer_Tx_UUDT : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1800 Diag_Resp_USDT: 8 IC
+ SG_ Diag_Buffer_Tx_USDT : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 2015 Diag_Req_Functional: 8 Vector__XXX
+ SG_ Diag_Buffer_Rx_Functional : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1792 Diag_Req_Physical: 8 Vector__XXX
+ SG_ Diag_Buffer_Rx_Physical : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 257 Illum_control: 3 Vector__XXX
+ SG_ Ambient_Light_level : 16|8@1+ (1,0) [0|100] "%"  IC
+ SG_ Illumination_level : 8|8@1+ (1,0) [0|255] "%"  IC
+ SG_ DayNightMode : 0|1@1+ (1,0) [0|0] ""  IC
+
+BO_ 256 VehicleControl: 8 Vector__XXX
+ SG_ Warning : 63|8@0+ (1,0) [0|255] ""  IC
+ SG_ Airbag : 53|2@0+ (1,0) [0|0] ""  IC
+ SG_ GearStatus : 15|8@0+ (1,0) [0|0] ""  IC
+ SG_ GearRecommendation : 50|3@0+ (1,0) [0|0] ""  IC
+ SG_ GearMode : 51|1@0+ (1,0) [0|0] ""  IC
+ SG_ Gear : 7|4@0+ (1,0) [0|0] ""  IC
+ SG_ EngineSpeed : 39|16@0+ (0.78125,0) [0|0] "" Vector__XXX
+ SG_ VehicleSpeedABS : 16|16@1+ (0.0625,0) [0|300] "kmph"  IC
+ SG_ TransportMode : 54|1@1+ (1,0) [0|0] ""  IC
+ SG_ PowerMode : 0|4@1+ (1,0) [0|0] ""  IC
+
+BO_ 1280 NM_CoOrd_NMPDU: 8 Vector__XXX
+ SG_ UserData5_NMCoOrd : 56|8@1+ (1,0) [0|0] ""  IC
+ SG_ UserData4_NMCoOrd : 48|8@1+ (1,0) [0|0] ""  IC
+ SG_ UserData3_NMCoOrd : 40|8@1+ (1,0) [0|0] ""  IC
+ SG_ UserData2_NMCoOrd : 32|8@1+ (1,0) [0|0] ""  IC
+ SG_ UserData1_NMCoOrd : 24|8@1+ (1,0) [0|0] ""  IC
+ SG_ RepeatMessageReqNMCoOrd : 8|1@1+ (1,0) [0|0] ""  IC
+ SG_ PreviousStateNMCoOrd : 16|3@1- (1,0) [0|0] ""  IC
+ SG_ NMCordSlpRdyBitNMCoOrd : 11|1@1+ (1,0) [0|0] ""  IC
+ SG_ NMCoOrd_NMPDU_SRC_ECU_ID : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ CurrentStateNMCoOrd : 19|1@1- (1,0) [0|0] ""  IC
+ SG_ ActiveWakeupBitNMCoOrd : 12|1@1+ (1,0) [0|0] ""  IC
+
+BO_ 1281 IC_NMPDU: 8 IC
+ SG_ UserData5_IC : 56|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ UserData4_IC : 48|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ UserData3_IC : 40|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ UserData2_IC : 32|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ UserData1_IC : 24|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ CurrentStateIC : 19|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ RepeatMessageReqIC : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ PreviousStateIC : 16|3@1- (1,0) [0|0] "" Vector__XXX
+ SG_ NMCordSlpRdyBitIC : 11|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ IC_NMPDU_SRC_ECU_ID : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ ActiveWakeupBitIC : 12|1@1+ (1,0) [0|0] "" Vector__XXX
+
+
+
+EV_ EnvKlemme30: 0 [0|1] "" 1 1 DUMMY_NODE_VECTOR0 Vector__XXX;
+
+EV_ EnvKlemme15: 0 [0|1] "" 0 2 DUMMY_NODE_VECTOR0 Vector__XXX;
+
+CM_ SG_ 776 MAC_Rx "28 bit CMAC/HMAC  for securing the message";
+CM_ SG_ 768 MAC_Tx "28 bit CMAC/HMAC  for securing the message";
+CM_ BO_ 528 "to be transmitted in reduced comm state as well";
+CM_ SG_ 256 Warning "a generic warning input, Map values to specific warnings";
+CM_ SG_ 256 TransportMode "This signal is used to enable/disable tranpsort mode";
+CM_ SG_ 1280 NMCoOrd_NMPDU_SRC_ECU_ID "Value shall be 0x0 as ID=0x500";
+CM_ SG_ 1281 IC_NMPDU_SRC_ECU_ID "Value shall be 0x1 as ID=0x501";
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ SG_  "NWM-WakeupAllowed" ENUM  "No","Yes";
+BA_DEF_ BO_  "NmMessage" ENUM  "no","yes";
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BU_  "NmNode" ENUM  "no","yes";
+BA_DEF_ BU_  "NmStationAddress" INT 0 63;
+BA_DEF_  "NmBaseAddress" HEX 1024 1087;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 50000;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 50000;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 999999;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Periodic","Event","EventPeriodic","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","NoMsgSendType","NotUsed","vector_leerstring";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed";
+BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
+BA_DEF_DEF_  "NodeLayerModules" "CANoeILNLVector.dll";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NWM-WakeupAllowed" "";
+BA_DEF_DEF_  "NmMessage" "no";
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "NmNode" "no";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmBaseAddress" 1024;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgSendType" "NoMsgSendType";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_ "GenMsgSendType" BO_ 514 0;
+BA_ "GenMsgCycleTime" BO_ 514 1000;
+BA_ "GenMsgSendType" BO_ 513 0;
+BA_ "GenMsgCycleTime" BO_ 513 100;
+BA_ "GenMsgSendType" BO_ 1364 1;
+BA_ "GenMsgSendType" BO_ 1363 0;
+BA_ "GenMsgCycleTime" BO_ 1363 100;
+BA_ "GenMsgSendType" BO_ 1362 0;
+BA_ "GenMsgCycleTime" BO_ 1362 100;
+BA_ "GenMsgSendType" BO_ 1361 0;
+BA_ "GenMsgCycleTime" BO_ 1361 100;
+BA_ "GenMsgSendType" BO_ 1360 0;
+BA_ "GenMsgCycleTime" BO_ 1360 10;
+BA_ "GenMsgSendType" BO_ 528 0;
+BA_ "GenMsgCycleTime" BO_ 528 100;
+BA_ "GenMsgSendType" BO_ 512 0;
+BA_ "GenMsgCycleTime" BO_ 512 10;
+BA_ "GenMsgSendType" BO_ 1544 1;
+BA_ "GenMsgSendType" BO_ 1800 1;
+BA_ "GenMsgSendType" BO_ 2015 1;
+BA_ "GenMsgSendType" BO_ 1792 1;
+BA_ "GenMsgSendType" BO_ 257 0;
+BA_ "GenMsgCycleTime" BO_ 257 100;
+BA_ "GenMsgSendType" BO_ 256 0;
+BA_ "GenMsgCycleTime" BO_ 256 10;
+BA_ "GenMsgSendType" BO_ 1280 2;
+BA_ "GenMsgCycleTime" BO_ 1280 200;
+BA_ "NmMessage" BO_ 1280 1;
+BA_ "GenMsgSendType" BO_ 1281 2;
+BA_ "GenMsgCycleTime" BO_ 1281 200;
+BA_ "NmMessage" BO_ 1281 1;
+VAL_ 257 DayNightMode 1 "Night" 0 "Day" ;
+VAL_ 256 Airbag 3 "Reserved" 2 "Blink" 1 "On" 0 "Off" ;
+VAL_ 256 GearStatus 1 "Blink" 0 "On" ;
+VAL_ 256 GearRecommendation 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "GearDownBlinkl" 3 "GearUpBlink" 2 "GearDown" 1 "GearUp" 0 "No Indication" ;
+VAL_ 256 GearMode 1 "Auto" 0 "Manual" ;
+VAL_ 256 TransportMode 1 "Transport Link Active" 0 "Transport Link Off" ;
+VAL_ 256 PowerMode 4 "Run(Engine_or_Motor_on)" 3 "Ignition On" 2 "Accessory" 1 "Awake" 0 "Off" ;
+

@@ -1,0 +1,1207 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><body bgcolor="#FFFFFF"><div><span style="font-family:Arial;font-size:16pt;color:#000000;"><strong>Aggregate Coverage Report</strong></span></div><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Configuration&nbsp;Data</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#EEEEEE"><td><strong>Environment&nbsp;Name:</strong></td><td>CTRL-ILLUMINATION-EXTN-UTP</td></tr><tr bgcolor="#EEEEEE"><td><strong>Date&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>27&nbsp;JUN&nbsp;2025</td></tr><tr bgcolor="#EEEEEE"><td><strong>Time&nbsp;of&nbsp;Report&nbsp;Creation:</strong></td><td>3:57:11&nbsp;PM</td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Aggregate&nbsp;Coverage</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><strong>Code&nbsp;Coverage&nbsp;for&nbsp;Unit:&nbsp;Ctrl_Illumination_Extn</strong></td></tr><tr><td align="left"><pre><span>--&nbsp;Coverage&nbsp;Type:&nbsp;ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D
+</span><span>--&nbsp;Unit:&nbsp;Ctrl_Illumination_Extn
+</span><span>--&nbsp;Test&nbsp;Case:&nbsp;Aggregate
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONFIDENTIAL&nbsp;VISTEON&nbsp;CORPORATION
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;This&nbsp;is&nbsp;an&nbsp;unpublished&nbsp;work&nbsp;of&nbsp;authorship,&nbsp;which&nbsp;contains&nbsp;trade&nbsp;secrets,
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;created&nbsp;in&nbsp;2025.&nbsp;Visteon&nbsp;Corporation&nbsp;owns&nbsp;all&nbsp;rights&nbsp;to&nbsp;this&nbsp;work&nbsp;and
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;intends&nbsp;to&nbsp;maintain&nbsp;it&nbsp;in&nbsp;confidence&nbsp;to&nbsp;preserve&nbsp;its&nbsp;trade&nbsp;secret&nbsp;status.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Visteon&nbsp;Corporation&nbsp;reserves&nbsp;the&nbsp;right,&nbsp;under&nbsp;the&nbsp;copyright&nbsp;laws&nbsp;of&nbsp;the
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;United&nbsp;States&nbsp;or&nbsp;those&nbsp;of&nbsp;any&nbsp;other&nbsp;country&nbsp;that&nbsp;may&nbsp;have&nbsp;jurisdiction,
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;to&nbsp;protect&nbsp;this&nbsp;work&nbsp;as&nbsp;an&nbsp;unpublished&nbsp;work,&nbsp;in&nbsp;the&nbsp;event&nbsp;of&nbsp;an
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;inadvertent&nbsp;or&nbsp;deliberate&nbsp;unauthorized&nbsp;publication.&nbsp;Visteon&nbsp;Corporation
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;also&nbsp;reserves&nbsp;its&nbsp;rights&nbsp;under&nbsp;all&nbsp;copyright&nbsp;laws&nbsp;to&nbsp;protect&nbsp;this&nbsp;work&nbsp;as
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;a&nbsp;published&nbsp;work,&nbsp;when&nbsp;appropriate.&nbsp;Those&nbsp;having&nbsp;access&nbsp;to&nbsp;this&nbsp;work&nbsp;may
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;not&nbsp;copy&nbsp;it,&nbsp;use&nbsp;it,&nbsp;modify&nbsp;it&nbsp;or&nbsp;disclose&nbsp;the&nbsp;information&nbsp;contained&nbsp;in
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;it&nbsp;without&nbsp;the&nbsp;written&nbsp;authorization&nbsp;of&nbsp;Visteon&nbsp;Corporation.
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"c:/illumination&nbsp;control/ctrl-illumination-extn-utp/stubs/gendata/rte_type.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"c:/illumination&nbsp;control/ctrl-illumination-extn-utp/stubs/gendata/components/rte_ctrl_illumination.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"c:/illumination&nbsp;control/ctrl-illumination-extn-utp/stubs/ctrl_illumination_cfg.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"c:/illumination&nbsp;control/ctrl-illumination-extn-utp/stubs/ctrl_illumination_typecfg.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//#include&nbsp;"Ctrl_Illum_Cfg.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"C:/Illumination&nbsp;control/CTRL-ILLUMINATION-EXTN-UTP/source/ctrl_Illumination_Extn.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#include&nbsp;"c:/vcast/mingw/include/string.h"
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;IllumMdl_Bulb_Value[8u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;IllumMdl_LED_Value[8u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;IllumMdl_Dial_Value[7u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;IllumMdl_Display_Value[7u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;IllumMdl_Duty_Value[7u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;IllumMdl_BGT_Value[7u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;IllumMdl_Telltale[3u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;fl_IllumCtrl_Ip;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;uint16&nbsp;max_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;uint16&nbsp;min_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ctrl_Illumination_Adapter
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;process&nbsp;the&nbsp;Input&nbsp;data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;Ctrl_Ip&nbsp;*l_Ctrl_Ip&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Ctrl_Illumination_InputAdapter(Input_Data&nbsp;*l_Input_Data)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">1&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Ctrl_Illumination_InputAdapter
+</span><span style="color:#009900;">1&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)Rte_Read_Ctrl_Illumination_rp_IllumCtrl_Ip_IllumCtrl_Ip_obj(&amp;fl_IllumCtrl_Ip);
+</span><span style="color:#009900;">1&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;Disp_index=0;&nbsp;
+</span><span style="color:#009900;">1&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;Disp_index&nbsp;&lt;1u;&nbsp;Disp_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">1&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_Input_Data-&gt;Display_Control[Disp_index].Mode&nbsp;=&nbsp;fl_IllumCtrl_Ip.Illumination_Mode;
+</span><span style="color:#009900;">1&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_Input_Data-&gt;Display_Control[Disp_index].Level&nbsp;=&nbsp;fl_IllumCtrl_Ip.step_value;
+</span><span style="color:#009900;">1&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_Input_Data-&gt;Display_Control[Disp_index].Status&nbsp;=&nbsp;fl_IllumCtrl_Ip.Illumination_Sts;
+</span><span style="color:#009900;">1&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_Input_Data-&gt;Display_Control[Disp_index].switching_control&nbsp;=&nbsp;fl_IllumCtrl_Ip.switch_type;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ctrl_Illumination_Adapter
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;process&nbsp;the&nbsp;Input&nbsp;data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;Ctrl_Ip&nbsp;*l_Ctrl_Ip&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Ctrl_Illumination_OutputAdapter(Ctrl_Op&nbsp;l_Ctrl_Op)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IllumCtrl_Op&nbsp;fl_IllumCtrl_Op;
+</span><span style="color:#009900;">2&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Ctrl_Illumination_OutputAdapter
+</span><span style="color:#009900;">2&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;1.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Illumination_Duty_Out&nbsp;=&nbsp;l_Ctrl_Op.Duty_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;3.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Bulb_PWM_Out&nbsp;=&nbsp;l_Ctrl_Op.Bulb_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;5.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.LED_PWM_Out&nbsp;=&nbsp;l_Ctrl_Op.LED_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;7.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Dial_Out&nbsp;=&nbsp;l_Ctrl_Op.Dial_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;9.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Display_Out&nbsp;=&nbsp;l_Ctrl_Op.Display_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;11.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Brightness_Out&nbsp;=&nbsp;l_Ctrl_Op.Brightness_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;13.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;1u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.RGB_Dimming_Out&nbsp;=&nbsp;l_Ctrl_Op.RGB_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index=0;&nbsp;
+</span><span style="color:#009900;">2&nbsp;15.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;3u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">2&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Op.Telltale_Out[index]&nbsp;=&nbsp;l_Ctrl_Op.Telltale_Out[index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">2&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)Rte_Write_Ctrl_Illumination_pp_IllumCtrl_Op_IllumCtrl_Op_obj(&amp;fl_IllumCtrl_Op);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Illumination_Table_Update
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;update&nbsp;the&nbsp;Illumination&nbsp;data&nbsp;table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;l_IllumCtrl_Ip&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Illumination_Table_Update(uint16&nbsp;(*outputTable[])[4u][8u])
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Get&nbsp;Illumination&nbsp;Data*/
+</span><span style="color:#009900;">3&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Illumination_Table_Update
+</span><span style="color:#009900;">3&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for(uint8&nbsp;index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">3&nbsp;1.1&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;index&nbsp;&lt;&nbsp;8u;&nbsp;index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#0000FF;">3&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#0000FF;">3&nbsp;2.1&nbsp;&nbsp;&nbsp;(T)(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xffu&nbsp;&amp;&nbsp;(1u&nbsp;&lt;&lt;&nbsp;index))
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(index)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;7u:
+</span><span style="color:#009900;">3&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Duty_Data();
+</span><span style="color:#009900;">3&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;6u:
+</span><span style="color:#009900;">3&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Brightness_Data();
+</span><span style="color:#009900;">3&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;5u:
+</span><span style="color:#009900;">3&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_RGB_Data();
+</span><span style="color:#009900;">3&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;4u:
+</span><span style="color:#009900;">3&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Bulb_Data();
+</span><span style="color:#009900;">3&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;3u:
+</span><span style="color:#009900;">3&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_LED_Data();
+</span><span style="color:#009900;">3&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;2u:
+</span><span style="color:#009900;">3&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Dial_Data();
+</span><span style="color:#009900;">3&nbsp;21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;22&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;1u:
+</span><span style="color:#009900;">3&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Display_Data();
+</span><span style="color:#009900;">3&nbsp;24&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">3&nbsp;25&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;0u:
+</span><span style="color:#009900;">3&nbsp;26&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Telltale_Data();
+</span><span style="color:#009900;">3&nbsp;27&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#0000FF;">3&nbsp;28&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//Do&nbsp;nothing
+</span><span style="color:#0000FF;">3&nbsp;29&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*The&nbsp;Illumination&nbsp;Data&nbsp;is&nbsp;not&nbsp;Applicable*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">3&nbsp;30&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">3&nbsp;30.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Ip.power_mode&nbsp;==&nbsp;0u)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;31&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_On_Data_handle(outputTable,fl_IllumCtrl_Ip);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">3&nbsp;32&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">3&nbsp;32.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;fl_IllumCtrl_Ip.power_mode&nbsp;==&nbsp;1u)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">3&nbsp;33&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_Off_Data_handle(outputTable,fl_IllumCtrl_Ip);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Duty_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Duty_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Duty_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;Duty&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">4&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Duty_Data
+</span><span style="color:#009900;">4&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN2_U8(&amp;IllumMdl_Duty_Value[(0u)]);
+</span><span style="color:#009900;">4&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN3_U8(&amp;IllumMdl_Duty_Value[(1u)]);
+</span><span style="color:#009900;">4&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN4_U8(&amp;IllumMdl_Duty_Value[(2u)]);
+</span><span style="color:#009900;">4&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN5_U8(&amp;IllumMdl_Duty_Value[(3u)]);
+</span><span style="color:#009900;">4&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN6_U8(&amp;IllumMdl_Duty_Value[(4u)]);
+</span><span style="color:#009900;">4&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN7_U8(&amp;IllumMdl_Duty_Value[(5u)]);
+</span><span style="color:#009900;">4&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_CAN8_U8(&amp;IllumMdl_Duty_Value[(6u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Bulb_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Bulb_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Bulb_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;Bulb&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">5&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Bulb_Data
+</span><span style="color:#009900;">5&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb1_U8(&amp;IllumMdl_Bulb_Value[(0u)]);
+</span><span style="color:#009900;">5&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb2_U8(&amp;IllumMdl_Bulb_Value[(1u)]);
+</span><span style="color:#009900;">5&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb3_U8(&amp;IllumMdl_Bulb_Value[(2u)]);
+</span><span style="color:#009900;">5&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb4_U8(&amp;IllumMdl_Bulb_Value[(3u)]);
+</span><span style="color:#009900;">5&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb5_U8(&amp;IllumMdl_Bulb_Value[(4u)]);
+</span><span style="color:#009900;">5&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb6_U8(&amp;IllumMdl_Bulb_Value[(5u)]);
+</span><span style="color:#009900;">5&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb7_U8(&amp;IllumMdl_Bulb_Value[(6u)]);
+</span><span style="color:#009900;">5&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_Bulb8_U8(&amp;IllumMdl_Bulb_Value[(7u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_LED_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_LED_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_LED_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;LED&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">6&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_LED_Data
+</span><span style="color:#009900;">6&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED1_U8(&amp;IllumMdl_LED_Value[(0u)]);
+</span><span style="color:#009900;">6&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED2_U8(&amp;IllumMdl_LED_Value[(1u)]);
+</span><span style="color:#009900;">6&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED3_U8(&amp;IllumMdl_LED_Value[(2u)]);
+</span><span style="color:#009900;">6&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED4_U8(&amp;IllumMdl_LED_Value[(3u)]);
+</span><span style="color:#009900;">6&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED5_U8(&amp;IllumMdl_LED_Value[(4u)]);
+</span><span style="color:#009900;">6&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED6_U8(&amp;IllumMdl_LED_Value[(5u)]);
+</span><span style="color:#009900;">6&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED7_U8(&amp;IllumMdl_LED_Value[(6u)]);
+</span><span style="color:#009900;">6&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_PWM_LED8_U8(&amp;IllumMdl_LED_Value[(7u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Dial_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Dial_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Dial_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;Dial&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">7&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Dial_Data
+</span><span style="color:#009900;">7&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni1_U16(&amp;IllumMdl_Dial_Value[(0u)]);
+</span><span style="color:#009900;">7&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni2_U16(&amp;IllumMdl_Dial_Value[(1u)]);
+</span><span style="color:#009900;">7&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni3_U16(&amp;IllumMdl_Dial_Value[(2u)]);
+</span><span style="color:#009900;">7&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni4_U16(&amp;IllumMdl_Dial_Value[(3u)]);
+</span><span style="color:#009900;">7&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni5_U16(&amp;IllumMdl_Dial_Value[(4u)]);
+</span><span style="color:#009900;">7&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni6_U16(&amp;IllumMdl_Dial_Value[(5u)]);
+</span><span style="color:#009900;">7&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni7_U16(&amp;IllumMdl_Dial_Value[(6u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_LCD_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_LCD_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Display_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;LCD&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">8&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Display_Data
+</span><span style="color:#009900;">8&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni1_U16(&amp;IllumMdl_Display_Value[(0u)]);
+</span><span style="color:#009900;">8&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni2_U16(&amp;IllumMdl_Display_Value[(1u)]);
+</span><span style="color:#009900;">8&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni3_U16(&amp;IllumMdl_Display_Value[(2u)]);
+</span><span style="color:#009900;">8&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni4_U16(&amp;IllumMdl_Display_Value[(3u)]);
+</span><span style="color:#009900;">8&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni5_U16(&amp;IllumMdl_Display_Value[(4u)]);
+</span><span style="color:#009900;">8&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni6_U16(&amp;IllumMdl_Display_Value[(5u)]);
+</span><span style="color:#009900;">8&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni7_U16(&amp;IllumMdl_Display_Value[(6u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Brightness_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Brightness_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Brightness_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Get&nbsp;the&nbsp;Brighntess&nbsp;PWM&nbsp;Data*/
+</span><span style="color:#009900;">9&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Brightness_Data
+</span><span style="color:#009900;">9&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni1_U16(&amp;IllumMdl_BGT_Value[(0u)]);
+</span><span style="color:#009900;">9&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni2_U16(&amp;IllumMdl_BGT_Value[(1u)]);
+</span><span style="color:#009900;">9&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni3_U16(&amp;IllumMdl_BGT_Value[(2u)]);
+</span><span style="color:#009900;">9&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni4_U16(&amp;IllumMdl_BGT_Value[(3u)]);
+</span><span style="color:#009900;">9&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni5_U16(&amp;IllumMdl_BGT_Value[(4u)]);
+</span><span style="color:#009900;">9&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni6_U16(&amp;IllumMdl_BGT_Value[(5u)]);
+</span><span style="color:#009900;">9&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_Ill_ni7_U16(&amp;IllumMdl_BGT_Value[(6u)]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Telltale_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Telltale_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Telltale_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">10&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Telltale_Data
+</span><span style="color:#009900;">10&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_K_dim_P_LIGHTS_U16(&amp;IllumMdl_Telltale[0u]);
+</span><span style="color:#009900;">10&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)MemAbstractMdl_Get_NVM_K_dim_F_FOG_U16(&amp;IllumMdl_Telltale[1u]);
+</span><span style="color:#009900;">10&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(void)100u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_RGB_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_RGB_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_RGB_Data(void)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">11&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_RGB_Data
+</span><span style="color:#009900;">11&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*Configuration&nbsp;of&nbsp;Output&nbsp;Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Index--&gt;Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0------&gt;Duty_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1------&gt;Bulb_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2------&gt;LED_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3------&gt;Dial_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4------&gt;Display_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5------&gt;BGT_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6------&gt;RGB_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7------&gt;TT_Table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_On_Data_handle
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_On_Data_handle
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;l_IllumCtrl_Ip
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Ign_On_Data_handle(uint16&nbsp;(*outputTable[])[4u][8u],IllumCtrl_Ip&nbsp;l_IllumCtrl_Ip)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Ign_On_Data_handle
+</span><span style="color:#009900;">12&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;mode_index&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">12&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;step_index&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">12&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(l_IllumCtrl_Ip.Illumination_Mode)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;0u:
+</span><span style="color:#009900;">12&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;5.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;6.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[(0u)];
+</span><span style="color:#009900;">12&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[(0u)];
+</span><span style="color:#009900;">12&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Display_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">12&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">12&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">12&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">12&nbsp;17&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;1u:
+</span><span style="color:#009900;">12&nbsp;18&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;18.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;19&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;19.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;21&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[(7u)];
+</span><span style="color:#009900;">12&nbsp;22&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[(7u)];
+</span><span style="color:#009900;">12&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Display_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;24&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;25&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;26&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">12&nbsp;27&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">12&nbsp;28&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">12&nbsp;29&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">12&nbsp;30&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;2u:
+</span><span style="color:#009900;">12&nbsp;31&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;31.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;32&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;32.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;33&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;34&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[(0u)];
+</span><span style="color:#009900;">12&nbsp;35&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[(0u)];
+</span><span style="color:#009900;">12&nbsp;36&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Display_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;37&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[(6u)];
+</span><span style="color:#009900;">12&nbsp;38&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;39&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">12&nbsp;40&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">12&nbsp;41&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">12&nbsp;42&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">12&nbsp;43&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;3u:
+</span><span style="color:#009900;">12&nbsp;44&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;44.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;45&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">12&nbsp;45.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">12&nbsp;46&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;47&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;48&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;49&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Display_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;50&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;51&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">12&nbsp;52&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">12&nbsp;53&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">12&nbsp;54&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">12&nbsp;55&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">12&nbsp;56&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Do&nbsp;nothing
+</span><span style="color:#009900;">12&nbsp;57&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_Off_Data_handle
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ign_Off_Data_handle
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;l_IllumCtrl_Ip
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Ign_Off_Data_handle(uint16&nbsp;(*outputTable[])[4u][8u],IllumCtrl_Ip&nbsp;l_IllumCtrl_Ip)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Ign_Off_Data_handle
+</span><span style="color:#009900;">13&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;mode_index&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;step_index&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch(l_IllumCtrl_Ip.Illumination_Mode)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;0u:
+</span><span style="color:#009900;">13&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;5.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;6.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">13&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">13&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">13&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">13&nbsp;17&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;1u:
+</span><span style="color:#009900;">13&nbsp;18&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;18.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;19&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;19.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[(6u)];
+</span><span style="color:#009900;">13&nbsp;21&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[(7u)];
+</span><span style="color:#009900;">13&nbsp;22&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[(7u)];
+</span><span style="color:#009900;">13&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;24&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[(6u)];
+</span><span style="color:#009900;">13&nbsp;25&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;26&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">13&nbsp;27&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">13&nbsp;28&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">13&nbsp;29&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">13&nbsp;30&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;2u:
+</span><span style="color:#009900;">13&nbsp;31&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;31.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;32&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;32.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;33&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;34&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;35&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;36&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;37&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;38&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])&nbsp;[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;39&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">13&nbsp;40&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">13&nbsp;41&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">13&nbsp;42&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">13&nbsp;43&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;3u:
+</span><span style="color:#009900;">13&nbsp;44&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(mode_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;44.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_index&nbsp;&lt;&nbsp;4u;&nbsp;mode_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;45&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(step_index&nbsp;=&nbsp;0;&nbsp;
+</span><span style="color:#009900;">13&nbsp;45.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;step_index&nbsp;&lt;&nbsp;8u;&nbsp;step_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">13&nbsp;46&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[0u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Duty_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;47&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[1u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Bulb_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;48&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[2u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_LED_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;49&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[4u])[mode_index][step_index]&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">13&nbsp;50&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[3u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_BGT_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;51&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*outputTable[5u])[mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Dial_Value[l_IllumCtrl_Ip.step_value&nbsp;-&nbsp;1u];
+</span><span style="color:#009900;">13&nbsp;52&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][0u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[0u];
+</span><span style="color:#009900;">13&nbsp;53&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][1u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[1u];
+</span><span style="color:#009900;">13&nbsp;54&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outputTable[7u][2u][mode_index][step_index]&nbsp;=&nbsp;IllumMdl_Telltale[2u];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">13&nbsp;55&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span style="color:#009900;">13&nbsp;56&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Do&nbsp;nothing
+</span><span style="color:#009900;">13&nbsp;57&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set_PWM_to_Default
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;update&nbsp;Init&nbsp;values
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;l_illumctrl_ip,&nbsp;IllumCtrl_Op_Ptr&nbsp;l_illumctrl_op
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Set_PWM_to_Default(Switch_Ctrl_Ip&nbsp;l_SwitchCtrl_Ip,uint16&nbsp;*Ill_Pwm_Data)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">14&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Set_PWM_to_Default
+</span><span style="color:#009900;">14&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Ill_Pwm_Data&nbsp;=&nbsp;777u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//l_SwitchCtrl_Ip.l_Index_Ip.table_index;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Illumination_Duty_Out&nbsp;=&nbsp;(uint8)(IllumMdl_Duty_Value[INDEX_6]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Bulb_PWM_Out&nbsp;=&nbsp;(uint8)(IllumMdl_Bulb_Value[INDEX_7]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;LED_PWM_Out&nbsp;=&nbsp;(uint8)(IllumMdl_LED_Value[INDEX_7]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Dial_PWM_Out&nbsp;=&nbsp;(uint8)(IllumMdl_Dial_Value[INDEX_6]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Display_PWM_Out[INDEX_0]&nbsp;=&nbsp;(uint8)(IllumMdl_LCD_Value[INDEX_6]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Brightness_Out&nbsp;=&nbsp;(uint8)(IllumMdl_BGT_Value[INDEX_6]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_0]&nbsp;=&nbsp;(uint8)(IllumMdl_Telltale[TT_INDEX1]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_1]&nbsp;=&nbsp;(uint8)(IllumMdl_Telltale[TT_INDEX1]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_2]&nbsp;=&nbsp;(uint8)(IllumMdl_Telltale[TT_INDEX1]);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set_PWM_to_Off
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;set&nbsp;Illumination&nbsp;off
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;IllumCtrl_Ip&nbsp;l_illumctrl_ip,&nbsp;IllumCtrl_Op_Ptr&nbsp;l_illumctrl_op&nbsp;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Set_PWM_to_Off(Switch_Ctrl_Ip&nbsp;l_SwitchCtrl_Ip,uint16&nbsp;*Ill_Pwm_Data)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">15&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Set_PWM_to_Off
+</span><span style="color:#009900;">15&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Ill_Pwm_Data&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">15&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_SwitchCtrl_Ip.l_Curr_Ip.Curr_Pwm&nbsp;=&nbsp;0u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Illumination_Duty_Out&nbsp;=&nbsp;ILL_CAN_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Bulb_PWM_Out&nbsp;=&nbsp;ILL_PWM_BULB_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;LED_PWM_Out&nbsp;=&nbsp;ILL_PWM_LED_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Dial_PWM_Out&nbsp;=&nbsp;ILL_NI_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Display_PWM_Out[INDEX_0]&nbsp;=&nbsp;ILL_NI_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Brightness_Out&nbsp;=&nbsp;ILL_NI_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_0]&nbsp;=&nbsp;TT_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_1]&nbsp;=&nbsp;TT_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;l_illumctrl_op-&gt;Telltale_Out[INDEX_2]&nbsp;=&nbsp;TT_OFF;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Slew_Rate_Determination
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;determine&nbsp;the&nbsp;slewrate
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;Sl_Ctrl_Ip&nbsp;l_Sl_Ctrl_Ip
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sl_Ctrl_Op
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==========================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sl_Ctrl_Op&nbsp;Slew_Rate_Determination(Sl_Ctrl_Ip&nbsp;l_Sl_Ctrl_Ip)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;current_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;target_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;update_count;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;uint16&nbsp;slew_rate;
+</span><span style="color:#009900;">16&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Slew_Rate_Determination
+</span><span style="color:#009900;">16&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;prevmode&nbsp;=&nbsp;0u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;max_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint16&nbsp;min_val;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sl_Ctrl_Op&nbsp;l_SlCtrl_Op;
+</span><span style="color:#009900;">16&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Min_Max_Data(l_Sl_Ctrl_Ip.table_data,8u,&amp;max_val,&amp;min_val);
+</span><span style="color:#009900;">16&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_val&nbsp;=&nbsp;l_Sl_Ctrl_Ip.Curr_pwm;
+</span><span style="color:#009900;">16&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_val&nbsp;=&nbsp;l_Sl_Ctrl_Ip.tgt_pwm;
+</span><span style="color:#009900;">16&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_count&nbsp;=&nbsp;100u;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;static&nbsp;uint8&nbsp;cr_mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;static&nbsp;uint8&nbsp;tg_mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;SlewCtrl&nbsp;(*table_data)[l_Sl_Ctrl_Ip.No_of_Transitions]&nbsp;=&nbsp;(SlewCtrl&nbsp;(*)[l_Sl_Ctrl_Ip.No_of_Transitions])Transition_Table[l_Sl_Ctrl_Ip.table_index];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;for(uint8&nbsp;trans_index=0;trans_index&lt;l_Sl_Ctrl_Ip.No_of_Transitions;trans_index++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if((table_data[trans_index]-&gt;current_mode&nbsp;==&nbsp;l_Sl_Ctrl_Ip.Curr_Mode)&nbsp;&amp;&amp;&nbsp;(table_data[trans_index]-&gt;target_mode&nbsp;==&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode))
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_val&nbsp;=&nbsp;table_data[trans_index]-&gt;current_pwm;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_val&nbsp;&nbsp;=&nbsp;table_data[trans_index]-&gt;target_pwm;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_count&nbsp;=&nbsp;table_data[trans_index]-&gt;update_count;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(current_val&nbsp;&gt;&nbsp;target_val)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;(current_val&nbsp;-&nbsp;target_val)/update_count;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;(target_val&nbsp;-&nbsp;current_val)/update_count;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;SlewRate_Table[l_Sl_Ctrl_Ip.table_index][l_Sl_Ctrl_Ip.Illum_index][l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode][l_Sl_Ctrl_Ip.l_Ctrl_Ip.Level];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">16&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">16&nbsp;6.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;l_Sl_Ctrl_Ip.Curr_Mode&nbsp;!=&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">16&nbsp;7.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_val&nbsp;&gt;&nbsp;target_val)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;(current_val&nbsp;-&nbsp;target_val)/update_count;
+</span><span style="color:#009900;">16&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prevmode&nbsp;=&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;
+</span><span style="color:#009900;">16&nbsp;10&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(
+</span><span style="color:#009900;">16&nbsp;10.1&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_val&nbsp;&lt;&nbsp;target_val)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;(target_val&nbsp;-&nbsp;current_val)/update_count;
+</span><span style="color:#009900;">16&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prevmode&nbsp;=&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;0u;
+</span><span style="color:#009900;">16&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prevmode&nbsp;=&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">16&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slew_rate&nbsp;=&nbsp;(max_val&nbsp;-&nbsp;min_val)/update_count;
+</span><span style="color:#009900;">16&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prevmode&nbsp;=&nbsp;l_Sl_Ctrl_Ip.l_Ctrl_Ip.Mode;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">16&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_SlCtrl_Op.slewrate&nbsp;=&nbsp;slew_rate;
+</span><span style="color:#009900;">16&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l_SlCtrl_Op.prev_mode&nbsp;=&nbsp;prevmode;
+</span><span style="color:#009900;">16&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;l_SlCtrl_Op;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*===================================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get_Min_Max_Data
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;determine&nbsp;the&nbsp;min&nbsp;and&nbsp;max&nbsp;value&nbsp;of&nbsp;table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;uint16&nbsp;pwm_table[TOT_STEP]
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pwm_sort
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**==================================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;Get_Min_Max_Data(uint16&nbsp;arr[],&nbsp;uint8&nbsp;n,&nbsp;uint16&nbsp;*max,&nbsp;uint16&nbsp;*min)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span style="color:#009900;">17&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(T)&nbsp;&nbsp;&nbsp;&nbsp;Get_Min_Max_Data
+</span><span style="color:#009900;">17&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*max&nbsp;=&nbsp;arr[0];
+</span><span style="color:#009900;">17&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*min&nbsp;=&nbsp;arr[0];
+</span><span style="color:#009900;">17&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;for&nbsp;(uint8&nbsp;i&nbsp;=&nbsp;1u;&nbsp;
+</span><span style="color:#009900;">17&nbsp;3.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++)&nbsp;{
+</span><span style="color:#009900;">17&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">17&nbsp;4.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[i]&nbsp;&gt;&nbsp;*max)&nbsp;{
+</span><span style="color:#009900;">17&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*max&nbsp;=&nbsp;arr[i];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span style="color:#009900;">17&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(
+</span><span style="color:#009900;">17&nbsp;6.1&nbsp;&nbsp;(T)(F)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[i]&nbsp;&lt;&nbsp;*min)&nbsp;{
+</span><span style="color:#009900;">17&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*min&nbsp;=&nbsp;arr[i];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;/*===================================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;sort&nbsp;the&nbsp;table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;uint16&nbsp;arr[],&nbsp;uint16&nbsp;temp[],&nbsp;uint8&nbsp;left,&nbsp;uint8&nbsp;right
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**==================================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;void&nbsp;mergeSort(uint16&nbsp;arr[],&nbsp;uint16&nbsp;temp[],&nbsp;uint8&nbsp;left,&nbsp;uint8&nbsp;right)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(left&nbsp;&lt;&nbsp;right)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;mid&nbsp;=&nbsp;(uint8)(left&nbsp;+&nbsp;((right&nbsp;-&nbsp;left)&nbsp;/&nbsp;2));
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort(arr,&nbsp;temp,&nbsp;left,&nbsp;mid);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mergeSort(arr,&nbsp;temp,&nbsp;mid&nbsp;+&nbsp;1,&nbsp;right);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge(arr,&nbsp;temp,&nbsp;left,&nbsp;mid,&nbsp;right);
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;/*===================================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Function&nbsp;Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;merge
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;Function&nbsp;is&nbsp;to&nbsp;sort&nbsp;the&nbsp;table
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Input&nbsp;Parameters:&nbsp;&nbsp;&nbsp;uint16&nbsp;arr[],&nbsp;uint16&nbsp;temp[],&nbsp;uint8&nbsp;left,&nbsp;uint8&nbsp;mid,&nbsp;uint8&nbsp;right
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**&nbsp;Outputs:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;void
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;**==================================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;void&nbsp;merge(uint16&nbsp;arr[],&nbsp;uint16&nbsp;temp[],&nbsp;uint8&nbsp;left,&nbsp;uint8&nbsp;mid,&nbsp;uint8&nbsp;right)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;i&nbsp;=&nbsp;left;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;j&nbsp;=&nbsp;mid&nbsp;+&nbsp;1;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uint8&nbsp;k&nbsp;=&nbsp;left;
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(i&nbsp;&lt;=&nbsp;mid&nbsp;&amp;&amp;&nbsp;j&nbsp;&lt;=&nbsp;right)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(arr[i]&nbsp;&lt;=&nbsp;arr[j])
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]&nbsp;=&nbsp;arr[i++];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]&nbsp;=&nbsp;arr[j++];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(i&nbsp;&lt;=&nbsp;mid)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]&nbsp;=&nbsp;arr[i++];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(j&nbsp;&lt;=&nbsp;right)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp[k++]&nbsp;=&nbsp;arr[j++];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;l&nbsp;=&nbsp;left;&nbsp;l&nbsp;&lt;=&nbsp;right;&nbsp;l++)
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[l]&nbsp;=&nbsp;temp[l];
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;}
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;15-05-2025
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;aelango6
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Traceability&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;MSIL32083-17658
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Change&nbsp;Description:&nbsp;Ctrl-Illumination-Extn&nbsp;-&nbsp;Inital&nbsp;version
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**============================================================================*/
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*============================================================================
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;27-06-2025
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;CDSID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;aelango6
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Traceability&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;MSIL32083-23936
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**&nbsp;Change&nbsp;Description:&nbsp;Ctrl-Illumination-Extn&nbsp;-&nbsp;Version&nbsp;2
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**
+</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**============================================================================*/
+</span><span>TEST&nbsp;COVERAGE&nbsp;SUMMARY
+</span><span>
+</span><span>
+</span><span>&nbsp;247&nbsp;of&nbsp;247&nbsp;Lines&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span><span>&nbsp;176&nbsp;of&nbsp;176&nbsp;Branches&nbsp;Covered&nbsp;(&nbsp;100%&nbsp;)
+</span></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>MC/DC&nbsp;Condition&nbsp;Tables</strong></span></td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_InputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 46
+Actual Expression is: Disp_index &lt; 1U
+Condition "a" (Ca) is: Disp_index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 65
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 70
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 75
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;7</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 80
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;9</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 85
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;11</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 90
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;13</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 95
+Actual Expression is: index &lt; 1U
+Condition "a" (Ca) is: index &lt; 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ctrl_Illumination_OutputAdapter</strong><br><strong>Condition:&nbsp;#&nbsp;15</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 100
+Actual Expression is: index &lt; 3U
+Condition "a" (Ca) is: index &lt; 3U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Illumination_Table_Update</strong><br><strong>Condition:&nbsp;#&nbsp;1</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 117
+Actual Expression is: index &lt; 8U
+Condition "a" (Ca) is: index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Illumination_Table_Update</strong><br><strong>Condition:&nbsp;#&nbsp;2</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 120
+Actual Expression is: 0xffU &amp; 1U &lt;&lt; index
+Condition "a" (Ca) is: 0xffU &amp; 1U &lt;&lt; index
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|A2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied by analysis (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Illumination_Table_Update</strong><br><strong>Condition:&nbsp;#&nbsp;30</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 159
+Actual Expression is: fl_IllumCtrl_Ip.power_mode == 0U
+Condition "a" (Ca) is: fl_IllumCtrl_Ip.power_mode == 0U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Illumination_Table_Update</strong><br><strong>Condition:&nbsp;#&nbsp;32</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 164
+Actual Expression is: fl_IllumCtrl_Ip.power_mode == 1U
+Condition "a" (Ca) is: fl_IllumCtrl_Ip.power_mode == 1U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 328
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 331
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;18</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 347
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;19</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 350
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;31</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 366
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;32</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 369
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;44</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 385
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_On_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;45</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 388
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;5</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 422
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 425
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;18</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 441
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;19</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 444
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;31</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 460
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;32</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 463
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;44</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 479
+Actual Expression is: mode_index &lt; 4U
+Condition "a" (Ca) is: mode_index &lt; 4U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Ign_Off_Data_handle</strong><br><strong>Condition:&nbsp;#&nbsp;45</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 482
+Actual Expression is: step_index &lt; 8U
+Condition "a" (Ca) is: step_index &lt; 8U
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Slew_Rate_Determination</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 589
+Actual Expression is: l_Sl_Ctrl_Ip.Curr_Mode != (l_Sl_Ctrl_Ip.l_Ctrl_Ip).Mode
+Condition "a" (Ca) is: l_Sl_Ctrl_Ip.Curr_Mode != (l_Sl_Ctrl_Ip.l_Ctrl_Ip).Mode
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Slew_Rate_Determination</strong><br><strong>Condition:&nbsp;#&nbsp;7</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 592
+Actual Expression is: current_val &gt; target_val
+Condition "a" (Ca) is: current_val &gt; target_val
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Slew_Rate_Determination</strong><br><strong>Condition:&nbsp;#&nbsp;10</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 598
+Actual Expression is: current_val &lt; target_val
+Condition "a" (Ca) is: current_val &lt; target_val
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Get_Min_Max_Data</strong><br><strong>Condition:&nbsp;#&nbsp;3</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 631
+Actual Expression is: i &lt; n
+Condition "a" (Ca) is: i &lt; n
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Get_Min_Max_Data</strong><br><strong>Condition:&nbsp;#&nbsp;4</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 633
+Actual Expression is: arr[i] &gt; *max
+Condition "a" (Ca) is: arr[i] &gt; *max
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td colspan="1"><strong>Unit:&nbsp;Ctrl_Illumination_Extn</strong><br><strong>Subprogram:&nbsp;Get_Min_Max_Data</strong><br><strong>Condition:&nbsp;#&nbsp;6</strong></td></tr><tr bgcolor="#EEEEEE"><td><pre><pre>Source line: 637
+Actual Expression is: arr[i] &lt; *min
+Condition "a" (Ca) is: arr[i] &lt; *min
+Simplified Expression is: a
+|----+----+------+----|
+|Row |Ca  |Rslt  |Pa  |
+|----+----+------+----|
+|*1  |T   |T     |2   |
+|----+----+------+----|
+|*2  |F   |F     |1   |
+|----+----+------+----|
+Pa =&gt; a pair was satisfied (1/2)
+      1/2
+Pairs satisfied: 1 of 1 ( 100% )
+</pre></pre></td></tr></table></td></tr></table><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;" width="100%"><tr bgcolor="#94A5C6"><td align="left"><span style="font-family:Arial;font-size:14pt;color:#000000;"><strong>Metrics</strong></span></td></tr><tr bgcolor="#94A5C6"><td align="left">ISO-26262&nbsp;(Automotive)&nbsp;ASIL&nbsp;D</td></tr><tr><td align="left"><table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;"><tr bgcolor="#CCD8EE"><td bgcolor="#CCD8EE"><strong>Unit</strong></td><td bgcolor="#CCD8EE"><strong>Subprogram</strong></td><td bgcolor="#CCD8EE"><strong>Complexity</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Coverage</strong></td><td bgcolor="#CCD8EE"><strong>Function&nbsp;Calls</strong></td><td bgcolor="#CCD8EE"><strong>Statements</strong></td><td bgcolor="#CCD8EE"><strong>Branches</strong></td><td bgcolor="#CCD8EE"><strong>Pairs</strong></td></tr><tr bgcolor="#EEEEEE"><td>Ctrl_Illumination_Extn</td><td>Ctrl_Illumination_InputAdapter</td><td align="right">2</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">6&nbsp;/&nbsp;6&nbsp;(100%)</td><td bgcolor="#CCFFCC">5&nbsp;/&nbsp;5&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Ctrl_Illumination_OutputAdapter</td><td align="right">9</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">17&nbsp;/&nbsp;17&nbsp;(100%)</td><td bgcolor="#CCFFCC">33&nbsp;/&nbsp;33&nbsp;(100%)</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Illumination_Table_Update</td><td align="right">13</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">10&nbsp;/&nbsp;10&nbsp;(100%)</td><td bgcolor="#CCFFCC">33&nbsp;/&nbsp;33&nbsp;(100%)</td><td bgcolor="#CCFFCC">26&nbsp;/&nbsp;26&nbsp;(100%)</td><td bgcolor="#CCFFCC">4&nbsp;/&nbsp;4&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;33&nbsp;(6%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;26&nbsp;(11%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;4&nbsp;(25%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;31&nbsp;/&nbsp;33&nbsp;(93%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;23&nbsp;/&nbsp;26&nbsp;(88%)</em></td><td><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;4&nbsp;(75%)</em></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Duty_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Bulb_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_LED_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Dial_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Display_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Brightness_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Telltale_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_RGB_Data</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Ign_On_Data_handle</td><td align="right">13</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">57&nbsp;/&nbsp;57&nbsp;(100%)</td><td bgcolor="#CCFFCC">38&nbsp;/&nbsp;38&nbsp;(100%)</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Ign_Off_Data_handle</td><td align="right">13</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">57&nbsp;/&nbsp;57&nbsp;(100%)</td><td bgcolor="#CCFFCC">38&nbsp;/&nbsp;38&nbsp;(100%)</td><td bgcolor="#CCFFCC">8&nbsp;/&nbsp;8&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Set_PWM_to_Default</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Set_PWM_to_Off</td><td align="right">1</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">2&nbsp;/&nbsp;2&nbsp;(100%)</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Slew_Rate_Determination</td><td align="right">4</td><td bgcolor="#CCFFCC">100%</td><td bgcolor="#CCFFCC">1&nbsp;/&nbsp;1&nbsp;(100%)</td><td bgcolor="#CCFFCC">19&nbsp;/&nbsp;19&nbsp;(100%)</td><td bgcolor="#CCFFCC">13&nbsp;/&nbsp;13&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>Get_Min_Max_Data</td><td align="right">4</td><td bgcolor="#CCFFCC">100%</td><td>&nbsp;</td><td bgcolor="#CCFFCC">7&nbsp;/&nbsp;7&nbsp;(100%)</td><td bgcolor="#CCFFCC">13&nbsp;/&nbsp;13&nbsp;(100%)</td><td bgcolor="#CCFFCC">3&nbsp;/&nbsp;3&nbsp;(100%)</td></tr><tr bgcolor="#EEEEEE"><td><strong>TOTALS</strong></td><td><strong>17</strong></td><td align="right"><strong>68</strong></td><td bgcolor="#CCFFCC"><strong>17&nbsp;/&nbsp;17&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>59&nbsp;/&nbsp;59&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>247&nbsp;/&nbsp;247&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>176&nbsp;/&nbsp;176&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>35&nbsp;/&nbsp;35&nbsp;(100%)</strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;247&nbsp;(1%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;176&nbsp;(1%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;35&nbsp;(2%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;245&nbsp;/&nbsp;247&nbsp;(99%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;173&nbsp;/&nbsp;176&nbsp;(98%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;34&nbsp;/&nbsp;35&nbsp;(97%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr bgcolor="#EEEEEE"><td><strong>GRAND&nbsp;TOTALS</strong></td><td><strong>17</strong></td><td align="right"><strong>68</strong></td><td bgcolor="#CCFFCC"><strong>17&nbsp;/&nbsp;17&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>59&nbsp;/&nbsp;59&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>247&nbsp;/&nbsp;247&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>176&nbsp;/&nbsp;176&nbsp;(100%)</strong></td><td bgcolor="#CCFFCC"><strong>35&nbsp;/&nbsp;35&nbsp;(100%)</strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Analysis</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;/&nbsp;247&nbsp;(1%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;/&nbsp;176&nbsp;(1%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;/&nbsp;35&nbsp;(2%)</em></strong></td></tr><tr bgcolor="#EEEEEE"><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;Execution</em></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;245&nbsp;/&nbsp;247&nbsp;(99%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;173&nbsp;/&nbsp;176&nbsp;(98%)</em></strong></td><td><strong><em>&nbsp;&nbsp;&nbsp;&nbsp;34&nbsp;/&nbsp;35&nbsp;(97%)</em></strong></td></tr></table></td></tr></table></body></html>

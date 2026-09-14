@@ -1,0 +1,69 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.EcuPowerM.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.EcuPowerM.P_CDDEcuPowerM.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+
+																											package
+																											E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.EcuPowerM
+
+																											stereotype DesignUnit
+																											
+
+
+																											unique allocatable CDDEcuPowerM swcName =
+																											CCDD_EcuPowerM {
+																												compositions
+																													CCDD_EcuPowerM:S_CCDD_EcuPowerM
+																												ports
+																													pp_CmpLibCmd:provided if_CS_ModeOnCommand
+																													ppCS_RequestPower:provided TI_EcuPowerM
+																													rpIoHwAb_Din:required TI_IOHWAB_GetDIn
+																													rpIoHwAb_DOut:required TI_IOHWAB_SetDout
+																													rpIoHwAb_PWM:required TI_IOHWAB_PWM
+																													rpIoHwAb_ADC:required TI_IOHWAB_GetAdc
+																											}
+
+																											package
+																											E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.EcuPowerM.P_CDDEcuPowerM
+
+																											ExternalCode static class S_CCDD_EcuPowerM realizes
+																											TI_EcuPowerM, if_CS_ModeOnCommand {
+																												attributes
+																													cTaskPeriod:uint8_Ref =
+																													5
+																													runnables
+																														CCDD_EcuPowerM_Impl_MainFunction fixedMethodApi
+																														triggeredBy {
+																															TimingEvent cTaskPeriod
+																														}
+																														Impl_OnCommand triggeredBy {
+																															OperationInvokeEvent
+																															if_CS_ModeOnCommand.Impl_OnCommand
+																														}
+																														noPortAccess EcuPowerM_RequestPower
+																														fixedMethodApi triggeredBy {
+																															OperationInvokeEvent
+																															TI_EcuPowerM.EcuPowerM_RequestPower
+																														}
+																														EcuPowerM_GetDeviceStatus fixedMethodApi
+																														triggeredBy {
+																															OperationInvokeEvent
+																															TI_EcuPowerM.EcuPowerM_GetDeviceStatus
+																														}
+																												}

@@ -1,0 +1,167 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DemExt.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DemExt.P_SWC_DemExt.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																				package
+																				E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DemExt
+
+																				stereotype DesignUnit
+																				
+
+
+																				unique allocatable SWC_DemExt swcName = DemExt {
+																					compositions
+																						DemExt:S_DemExt
+																					ports
+																						pp_CS_DemExt_ClearDTC:provided TI_DemExt_ClearDTC
+																						pp_CS_DemExt_GetDebouncingOfEvent:provided
+																						TI_DemExt_GetDebouncingOfEvent
+																						pp_CS_DemExt_GetDTCOfEvent:provided
+																						TI_DemExt_GetDTCOfEvent
+																						pp_CS_DemExt_GetDTCSelectionResult:provided
+																						TI_DemExt_GetDTCSelectionResult
+																						pp_CS_DemExt_GetDTCSelectionResultForClearDTC:provided
+																						TI_DemExt_GetDTCSelectionResultForClearDTC
+																						pp_CS_DemExt_GetEventExtendedDataRecordEx:provided
+																						TI_DemExt_GetEventExtendedDataRecordEx
+																						pp_CS_DemExt_GetEventFreezeFrameDataEx:provided
+																						TI_DemExt_GetEventFreezeFrameDataEx
+																						pp_CS_DemExt_GetEventUdsStatus:provided
+																						TI_DemExt_GetEventUdsStatus
+																						pp_CS_DemExt_GetFaultDetectionCounter:provided
+																						TI_DemExt_GetFaultDetectionCounter
+																						pp_CS_DemExt_GetNumberOfEventMemoryEntries:provided
+																						TI_DemExt_GetNumberOfEventMemoryEntries
+																						pp_CS_DemExt_GetOperationCycleState:provided
+																						TI_DemExt_GetOperationCycleState
+																						pp_CS_DemExt_SelectDTC:provided TI_DemExt_SelectDTC
+																						pp_CS_DemExt_SetEnableCondition:provided
+																						TI_DemExt_SetEnableCondition
+																						pp_CS_DemExt_SetEventAvailable:provided
+																						TI_DemExt_SetEventAvailable
+																						pp_CS_DemExt_SetEventStatus:provided
+																						TI_DemExt_SetEventStatus
+																						pp_CS_DemExt_SetOperationCycleState:provided
+																						TI_DemExt_SetOperationCycleState
+																						pp_CS_DemExt_SetStorageCondition:provided
+																						TI_DemExt_SetStorageCondition
+																				}
+
+																				package
+																				E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DemExt.P_SWC_DemExt
+
+																				ExternalCode static class S_DemExt realizes
+																				TI_DemExt_ClearDTC, TI_DemExt_GetDebouncingOfEvent,
+																				TI_DemExt_GetDTCOfEvent, TI_DemExt_GetDTCSelectionResult,
+																				TI_DemExt_GetDTCSelectionResultForClearDTC,
+																				TI_DemExt_GetEventExtendedDataRecordEx,
+																				TI_DemExt_GetEventFreezeFrameDataEx,
+																				TI_DemExt_GetEventUdsStatus,
+																				TI_DemExt_GetFaultDetectionCounter,
+																				TI_DemExt_GetNumberOfEventMemoryEntries,
+																				TI_DemExt_GetOperationCycleState, TI_DemExt_SelectDTC,
+																				TI_DemExt_SetEnableCondition, TI_DemExt_SetEventAvailable,
+																				TI_DemExt_SetEventStatus,
+																				TI_DemExt_SetOperationCycleState,
+																				TI_DemExt_SetStorageCondition {
+																					attributes
+																						cTimePeriod:uint8 =
+																						10
+																						runnables
+																							DemExt_ClearDTC fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_ClearDTC.DemExt_ClearDTC
+																							}
+																							DemExt_GetDTCSelectionResult fixedMethodApi triggeredBy
+																							{
+																								OperationInvokeEvent
+																								TI_DemExt_GetDTCSelectionResult.DemExt_GetDTCSelectionResult
+																							}
+																							DemExt_GetDTCSelectionResultForClearDTC fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetDTCSelectionResultForClearDTC.DemExt_GetDTCSelectionResultForClearDTC
+																							}
+																							DemExt_GetEventUdsStatus fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetEventUdsStatus.DemExt_GetEventUdsStatus
+																							}
+																							DemExt_GetDebouncingOfEvent fixedMethodApi triggeredBy
+																							{
+																								OperationInvokeEvent
+																								TI_DemExt_GetDebouncingOfEvent.DemExt_GetDebouncingOfEvent
+																							}
+																							DemExt_GetDTCOfEvent fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetDTCOfEvent.DemExt_GetDTCOfEvent
+																							}
+																							DemExt_GetFaultDetectionCounter fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetFaultDetectionCounter.DemExt_GetFaultDetectionCounter
+																							}
+																							DemExt_GetEventFreezeFrameDataEx fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetEventFreezeFrameDataEx.DemExt_GetEventFreezeFrameDataEx
+																							}
+																							DemExt_GetEventExtendedDataRecordEx fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetEventExtendedDataRecordEx.DemExt_GetEventExtendedDataRecordEx
+																							}
+																							DemExt_GetNumberOfEventMemoryEntries fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetNumberOfEventMemoryEntries.DemExt_GetNumberOfEventMemoryEntries
+																							}
+																							DemExt_SelectDTC fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SelectDTC.DemExt_SelectDTC
+																							}
+																							DemExt_SetEnableCondition fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SetEnableCondition.DemExt_SetEnableCondition
+																							}
+																							DemExt_SetEventAvailable fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SetEventAvailable.DemExt_SetEventAvailable
+																							}
+																							DemExt_SetEventStatus fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SetEventStatus.DemExt_SetEventStatus
+																							}
+																							DemExt_SetOperationCycleState fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SetOperationCycleState.DemExt_SetOperationCycleState
+																							}
+																							DemExt_GetOperationCycleState fixedMethodApi
+																							triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_GetOperationCycleState.DemExt_GetOperationCycleState
+																							}
+																							DemExt_SetStorageCondition fixedMethodApi triggeredBy {
+																								OperationInvokeEvent
+																								TI_DemExt_SetStorageCondition.DemExt_SetStorageCondition
+																							}
+																							MainFunction triggeredBy {
+																								TimingEvent cTimePeriod
+																							}
+																							DemExt_Init fixedMethodApi
+																					}

@@ -1,0 +1,142 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.SndCdd.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.SndCdd.P_SndCdd.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																												package
+																												E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.SndCdd
+
+																												stereotype DesignUnit
+																												
+
+
+																												unique allocatable SndCdd swcName = CSndCdd {
+																													compositions
+																														CSndCdd:S_CSndCdd
+																													ports
+																														pp_CS_SndCdd_Services:provided
+																														if_CS_Sndcdd_Services
+																														pp_CmpLibCmd_CSndCdd:provided
+																														if_CS_ModeOnCommand
+																														pp_CS_SndCdd_AmpDiag:provided
+																														if_CS_SndCdd_AmpDiag
+																												}
+
+																												package
+																												E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.SndCdd.P_SndCdd
+
+																												ExternalCode static class S_CSndCdd realizes
+																												if_CS_ModeOnCommand, if_CS_Sndcdd_Services,
+																												if_CS_SndCdd_AmpDiag {
+																													attributes
+																														TimePeriod_SndCddProcessing:uint8 =
+																														20
+																														TimePeriod_SndCddToneProcess:uint8 =
+																														2
+																														TimePeriod_SndCddAmpDiag:uint8 =
+																														100
+																														runnables
+																															Impl_MainFunction triggeredBy {
+																																TimingEvent TimePeriod_SndCddProcessing
+																															}
+																															Impl_OnCommand triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_ModeOnCommand.Impl_OnCommand
+																															}
+																															noPortAccess RequestToStart triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.RequestToStart
+																															}
+																															noPortAccess RequestToStop triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.RequestToStop
+																															}
+																															noPortAccess CheckChimeStatus triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.CheckChimeStatus
+																															}
+																															noPortAccess SetUserPersonalizationVolume
+																															triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.SetUserPersonalizationVolume
+																															}
+																															noPortAccess ToneProcess triggeredBy {
+																																TimingEvent TimePeriod_SndCddToneProcess
+																															}
+																															CheckLastToneStatus triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.CheckLastToneStatus
+																															}
+																															UpdateChannelVolume triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.UpdateChannelVolume
+																															}
+																															SetDynamicDeadTime triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.SetDynamicDeadTime
+																															}
+																															UpdateChimeVolume triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.UpdateChimeVolume
+																															}
+																															ischannelavailable triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.ischannelavailable
+																															}
+																															UpdateChimeInfoBuffer triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.UpdateChimeInfoBuffer
+																															}
+																															SetChimeResumeInfoBuffer triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.SetChimeResumeInfoBuffer
+																															}
+																															GetChimeResumeInfoBuffer triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.GetChimeResumeInfoBuffer
+																															}
+																															ClearChimeResumeInfoBuffer triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.ClearChimeResumeInfoBuffer
+																															}
+																															RequestToClear_SafetyChimeErrorStatus
+																															triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.RequestToClear_SafetyChimeErrorStatus
+																															}
+																															SpkrDiag_MainFunction triggeredBy {
+																																TimingEvent TimePeriod_SndCddAmpDiag
+																															}
+																															GetSpeaker_status triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_SndCdd_AmpDiag.GetSpeaker_status
+																															}
+																															SpkrAmp_Recovery triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_SndCdd_AmpDiag.SpkrAmp_Recovery
+																															}
+																															RequestCustomChime triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.RequestCustomChime
+																															}
+																															StopCustomChime triggeredBy {
+																																OperationInvokeEvent
+																																if_CS_Sndcdd_Services.StopCustomChime
+																															}
+																													}

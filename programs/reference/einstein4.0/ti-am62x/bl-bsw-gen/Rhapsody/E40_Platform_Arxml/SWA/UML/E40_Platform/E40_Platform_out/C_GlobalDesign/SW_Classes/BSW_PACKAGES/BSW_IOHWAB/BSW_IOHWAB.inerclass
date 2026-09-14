@@ -1,0 +1,117 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB.P_SWC_IOHWAB.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+
+																				package
+																				E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB
+
+																				stereotype DesignUnit
+																				
+
+
+																				unique allocatable SWC_IOHWAB swcName = IoHwAb {
+																					compositions
+																						IoHwAb:S_IoHwAb
+																					ports
+																						ppIoHwAb_ADC:provided TI_IOHWAB_GetAdc
+																						ppIoHwAb_Din:provided TI_IOHWAB_GetDIn
+																						ppIoHwAb_DOut:provided TI_IOHWAB_SetDout
+																						ppIoHwAb_Pulse:provided TI_IOHWAB_Pulse
+																						ppIoHwAb_PWM:provided TI_IOHWAB_PWM
+																				}
+
+																				package
+																				E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB.P_SWC_IOHWAB
+
+																				ExternalCode static class S_IoHwAb realizes
+																				TI_IOHWAB_GetAdc, TI_IOHWAB_GetDIn, TI_IOHWAB_Pulse,
+																				TI_IOHWAB_PWM, TI_IOHWAB_SetDout {
+																					attributes
+																						cTimePeriod:uint8 =
+																						10
+																						runnables
+																							MainFunction triggeredBy {
+																								TimingEvent cTimePeriod
+																							}
+																							Impl_OnCommand noPortAccess GetAsyncRawAdc triggeredBy
+																							{
+																								OperationInvokeEvent TI_IOHWAB_GetAdc.GetAsyncRawAdc
+																							}
+																							GetSyncRawAdc triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_GetAdc.GetSyncRawAdc
+																							}
+																							GetProcessedAdc triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_GetAdc.GetProcessedAdc
+																							}
+																							GetAsyncRawInput triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_GetDIn.GetAsyncRawInput
+																							}
+																							GetProcessedInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_GetDIn.GetProcessedInput
+																							}
+																							GetSyncRawInput triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_GetDIn.GetSyncRawInput
+																							}
+																							GetInputGroup triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_GetDIn.GetInputGroup
+																							}
+																							GetCurrentSignalStatus_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.GetCurrentSignalStatus_PulseInput
+																							}
+																							GetCurrentSpeed_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.GetCurrentSpeed_PulseInput
+																							}
+																							GetRollingCount_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.GetRollingCount_PulseInput
+																							}
+																							ResetRollingCount_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.ResetRollingCount_PulseInput
+																							}
+																							Start_Signal_Measurement_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.Start_Signal_Measurement_PulseInput
+																							}
+																							Stop_Signal_Measurement_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.Stop_Signal_Measurement_PulseInput
+																							}
+																							Update_CalibParam_PulseInput triggeredBy {
+																								OperationInvokeEvent
+																								TI_IOHWAB_Pulse.Update_CalibParam_PulseInput
+																							}
+																							PwmSetDuty triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_PWM.PwmSetDuty
+																							}
+																							PwmSetDutyAndPeriod triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_PWM.PwmSetDutyAndPeriod
+																							}
+																							PwmSetIdeal triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_PWM.PwmSetIdeal
+																							}
+																							SetOutputGroup triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_SetDout.SetOutputGroup
+																							}
+																							SetOutputPin triggeredBy {
+																								OperationInvokeEvent TI_IOHWAB_SetDout.SetOutputPin
+																							}
+																					}

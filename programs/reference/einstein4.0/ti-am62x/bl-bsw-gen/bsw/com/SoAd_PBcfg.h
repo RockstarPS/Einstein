@@ -1,0 +1,129 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file SoAd_PBcfg.h
+*    @ingroup SoAdConfiguration
+*    @brief This is SoAd post build configuration header file. It contains definitions of post build
+*    configuration parameters for the SoAd module.
+*    @defgroup SoAdConfiguration
+*    @brief This contains the post build configurations for the SoAd module.
+********************************************************************************************************************/
+#ifndef SOAD_PBCFG_H
+#define SOAD_PBCFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "SoAd_Types.h"
+#include "SoAd_Lcfg.h"
+/********************************************************************************************************************
+* #! SoAd types                                                                                                     *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/* Macro for static and inline type */
+#ifndef SOAD_LOCAL 
+#define SOAD_LOCAL  static
+#endif
+
+#ifndef LOCAL_INLINE
+#define LOCAL_INLINE    static inline
+#endif
+
+#ifndef SOAD_LOCAL_INLINE
+#define SOAD_LOCAL_INLINE  LOCAL_INLINE
+#endif
+#define SOAD_NUM_OF_SOCON                                           7U
+#define SOAD_NUM_OF_SOCON_GROUP                                     6U
+#define SOAD_NUM_OF_SOCKET                                          9U
+#define SOAD_NUM_OF_ROUTING_GROUP                                   5U
+#define SOAD_NUM_OF_REM_ADDR_IPV4                                   4U /* num of rem + num of local for bsd */
+#define SOAD_NUM_OF_LOCAL_ADDR                                      1U
+/*! @brief Defines the number of TcpIp Ctrl supported */
+#define SOAD_NUM_OF_TCPIP_CTRL                                      1u
+#define SOAD_NUM_OF_LOCALADDR_UNICAST                               1U
+#define SOAD_NUM_OF_LOCAL_IPADDR_ASSIGN_CHG_FUNC                    4U
+#define SOAD_NUM_OF_UP_SOCON_MODE_CHG_FUNC                          4U
+#define SOAD_NUM_OF_UL                                              2U
+#define SOAD_NUM_OF_PDU_ROUTE                                       11U
+#define SOAD_NUM_OF_PDU_ROUTE_DEST                                  11U
+#define SOAD_NUM_OF_RG_PDU_ROUTE_DEST_MAP                           11U
+#define SOAD_NUM_OF_RG_PDU_ROUTE_DEST                               11U
+#define SOAD_NUM_OF_TX_PDU                                          11U
+#define SOAD_NUM_OF_SOCON_TX_PDU_CTRL                               4U /* should be based on num of socon has tx pdu */
+#define SOAD_NUM_OF_SOCKET_ROUTE                                    10U
+#define SOAD_NUM_OF_SOCKET_ROUTE_DEST                               10U
+#define SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST_MAP                        10U
+#define SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST                            10U
+#define SOAD_NUM_OF_RX_PDU                                          10U
+#define SOAD_NUM_OF_SOCON_RX_PDU_CTRL                               4U /* should be based on num of socon has rx pdu */
+#define SOAD_NUM_OF_UDP_SOCKET                                      3U
+#define SOAD_NUM_OF_TX_UDP_ALIVE_TIMER                              2U
+#define SOAD_NUM_OF_NPDU_UDP_TX                                     1U
+#define SOAD_NUM_OF_NPDU_UDP_TX_QUEUE                               1U
+#define SOAD_NUM_OF_TX_UDP_NPDU_TIMER                               1U
+#define SOAD_NUM_OF_TCP_SOCKET                                      3U
+/* TODO */
+#define SOAD_NUM_OF_TP_TX_BUFFER                                    2U
+#define SOAD_TP_TX_BUFFER_SIZE                                      8208U /* upd tp buffer */
+#define SOAD_ROUTING_GROUP_IF_TX_BUFFER_SIZE                        100U
+#define SOAD_NUM_OF_TP_RX_BUFFER                                    1U
+#define SOAD_TP_RX_BUFFER_SIZE                                      512U
+#define SOAD_NUM_OF_RX_BUFFER_SEGMENT                               10U
+#define SOAD_RX_BUFFER_SEGMENT_DATA_SIZE                            10U
+#define SOAD_NUM_OF_RX_IF_BUFFER                                    1U
+#define SOAD_RX_META_DATA_BUFFER_SIZE                               100u
+#define SOAD_RX_IF_BUFFER_SIZE                                      512U
+#define SOAD_TRIGGER_BUFFER_SIZE                                    1U
+#define SOAD_NPDU_UDP_TX_BUFFER_SIZE                                1U
+#define SOAD_NPDU_UDP_TX_QUEUE_RETRY_CNT                            300u
+#define SOAD_NUM_OF_TCP_TX_QUEUE                                    3u /* number of tx socon with tp tx */
+#define SOAD_TCP_TX_QUEUE_SIZE                                      6u /* total number of tp tx *2 */
+/*! @brief Defines the buffer size of the TcpIp ctrl name */
+#define SOAD_TCPIP_OF_CTRL_NAME_BUFFER_SIZE 8u
+/*! @brief Defines the local address check count. The value is multiple of the main function period. If main function
+*   period is 10ms and the local address to be checked for every 100ms then the value should be 10 */
+#define SOAD_SOCKET_LOCAL_ADDR_CHECK_COUNT 10u
+/*! @brief Defines the total size of Tx buffer for the Bsd socket. Max soad pdu size * 2 */
+#define SOAD_SOCKET_TX_BUFFER_SIZE 8220U
+/*! @brief Defines the total size of Tx buffer for the Bsd socket .No buffer for listen socket */
+#define SOAD_SOCKET_NUM_OF_TX_BUFFER 2U
+/*! @brief Defines the total size of Udp Rx buffer for the Bsd socket . max pdu length of udp */
+#define SOAD_SOCKET_UDP_RX_BUFFER_SIZE 4104U
+/*! @brief Defines the total size of Udp Rx buffer for the Bsd socket .2 socket + 1 listen socket of each 512 size  */
+#define SOAD_SOCKET_TCP_RX_BUFFER_SIZE 1536U
+/*! @brief Defines the total size of Rx Tcp buffer for the Bsd socket . 2 socket + 1 listen socket */
+#define SOAD_SOCKET_NUM_OF_TCP_RX_BUFFER 3U
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+* #! SoAd const config  data                                                                                        *
+********************************************************************************************************************/
+/*! @brief Defines the TcpIp Bsd configuration */
+extern const SoAd_ConfigType SoAd_ConfigData;
+/*!
+ * @brief Api to check whether the SoAd PB configuration is valid or not.
+ * @param[in] ConfigPtr pointer to SoAd PB configuration
+ * @return Validity of the PB configuration. TRUE: Valid configuration FALSE:Invalid configuration 
+ */
+extern FUNC(boolean, SOAD_CODE) SoAd_CheckConfigPtr
+(
+    P2CONST(SoAd_ConfigType, AUTOMATIC, SOAD_APPL_CONST) ConfigPtr
+);
+
+/********************************************************************************************************************
+* #! SoAd Get/Set Macros                                                                                            *
+********************************************************************************************************************/
+#endif /* SOAD_PBCFG_H */

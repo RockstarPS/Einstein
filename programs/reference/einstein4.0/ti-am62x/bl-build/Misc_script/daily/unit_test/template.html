@@ -1,0 +1,198 @@
+<html>
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+	<style>
+	table, th, td {border: 1px solid black;	border-collapse: collapse; empty-cells: hide;}
+	th, td {padding: 5px;}	
+	td:empty {visibility: hidden;}
+	.tooltip { position: relative; <!--display: inline-block;--> border-bottom: 1px dotted black;}
+	.tooltip .tooltiptext { visibility: hidden; width: 1000px; background-color: #ffbb99; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; left: -1000px}
+	.tooltip:hover .tooltiptext { visibility: visible;}
+	a {text-decoration:none;font-size: 20px;}
+	</style>
+</head>
+<body bgcolor="#FFFFFF">
+
+<script>
+function set_sumary(item){
+	sum_subprograms = 0
+	sum_complexity = 0
+	sum_statements_c = 0
+	sum_statements_p = 0
+	sum_branches_c = 0
+	sum_branches_p = 0
+	sum_pair_c = 0
+	sum_pair_p = 0
+	sum_testcases_c = 0
+	sum_testcases_p = 0
+	sum_expecteds_c = 0
+	sum_expecteds_p = 0
+	h = 0
+	m = 0
+	s = 0
+	
+	$('.' + item + ':not(:hidden)').each(function(){
+		if (!this.children[3].textContent.includes('n/a')){sum_subprograms += parseInt(this.children[3].textContent.replace(/[^\x00-\x7F]/g, "").split(" "),10)}
+		if (!this.children[4].textContent.includes('n/a')){sum_complexity += parseInt(this.children[4].textContent.replace(/[^\x00-\x7F]/g, "").split(" "),10)}
+				
+		if (!this.children[5].textContent.includes('n/a') && !this.children[5].textContent.includes('NoExecutionResultsExist')){
+			sum_statements_c += parseInt(this.children[5].textContent.split('/')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			sum_statements_p += parseInt(this.children[5].textContent.split('/')[1].split('(')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			}
+		if (!this.children[6].textContent.includes('n/a') && !this.children[6].textContent.includes('NoExecutionResultsExist')){
+			sum_pair_c += parseInt(this.children[6].textContent.split('/')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			sum_pair_p += parseInt(this.children[6].textContent.split('/')[1].split('(')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			}
+		if (!this.children[7].textContent.includes('n/a') && !this.children[7].textContent.includes('NoExecutionResultsExist')){
+			sum_branches_c += parseInt(this.children[7].textContent.split('/')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			sum_branches_p += parseInt(this.children[7].textContent.split('/')[1].split('(')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			}
+		if (!this.children[8].textContent.includes('n/a') && !this.children[8].textContent.includes('NoExecutionResultsExist')){
+			sum_testcases_c += parseInt(this.children[8].textContent.split('/')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			sum_testcases_p += parseInt(this.children[8].textContent.split('/')[1].split('(')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			}
+		if (!this.children[9].textContent.includes('n/a') && !this.children[9].textContent.includes('NoExecutionResultsExist')){
+			sum_expecteds_c += parseInt(this.children[9].textContent.split('/')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			sum_expecteds_p += parseInt(this.children[9].textContent.split('/')[1].split('(')[0].replace(/[^\x00-\x7F]/g, ""),10)
+			}
+		if (this.children[10].textContent != ''){
+			times = this.children[10].textContent.split(' ')
+			for (t in times){
+				if (times[t].includes('h')){
+					h += parseInt(times[t].split('h')[0],10)
+				}
+				if (times[t].includes('m')){
+					m += parseInt(times[t].split('m')[0],10)
+				}
+				if (times[t].includes('s')){
+					s += parseInt(times[t].split('s')[0],10)
+				}
+			}
+		} 
+	})
+	
+	m += Math.floor(s/60)
+	h += Math.floor(m/60)
+	
+	s = s%60
+	m = m%60
+	
+	//Fix times
+	h_m_s = h + 'h ' + m + 'm ' + s + 's'
+	
+	$(".summary_row").each(function() {
+		this.children[3].innerHTML = '<b>' + sum_subprograms + '</b>'
+		this.children[4].innerHTML = '<b>' + sum_complexity + '</b>'
+		this.children[5].innerHTML = '<b>' + sum_statements_c + '/' + sum_statements_p + '(' + Math.floor(parseInt(sum_statements_c)/parseInt(sum_statements_p)*100) + '%)' + '</b>'
+		this.children[6].innerHTML = '<b>' + sum_pair_c + '/' + sum_pair_p + '(' + Math.floor(parseInt(sum_pair_c)/parseInt(sum_pair_p)*100) + '%)' + '</b>'
+		this.children[7].innerHTML = '<b>' + sum_branches_c + '/' + sum_branches_p + '(' + Math.floor(parseInt(sum_branches_c)/parseInt(sum_branches_p)*100) + '%)' + '</b>'
+		this.children[8].innerHTML = '<b>' + sum_testcases_c + '/' + sum_testcases_p /*+ '(' + Math.round(parseInt(sum_testcases_c)/parseInt(sum_testcases_p)*100) + '%)' */ + '</b>'
+		this.children[9].innerHTML = '<b>' + sum_expecteds_c + '/' + sum_expecteds_p /*+ '(' + Math.round(parseInt(sum_expecteds_c)/parseInt(sum_expecteds_p)*100) + '%)' */ + '</b>'
+		this.children[10].innerHTML = '<b>' + h_m_s
+	});
+}
+
+// Filter Parent
+function filter(item) {
+	$('.result_row').hide()
+	$('.' + item).show()
+	set_sumary(item)
+}
+
+// +- Collapsable subitems
+function test(item) {
+	//Collapse button
+	var item_class = item.attr("class").split(' ')[0]
+	$( "." + item_class ).toggle();
+	$(".colapse_btn").show()
+	
+	//_Switch + and -
+	if (item.html() == '-'){item.html('+')}
+	else if (item.html() == '+'){item.html('-')}
+}
+
+// Show only errors Checkbox
+function handleClick(cb) {
+	if(cb.checked)
+		{filter('html_error')}
+	else
+		{filter('result_row')}
+}
+
+// Add Up and Down
+function stats(){
+	$(".up").each(function( index ) {$( this ).html('<span align="right" style="color:#00802b">&#9650;</span>' + $( this ).html() )	});
+	$(".down").each(function( index ) {$( this ).html('<span align="right" style="color:#990000">&#9660;</span>' + $( this ).html() )	});
+}
+
+//Add "NEW" animation
+function newly_added(){
+	$(".newly_added td:nth-child(3)").each(function( index ) { $( this ).html('<img align="right-side" src="http://www.animatedgif.net/new/new2__e0.gif"></img>' + $( this ).html()) });
+}
+
+//Add "DUBLICATE" animation
+function set_dublicate(){
+	$(".dublicate td:nth-child(3)").each(function( index ) { $( this ).html($( this ).html() + '<span style="color:red; font-size=20px; border: 1px solid red;"> <b>DUPLICATE</b> </span>') });
+}
+
+$( document ).ready(function() {
+	$(".colapse_btn").click()
+	stats()
+	newly_added()
+	set_dublicate()
+	set_sumary('result_row')
+});
+</script>
+	
+
+<div class='container'>
+
+<h1>Unit Test Summary Report</h1>
+
+<table border="0" cellpadding="2" style="font-family:Arial;font-size:10pt;color:#000000;">
+	<tr bgcolor="#CCD8EE">
+		<td bgcolor="#CCD8EE">
+			<strong>Unit</strong>
+			<select name="Filter" onchange="filter(this.value)">
+				<option value="result_row">all</option>
+				<[PARENTS_FILTER]>
+			</select>
+		</td>
+		
+		<td bgcolor="#CCD8EE">
+			<strong>Subprograms</strong>
+		</td>
+		<td bgcolor="#CCD8EE">
+			<strong>Complexity</strong>
+		</td>
+		<td bgcolor="#CCD8EE">
+			<strong>Statements</strong>
+		</td>
+		<td bgcolor="#CCD8EE">
+			<strong>Branches</strong>
+		</td>
+		<td bgcolor="#CCD8EE">
+			<strong>Pairs</strong>
+		</td>		
+		<td bgcolor="#CCD8EE">
+			<strong>Testcases</strong>
+		</td>
+		<td bgcolor="#CCD8EE">
+			<strong>Expecteds</strong>
+		</td>
+		
+	</tr>
+	
+	<[CONTENTS]>
+	
+	<tr bgcolor="#FB9316" class='summary_row'>
+	<[FOOTER_LINES]>
+	</tr>
+</table>
+
+</div>
+
+</body>
+</html>

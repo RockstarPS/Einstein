@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="ff55d029-386d-43a2-b3c2-dfef4c7a5e36">
+      <SHORT-NAME>MICROSAR</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="726EF230-ACAB-4C12-B33E-4934AF855BD6">
+          <SHORT-NAME>BswM_swc</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE UUID="404A3ADE-BBBF-4BE4-848C-FB759C87DB0F">
+              <SHORT-NAME>ComponentTypes</SHORT-NAME>
+              <ELEMENTS>
+                <SERVICE-SW-COMPONENT-TYPE UUID="e9459a9c-f480-40c3-a5a5-5295cc19f978">
+                  <SHORT-NAME>BswM</SHORT-NAME>
+                  <PORTS>
+                    <P-PORT-PROTOTYPE UUID="c3b12fb8-7ce1-41ba-95ab-09ef6a3c5033">
+                      <SHORT-NAME>Switch_BswM_SfdaMode</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <PROVIDED-COM-SPECS>
+                        <MODE-SWITCH-SENDER-COM-SPEC>
+                          <MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurMode/MG_SfdAMode</MODE-GROUP-REF>
+                          <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                        </MODE-SWITCH-SENDER-COM-SPEC>
+                      </PROVIDED-COM-SPECS>
+                      <PROVIDED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurMode</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <P-PORT-PROTOTYPE UUID="65a2a024-da14-4b5e-9fc2-c80363d08727">
+                      <SHORT-NAME>Switch_BswM_SfdaRole</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <PROVIDED-COM-SPECS>
+                        <MODE-SWITCH-SENDER-COM-SPEC>
+                          <MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurRole/MG_SfdARole</MODE-GROUP-REF>
+                          <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                        </MODE-SWITCH-SENDER-COM-SPEC>
+                      </PROVIDED-COM-SPECS>
+                      <PROVIDED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurRole</PROVIDED-INTERFACE-TREF>
+                    </P-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE UUID="cb7e516b-4116-4200-ab0e-6b711279abb1">
+                      <SHORT-NAME>Notification_currentMode</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <REQUIRED-COM-SPECS>
+                        <MODE-SWITCH-RECEIVER-COM-SPEC>
+                          <MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_EcuM/PortInterfaces/EcuM_CurrentMode/currentMode</MODE-GROUP-REF>
+                        </MODE-SWITCH-RECEIVER-COM-SPEC>
+                      </REQUIRED-COM-SPECS>
+                      <REQUIRED-INTERFACE-TREF DEST="MODE-SWITCH-INTERFACE">/AUTOSAR_EcuM/PortInterfaces/EcuM_CurrentMode</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE UUID="843ffab4-0ca1-4b01-8f08-6d5ab1e2b4ee">
+                      <SHORT-NAME>Request_BswM_Postrun_Ivd_Request_Receive</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <REQUIRED-COM-SPECS>
+                        <NONQUEUED-RECEIVER-COM-SPEC>
+                          <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/RequestPOSTRUN/Request</DATA-ELEMENT-REF>
+                          <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                          <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                          <FILTER>
+                            <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                          </FILTER>
+                          <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                          <INIT-VALUE>
+                            <TEXT-VALUE-SPECIFICATION>
+                              <VALUE>IVD_REQUESTPOSTRUN_RELEASED</VALUE>
+                            </TEXT-VALUE-SPECIFICATION>
+                          </INIT-VALUE>
+                        </NONQUEUED-RECEIVER-COM-SPEC>
+                      </REQUIRED-COM-SPECS>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/PortInterfaces/RequestPOSTRUN</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE UUID="f379a882-b7fa-4a7e-9c6b-6a1749580059">
+                      <SHORT-NAME>Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <REQUIRED-COM-SPECS>
+                        <NONQUEUED-RECEIVER-COM-SPEC>
+                          <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/MICROSAR/BswM_swc/Interfaces/BswM_SRI_BswM_MSI_MDG_Sfd_NvmBlockStatus_BswM_MDGP_MDG_Sfd_NvmBlockStatus/requestedMode</DATA-ELEMENT-REF>
+                          <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                          <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                          <FILTER>
+                            <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                          </FILTER>
+                          <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                          <INIT-VALUE>
+                            <TEXT-VALUE-SPECIFICATION>
+                              <VALUE>SFD_BLOCKS_NOT_INITIALIZED</VALUE>
+                            </TEXT-VALUE-SPECIFICATION>
+                          </INIT-VALUE>
+                        </NONQUEUED-RECEIVER-COM-SPEC>
+                      </REQUIRED-COM-SPECS>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/MICROSAR/BswM_swc/Interfaces/BswM_SRI_BswM_MSI_MDG_Sfd_NvmBlockStatus_BswM_MDGP_MDG_Sfd_NvmBlockStatus</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                    <R-PORT-PROTOTYPE UUID="16c93431-e726-40a6-b715-d380f32c7711">
+                      <SHORT-NAME>Request_SwcModeRequest_MG_SfdARole</SHORT-NAME>
+                      <ADMIN-DATA>
+                        <SDGS>
+                          <SDG GID="DV:DEV">
+                            <SD GID="DV:ImportModePreset">Keep</SD>
+                          </SDG>
+                        </SDGS>
+                      </ADMIN-DATA>
+                      <REQUIRED-COM-SPECS>
+                        <NONQUEUED-RECEIVER-COM-SPEC>
+                          <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_RequestRole/Role</DATA-ELEMENT-REF>
+                          <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                          <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                          <FILTER>
+                            <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                          </FILTER>
+                          <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                          <INIT-VALUE>
+                            <TEXT-VALUE-SPECIFICATION>
+                              <VALUE>SFDC_NO_ROLE</VALUE>
+                            </TEXT-VALUE-SPECIFICATION>
+                          </INIT-VALUE>
+                        </NONQUEUED-RECEIVER-COM-SPEC>
+                      </REQUIRED-COM-SPECS>
+                      <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_RequestRole</REQUIRED-INTERFACE-TREF>
+                    </R-PORT-PROTOTYPE>
+                  </PORTS>
+                  <INTERNAL-BEHAVIORS>
+                    <SWC-INTERNAL-BEHAVIOR UUID="29b65d16-1466-430c-8c41-6371f07462cb">
+                      <SHORT-NAME>BswMInternalBehavior</SHORT-NAME>
+                      <DATA-TYPE-MAPPING-REFS>
+                        <DATA-TYPE-MAPPING-REF DEST="DATA-TYPE-MAPPING-SET">/MICROSAR/BswM_swc/BswMMappingSet</DATA-TYPE-MAPPING-REF>
+                      </DATA-TYPE-MAPPING-REFS>
+                      <EVENTS>
+                        <TIMING-EVENT UUID="418f4e40-dadf-4323-a269-5eea5872de3f">
+                          <SHORT-NAME>Timer_BswM_MainFunction</SHORT-NAME>
+                          <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/MICROSAR/BswM_swc/ComponentTypes/BswM/BswMInternalBehavior/BswM_MainFunction</START-ON-EVENT-REF>
+                          <PERIOD>0.01</PERIOD>
+                        </TIMING-EVENT>
+                      </EVENTS>
+                      <INCLUDED-DATA-TYPE-SETS>
+                        <INCLUDED-DATA-TYPE-SET>
+                          <DATA-TYPE-REFS>
+                            <DATA-TYPE-REF DEST="IMPLEMENTATION-DATA-TYPE">/MICROSAR/BswM_swc/DataTypes/BswM_MDG_Sfd_NvmBlockStatus</DATA-TYPE-REF>
+                          </DATA-TYPE-REFS>
+                        </INCLUDED-DATA-TYPE-SET>
+                      </INCLUDED-DATA-TYPE-SETS>
+                      <PORT-API-OPTIONS>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Notification_currentMode</PORT-REF>
+                        </PORT-API-OPTION>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_BswM_Postrun_Ivd_Request_Receive</PORT-REF>
+                        </PORT-API-OPTION>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus</PORT-REF>
+                        </PORT-API-OPTION>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_SwcModeRequest_MG_SfdARole</PORT-REF>
+                        </PORT-API-OPTION>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="P-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Switch_BswM_SfdaMode</PORT-REF>
+                        </PORT-API-OPTION>
+                        <PORT-API-OPTION>
+                          <ENABLE-TAKE-ADDRESS>true</ENABLE-TAKE-ADDRESS>
+                          <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                          <INDIRECT-API>false</INDIRECT-API>
+                          <PORT-REF DEST="P-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Switch_BswM_SfdaRole</PORT-REF>
+                        </PORT-API-OPTION>
+                      </PORT-API-OPTIONS>
+                      <RUNNABLES>
+                        <RUNNABLE-ENTITY UUID="5284c6d6-586a-4ffa-8c7e-fa9631e7161f">
+                          <SHORT-NAME>BswM_MainFunction</SHORT-NAME>
+                          <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                          <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                          <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                            <VARIABLE-ACCESS UUID="CF374B3D-2E1D-4406-BB9F-56E9826FE7B7">
+                              <SHORT-NAME>DataReceivePointBswM_MainFunction_Request_BswM_Postrun_Ivd_Request_Receive_Request</SHORT-NAME>
+                              <ACCESSED-VARIABLE>
+                                <AUTOSAR-VARIABLE-IREF>
+                                  <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_BswM_Postrun_Ivd_Request_Receive</PORT-PROTOTYPE-REF>
+                                  <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/PortInterfaces/RequestPOSTRUN/Request</TARGET-DATA-PROTOTYPE-REF>
+                                </AUTOSAR-VARIABLE-IREF>
+                              </ACCESSED-VARIABLE>
+                            </VARIABLE-ACCESS>
+                            <VARIABLE-ACCESS UUID="19E0303B-DAD3-4219-9078-C0B09323AB28">
+                              <SHORT-NAME>DataReceivePointBswM_MainFunction_Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus_requestedMode</SHORT-NAME>
+                              <ACCESSED-VARIABLE>
+                                <AUTOSAR-VARIABLE-IREF>
+                                  <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_SwcModeRequest_BswM_MDGP_MDG_Sfd_NvmBlockStatus</PORT-PROTOTYPE-REF>
+                                  <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/MICROSAR/BswM_swc/Interfaces/BswM_SRI_BswM_MSI_MDG_Sfd_NvmBlockStatus_BswM_MDGP_MDG_Sfd_NvmBlockStatus/requestedMode</TARGET-DATA-PROTOTYPE-REF>
+                                </AUTOSAR-VARIABLE-IREF>
+                              </ACCESSED-VARIABLE>
+                            </VARIABLE-ACCESS>
+                            <VARIABLE-ACCESS UUID="4EA65A25-3226-4AB4-8A76-DB15E967B531">
+                              <SHORT-NAME>DataReceivePointBswM_MainFunction_Request_SwcModeRequest_MG_SfdARole_Role</SHORT-NAME>
+                              <ACCESSED-VARIABLE>
+                                <AUTOSAR-VARIABLE-IREF>
+                                  <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Request_SwcModeRequest_MG_SfdARole</PORT-PROTOTYPE-REF>
+                                  <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_RequestRole/Role</TARGET-DATA-PROTOTYPE-REF>
+                                </AUTOSAR-VARIABLE-IREF>
+                              </ACCESSED-VARIABLE>
+                            </VARIABLE-ACCESS>
+                          </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                          <MODE-ACCESS-POINTS>
+                            <MODE-ACCESS-POINT>
+                              <MODE-GROUP-IREF>
+                                <R-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF>
+                                  <CONTEXT-R-PORT-REF DEST="R-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Notification_currentMode</CONTEXT-R-PORT-REF>
+                                  <TARGET-MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_EcuM/PortInterfaces/EcuM_CurrentMode/currentMode</TARGET-MODE-GROUP-REF>
+                                </R-MODE-GROUP-IN-ATOMIC-SWC-INSTANCE-REF>
+                              </MODE-GROUP-IREF>
+                            </MODE-ACCESS-POINT>
+                          </MODE-ACCESS-POINTS>
+                          <MODE-SWITCH-POINTS>
+                            <MODE-SWITCH-POINT UUID="BEFC0171-96FB-4B0E-AE41-BB5447DBFA4E">
+                              <SHORT-NAME>ModeSwitchPointBswM_MainFunction_Switch_BswM_SfdaMode_MG_SfdAMode</SHORT-NAME>
+                              <MODE-GROUP-IREF>
+                                <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Switch_BswM_SfdaMode</CONTEXT-P-PORT-REF>
+                                <TARGET-MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurMode/MG_SfdAMode</TARGET-MODE-GROUP-REF>
+                              </MODE-GROUP-IREF>
+                            </MODE-SWITCH-POINT>
+                            <MODE-SWITCH-POINT UUID="4A921D84-88B2-4C79-97D9-3DCEA01AA022">
+                              <SHORT-NAME>ModeSwitchPointBswM_MainFunction_Switch_BswM_SfdaRole_MG_SfdARole</SHORT-NAME>
+                              <MODE-GROUP-IREF>
+                                <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/MICROSAR/BswM_swc/ComponentTypes/BswM/Switch_BswM_SfdaRole</CONTEXT-P-PORT-REF>
+                                <TARGET-MODE-GROUP-REF DEST="MODE-DECLARATION-GROUP-PROTOTYPE">/AUTOSAR_SfdA/SfdA/PortInterfaces/SfdA_CurRole/MG_SfdARole</TARGET-MODE-GROUP-REF>
+                              </MODE-GROUP-IREF>
+                            </MODE-SWITCH-POINT>
+                          </MODE-SWITCH-POINTS>
+                          <SYMBOL>BswM_MainFunction</SYMBOL>
+                        </RUNNABLE-ENTITY>
+                      </RUNNABLES>
+                      <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                    </SWC-INTERNAL-BEHAVIOR>
+                  </INTERNAL-BEHAVIORS>
+                </SERVICE-SW-COMPONENT-TYPE>
+                <SWC-IMPLEMENTATION UUID="45012fe8-a8b1-4772-aab5-d60ed08c372e">
+                  <SHORT-NAME>BswMImplementation</SHORT-NAME>
+                  <CODE-DESCRIPTORS>
+                    <CODE UUID="88758062-7AAB-49CC-84EF-CAA5BE36FCAB">
+                      <SHORT-NAME>Default</SHORT-NAME>
+                      <ARTIFACT-DESCRIPTORS>
+                        <AUTOSAR-ENGINEERING-OBJECT>
+                          <CATEGORY>SWSRC</CATEGORY>
+                        </AUTOSAR-ENGINEERING-OBJECT>
+                      </ARTIFACT-DESCRIPTORS>
+                    </CODE>
+                  </CODE-DESCRIPTORS>
+                  <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/MICROSAR/BswM_swc/ComponentTypes/BswM/BswMInternalBehavior</BEHAVIOR-REF>
+                </SWC-IMPLEMENTATION>
+              </ELEMENTS>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

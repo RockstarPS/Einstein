@@ -1,0 +1,308 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.SWC_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.P_SWC_DmnMgr.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.*
+
+import E40_Platform.C_GlobalDesign.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.P_UCL_PROXY_CDD.*
+
+
+
+																																																			package
+																																																			E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr
+
+																																																			stereotype HLR
+
+																																																			type EDmnChangeReqStatus_t
+																																																			enum {
+																																																				EDmnChangeReqStatus_NoReq
+																																																				EDmnChangeReqStatus_WaitAwakeTime
+																																																				= 1
+																																																				EDmnChangeReqStatus_WaitShutdonwTime
+																																																				= 2
+																																																				EDmnChangeReqStatus_PrevReqPending
+																																																				= 3
+																																																				EDmnChangeReqStatus_ReqSucceed
+																																																				= 4
+																																																				EDmnChangeReqStatus_ReqFail
+																																																				= 5
+																																																				EDmnChangeReqStatus_ReqTimedOut
+																																																				= 6
+																																																				EDmnChangeReqStatus_DmnNotReady
+																																																				= 7
+																																																			}
+
+																																																			type EDmnOverallState_t
+																																																			enum {
+																																																				DMN_NOT_READY
+																																																				DMN_READY = 1
+																																																			}
+
+																																																			type EDmnHealthState_t enum
+																																																			{
+																																																				EDmnHealth_Active
+																																																				EDmnHealth_UCL_Fatal_Error
+																																																				= 1
+																																																				EDmnHealth_HB_Miss = 2
+																																																				EDmnHealth_Fatal_Error = 3
+																																																				EDmnHealth_Rcvd_Inv_SeqCnt
+																																																				= 4
+																																																				EDmnHealth_First_HB_Rcv_Time_Expired
+																																																				= 5
+																																																				EDmnHealth_First_LinkUp_Time_Expired
+																																																				= 6
+																																																				EDmnHealth_Shutdown_Time_Expired
+																																																				= 7
+																																																				EDmnHealth_Last = 8
+																																																			}
+
+																																																			type EUclLinkState_t enum {
+																																																				EUclLinkState_Not_Rcvd
+																																																				EUclLinkState_Down = 1
+																																																				EUclLinkState_Up = 2
+																																																				EUclLinkState_Last = 3
+																																																			}
+
+																																																			type SDmnRTCData struct {
+																																																				DmnRTCYear:uint16
+																																																				DmnRTCMonth:uint8
+																																																				DmnRTCDay:uint8
+																																																				DmnRTCHour:uint8
+																																																				DmnRTCMin:uint8
+																																																				DmnRTCSec:uint8
+																																																			}
+
+																																																			type SDmnStatus struct {
+																																																				dmnId:EDomainId
+																																																				linkStatus:EUclLinkState_t
+																																																				uclErrCode:sint32
+																																																				dmnHealthState:EDmnHealthState_t
+																																																				state:ESystemState
+																																																				dmnStatus:EDmnOverallState_t
+																																																			}
+																																																			
+
+
+																																																			unique allocatable
+																																																			SWC_DmnMgr swcName = DmnMgr
+																																																			{
+																																																				compositions
+																																																					DmnMgr:S_DmnMgr
+																																																				ports
+																																																					ppCS_DmnSystemStateChange:provided
+																																																					if_CS_DmnSystemStateChange
+																																																					ppSR_DmnInfo:provided
+																																																					if_SR_DmnInfo
+																																																					rSR_HealthDomainFatalError:required
+																																																					HealthDomainFatalError_Q
+																																																					rSR_HealthDomainHeartbeat:required
+																																																					HealthDomainHeartbeat_Q
+																																																					rSR_HealthDumpData:required
+																																																					HealthDumpData_Q
+																																																					rSR_HealthDumpHdrInfo:required
+																																																					HealthDumpHdrInfo_Q
+																																																					pSR_HealthDumpGetData:provided
+																																																					HealthDumpGetData_Q
+																																																					pSR_HealthDumpGetHdr:provided
+																																																					HealthDumpGetHdr_Q
+																																																					rSR_PowerExtendShutdownTime:required
+																																																					PowerExtendShutdownTime_Q
+																																																					rSR_PowerKeepSystemAwake:required
+																																																					PowerKeepSystemAwake_Q
+																																																					rSR_PowerSystemState:required
+																																																					PowerSystemState
+																																																					pSR_PowerSystemStateReqChange:provided
+																																																					PowerSystemStateReqChange
+																																																					rpCS_UclInitShutdown:required
+																																																					UclInitShutdown
+																																																					ppCS_UclSystemCallbacks:provided
+																																																					UclSystemCallbacks
+																																																					rpSR_DmnInfo:required
+																																																					if_SR_DmnInfo
+																																																					ppCS_DomainMonitoring:provided
+																																																					if_CS_DmnMonitoring
+																																																					pp_CmpLibCmd_CDmnMgr:provided
+																																																					if_CS_ModeOnCommand
+																																																					rpSR_SleepStatus:required
+																																																					If_SR_SleepStatus
+																																																			}
+
+																																																			importable
+																																																			transportedInterface
+																																																			if_CS_DmnSystemStateChange
+																																																			{
+																																																				DmnSystemStateChangeReq(DmnId:EDomainId,
+																																																				DmnState:ESystemState):Std_ReturnType
+																																																				{
+																																																				}
+																																																				DmnSystemStateChangeStatus(DmnId:EDomainId,
+																																																				out
+																																																				DmnStatus:EDmnChangeReqStatus_t)
+																																																				{
+																																																				}
+																																																				call
+																																																					required
+														DmnSystemStateChangeReq.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														DmnSystemStateChangeStatus.CALL_CLNT_CLIENTMODE =
+														A2TClientMode::A2TSynchronous
+														data
+															provided
+																any.DATA_SND_CAN_INVALIDATE =
+																A2TBoolean::A2TFalse
+																any.DATA_SND_IMPLICIT_SEND =
+																A2TBoolean::A2TFalse
+																required
+																	any.DATA_RCV_IMPLICIT_RECEIVE =
+																	A2TBoolean::A2TFalse
+																}
+																importable transportedInterface if_SR_DmnInfo {
+																	SDmnStatus:SDmnStatus
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			SDmnStatus.DATA_SND_INIT_VALUE =
+																			"0"
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																				SDmnStatus.DATA_RCV_INIT_VALUE =
+																				"0"
+																			}
+																			importable transportedInterface if_CS_DmnMonitoring {
+																				StopDomainMonitoring(DmnID:EDomainId):Std_ReturnType {
+																				}
+																				StartDomainMonitoring(DmnID:EDomainId):Std_ReturnType {
+																				}
+																				call
+																					required
+																						StopDomainMonitoring.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						StartDomainMonitoring.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								package
+																								E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.P_SWC_DmnMgr
+																								
+
+
+																								ExternalCode static class S_DmnMgr realizes
+																								if_CS_DmnSystemStateChange, if_SR_DmnInfo,
+																								UclSystemCallbacks, HealthDumpGetData_Q,
+																								HealthDumpGetHdr_Q, PowerSystemStateReqChange,
+																								if_CS_DmnMonitoring, if_CS_ModeOnCommand {
+																									attributes
+																										CtimePeriod:uint8 =
+																										10
+																										runnables
+																											CDmnMgr_Impl_MainFunction fixedMethodApi
+																											triggeredBy {
+																												TimingEvent CtimePeriod
+																											}
+																											DmnSystemStateChangeReq triggeredBy {
+																												OperationInvokeEvent
+																												if_CS_DmnSystemStateChange.DmnSystemStateChangeReq
+																											}
+																											noPortAccess DmnSystemStateChangeStatus triggeredBy
+																											{
+																												OperationInvokeEvent
+																												if_CS_DmnSystemStateChange.DmnSystemStateChangeStatus
+																											}
+																											noPortAccess ErrorNotification triggeredBy {
+																												OperationInvokeEvent
+																												UclSystemCallbacks.ErrorNotification
+																											}
+																											noPortAccess LinkStatusChanged triggeredBy {
+																												OperationInvokeEvent
+																												UclSystemCallbacks.LinkStatusChanged
+																											}
+																											noPortAccess MonitorDmnPowerSystemState triggeredBy
+																											{
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_PowerSystemState
+																												PowerSystemState.PowerSystemStateData
+																											}
+																											noPortAccess MonitorDmnExtendShutdownTime
+																											triggeredBy {
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_PowerExtendShutdownTime
+																												PowerExtendShutdownTime_Q.PowerExtendShutdownTimeData
+																											}
+																											noPortAccess MonitorDmnKeepSystemAwake triggeredBy
+																											{
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_PowerKeepSystemAwake
+																												PowerKeepSystemAwake_Q.PowerKeepSystemAwakeData
+																											}
+																											noPortAccess MonitorDmnHeartBeat triggeredBy {
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_HealthDomainHeartbeat
+																												HealthDomainHeartbeat_Q.HealthDomainHeartbeatData
+																											}
+																											noPortAccess MonitorDmnHealthFatalError triggeredBy
+																											{
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_HealthDomainFatalError
+																												HealthDomainFatalError_Q.HealthDomainFatalErrorData
+																											}
+																											noPortAccess MonitorDmnHealthDumpData triggeredBy {
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_HealthDumpData
+																												HealthDumpData_Q.HealthDumpDataData
+																											}
+																											noPortAccess MonitorDmnHealthDumpHdrInfo
+																											triggeredBy {
+																												DataReceiveEvent port
+																												E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.SWC_DmnMgr.rSR_HealthDumpHdrInfo
+																												HealthDumpHdrInfo_Q.HealthDumpHdrInfoData
+																											}
+																											noPortAccess StartDomainMonitoring triggeredBy {
+																												OperationInvokeEvent
+																												if_CS_DmnMonitoring.StartDomainMonitoring
+																											}
+																											noPortAccess StopDomainMonitoring triggeredBy {
+																												OperationInvokeEvent
+																												if_CS_DmnMonitoring.StopDomainMonitoring
+																											}
+																											noPortAccess CDmnMgr_Impl_OnCommand fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												if_CS_ModeOnCommand.Impl_OnCommand
+																											}
+																											noPortAccess
+																									}

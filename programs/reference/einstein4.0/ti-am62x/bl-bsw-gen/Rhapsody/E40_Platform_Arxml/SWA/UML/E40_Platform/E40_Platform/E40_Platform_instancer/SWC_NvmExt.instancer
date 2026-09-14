@@ -1,0 +1,20 @@
+module SWC_NvmExt
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_NvmExt.**
+
+prototype @Proto_SWC_NvmExt :SWC_NvmExt
+{
+
+NvMExt= :S_NvMExt{
+}
+
+pp_CS_NvmExt_GetPendingStatus{ IntProvider = container->NvMExt}
+pp_CS_NvmExtStartReadAll{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_SleepOperations{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_GetNvMExtReadAllStatus{ IntProvider = container->NvMExt}
+pp_SR_NvMExt_WakeupStatus{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_ReadBlock{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_WriteBlock{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_GetErrorStatus{ IntProvider = container->NvMExt}
+pp_CS_NvMExt_RestoreBlockDefaults{ IntProvider = container->NvMExt}
+}

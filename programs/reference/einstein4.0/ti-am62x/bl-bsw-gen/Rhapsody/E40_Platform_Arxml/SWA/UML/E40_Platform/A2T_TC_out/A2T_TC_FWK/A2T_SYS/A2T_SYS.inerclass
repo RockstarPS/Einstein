@@ -1,0 +1,165 @@
+import autoCreatedTypes.*
+import A2T_TC.A2T_TC_FWK.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+
+
+	package A2T_TC.A2T_TC_FWK.A2T_SYS
+
+	stereotype DesignUnit
+	
+
+
+	type
+	boolean from Boolean
+	type boolean_Ref from boolean
+	
+
+
+	type
+	float32[-1.7976931348623157E+308..1.7976931348623157E+308] from Real
+	type float32_Ref[-1.7976931348623157E+308..1.7976931348623157E+308] from
+	float32
+	
+
+
+	type
+	float64[-1.7976931348623157E+308..1.7976931348623157E+308] from Real
+	type float64_Ref[-1.7976931348623157E+308..1.7976931348623157E+308] from
+	float64
+	
+
+
+	type sint16[-32768..32767] from
+	SInteger16
+	type sint16_Ref[-32768..32767] from sint16
+	
+
+
+	type sint32[-2147483648..2147483647] from SInteger32
+	type sint32_Ref[-2147483648..2147483647] from sint32
+	
+
+
+type
+	sint64[-2147483648..2147483647] from SInteger32
+	type sint64_Ref[-2147483648..2147483647] from sint64
+	
+
+
+	type sint8[-128..127] from SInteger8
+	type sint8_Ref[-128..127] from sint8
+	
+
+
+	type
+	uint16[0..65535] from UInteger16
+	type uint16_Ref[0..65535] from uint16
+	
+
+
+	type uint32[0..4294967295] from UInteger32
+	type uint32_Ref[0..4294967295] from uint32
+	
+
+
+type
+	uint64[-2147483648..2147483647] from SInteger32
+	type uint64_Ref[-2147483648..2147483647] from uint64
+	
+
+
+	type uint8[0..255] from UInteger8
+	type uint8_Ref[0..255] from uint8
+	type cFalse implicit type cTrue implicit type UNREFERENCED_PARAMETER implicit
+	
+
+
+	type EventID[0..65535] from uint16
+	
+
+
+	type Event struct {
+	
+
+
+		ID:EventID
+	}
+	
+
+
+	type Event_Ref[0..4294967295] from
+	UInteger32
+	
+
+
+	type BOOL_TYPE
+	enum {
+		DBG_TRUE
+		DBG_FALSE = 1
+	}
+	
+
+
+	type TRUE
+	implicit
+	
+
+
+	type FALSE
+	implicit type cNumberOfBitsPerByte implicit
+	type Std_ReturnType[0..255] from uint8
+	
+
+
+	type SysReturnType[0..255] from uint8
+	type SysReturn_Fail implicit type SysReturn_Ok implicit type SysReturn_Wait
+	implicit type E_OK implicit type E_NOT_OK implicit type mIsSysReturnOk
+	implicit type mIsSysReturnFail implicit type mIsSysReturnWait implicit
+	
+
+
+type TypeMinMaxDefines implicit type
+	AS_STD_TYPES_PROTECTION implicit
+	
+
+
+	interface
+	ISysEventNotification {
+	}
+	
+
+
+	abstract class CSysItem {
+	}
+
+	package A2T_TC.A2T_TC_FWK.A2T_SYS.Libs
+
+	class CLibMath {
+	}
+
+	class CLibMem {
+	}
+
+	package A2T_TC.A2T_TC_FWK.A2T_SYS.Osal
+
+	type OsTaskIdType[0..255] from uint8
+	type OsCoreIdType[0..255] from uint8
+	type OsIsrIdType[0..255] from uint8
+	type OsContextIdType[0..255] from uint8
+
+	abstract class CSysContextStatus {
+	}
+
+	abstract class CSysExclusiveArea {
+	}
+
+	abstract class CSysTask {
+	}
+
+	interface ISysTaskNotification {
+	}
+
+	abstract class CSysAlarm {
+	}

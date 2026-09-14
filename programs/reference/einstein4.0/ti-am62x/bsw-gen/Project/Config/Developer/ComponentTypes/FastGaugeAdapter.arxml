@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="F9BB0470-8FC4-4F1C-AE63-C2C3A0AC863E">
+              <SHORT-NAME>FastGaugeAdapter</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="5460AE6C-2E68-4EEC-9D19-3E25C8B490BD">
+                  <SHORT-NAME>pp_FastGaugeInfo</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <NONQUEUED-SENDER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/FastGaugeInfo/FastGaugeInfoData</DATA-ELEMENT-REF>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/SFastGaugeInfo_InitValue</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-SENDER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/FastGaugeInfo</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="A733723A-D3B3-44C2-A11E-6F776DCED728">
+                  <SHORT-NAME>pp_Init</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="4214CA55-944E-4714-9AD1-0426E01C7532">
+                  <SHORT-NAME>rpIgnSubstate</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate/IgnitionSubstate</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterIgnitionSubstateValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="3264D46D-90EE-47C6-9C3A-C5960F82CB51">
+                  <SHORT-NAME>rp_Analog_Tacho</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Analog_out/Analog_Tacho</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterAnalog_TachoValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Analog_out</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="09A0493A-EA3D-4A9E-A0F8-893A123D7410">
+                  <SHORT-NAME>rp_ClusterMode</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterWSSCurrentClusterModeValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="9F9B1E0F-4819-41CB-819D-AF6BD826C95A">
+                  <SHORT-NAME>rp_Dcm_appStop</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Dcm_AppStopNotification/AppId</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterAppIdValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Dcm_AppStopNotification</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="E93E5406-A4FE-432A-BC6B-27178F76DAB6">
+                  <SHORT-NAME>rp_Diag_Digitalspeed</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Diag_Display_speed_Value/Diag_Digital_Speed_Value</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDiag_Digital_Speed_ValueValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Diag_Display_speed_Value</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="49370762-13D4-4CAF-BCD8-CCCFCCA5E89E">
+                  <SHORT-NAME>rp_Digital_Tacho</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Digital_out/Digital_Tacho</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDigital_TachoValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Digital_out</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="AF706386-8E3F-443B-B8E8-D5122E29A94F">
+                  <SHORT-NAME>rp_DispDistanceUnit</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Meter_DisplayDistanceUnit/DisplayUnit</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDisplayUnitValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Meter_DisplayDistanceUnit</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="7E5583A1-FC35-46FE-B97A-E3C08C6E34F4">
+                  <SHORT-NAME>rp_DispSpeedA</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_DispSpeedA/DispSpeedVal</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDispSpeedValValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_DispSpeedA</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="C40B9F76-D12C-48AA-8094-1F958BA80CAB">
+                  <SHORT-NAME>rp_Display_speed_Value</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_Display_speed_Value/Digital_Speed_Value</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDigital_Speed_ValueValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_Display_speed_Value</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="109F668B-B94D-4ED0-AFF0-8AEABDC03707">
+                  <SHORT-NAME>rp_HMIReadyState</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus/HMI_ReadyStatus</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterHMI_ReadyStatusValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="0C26A20A-352C-46F4-9029-BD4D4A1210BF">
+                  <SHORT-NAME>rp_Needle_Transparent</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Needle_Transparent/Needle_TR</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterNeedle_TRValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Needle_Transparent</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="D78EB0D5-A83E-49A7-B1B9-FB4A49190D2D">
+                  <SHORT-NAME>rp_PowerTrain_State</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_MVC_PowerTrain_State_Dummy/PowerTrain_Flag</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterPowerTrain_FlagValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_MVC_PowerTrain_State_Dummy</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="D638D0C1-B7A2-451A-9A6C-AE71A930A77D">
+                  <SHORT-NAME>rp_SubDisplaySpeed_Value</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_SubDisplaySpeed_Value/SubDispSpeedVal</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterSubDispSpeedValValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_SubDisplaySpeed_Value</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="4658BC5C-9CDD-465A-9AE6-462E2DA37E88">
+                  <SHORT-NAME>rp_TC_Unit</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Unit/Digital_TachoUnit</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterDigital_TachoUnitValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Unit</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="75D3FB39-71CC-4D4F-861F-F981812373DE">
+                  <SHORT-NAME>rp_Tacho_RED_Start_RPM</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RED_Start_RPM/RED_Start_RPM</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterRED_Start_RPMValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RED_Start_RPM</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+                <R-PORT-PROTOTYPE UUID="5F2F1186-B9C1-4A8D-8C73-5125EB543135">
+                  <SHORT-NAME>rp_Tacho_RPM_MAX</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <REQUIRED-COM-SPECS>
+                    <NONQUEUED-RECEIVER-COM-SPEC>
+                      <DATA-ELEMENT-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RPM_MAX/REVP_RPM_MAX</DATA-ELEMENT-REF>
+                      <ALIVE-TIMEOUT>0</ALIVE-TIMEOUT>
+                      <ENABLE-UPDATE>false</ENABLE-UPDATE>
+                      <FILTER>
+                        <DATA-FILTER-TYPE>ALWAYS</DATA-FILTER-TYPE>
+                      </FILTER>
+                      <HANDLE-NEVER-RECEIVED>false</HANDLE-NEVER-RECEIVED>
+                      <INIT-VALUE>
+                        <CONSTANT-REFERENCE>
+                          <CONSTANT-REF DEST="CONSTANT-SPECIFICATION">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapterREVP_RPM_MAXValue0</CONSTANT-REF>
+                        </CONSTANT-REFERENCE>
+                      </INIT-VALUE>
+                    </NONQUEUED-RECEIVER-COM-SPEC>
+                  </REQUIRED-COM-SPECS>
+                  <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RPM_MAX</REQUIRED-INTERFACE-TREF>
+                </R-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="5F98769C-F30B-48D1-AB12-18D366DFD643">
+                  <SHORT-NAME>IB_FastGaugeAdapter</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="20B5A1FD-3FE2-459D-9564-A0BD16375AA7">
+                      <SHORT-NAME>OIE_pp_Init_FastGaugeAdapter_InitTrigByInit</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/IB_FastGaugeAdapter/FastGaugeAdapter_Init</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/pp_Init</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="1189FE08-7A29-4C96-BF07-B518EC5989CD">
+                      <SHORT-NAME>TEFastGaugeAdapter_Task</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/IB_FastGaugeAdapter/FastGaugeAdapter_Task</START-ON-EVENT-REF>
+                      <PERIOD>0.02</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/pp_FastGaugeInfo</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/pp_Init</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rpIgnSubstate</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Analog_Tacho</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_ClusterMode</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Dcm_appStop</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Diag_Digitalspeed</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Digital_Tacho</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_DispDistanceUnit</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_DispSpeedA</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Display_speed_Value</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_HMIReadyState</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Needle_Transparent</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_PowerTrain_State</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_SubDisplaySpeed_Value</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_TC_Unit</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Tacho_RED_Start_RPM</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <ERROR-HANDLING>NO-TRANSFORMER-ERROR-HANDLING</ERROR-HANDLING>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Tacho_RPM_MAX</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="0F502F38-ADD8-459B-8C97-2FD06A5AA551">
+                      <SHORT-NAME>FastGaugeAdapter_Init</SHORT-NAME>
+                      <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>FastGaugeAdapter_Init</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="DA434BFC-2F02-4CBE-8296-AB80BAA996CB">
+                      <SHORT-NAME>FastGaugeAdapter_Task</SHORT-NAME>
+                      <MINIMUM-START-INTERVAL>0</MINIMUM-START-INTERVAL>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                        <VARIABLE-ACCESS UUID="2F407734-1FA7-4DE7-B8B7-7EC998581A57">
+                          <SHORT-NAME>DRA_rpIgnSubstate_IgnitionSubstate</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rpIgnSubstate</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_IgnitionSubstate/IgnitionSubstate</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="30CCF373-2BB6-4468-8125-9B65C025C973">
+                          <SHORT-NAME>DRA_rp_Analog_Tacho_Analog_Tacho</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Analog_Tacho</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Analog_out/Analog_Tacho</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="0A87AC27-27B0-4005-9D5C-6482CAE9AC8E">
+                          <SHORT-NAME>DRA_rp_ClusterMode_WSSCurrentClusterMode</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_ClusterMode</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_WSS_ClusterMode/WSSCurrentClusterMode</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="E2E30881-5EAE-4C77-840B-987B50171892">
+                          <SHORT-NAME>DRA_rp_Dcm_appStop_AppId</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Dcm_appStop</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Dcm_AppStopNotification/AppId</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="F61B8536-E735-4F1B-869D-6A8CCB07A518">
+                          <SHORT-NAME>DRA_rp_Diag_Digitalspeed_Diag_Digital_Speed_Value</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Diag_Digitalspeed</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Diag_Display_speed_Value/Diag_Digital_Speed_Value</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="8FC2ADA2-0989-4DBA-8CAC-3DD67327614B">
+                          <SHORT-NAME>DRA_rp_Digital_Tacho_Digital_Tacho</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Digital_Tacho</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Digital_out/Digital_Tacho</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="2603238F-5AF4-4D97-8755-4A9400B4AE6D">
+                          <SHORT-NAME>DRA_rp_DispDistanceUnit_DisplayUnit</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_DispDistanceUnit</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Meter_DisplayDistanceUnit/DisplayUnit</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="14A4F679-BD8A-4AE7-B8C2-789A23A90F8C">
+                          <SHORT-NAME>DRA_rp_DispSpeedA_DispSpeedVal</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_DispSpeedA</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_DispSpeedA/DispSpeedVal</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="9EDCC135-2955-4C9C-A108-A45B6D076137">
+                          <SHORT-NAME>DRA_rp_Display_speed_Value_Digital_Speed_Value</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Display_speed_Value</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_Display_speed_Value/Digital_Speed_Value</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="AEA690F0-39D9-4D24-851D-A284B04F071A">
+                          <SHORT-NAME>DRA_rp_HMIReadyState_HMI_ReadyStatus</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_HMIReadyState</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_HMIReadyStatus/HMI_ReadyStatus</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="7899309D-898E-46CF-A2D3-11C728224BB8">
+                          <SHORT-NAME>DRA_rp_Needle_Transparent_Needle_TR</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Needle_Transparent</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Needle_Transparent/Needle_TR</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="36A050BE-9ED4-4D02-A8AA-F3399BD7B516">
+                          <SHORT-NAME>DRA_rp_PowerTrain_State_PowerTrain_Flag</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_PowerTrain_State</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_MVC_PowerTrain_State_Dummy/PowerTrain_Flag</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="5B9CC3D8-DEF0-4A82-B604-B1F797DD33E4">
+                          <SHORT-NAME>DRA_rp_SubDisplaySpeed_Value_SubDispSpeedVal</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_SubDisplaySpeed_Value</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_SubDisplaySpeed_Value/SubDispSpeedVal</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="67E4EE95-AEF0-4D50-A3CE-C95C10C8AA7B">
+                          <SHORT-NAME>DRA_rp_TC_Unit_Digital_TachoUnit</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_TC_Unit</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_Unit/Digital_TachoUnit</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="BEE87722-86C4-4707-A04C-07E350F5CDAC">
+                          <SHORT-NAME>DRA_rp_Tacho_RED_Start_RPM_RED_Start_RPM</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Tacho_RED_Start_RPM</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RED_Start_RPM/RED_Start_RPM</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                        <VARIABLE-ACCESS UUID="AB25AE75-BEFF-4A98-AB4B-798997C415F8">
+                          <SHORT-NAME>DRA_rp_Tacho_RPM_MAX_REVP_RPM_MAX</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="R-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/rp_Tacho_RPM_MAX</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/TI_SR_Tacho_RPM_MAX/REVP_RPM_MAX</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-RECEIVE-POINT-BY-ARGUMENTS>
+                      <DATA-SEND-POINTS>
+                        <VARIABLE-ACCESS UUID="A961AC75-C2A0-4A71-93D3-C612CAF8B2DA">
+                          <SHORT-NAME>DWA_pp_FastGaugeInfo_FastGaugeInfoData</SHORT-NAME>
+                          <ACCESSED-VARIABLE>
+                            <AUTOSAR-VARIABLE-IREF>
+                              <PORT-PROTOTYPE-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/pp_FastGaugeInfo</PORT-PROTOTYPE-REF>
+                              <TARGET-DATA-PROTOTYPE-REF DEST="VARIABLE-DATA-PROTOTYPE">/E40_Platform_System_SystemPackage/Types/FastGaugeInfo/FastGaugeInfoData</TARGET-DATA-PROTOTYPE-REF>
+                            </AUTOSAR-VARIABLE-IREF>
+                          </ACCESSED-VARIABLE>
+                        </VARIABLE-ACCESS>
+                      </DATA-SEND-POINTS>
+                      <SYMBOL>FastGaugeAdapter_Task</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="31B8C86B-6BC8-4E94-AB0A-DDB99DBCCE7D">
+              <SHORT-NAME>IMPL_FastGaugeAdapter</SHORT-NAME>
+              <CODE-DESCRIPTORS>
+                <CODE UUID="86677F87-7883-45E3-8F39-85485192F01D">
+                  <SHORT-NAME>Default</SHORT-NAME>
+                  <ARTIFACT-DESCRIPTORS>
+                    <AUTOSAR-ENGINEERING-OBJECT>
+                      <CATEGORY>SWSRC</CATEGORY>
+                    </AUTOSAR-ENGINEERING-OBJECT>
+                  </ARTIFACT-DESCRIPTORS>
+                </CODE>
+              </CODE-DESCRIPTORS>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/FastGaugeAdapter/IB_FastGaugeAdapter</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

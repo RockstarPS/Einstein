@@ -1,0 +1,185 @@
+module E40_Platform_System
+import E40_Platform.C_GlobalDesign.**
+import   Backlight_Cdd.*
+import   Display_Cdd.*
+import   UCL_PROXY_CDD.*
+import   RTC_Cdd.*
+import   BattMdl.*
+import   CDDEcuPowerM.*
+import   SndCdd.*
+import   SWC_DmnMgr.*
+import   SleepManager.*
+import   SWC_MemAbstract.*
+import   BSW_EcuMExt.*
+import   BSW_EcuAppM.*
+import   SWC_IOHWAB.*
+import   BSW_TmExt.*
+import   SWC_NvmExt.*
+import   SWC_DcmExt.*
+import   SWC_DemExt.*
+import autosar "E40_PlatformComMatrix.arxml"
+root instance @E40_Platform_System: E40_Platform_System ecuinstance METER
+{
+
+CBacklightCdd = :#Proto_Backlight_Cdd
+{
+CBacklightCdd = :S_CBacklightCdd{}
+rpIoHwAb_Din->ExtAProvider  = container ->IoHwAb->ppIoHwAb_Din
+rpIoHwAb_DOut->ExtAProvider  = container ->IoHwAb->ppIoHwAb_DOut
+rpIoHwAb_PWM->ExtAProvider  = container ->IoHwAb->ppIoHwAb_PWM
+}
+
+
+CDisplayCdd = :#Proto_Display_Cdd
+{
+CDisplayCdd = :S_CDisplayCdd{}
+rp_CS_Backlight_Status->ExtAProvider  = container ->CBacklightCdd->pp_CS_Backlight_Status
+rp_CS_Backlight_Notify->ExtAProvider  = container ->CBacklightCdd->pp_CS_Backlight_Notify
+rpIoHwAb_SetDout->ExtAProvider  = container ->IoHwAb->ppIoHwAb_DOut
+}
+
+
+UclProxyCdd = :#Proto_UCL_PROXY_CDD
+{
+UclProxyCdd = :S_UclProxyCdd{}
+rCS_UclSystemCallbacks->ExtAProvider  = container ->DmnMgr->ppCS_UclSystemCallbacks
+rSR_HealthDumpGetHdr->ExtAProvider  = container ->DmnMgr->pSR_HealthDumpGetHdr
+rSR_HealthDumpGetData->ExtAProvider  = container ->DmnMgr->pSR_HealthDumpGetData
+rSR_PowerSystemStateReqChange->ExtAProvider  = container ->DmnMgr->pSR_PowerSystemStateReqChange
+}
+
+
+CRtcCdd = :#Proto_RTC_Cdd
+{
+CRtcCdd = :S_CRtcCdd{}
+rp_CS_IoHwAb_ADC->ExtAProvider  = container ->IoHwAb->ppIoHwAb_ADC
+rp_IoHwAb_Din->ExtAProvider  = container ->IoHwAb->ppIoHwAb_Din
+rp_IoHwAb_DOut->ExtAProvider  = container ->IoHwAb->ppIoHwAb_DOut
+}
+
+
+CBattMdl = :#Proto_BattMdl
+{
+CBattMdl = :S_CBattMdl{}
+rpIoHwAb_Din->ExtAProvider  = container ->IoHwAb->ppIoHwAb_Din
+rpIoHwAb_DOut->ExtAProvider  = container ->IoHwAb->ppIoHwAb_DOut
+rpIoHwAb_ADC->ExtAProvider  = container ->IoHwAb->ppIoHwAb_ADC
+}
+
+
+CCDD_EcuPowerM = :#Proto_CDDEcuPowerM
+{
+CCDD_EcuPowerM = :S_CCDD_EcuPowerM{}
+rpIoHwAb_Din->ExtAProvider  = container ->IoHwAb->ppIoHwAb_Din
+rpIoHwAb_DOut->ExtAProvider  = container ->IoHwAb->ppIoHwAb_DOut
+rpIoHwAb_PWM->ExtAProvider  = container ->IoHwAb->ppIoHwAb_PWM
+rpIoHwAb_ADC->ExtAProvider  = container ->IoHwAb->ppIoHwAb_ADC
+}
+
+
+CSndCdd = :#Proto_SndCdd
+{
+CSndCdd = :S_CSndCdd{}
+}
+
+
+DmnMgr = :#Proto_SWC_DmnMgr
+{
+DmnMgr = :S_DmnMgr{}
+rSR_HealthDomainFatalError->ExtAProvider  = container ->UclProxyCdd->pSR_HealthDomainFatalError
+rSR_HealthDomainHeartbeat->ExtAProvider  = container ->UclProxyCdd->pSR_HealthDomainHeartbeat
+rSR_HealthDumpData->ExtAProvider  = container ->UclProxyCdd->pSR_HealthDumpData
+rSR_HealthDumpHdrInfo->ExtAProvider  = container ->UclProxyCdd->pSR_HealthDumpHdrInfo
+rSR_PowerExtendShutdownTime->ExtAProvider  = container ->UclProxyCdd->pSR_PowerExtendShutdownTime
+rSR_PowerKeepSystemAwake->ExtAProvider  = container ->UclProxyCdd->pSR_PowerKeepSystemAwake
+rSR_PowerSystemState->ExtAProvider  = container ->UclProxyCdd->pSR_PowerSystemState
+rpCS_UclInitShutdown->ExtAProvider  = container ->UclProxyCdd->ppCS_UclInitShutdown
+rpSR_DmnInfo->ExtAProvider  = container ->DmnMgr->ppSR_DmnInfo
+rpSR_SleepStatus->ExtAProvider  = container ->CSleepManager->ppSR_SleepStatus
+}
+
+
+CSleepManager = :#Proto_SleepManager
+{
+CSleepManager = :S_CSleepManager{}
+}
+
+
+MemAbstractMdl = :#Proto_SWC_MemAbstract
+{
+MemAbstractMdl = :S_MemAbstractMdl{}
+}
+
+
+EcuMExt = :#Proto_BSW_EcuMExt
+{
+EcuMExt = :S_EcuMExt{}
+rpCS_EcuAppM->ExtAProvider  = container ->EcuAppM->ppCS_EcuAppM
+}
+
+
+EcuAppM = :#Proto_BSW_EcuAppM
+{
+EcuAppM = :S_EcuAppM{}
+rp_CmpLibCmd = {
+@rp_CmpLibCmd_CBacklightCdd,
+@rp_CmpLibCmd_CDisplayCdd,
+@rp_CmpLibCmd_CUclProxyCdd,
+@rp_CmpLibCmd_CRTCCdd,
+@rp_CmpLibCmd_CBattMdl,
+@rp_CmpLibCmd_CCDD_EcuPowerM,
+@rp_CmpLibCmd_CSndCdd,
+@rp_CmpLibCmd_CDmnMgr,
+@rp_CmpLibCmd_CSleepManager
+}
+
+rp_CmpLibCmd->rp_CmpLibCmd_CBacklightCdd->ExtAProvider  = container ->CBacklightCdd->pp_CmpLibCmd_CBacklightCdd
+rp_CmpLibCmd->rp_CmpLibCmd_CDisplayCdd->ExtAProvider  = container ->CDisplayCdd->pp_CmpLibCmd_CDisplayCdd
+rp_CmpLibCmd->rp_CmpLibCmd_CUclProxyCdd->ExtAProvider  = container ->UclProxyCdd->pp_CmpLibCmd_CUclProxyCdd
+rp_CmpLibCmd->rp_CmpLibCmd_CRTCCdd->ExtAProvider  = container ->CRtcCdd->pp_CmpLibCmd_CRTCCdd
+rp_CmpLibCmd->rp_CmpLibCmd_CBattMdl->ExtAProvider  = container ->CBattMdl->pp_CmpLibCmd_CBattMdl
+rp_CmpLibCmd->rp_CmpLibCmd_CCDD_EcuPowerM->ExtAProvider  = container ->CCDD_EcuPowerM->pp_CmpLibCmd
+rp_CmpLibCmd->rp_CmpLibCmd_CSndCdd->ExtAProvider  = container ->CSndCdd->pp_CmpLibCmd_CSndCdd
+rp_CmpLibCmd->rp_CmpLibCmd_CDmnMgr->ExtAProvider  = container ->DmnMgr->pp_CmpLibCmd_CDmnMgr
+rp_CmpLibCmd->rp_CmpLibCmd_CSleepManager->ExtAProvider  = container ->CSleepManager->pp_CmpLibCmd
+rp_CS_Backlight_service->ExtAProvider  = container ->CBacklightCdd->pp_CS_Backlight_service
+rpSR_SleepStatus->ExtAProvider  = container ->CSleepManager->ppSR_SleepStatus
+rpCS_RequestPower->ExtAProvider  = container ->CCDD_EcuPowerM->ppCS_RequestPower
+rp_CS_NvmExtStartReadAll->ExtAProvider  = container ->NvMExt->pp_CS_NvmExtStartReadAll
+rp_CS_NvMExt_SleepOperations->ExtAProvider  = container ->NvMExt->pp_CS_NvMExt_SleepOperations
+rp_CS_NvMExt_GetNvMExtReadAllStatus->ExtAProvider  = container ->NvMExt->pp_CS_NvMExt_GetNvMExtReadAllStatus
+rpCS_EcumExt_ReleaseRUN->ExtAProvider  = container ->EcuMExt->ppCS_EcumExt_ReleaseRUN
+rpCS_EcumExt_RequestRUN->ExtAProvider  = container ->EcuMExt->ppCS_EcumExt_RequestRUN
+}
+
+
+IoHwAb = :#Proto_SWC_IOHWAB
+{
+IoHwAb = :S_IoHwAb{}
+}
+
+
+TmExt = :#Proto_BSW_TmExt
+{
+TmExt = :S_TmExt{}
+}
+
+
+NvMExt = :#Proto_SWC_NvmExt
+{
+NvMExt = :S_NvMExt{}
+}
+
+
+DcmExt = :#Proto_SWC_DcmExt
+{
+DcmExt = :S_DcmExt{}
+}
+
+
+DemExt = :#Proto_SWC_DemExt
+{
+DemExt = :S_DemExt{}
+}
+
+}

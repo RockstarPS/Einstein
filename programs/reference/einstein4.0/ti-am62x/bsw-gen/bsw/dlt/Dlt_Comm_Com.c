@@ -1,0 +1,81 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2017. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+/*****************************************************************************
+*  File Name         :                                                       *
+*  Module Short Name :                                                       *
+*  Description       :                                                       *
+*                                                                            *
+* Organization     :  Driver Information Software Section,                   *
+*                     Visteon Software Operation                             *
+*                     Visteon Corporation                                    *
+*                                                                            *
+* ---------------------------------------------------------------------------*
+* Compiler Name    :  GHS Multi                                              *
+* Target Hardware  :  Platform Independent                                   *
+*                                                                            *
+******************************************************************************/
+#ifndef DLT_COMM_COM_C
+#define DLT_COMM_COM_C
+
+/*****************************************************************************
+*                            Include files                                   *
+******************************************************************************/
+#include "Dlt_Comm_Com.h"
+#include "CanIf.h"
+#include "Port_Cfg.h"
+
+/*****************************************************************************
+*                                 Locally used Variable Declarations         *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+uint8                   dlt_message_buffer[DLT_MESSAGE_BUFFER_SIZE];
+uint16                  message_buffer_index=0;
+
+/*****************************************************************************
+*                               Functions                                    *
+******************************************************************************/
+void Dlt_StartCommunicationHook_Cantp(void)
+{
+    message_buffer_index = 0;
+    uint32 i = 0;
+    for (i = 0u; i < DLT_MESSAGE_BUFFER_SIZE; i++)
+    {
+        dlt_message_buffer[i] = 0u;
+    }
+}
+
+void Dlt_StopCommunicationHook_Cantp(void)
+{
+    PduInfoType CanIfTxInfoPtr;
+    CanIfTxInfoPtr.SduDataPtr = dlt_message_buffer;
+    CanIfTxInfoPtr.SduLength = DLT_CAN_MAX_DLC;
+    (void)CanIf_Transmit(DLT_CAN_TX_PDU_ID, &CanIfTxInfoPtr);
+}
+
+void Dlt_SendData_Cantp(uint8 data)
+{
+    dlt_message_buffer[message_buffer_index] = data;
+    message_buffer_index++;
+}
+
+#endif

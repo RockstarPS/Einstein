@@ -1,0 +1,1726 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.MemAbstractMdl.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.MemAbstractMdl.P_SWC_MemAbstract.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+
+																									package
+																									E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.MemAbstractMdl
+
+																									stereotype DesignUnit
+																									
+
+
+																									type GUID_66d86f36_5973_410c_bbdf_3739a01d4a0f
+																									implicit
+																									
+
+
+																									type GUID_3ca089c0_f3a9_4dff_8e36_92fcb8f6e9d4
+																									implicit
+																									type Arr_u8_8[0..255] from uint8[8]
+																									type Arr_u8_16[0..255] from uint8[16]
+																									type Arr_u8_32[0..255] from uint8[32]
+																									type Arr_u8_48[0..255] from uint8[48]
+																									type Arr_u8_64[0..255] from uint8[64]
+																									type Arr_u8_128[0..255] from uint8[128]
+																									type Arr_u8_256[0..255] from uint8[256]
+																									type Arr_u8_100[0..255] from uint8[100]
+																									type Arr_u8_1024[0..255] from uint8[1024]
+																									type Arr_u8_2048[0..255] from uint8[2048]
+																									
+
+
+																									unique allocatable SWC_MemAbstract swcName =
+																									MemAbstractMdl {
+																										compositions
+																											MemAbstractMdl:S_MemAbstractMdl
+																										ports
+																											pp_CS_MemAbsSet:provided if_CS_MemAbsSet
+																											pp_CS_MemAbsGet:provided if_CS_MemAbsGet
+																											pp_SR_JobStatus:provided if_SR_JobStatus
+																											pp_CS_MemAbs_NvMWriteStatus:provided
+																											if_CS_MemAbs_NvMWriteStatus
+																									}
+
+																									importable transportedInterface if_CS_MemAbsSet {
+																										Set_BsShare_SwUpdReflash_Element(BsShare_SwUpdReflash_Element:Arr_u8_8)
+																										{
+																										}
+																										Set_BsShare_SwUpdFotaMode_Element(BsShare_SwUpdFotaMode_Element:Arr_u8_16)
+																										{
+																										}
+																										Set_BsShare_SwUpdFotaFinPrint_Element(BsShare_SwUpdFotaFinPrint_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsShare_SwUpdFotaStatus_Element(BsShare_SwUpdFotaStatus_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsShare_SwUpdFotadecrypt_Element(BsShare_SwUpdFotadecrypt_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsShare_EcuPartNumber_Element(BsShare_EcuPartNumber_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsShare_VisMeet_Element(BsShare_VisMeet_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsShare_VehicleConfig_Element(BsShare_VehicleConfig_Element:Arr_u8_256)
+																										{
+																										}
+																										Set_BsConst_SpeedoGauge_Element(BsConst_SpeedoGauge_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_TachoGauge_Element(BsConst_TachoGauge_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_FuelGauge_Element(BsConst_FuelGauge_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsConst_TempGauge_Element(BsConst_TempGauge_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_PowerGauge_Element(BsConst_PowerGauge_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_OilGauge_Element(BsConst_OilGauge_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_TripComputer_Element(BsConst_TripComputer_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_Illumination_Element(BsConst_Illumination_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsConst_Audio_Element(BsConst_Audio_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsConst_Warning_Element(BsConst_Warning_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_RealTimeClock_Element(BsConst_RealTimeClock_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsConst_Communication_Element(BsConst_Communication_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsConst_Power_Element(BsConst_Power_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsConst_ServiceReminder_Element(BsConst_ServiceReminder_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsConst_EngOffTimer_Element(BsConst_EngOffTimer_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsFuSa_Warning_Element(BsFuSa_Warning_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsFuSa_Power_Element(BsFuSa_Power_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsFuSa_Display_Element(BsFuSa_Display_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsFuSa_Audio_Element(BsFuSa_Audio_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsFuSa_Communication_Element(BsFuSa_Communication_Element:Arr_u8_16)
+																										{
+																										}
+																										Set_BsFusa_Fota_Element(BsFusa_Fota_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsFuSa_Config_Element(BsFuSa_Config_Element:Arr_u8_16)
+																										{
+																										}
+																										Set_BsCys_Certicificate_Element(BsCys_Certicificate_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_RefCys_Certicificate_Element(RefCys_Certicificate_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_RefCys_Certicificate1_Element(RefCys_Certicificate1_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsRt_Odometer_Element(BsRt_Odometer_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsRt_SpeedoGauge_Element(BsRt_SpeedoGauge_Element:Arr_u8_8)
+																										{
+																										}
+																										Set_BsRt_TachoGauge_Element(BsRt_TachoGauge_Element:Arr_u8_16)
+																										{
+																										}
+																										Set_BsRt_FuelGauge_Element(BsRt_FuelGauge_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsRt_TempGauge_Element(BsRt_TempGauge_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsRt_PowerGauge_Element(BsRt_PowerGauge_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsRt_OilGauge_Element(BsRt_OilGauge_Element:Arr_u8_8)
+																										{
+																										}
+																										Set_BsRt_TripComputer_Element(BsRt_TripComputer_Element:Arr_u8_64)
+																										{
+																										}
+																										Set_BsRt_Warning_Element(BsRt_Warning_Element:Arr_u8_32)
+																										{
+																										}
+																										Set_BsRt_RealTimeClock_Element(BsRt_RealTimeClock_Element:Arr_u8_48)
+																										{
+																										}
+																										Set_BsRt_Personalization_Element(BsRt_Personalization_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsRt_Illumination_Element(BsRt_Illumination_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsRt_CusDlt_Element(BsRt_CusDlt_Element:Arr_u8_128)
+																										{
+																										}
+																										Set_BsReten_Odometer_Element(BsReten_Odometer_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Gauges_Element(BsReten_Gauges_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Tripcomputer_Element(BsReten_Tripcomputer_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Illumination_Element(BsReten_Illumination_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Audio_Element(BsReten_Audio_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Warning_Element(BsReten_Warning_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_RealTimeClock_Element(BsReten_RealTimeClock_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Communication_Element(BsReten_Communication_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Personalization_Element(BsReten_Personalization_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_VisDlt_Element(BsReten_VisDlt_Element:Arr_u8_256)
+																										{
+																										}
+																										Set_BsReten_Power_Element(BsReten_Power_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsReten_Display_Element(BsReten_Display_Element:Arr_u8_100)
+																										{
+																										}
+																										Set_BsDiag_ErrorRecord_Element(BsDiag_ErrorRecord_Element:Arr_u8_1024)
+																										{
+																										}
+																										Set_BsDiag_Dtc_Element(BsDiag_Dtc_Element:Arr_u8_2048)
+																										{
+																										}
+																										call
+																											required
+																												Set_BsShare_SwUpdReflash_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_SwUpdFotaMode_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_SwUpdFotaFinPrint_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_SwUpdFotaStatus_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_SwUpdFotadecrypt_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_EcuPartNumber_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_VisMeet_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsShare_VehicleConfig_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_SpeedoGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_TachoGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_FuelGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_TempGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_PowerGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_OilGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_TripComputer_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_Illumination_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_Audio_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_Warning_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_Communication_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_Power_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_ServiceReminder_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsConst_EngOffTimer_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Warning_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Power_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Display_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Audio_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Communication_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFusa_Fota_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsFuSa_Config_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsCys_Certicificate_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_RefCys_Certicificate_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_RefCys_Certicificate1_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_Odometer_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_SpeedoGauge_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_TachoGauge_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_FuelGauge_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_TempGauge_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_PowerGauge_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_OilGauge_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_TripComputer_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_Warning_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_Personalization_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_Illumination_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsRt_CusDlt_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Odometer_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Gauges_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Tripcomputer_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Illumination_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Audio_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Warning_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Communication_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Personalization_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_VisDlt_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Power_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsReten_Display_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												Set_BsDiag_ErrorRecord_Element.CALL_CLNT_CLIENTMODE
+																												=
+																												A2TClientMode::A2TSynchronous
+																												Set_BsDiag_Dtc_Element.CALL_CLNT_CLIENTMODE =
+																												A2TClientMode::A2TSynchronous
+																												data
+																													provided
+																														any.DATA_SND_CAN_INVALIDATE =
+																														A2TBoolean::A2TFalse
+																														any.DATA_SND_IMPLICIT_SEND =
+																														A2TBoolean::A2TFalse
+																														required
+																															any.DATA_RCV_IMPLICIT_RECEIVE =
+																															A2TBoolean::A2TFalse
+																														}
+																														importable transportedInterface if_CS_MemAbsGet
+																														{
+																															Get_BsShare_SwUpdReflash_Element(out
+																															Ptr:Arr_u8_8):Std_ReturnType {
+																															}
+																															Get_BsShare_SwUpdFotaMode_Element(out
+																															Ptr:Arr_u8_16):Std_ReturnType {
+																															}
+																															Get_BsShare_SwUpdFotaFinPrint_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsShare_SwUpdFotaStatus_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsShare_SwUpdFotadecrypt_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsShare_EcuPartNumber_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsShare_VisMeet_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsShare_VehicleConfig_Element(out
+																															Ptr:Arr_u8_256):Std_ReturnType {
+																															}
+																															Get_BsConst_SpeedoGauge_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_TachoGauge_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_FuelGauge_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsConst_TempGauge_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_PowerGauge_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_OilGauge_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_TripComputer_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_Illumination_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsConst_Audio_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsConst_Warning_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_RealTimeClock_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsConst_Communication_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsConst_Power_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsConst_ServiceReminder_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsConst_EngOffTimer_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Warning_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Power_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Display_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Audio_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Communication_Element(out
+																															Ptr:Arr_u8_16):Std_ReturnType {
+																															}
+																															Get_BsFusa_Fota_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsFuSa_Config_Element(out
+																															Ptr:Arr_u8_16):Std_ReturnType {
+																															}
+																															Get_BsCys_Certicificate_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_RefCys_Certicificate_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_RefCys_Certicificate1_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsRt_Odometer_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsRt_SpeedoGauge_Element(out
+																															Ptr:Arr_u8_8):Std_ReturnType {
+																															}
+																															Get_BsRt_TachoGauge_Element(out
+																															Ptr:Arr_u8_16):Std_ReturnType {
+																															}
+																															Get_BsRt_FuelGauge_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsRt_TempGauge_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsRt_PowerGauge_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsRt_OilGauge_Element(out
+																															Ptr:Arr_u8_8):Std_ReturnType {
+																															}
+																															Get_BsRt_TripComputer_Element(out
+																															Ptr:Arr_u8_64):Std_ReturnType {
+																															}
+																															Get_BsRt_Warning_Element(out
+																															Ptr:Arr_u8_32):Std_ReturnType {
+																															}
+																															Get_BsRt_RealTimeClock_Element(out
+																															Ptr:Arr_u8_48):Std_ReturnType {
+																															}
+																															Get_BsRt_Personalization_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsRt_Illumination_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsRt_CusDlt_Element(out
+																															Ptr:Arr_u8_128):Std_ReturnType {
+																															}
+																															Get_BsReten_Odometer_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Gauges_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Tripcomputer_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Illumination_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Audio_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Warning_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_RealTimeClock_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Communication_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Personalization_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_VisDlt_Element(out
+																															Ptr:Arr_u8_256):Std_ReturnType {
+																															}
+																															Get_BsReten_Power_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsReten_Display_Element(out
+																															Ptr:Arr_u8_100):Std_ReturnType {
+																															}
+																															Get_BsDiag_ErrorRecord_Element(out
+																															Ptr:Arr_u8_1024):Std_ReturnType {
+																															}
+																															Get_BsDiag_Dtc_Element(out
+																															Ptr:Arr_u8_2048):Std_ReturnType {
+																															}
+																															call
+																																required
+																																	Get_BsShare_SwUpdReflash_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_SwUpdFotaMode_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_SwUpdFotaFinPrint_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_SwUpdFotaStatus_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_SwUpdFotadecrypt_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_EcuPartNumber_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_VisMeet_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsShare_VehicleConfig_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_SpeedoGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_TachoGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_FuelGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_TempGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_PowerGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_OilGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_TripComputer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_Illumination_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_Audio_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_Warning_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_Communication_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_Power_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_ServiceReminder_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsConst_EngOffTimer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Warning_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Power_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Display_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Audio_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Communication_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFusa_Fota_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsFuSa_Config_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsCys_Certicificate_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_RefCys_Certicificate_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_RefCys_Certicificate1_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_Odometer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_SpeedoGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_TachoGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_FuelGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_TempGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_PowerGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_OilGauge_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_TripComputer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_Warning_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_Personalization_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_Illumination_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsRt_CusDlt_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Odometer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Gauges_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Tripcomputer_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Illumination_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Audio_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Warning_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_RealTimeClock_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Communication_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Personalization_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_VisDlt_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Power_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsReten_Display_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsDiag_ErrorRecord_Element.CALL_CLNT_CLIENTMODE
+																																	=
+																																	A2TClientMode::A2TSynchronous
+																																	Get_BsDiag_Dtc_Element.CALL_CLNT_CLIENTMODE =
+																																	A2TClientMode::A2TSynchronous
+																																	data
+																																		provided
+																																			any.DATA_SND_CAN_INVALIDATE =
+																																			A2TBoolean::A2TFalse
+																																			any.DATA_SND_IMPLICIT_SEND =
+																																			A2TBoolean::A2TFalse
+																																			required
+																																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																																				A2TBoolean::A2TFalse
+																																			}
+																																			importable transportedInterface
+																																			if_SR_JobStatus {
+																																				JobStatus_BsShare_SwUpdReflash_Element:uint8
+																																				JobStatus_BsShare_SwUpdFotaMode_Element:uint8
+																																				JobStatus_BsShare_SwUpdFotaFinPrint_Element:uint8
+																																				JobStatus_BsShare_SwUpdFotaStatus_Element:uint8
+																																				JobStatus_BsShare_SwUpdFotadecrypt_Element:uint8
+																																				JobStatus_BsShare_EcuPartNumber_Element:uint8
+																																				JobStatus_BsShare_VisMeet_Element:uint8
+																																				JobStatus_BsShare_VehicleConfig_Element:uint8
+																																				JobStatus_BsConst_SpeedoGauge_Element:uint8
+																																				JobStatus_BsConst_TachoGauge_Element:uint8
+																																				JobStatus_BsConst_FuelGauge_Element:uint8
+																																				JobStatus_BsConst_TempGauge_Element:uint8
+																																				JobStatus_BsConst_PowerGauge_Element:uint8
+																																				JobStatus_BsConst_OilGauge_Element:uint8
+																																				JobStatus_BsConst_TripComputer_Element:uint8
+																																				JobStatus_BsConst_Illumination_Element:uint8
+																																				JobStatus_BsConst_Audio_Element:uint8
+																																				JobStatus_BsConst_Warning_Element:uint8
+																																				JobStatus_BsConst_RealTimeClock_Element:uint8
+																																				JobStatus_BsConst_Communication_Element:uint8
+																																				JobStatus_BsConst_Power_Element:uint8
+																																				JobStatus_BsConst_ServiceReminder_Element:uint8
+																																				JobStatus_BsConst_EngOffTimer_Element:uint8
+																																				JobStatus_BsFuSa_Warning_Element:uint8
+																																				JobStatus_BsFuSa_Power_Element:uint8
+																																				JobStatus_BsFuSa_Display_Element:uint8
+																																				JobStatus_BsFuSa_Audio_Element:uint8
+																																				JobStatus_BsFuSa_Communication_Element:uint8
+																																				JobStatus_BsFusa_Fota_Element:uint8
+																																				JobStatus_BsFuSa_Config_Element:uint8
+																																				JobStatus_BsCys_Certicificate_Element:uint8
+																																				JobStatus_RefCys_Certicificate_Element:uint8
+																																				JobStatus_RefCys_Certicificate1_Element:uint8
+																																				JobStatus_BsRt_Odometer_Element:uint8
+																																				JobStatus_BsRt_SpeedoGauge_Element:uint8
+																																				JobStatus_BsRt_TachoGauge_Element:uint8
+																																				JobStatus_BsRt_FuelGauge_Element:uint8
+																																				JobStatus_BsRt_TempGauge_Element:uint8
+																																				JobStatus_BsRt_PowerGauge_Element:uint8
+																																				JobStatus_BsRt_OilGauge_Element:uint8
+																																				JobStatus_BsRt_TripComputer_Element:uint8
+																																				JobStatus_BsRt_Warning_Element:uint8
+																																				JobStatus_BsRt_RealTimeClock_Element:uint8
+																																				JobStatus_BsRt_Personalization_Element:uint8
+																																				JobStatus_BsRt_Illumination_Element:uint8
+																																				JobStatus_BsRt_CusDlt_Element:uint8
+																																				JobStatus_BsReten_Odometer_Element:uint8
+																																				JobStatus_BsReten_Gauges_Element:uint8
+																																				JobStatus_BsReten_Tripcomputer_Element:uint8
+																																				JobStatus_BsReten_Illumination_Element:uint8
+																																				JobStatus_BsReten_Audio_Element:uint8
+																																				JobStatus_BsReten_Warning_Element:uint8
+																																				JobStatus_BsReten_RealTimeClock_Element:uint8
+																																				JobStatus_BsReten_Communication_Element:uint8
+																																				JobStatus_BsReten_Personalization_Element:uint8
+																																				JobStatus_BsReten_VisDlt_Element:uint8
+																																				JobStatus_BsReten_Power_Element:uint8
+																																				JobStatus_BsReten_Display_Element:uint8
+																																				JobStatus_BsDiag_ErrorRecord_Element:uint8
+																																				JobStatus_BsDiag_Dtc_Element:uint8
+																																				data
+																																					provided
+																																						any.DATA_SND_CAN_INVALIDATE =
+																																						A2TBoolean::A2TFalse
+																																						any.DATA_SND_IMPLICIT_SEND =
+																																						A2TBoolean::A2TFalse
+																																						required
+																																							any.DATA_RCV_IMPLICIT_RECEIVE =
+																																							A2TBoolean::A2TFalse
+																																						}
+																																						importable transportedInterface
+																																						if_CS_MemAbs_NvMWriteStatus {
+																																							NvmWriteStatus():Std_ReturnType {
+																																							}
+																																							call
+																																								required
+																																									NvmWriteStatus.CALL_CLNT_CLIENTMODE =
+																																									A2TClientMode::A2TSynchronous
+																																									data
+																																										provided
+																																											any.DATA_SND_CAN_INVALIDATE =
+																																											A2TBoolean::A2TFalse
+																																											any.DATA_SND_IMPLICIT_SEND =
+																																											A2TBoolean::A2TFalse
+																																											required
+																																												any.DATA_RCV_IMPLICIT_RECEIVE =
+																																												A2TBoolean::A2TFalse
+																																											}
+																																											package
+																																											E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.MemAbstractMdl.P_SWC_MemAbstract
+																																											
+
+
+																																											ExternalCode static class
+																																											S_MemAbstractMdl realizes
+																																											if_CS_MemAbsSet, if_CS_MemAbsGet,
+																																											if_SR_JobStatus,
+																																											if_CS_MemAbs_NvMWriteStatus {
+																																												attributes
+																																													cTimePeriod:uint8 =
+																																													10
+																																													runnables
+																																														NvmWriteStatus triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbs_NvMWriteStatus.NvmWriteStatus
+																																														}
+																																														noPortAccess
+																																														Get_BsShare_SwUpdReflash_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_SwUpdReflash_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_SwUpdReflash_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_SwUpdReflash_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_SwUpdReflash_Element
+																																														noPortAccess
+																																														Get_BsShare_SwUpdFotaMode_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_SwUpdFotaMode_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_SwUpdFotaMode_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_SwUpdFotaMode_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_SwUpdFotaMode_Element
+																																														noPortAccess
+																																														Get_BsShare_SwUpdFotaFinPrint_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_SwUpdFotaFinPrint_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_SwUpdFotaFinPrint_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_SwUpdFotaFinPrint_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_SwUpdFotaFinPrint_Element
+																																														noPortAccess
+																																														Get_BsShare_SwUpdFotaStatus_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_SwUpdFotaStatus_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_SwUpdFotaStatus_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_SwUpdFotaStatus_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_SwUpdFotaStatus_Element
+																																														noPortAccess
+																																														Get_BsShare_SwUpdFotadecrypt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_SwUpdFotadecrypt_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_SwUpdFotadecrypt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_SwUpdFotadecrypt_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_SwUpdFotadecrypt_Element
+																																														noPortAccess
+																																														Get_BsShare_EcuPartNumber_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_EcuPartNumber_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_EcuPartNumber_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_EcuPartNumber_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_EcuPartNumber_Element
+																																														noPortAccess
+																																														Get_BsShare_VisMeet_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_VisMeet_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_VisMeet_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_VisMeet_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_VisMeet_Element
+																																														noPortAccess
+																																														Get_BsShare_VehicleConfig_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsShare_VehicleConfig_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsShare_VehicleConfig_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsShare_VehicleConfig_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsShare_VehicleConfig_Element
+																																														noPortAccess
+																																														Get_BsConst_SpeedoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_SpeedoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_SpeedoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_SpeedoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_SpeedoGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_TachoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_TachoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_TachoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_TachoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_TachoGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_FuelGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_FuelGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_FuelGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_FuelGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_FuelGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_TempGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_TempGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_TempGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_TempGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_TempGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_PowerGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_PowerGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_PowerGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_PowerGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_PowerGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_OilGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_OilGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_OilGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_OilGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_OilGauge_Element
+																																														noPortAccess
+																																														Get_BsConst_TripComputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_TripComputer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_TripComputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_TripComputer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_TripComputer_Element
+																																														noPortAccess
+																																														Get_BsConst_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_Illumination_Element
+																																														noPortAccess
+																																														Get_BsConst_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_Audio_Element
+																																														noPortAccess
+																																														Get_BsConst_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_Warning_Element
+																																														noPortAccess
+																																														Get_BsConst_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_RealTimeClock_Element
+																																														noPortAccess
+																																														Get_BsConst_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_Communication_Element
+																																														noPortAccess
+																																														Get_BsConst_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_Power_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_Power_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_Power_Element
+																																														noPortAccess
+																																														Get_BsConst_ServiceReminder_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_ServiceReminder_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_ServiceReminder_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_ServiceReminder_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_ServiceReminder_Element
+																																														noPortAccess
+																																														Get_BsConst_EngOffTimer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsConst_EngOffTimer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsConst_EngOffTimer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsConst_EngOffTimer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsConst_EngOffTimer_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Warning_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Power_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Power_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Power_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Display_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Display_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Display_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Display_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Display_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Audio_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Communication_Element
+																																														noPortAccess
+																																														Get_BsFusa_Fota_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFusa_Fota_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFusa_Fota_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFusa_Fota_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFusa_Fota_Element
+																																														noPortAccess
+																																														Get_BsFuSa_Config_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsFuSa_Config_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsFuSa_Config_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsFuSa_Config_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsFuSa_Config_Element
+																																														noPortAccess
+																																														Get_BsCys_Certicificate_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsCys_Certicificate_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsCys_Certicificate_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsCys_Certicificate_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsCys_Certicificate_Element
+																																														noPortAccess
+																																														Get_RefCys_Certicificate_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_RefCys_Certicificate_Element
+																																														}
+																																														noPortAccess
+																																														Set_RefCys_Certicificate_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_RefCys_Certicificate_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_RefCys_Certicificate_Element
+																																														noPortAccess
+																																														Get_RefCys_Certicificate1_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_RefCys_Certicificate1_Element
+																																														}
+																																														noPortAccess
+																																														Set_RefCys_Certicificate1_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_RefCys_Certicificate1_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_RefCys_Certicificate1_Element
+																																														noPortAccess
+																																														Get_BsRt_Odometer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_Odometer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_Odometer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_Odometer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_Odometer_Element
+																																														noPortAccess
+																																														Get_BsRt_SpeedoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_SpeedoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_SpeedoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_SpeedoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_SpeedoGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_TachoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_TachoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_TachoGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_TachoGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_TachoGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_FuelGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_FuelGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_FuelGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_FuelGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_FuelGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_TempGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_TempGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_TempGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_TempGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_TempGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_PowerGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_PowerGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_PowerGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_PowerGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_PowerGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_OilGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_OilGauge_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_OilGauge_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_OilGauge_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_OilGauge_Element
+																																														noPortAccess
+																																														Get_BsRt_TripComputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_TripComputer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_TripComputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_TripComputer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_TripComputer_Element
+																																														noPortAccess
+																																														Get_BsRt_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_Warning_Element
+																																														noPortAccess
+																																														Get_BsRt_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_RealTimeClock_Element
+																																														noPortAccess
+																																														Get_BsRt_Personalization_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_Personalization_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_Personalization_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_Personalization_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_Personalization_Element
+																																														noPortAccess
+																																														Get_BsRt_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_Illumination_Element
+																																														noPortAccess
+																																														Get_BsRt_CusDlt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsRt_CusDlt_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsRt_CusDlt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsRt_CusDlt_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsRt_CusDlt_Element
+																																														noPortAccess
+																																														Get_BsReten_Odometer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Odometer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Odometer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Odometer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Odometer_Element
+																																														noPortAccess
+																																														Get_BsReten_Gauges_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Gauges_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Gauges_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Gauges_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Gauges_Element
+																																														noPortAccess
+																																														Get_BsReten_Tripcomputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Tripcomputer_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Tripcomputer_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Tripcomputer_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Tripcomputer_Element
+																																														noPortAccess
+																																														Get_BsReten_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Illumination_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Illumination_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Illumination_Element
+																																														noPortAccess
+																																														Get_BsReten_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Audio_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Audio_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Audio_Element
+																																														noPortAccess
+																																														Get_BsReten_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Warning_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Warning_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Warning_Element
+																																														noPortAccess
+																																														Get_BsReten_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_RealTimeClock_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_RealTimeClock_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_RealTimeClock_Element
+																																														noPortAccess
+																																														Get_BsReten_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Communication_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Communication_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Communication_Element
+																																														noPortAccess
+																																														Get_BsReten_Personalization_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Personalization_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Personalization_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Personalization_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Personalization_Element
+																																														noPortAccess
+																																														Get_BsReten_VisDlt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_VisDlt_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_VisDlt_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_VisDlt_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_VisDlt_Element
+																																														noPortAccess
+																																														Get_BsReten_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Power_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Power_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Power_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Power_Element
+																																														noPortAccess
+																																														Get_BsReten_Display_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsReten_Display_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsReten_Display_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsReten_Display_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsReten_Display_Element
+																																														noPortAccess
+																																														Get_BsDiag_ErrorRecord_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsDiag_ErrorRecord_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsDiag_ErrorRecord_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsDiag_ErrorRecord_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsDiag_ErrorRecord_Element
+																																														noPortAccess
+																																														Get_BsDiag_Dtc_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsGet.Get_BsDiag_Dtc_Element
+																																														}
+																																														noPortAccess
+																																														Set_BsDiag_Dtc_Element
+																																														triggeredBy {
+																																															OperationInvokeEvent
+																																															if_CS_MemAbsSet.Set_BsDiag_Dtc_Element
+																																														}
+																																														noPortAccess
+																																														Get_Default_BsDiag_Dtc_Element
+																																														noPortAccess MainFunction
+																																														triggeredBy {
+																																															TimingEvent cTimePeriod
+																																														}
+																																												}

@@ -1,0 +1,82 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.RTCCdd.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.RTCCdd.P_RTC_Cdd.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_IOHWAB.P_SWC_IOHWAB.*
+
+
+
+																									package
+																									E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.RTCCdd
+
+																									stereotype DesignUnit
+																									
+
+
+																									unique allocatable RTC_Cdd swcName = RtcCdd {
+																										compositions
+																											CRtcCdd:S_CRtcCdd
+																										ports
+																											pp_CmpLibCmd_CRTCCdd:provided if_CS_ModeOnCommand
+																											pp_CS_TIRtcServices:provided if_CS_TIRtcServices
+																											rp_CS_IoHwAb_ADC:required TI_IOHWAB_GetAdc
+																											rp_IoHwAb_Din:required TI_IOHWAB_GetDIn
+																											rp_IoHwAb_DOut:required TI_IOHWAB_SetDout
+																									}
+
+																									package
+																									E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.RTCCdd.P_RTC_Cdd
+
+																									ExternalCode static class S_CRtcCdd realizes
+																									if_CS_ModeOnCommand, if_CS_TIRtcServices {
+																										attributes
+																											ClockTimeProcessing:uint8 =
+																											10
+																											runnables
+																												CRtcCdd_Impl_OnCommand fixedMethodApi noPortAccess
+																												CRtcCdd_Impl_MainFunction fixedMethodApi
+																												triggeredBy {
+																													TimingEvent ClockTimeProcessing
+																												}
+																												RtcCdd_SetTime fixedMethodApi triggeredBy {
+																													OperationInvokeEvent
+																													if_CS_TIRtcServices.RtcCdd_SetTime
+																												}
+																												noPortAccess RtcCdd_GetTime fixedMethodApi
+																												triggeredBy {
+																													OperationInvokeEvent
+																													if_CS_TIRtcServices.RtcCdd_GetTime
+																												}
+																												noPortAccess RtcCdd_SetAlarm fixedMethodApi
+																												triggeredBy {
+																													OperationInvokeEvent
+																													if_CS_TIRtcServices.RtcCdd_SetAlarm
+																												}
+																												noPortAccess RtcCdd_ClearAlarm fixedMethodApi
+																												triggeredBy {
+																													OperationInvokeEvent
+																													if_CS_TIRtcServices.RtcCdd_ClearAlarm
+																												}
+																												noPortAccess
+																										}

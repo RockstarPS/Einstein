@@ -1,0 +1,128 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DcmExt.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DcmExt.P_SWC_DcmExt.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																			package
+																			E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DcmExt
+
+																			stereotype DesignUnit
+																			
+
+
+																			unique allocatable SWC_DcmExt swcName = DcmExt {
+																				compositions
+																					DcmExt:S_DcmExt
+																				ports
+																					pp_CS_DcmExt_SecLevel1CmpKey:provided
+																					TI_DcmExt_SecLevel1CmpKey
+																					pp_CS_DcmExt_SecLevel1GetSeed:provided
+																					TI_DcmExt_SecLevel1GetSeed
+																					pp_CS_DcmExt_Service_Iocontrol:provided
+																					TI_DcmExt_Service_Iocontrol
+																					pp_CS_DcmExt_Services_CndChk:provided
+																					TI_DcmExt_Services_CndChk
+																					pp_CS_DcmExt_Services_DataRead:provided
+																					TI_DcmExt_Services_DataRead
+																					pp_CS_DcmExt_Services_DataWrite:provided
+																					TI_DcmExt_Services_DataWrite
+																					pp_CS_DcmExt_Services_LenChk:provided
+																					TI_DcmExt_Services_LenChk
+																					pp_CS_DcmExt_Services_RoutineResults:provided
+																					TI_DcmExt_Services_RoutineResults
+																					pp_CS_DcmExt_Services_RoutineStart:provided
+																					TI_DcmExt_Services_RoutineStart
+																					pp_CS_DcmExt_Services_RoutineStop:provided
+																					TI_DcmExt_Services_RoutineStop
+																					pp_CS_DcmExt_Confirmation:provided TI_DcmExt_Confirmation
+																			}
+
+																			package
+																			E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_DcmExt.P_SWC_DcmExt
+
+																			ExternalCode static class S_DcmExt realizes
+																			TI_DcmExt_SecLevel1CmpKey, TI_DcmExt_SecLevel1GetSeed,
+																			TI_DcmExt_Service_Iocontrol, TI_DcmExt_Services_CndChk,
+																			TI_DcmExt_Services_DataRead, TI_DcmExt_Services_DataWrite,
+																			TI_DcmExt_Services_LenChk,
+																			TI_DcmExt_Services_RoutineResults,
+																			TI_DcmExt_Services_RoutineStart,
+																			TI_DcmExt_Services_RoutineStop, TI_DI_Did_Diag_Action,
+																			TI_DI_Rid_Diag_Action, TI_DcmExt_Confirmation {
+																				attributes
+																					cTimePeriod:uint8 =
+																					10
+																					runnables
+																						DcmExt_Init fixedMethodApi DcmExt_Services_DataRead
+																						fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_DataRead.DcmExt_Services_DataRead
+																						}
+																						DcmExt_Services_LenChk fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_LenChk.DcmExt_Services_LenChk
+																						}
+																						DcmExt_Services_DataWrite fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_DataWrite.DcmExt_Services_DataWrite
+																						}
+																						DcmExt_Services_CndChk fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_CndChk.DcmExt_Services_CndChk
+																						}
+																						DcmExt_Service_Iocontrol fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Service_Iocontrol.DcmExt_Service_Iocontrol
+																						}
+																						DcmExt_Services_RoutineStart fixedMethodApi triggeredBy
+																						{
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_RoutineStart.DcmExt_Services_RoutineStart
+																						}
+																						DcmExt_Services_RoutineStop fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_RoutineStop.DcmExt_Services_RoutineStop
+																						}
+																						DcmExt_Services_RoutineResults fixedMethodApi
+																						triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Services_RoutineResults.DcmExt_Services_RoutineResults
+																						}
+																						MainFunction triggeredBy {
+																							TimingEvent cTimePeriod
+																						}
+																						DcmExt_SecLevel1GetSeed fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_SecLevel1GetSeed.DcmExt_SecLevel1GetSeed
+																						}
+																						DcmExt_SecLevel1CmpKey fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_SecLevel1CmpKey.DcmExt_SecLevel1CmpKey
+																						}
+																						DcmExt_Confirmation fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DcmExt_Confirmation.DcmExt_Confirmation
+																						}
+																						DI_Did_Diag_Action fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DI_Did_Diag_Action.DI_Did_Diag_Action
+																						}
+																						DI_Rid_Diag_Action fixedMethodApi triggeredBy {
+																							OperationInvokeEvent
+																							TI_DI_Rid_Diag_Action.DI_Rid_Diag_Action
+																						}
+																				}

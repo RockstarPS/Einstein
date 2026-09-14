@@ -1,0 +1,564 @@
+/**********************************************************************************************************************
+ *  COPYRIGHT
+ *  -------------------------------------------------------------------------------------------------------------------
+ *
+ *                This software is copyright protected and proprietary to Vector Informatik GmbH.
+ *                Vector Informatik GmbH grants to you only those rights as set out in the license conditions.
+ *                All other rights remain with Vector Informatik GmbH.
+ *  -------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  -------------------------------------------------------------------------------------------------------------------
+ *          File:  Rte.oil
+ *        Config:  BMW.dpa
+ *   ECU-Project:  EcuInstance
+ *
+ *     Generator:  MICROSAR RTE Generator Version 4.19.0
+ *                 RTE Core Version 1.19.0
+ *       License:  CBD1800851
+ *
+ *   Description:  OIL-File containing project specific OS definitions for the MICROSAR RTE
+ *********************************************************************************************************************/
+
+/**********************************************************************************************************************
+ *                                              P L E A S E   N O T E
+ *
+ * The attributes in this file must not be changed. Missing mandatory attributes must be set in the including file.
+ * They are presented as a comment in the corresponding object definition containing a list of all legal values.
+ *********************************************************************************************************************/
+
+   TASK OsTask_AppFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 15:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_AppTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_AppFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_AudioFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 11:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_AudioTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_AudioFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_CANFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 0:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_CANFun_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_CANFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_CddFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 2:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Cyclic_OsTask_CddFun_0_10ms:"@RO@";
+      EVENT = Rte_Ev_Cyclic_OsTask_CddFun_0_5ms:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_CddFun_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_CddFun;
+         EVENT = Rte_Ev_Cyclic_OsTask_CddFun_0_10ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_CddFun_0_5ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_CddFun;
+         EVENT = Rte_Ev_Cyclic_OsTask_CddFun_0_5ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_Diagnostics {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 18:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Cyclic2_OsTask_Diagnostics_0_10ms:"@RO@";
+      EVENT = Rte_Ev_Cyclic_OsTask_Diagnostics_0_100ms:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE2_OsTask_Diagnostics_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_Diagnostics;
+         EVENT = Rte_Ev_Cyclic2_OsTask_Diagnostics_0_10ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_Diagnostics_0_100ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_Diagnostics;
+         EVENT = Rte_Ev_Cyclic_OsTask_Diagnostics_0_100ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_EthFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 7:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_EthFun_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_EthFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_FotaFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 16:"@RO@";
+      SCHEDULE = FULL:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_FotaTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_FotaFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_GaugeFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 9:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_GaugeTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_GaugeFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_Graphics {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 17:"@RO@";
+      SCHEDULE = FULL:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Run_Test_Comp_GraphicsTaskStubRunnable:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_GraphicsTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_Graphics;
+         EVENT = Rte_Ev_Run_Test_Comp_GraphicsTaskStubRunnable;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_IndFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 12:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_IndTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_IndFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_LinFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 10:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_LinTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_LinFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_Mcal {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 5:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_Mcal_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_Mcal;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_MemSer {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 4:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Cyclic2_OsTask_MemSer_0_10ms:"@RO@";
+      EVENT = Rte_Ev_Cyclic_OsTask_MemSer_0_10ms:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnExtendShutdownTime:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthDumpData:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthDumpHdrInfo:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthFatalError:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHeartBeat:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnKeepSystemAwake:"@RO@";
+      EVENT = Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnPowerSystemState:"@RO@";
+      EVENT = Rte_Ev_Run_Ea_Ea_MainFunction:"@RO@";
+      EVENT = Rte_Ev_Run_NvBlockSwComponentType_NvBlockSwComponentTypeRunnable:"@RO@";
+      EVENT = Rte_Ev_Run_UclProxyCdd_CUclProxyCdd_Impl_MainFunction:"@RO@";
+      EVENT = Rte_Ev_Run_UclProxyCdd_OnDre_HealthDumpGetData:"@RO@";
+      EVENT = Rte_Ev_Run_UclProxyCdd_OnDre_HealthDumpGetHdr:"@RO@";
+      EVENT = Rte_Ev_Run_UclProxyCdd_OnDre_PowerSystemStateReqChange:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE2_OsTask_MemSer_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_MemSer;
+         EVENT = Rte_Ev_Cyclic2_OsTask_MemSer_0_10ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Ea_Ea_MainFunction {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_MemSer;
+         EVENT = Rte_Ev_Run_Ea_Ea_MainFunction;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_OsTask_MemSer_0_10ms {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_MemSer;
+         EVENT = Rte_Ev_Cyclic_OsTask_MemSer_0_10ms;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_UclProxyCdd_CUclProxyCdd_Impl_MainFunction {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_MemSer;
+         EVENT = Rte_Ev_Run_UclProxyCdd_CUclProxyCdd_Impl_MainFunction;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_ModeMgt {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 1:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_IoExp_MainFunction {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_ModeMgt;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_NvmSpeedup {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 0:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+      EVENT = Rte_Ev_Run_NvMExt_NvMExt_SpeedupRunnable:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_NvMExt_NvMExt_SpeedupRunnable {
+      COUNTER = SystemTimer;
+      ACTION = SETEVENT
+      {
+         TASK = OsTask_NvmSpeedup;
+         EVENT = Rte_Ev_Run_NvMExt_NvMExt_SpeedupRunnable;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_SafeFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 8:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_TxRxIpcMessage {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_SafeFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_TripFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 14:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_TripTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_TripFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_WarnFun {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 13:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_WarnTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_WarnFun;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   TASK OsTask_WdgMngt {
+      ACTIVATION = 1:"@RO@";
+      PRIORITY = 3:"@RO@";
+      SCHEDULE = NON:"@RO@";
+// TIMING_PROTECTION = FALSE|TRUE; (AUTOSAR OS only)
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   ALARM Rte_Al_TE_Test_Comp_WdgMgntTaskStubRunnable {
+      COUNTER = SystemTimer;
+      ACTION = ACTIVATETASK
+      {
+         TASK = OsTask_WdgMngt;
+      }:"@ROC@";
+      AUTOSTART = FALSE:"@RO@";
+   }:"@RO@@NR@";
+
+   EVENT Rte_Ev_Cyclic2_OsTask_Diagnostics_0_10ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic2_OsTask_MemSer_0_10ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic_OsTask_CddFun_0_10ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic_OsTask_CddFun_0_5ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic_OsTask_Diagnostics_0_100ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Cyclic_OsTask_MemSer_0_10ms {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnExtendShutdownTime {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthDumpData {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthDumpHdrInfo {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHealthFatalError {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnHeartBeat {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnKeepSystemAwake {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_DmnMgr_DmnMgr_MonitorDmnPowerSystemState {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_Ea_Ea_MainFunction {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_NvBlockSwComponentType_NvBlockSwComponentTypeRunnable {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_NvMExt_NvMExt_SpeedupRunnable {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_Test_Comp_GraphicsTaskStubRunnable {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_UclProxyCdd_CUclProxyCdd_Impl_MainFunction {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_UclProxyCdd_OnDre_HealthDumpGetData {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_UclProxyCdd_OnDre_HealthDumpGetHdr {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+   EVENT Rte_Ev_Run_UclProxyCdd_OnDre_PowerSystemStateReqChange {
+      MASK = AUTO;
+   }:"@ROC@@NR@";
+
+
+   APPLICATION SystemApplication_OsCore0 {
+      TRUSTED = TRUE;
+// Add the following four attributes according to your needs.
+// Note: They do not have a default value and are therefore necessary in the configuration.
+//      STARTUPHOOK = FALSE;
+//      SHUTDOWNHOOK = FALSE;
+//      ERRORHOOK = FALSE;
+//      HAS_RESTARTTASK = FALSE;
+      TASK = OsTask_AppFun;
+      ALARM = Rte_Al_TE_Test_Comp_AppTaskStubRunnable;
+      TASK = OsTask_AudioFun;
+      ALARM = Rte_Al_TE_Test_Comp_AudioTaskStubRunnable;
+      TASK = OsTask_CANFun;
+      ALARM = Rte_Al_TE_OsTask_CANFun_0_10ms;
+      TASK = OsTask_CddFun;
+      ALARM = Rte_Al_TE_OsTask_CddFun_0_10ms;
+      ALARM = Rte_Al_TE_OsTask_CddFun_0_5ms;
+      TASK = OsTask_Diagnostics;
+      ALARM = Rte_Al_TE2_OsTask_Diagnostics_0_10ms;
+      ALARM = Rte_Al_TE_OsTask_Diagnostics_0_100ms;
+      TASK = OsTask_EthFun;
+      ALARM = Rte_Al_TE_OsTask_EthFun_0_10ms;
+      TASK = OsTask_FotaFun;
+      ALARM = Rte_Al_TE_Test_Comp_FotaTaskStubRunnable;
+      TASK = OsTask_GaugeFun;
+      ALARM = Rte_Al_TE_Test_Comp_GaugeTaskStubRunnable;
+      TASK = OsTask_Graphics;
+      ALARM = Rte_Al_TE_Test_Comp_GraphicsTaskStubRunnable;
+      TASK = OsTask_IndFun;
+      ALARM = Rte_Al_TE_Test_Comp_IndTaskStubRunnable;
+      TASK = OsTask_LinFun;
+      ALARM = Rte_Al_TE_Test_Comp_LinTaskStubRunnable;
+      TASK = OsTask_Mcal;
+      ALARM = Rte_Al_TE_OsTask_Mcal_0_10ms;
+      TASK = OsTask_MemSer;
+      ALARM = Rte_Al_TE2_OsTask_MemSer_0_10ms;
+      ALARM = Rte_Al_TE_Ea_Ea_MainFunction;
+      ALARM = Rte_Al_TE_OsTask_MemSer_0_10ms;
+      ALARM = Rte_Al_TE_UclProxyCdd_CUclProxyCdd_Impl_MainFunction;
+      TASK = OsTask_ModeMgt;
+      ALARM = Rte_Al_TE_Test_Comp_IoExp_MainFunction;
+      TASK = OsTask_NvmSpeedup;
+      ALARM = Rte_Al_TE_NvMExt_NvMExt_SpeedupRunnable;
+      TASK = OsTask_SafeFun;
+      ALARM = Rte_Al_TE_Test_Comp_TxRxIpcMessage;
+      TASK = OsTask_TripFun;
+      ALARM = Rte_Al_TE_Test_Comp_TripTaskStubRunnable;
+      TASK = OsTask_WarnFun;
+      ALARM = Rte_Al_TE_Test_Comp_WarnTaskStubRunnable;
+      TASK = OsTask_WdgMngt;
+      ALARM = Rte_Al_TE_Test_Comp_WdgMgntTaskStubRunnable;
+  };

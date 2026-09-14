@@ -1,0 +1,1896 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.P_UCL_PROXY_CDD.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																																												package
+																																												E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd
+
+																																												stereotype HLR
+																																												type data_u8_4[0..255] from
+																																												uint8[4]
+																																												type data_u8_12[0..255] from
+																																												uint8[12]
+																																												type data_u8_70[0..255] from
+																																												uint8[70]
+
+																																												type EGaugeUnit enum {
+																																													EGaugeUnit_Mph
+																																													EGaugeUnit_Kmph = 1
+																																													EGaugeUnit_Centigrade = 2
+																																													EGaugeUnit_Farenheit = 3
+																																													EGaugeUnit_Psi = 4
+																																													EGaugeUnit_Pa = 5
+																																													EGaugeUnit_Bar = 6
+																																													EGaugeUnit_Last = 7
+																																												}
+
+																																												type EDomainId enum {
+																																													EDomainId_VP
+																																													EDomainId_Cluster = 1
+																																													EDomainId_IVI = 2
+																																													EDomainId_Last = 3
+																																												}
+
+																																												type ESystemState enum {
+																																													ESystemState_Off
+																																													ESystemState_Startup = 1
+																																													ESystemState_Up = 2
+																																													ESystemState_FullRun = 3
+																																													ESystemState_PrepareShutdown = 4
+																																													ESystemState_Minimal = 5
+																																													ESystemState_Shutdown = 6
+																																													ESystemState_Last = 7
+																																												}
+
+																																												type ECompState enum {
+																																													ECompState_Init
+																																													ECompState_Start = 1
+																																													ECompState_Run = 2
+																																													ECompState_Stop = 3
+																																													ECompState_Shutdown = 4
+																																													ECompState_Last = 5
+																																												}
+
+																																												type SGaugeInfo struct {
+																																													id:uint8
+																																													position:uint16
+																																													digitalData:sint32
+																																													unit:EGaugeUnit
+																																													dynData:uint16
+																																												}
+
+																																												type SWarningDisplay struct {
+																																													show:uint8
+																																													warningId:uint16
+																																													dynData:data_u8_4
+																																												}
+
+																																												type SPowerSystemState struct {
+																																													domainId:EDomainId
+																																													state:ESystemState
+																																												}
+
+																																												type SPowerExtendShutdownTime
+																																												struct {
+																																													domainId:EDomainId
+																																													timeoutMs:uint32
+																																												}
+
+																																												type SPowerKeepSystemAwake struct
+																																												{
+																																													domainId:EDomainId
+																																													timeoutMs:uint32
+																																												}
+
+																																												type SHealthDomainHeartbeat struct
+																																												{
+																																													domainId:EDomainId
+																																													seqCnt:uint32
+																																												}
+
+																																												type SHealthDomainFatalError
+																																												struct {
+																																													domainId:EDomainId
+																																													compldx:uint32
+																																												}
+
+																																												type SHealthDumpHdrInfo struct {
+																																													fileSize:uint32
+																																												}
+
+																																												type data_u8_32[0..255] from
+																																												uint8[32]
+
+																																												type SHealthDumpData struct {
+																																													chunkSize:uint32
+																																													^data:data_u8_32
+																																												}
+
+																																												type data_u8_8[0..255] from
+																																												uint8[8]
+
+																																												type SHealthEventRecord struct {
+																																													recordType:uint8
+																																													recordLen:uint8
+																																													recordData:data_u8_8
+																																												}
+
+																																												type SPowerSystemStateReqChange
+																																												struct {
+																																													state:ESystemState
+																																													domainId:EDomainId
+																																												}
+
+																																												type SHealthDumpGetHdr struct {
+																																													encrypt:uint8
+																																												}
+
+																																												type SHealthDumpGetData struct {
+																																													reserved:uint8
+																																												}
+
+																																												type data_u8_20[0..255] from
+																																												uint8[20]
+
+																																												type SWarningExtDisplay struct {
+																																													show:uint8
+																																													warningId:uint16
+																																													dynData:data_u8_20
+																																												}
+
+																																												type data_u8_35[0..255] from
+																																												uint8[35]
+
+																																												type SRTT_Status struct {
+																																													mask:data_u8_35
+																																												}
+
+																																												type STT_Status struct {
+																																													mask:data_u8_12
+																																												}
+
+																																												type SRTT_Toggle struct {
+																																													positions:uint8
+																																													display:uint8
+																																												}
+
+																																												type SFRTT_Status struct {
+																																													mask:data_u8_35
+																																												}
+
+																																												type SSlowGuageInfo struct {
+																																													gaugeInfo:SGaugeInfo
+																																												}
+
+																																												type SFastGuageInfo struct {
+																																													gaugeInfo_4:SGaugeInfo
+																																												}
+
+																																												type SKeyVal1 struct {
+																																													key:uint8
+																																													value:uint8
+																																												}
+
+																																												type SWarningStatus struct {
+																																													visible:uint8
+																																													warningId:uint16
+																																													dynData:SKeyVal1
+																																												}
+
+																																												type SWarningDisplayAvailable
+																																												struct {
+																																													status:uint8
+																																												}
+
+																																												type ECompassValue enum {
+																																													ECompassValue_Off
+																																													ECompassValue_N = 1
+																																													ECompassValue_NE = 2
+																																													ECompassValue_E = 3
+																																													ECompassValue_SE = 4
+																																													ECompassValue_S = 5
+																																													ECompassValue_SW = 6
+																																													ECompassValue_W = 7
+																																													ECompassValue_NW = 8
+																																													ECompassValue_Last = 9
+																																												}
+
+																																												type SCompassInfo struct {
+																																													gpsCoordinatesLatDegDec:uint32
+																																													gpsCoordinatesLongDegDec:uint32
+																																													altitude:uint16
+																																													gpsCoordinatesLatDegInt:uint8
+																																													gpsCoordinatesLongDegInt:uint8
+																																													gpsCoordinatesLatLongHemispheres:uint8
+																																													compassDistance:ECompassValue
+																																												}
+
+																																												type EOdoStatus enum {
+																																													EOdoStatus_Ok
+																																													EOdoStatus_NVMError = 1
+																																													EOdoStatus_Missing = 2
+																																													EOdoStatus_Invalid = 4
+																																													EOdoStatus_DispDashes = 8
+																																													EOdoStatus_DispError = 16
+																																												}
+
+																																												type SOdometer struct {
+																																													status:EOdoStatus
+																																													value:uint32
+																																													unit:uint8
+																																												}
+
+																																												type SPersRecord1byte struct {
+																																													data_10:SKeyVal1
+																																												}
+
+																																												type SKeyVal8 struct {
+																																													key:uint8
+																																													value:data_u8_8
+																																												}
+
+																																												type SKeyVal4 struct {
+																																													key:uint8
+																																													value:data_u8_4
+																																												}
+
+																																												type SPersRecord4byte struct {
+																																													data_5:SKeyVal4
+																																												}
+
+																																												type SPersRecord8byte struct {
+																																													data_2:SKeyVal8
+																																												}
+
+																																												type SPersRecord struct {
+																																													^data:SKeyVal8
+																																												}
+
+																																												type SDateTime struct {
+																																													year:uint16
+																																													month:uint8
+																																													day:uint8
+																																													hour:uint8
+																																													min:uint8
+																																													sec:uint8
+																																												}
+
+																																												type SRTC struct {
+																																													dateTime:SDateTime
+																																												}
+
+																																												type data_u8_10[0..255] from
+																																												uint8[10]
+																																												type data_u8_17[0..255] from
+																																												uint8[17]
+
+																																												type SGearStatus struct {
+																																													safeEprndlData:data_u8_17
+																																												}
+
+																																												type ETrip enum {
+																																													ETrip_A
+																																													ETrip_B = 1
+																																													ETrip_DC = 2
+																																													ETrip_Last = 3
+																																												}
+
+																																												type STripComputer struct {
+																																													tripId:ETrip
+																																													hour:uint8
+																																													minute:uint8
+																																													second:uint8
+																																													distance:uint32
+																																													distanceEV:uint32
+																																													distanceUnit:uint8
+																																													avgFuel:uint16
+																																													avgFuelEV:uint16
+																																													avgSpeed:uint16
+																																													avgElectricEfficiency:uint16
+																																													valid:uint8
+																																													avgFuelLPG:uint16
+																																												}
+
+																																												type EFuelEconomy enum {
+																																													EFuelEconomy_None
+																																													EFuelEconomy_DTE = 1
+																																													EFuelEconomy_IFE = 2
+																																													EFuelEconomy_IFETBS = 3
+																																													EFuelEconomy_AFE_A = 4
+																																													EFuelEconomy_AFE_B = 5
+																																													EFuelEconomy_FEH = 6
+																																													EFuelEconomy_DCFE = 7
+																																													EFuelEconomy_eDCFE = 8
+																																													EFuelEconomy_LTFE = 9
+																																													EFuelEconomy_eLTFE = 10
+																																													EFuelEconomy_RAFE = 11
+																																													EFuelEconomy_DCAEE = 12
+																																													EFuelEconomy_Last = 13
+																																												}
+
+																																												type data_u8_5[0..255] from
+																																												uint8[5]
+
+																																												type SFuelEconomy struct {
+																																													feType:EFuelEconomy
+																																													value:uint16
+																																													valid:uint8
+																																													dynData:data_u8_8
+																																												}
+
+																																												type STripResetCmd struct {
+																																													tripCmdId:uint16
+																																												}
+
+																																												type EDidType enum {
+																																													EDidType_Read
+																																													EDidType_Write = 1
+																																													EDidType_Last = 2
+																																												}
+
+																																												type data_u8_256[0..255] from
+																																												uint8[256]
+
+																																												type SDiagDIDRequest struct {
+																																													did:uint16
+																																													didType:EDidType
+																																													dataLen:uint16
+																																													^data:data_u8_256
+																																												}
+
+																																												type ERoutineType enum {
+																																													ERoutineType_Start
+																																													ERoutineType_Stop = 1
+																																													ERoutineType_QueryResults = 2
+																																													ERoutineType_Last = 3
+																																												}
+
+																																												type SDiagRoutineRequest struct {
+																																													routineId:uint16
+																																													routineType:ERoutineType
+																																													dataLen:uint16
+																																													^data:data_u8_256
+																																												}
+
+																																												type EIOCtrlOptType enum {
+																																													EIOCtrlOptType_returnControlToECU
+																																													EIOCtrlOptType_resetToDefault = 1
+																																													EIOCtrlOptType_freezeCurrentState
+																																													= 2
+																																													EIOCtrlOptType_shortTermAdjustment
+																																													= 3
+																																													EIOCtrlOptType_Last = 4
+																																												}
+
+																																												type SDiagIOCtrlRequest struct {
+																																													did:uint16
+																																													optionCtrl:EIOCtrlOptType
+																																													dataLen:uint16
+																																													^data:data_u8_256
+																																												}
+
+																																												type SDiagResponse struct {
+																																													responseCode:uint8
+																																													dataLen:uint16
+																																													^data:data_u8_256
+																																												}
+
+																																												type data_u8_2[0..255] from
+																																												uint8[2]
+
+																																												type SKeyVal2 struct {
+																																													key:uint8
+																																													value:data_u8_2
+																																												}
+
+																																												type SConfigRecordExt struct {
+																																													data_50:SKeyVal2
+																																												}
+
+																																												type SConfigRecord struct {
+																																													^data:SKeyVal2
+																																												}
+
+																																												type EPhoneStatus enum {
+																																													EPhoneStatus_Inactive
+																																													EPhoneStatus_Normal = 1
+																																													EPhoneStatus_CallWaiting = 2
+																																													EPhoneStatus_Hold = 3
+																																													EPhoneStatus_Conference = 4
+																																													EPhoneStatus_Privacy = 5
+																																													EPhoneStatus_Last = 6
+																																												}
+
+																																												type data_u8_36[0..255] from
+																																												uint8[36]
+
+																																												type EStringEncoding enum {
+																																													EStringEncoding_Latin1
+																																													EStringEncoding_UTF8 = 1
+																																													EStringEncoding_UTF16 = 2
+																																													EStringEncoding_Last = 3
+																																												}
+
+																																												type data_u8_25[0..255] from
+																																												uint8[25]
+
+																																												type EPhoneCmd enum {
+																																													EPhoneCmd_None
+																																													EPhoneCmd_Accept = 1
+																																													EPhoneCmd_Reject = 2
+																																													EPhoneCmd_End = 3
+																																													EPhoneCmd_SwapCalls = 4
+																																													EPhoneCmd_ConferenceCalls = 5
+																																													EPhoneCmd_Privacy = 6
+																																													EPhoneCmd_Mute = 7
+																																													EPhoneCmd_NoResponse = 8
+																																													EPhoneCmd_EndActiveCall = 9
+																																													EPhoneCmd_EndConferenceCall = 10
+																																													EPhoneCmd_MuteCall = 11
+																																													EPhoneCmd_HoldCall = 12
+																																													EPhoneCmd_JoinCalls = 13
+																																													EPhoneCmd_Unmute = 14
+																																													EPhoneCmd_Unhold = 15
+																																													EPhoneCmd_Last = 16
+																																												}
+
+																																												type SPhoneData struct {
+																																													callerName:data_u8_36
+																																													callerNameEncodingType:EStringEncoding
+																																													callerNumber:data_u8_25
+																																													id:uint8
+																																													callerPhoneType:uint8
+																																												}
+
+																																												type SPhoneCmd struct {
+																																													callCmd:EPhoneCmd
+																																												}
+
+																																												type EIgnitionStatus enum {
+																																													EIgnitionStatus_Off
+																																													EIgnitionStatus_Acc = 1
+																																													EIgnitionStatus_Start = 2
+																																													EIgnitionStatus_Run = 3
+																																													EIgnitionStatus_Last = 4
+																																												}
+
+																																												type SIgnState struct {
+																																													state:EIgnitionStatus
+																																												}
+
+																																												type SHMIStatus struct {
+																																													status:uint8
+																																												}
+
+																																												type EDisplayPower enum {
+																																													EDisplayPower_Off
+																																													EDisplayPower_On = 1
+																																													EDisplayPower_Last = 2
+																																												}
+
+																																												type SDisplaySetPower struct {
+																																													displayId:uint32
+																																													state:EDisplayPower
+																																												}
+
+																																												type EDisplayHMIStatus enum {
+																																													EDisplayHMIStatus_Ok
+																																													EDisplayHMIStatus_Off = 1
+																																													EDisplayHMIStatus_Missing = 2
+																																													EDisplayHMIStatus_Dashes = 3
+																																													EDisplayHMIStatus_Error = 4
+																																													EDisplayHMIStatus_Last = 5
+																																												}
+
+																																												type EDisplayStatus enum {
+																																													EDisplayState_Off
+																																													EDisplayState_On = 1
+																																													EDisplayState_Error = 2
+																																													EDisplayState_Disconnected = 3
+																																													EDisplayState_Last = 4
+																																												}
+
+																																												type SDisplayCurrentState struct {
+																																													displayId:uint32
+																																													state:EDisplayStatus
+																																												}
+
+																																												type SWelcomeFarewallData struct {
+																																													SUSDState:uint8
+																																													WelcomeScreenState:uint8
+																																													FarewellScreenState:uint8
+																																												}
+
+																																												type SWelcomeResponse struct {
+																																													status:uint8
+																																												}
+
+																																												type SControlPopup struct {
+																																													^type:uint8
+																																													level:uint8
+																																													status:uint8
+																																												}
+
+																																												type data_u8_50[0..255] from
+																																												uint8[50]
+
+																																												type SETMData struct {
+																																													id:uint8
+																																													^data:data_u8_50
+																																												}
+
+																																												type SETMStatus struct {
+																																													^data:data_u8_5
+																																												}
+
+																																												type EButtonId enum {
+																																													EButtonId_None
+																																													EButtonId_Ok = 1
+																																													EButtonId_Up = 2
+																																													EButtonId_Down = 3
+																																													EButtonId_Back = 4
+																																													EButtonId_Menu = 5
+																																													EButtonId_Phone = 6
+																																													EButtonId_Hud = 7
+																																													EButtonId_Last = 8
+																																												}
+
+																																												type EButtonState enum {
+																																													EButtonState_Release
+																																													EButtonState_Pressed = 1
+																																													EButtonState_Hold = 2
+																																													EButtonState_Last = 3
+																																												}
+
+																																												type SSWC struct {
+																																													buttonId:EButtonId
+																																													buttonStatus:EButtonState
+																																													holdTime:uint8
+																																												}
+
+																																												type SSdmArray struct {
+																																													id:uint8
+																																													^mode:uint8
+																																													mask:uint16
+																																												}
+
+																																												type SSDM struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SSSTM struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SSSM struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SEngineAirFilterState struct
+																																												{
+																																													engineAirFilterLife:uint8
+																																													engineAirFilterMinder:uint8
+																																												}
+
+																																												type SDieselPRTCFilterState struct
+																																												{
+																																													active:uint8
+																																													PFS:uint8
+																																												}
+
+																																												type SEVCoachState struct {
+																																													activeDispayMask:uint8
+																																													reqPowerPercent:uint16
+																																													evModeThesholdPowerPercent:uint16
+																																													regenModeThesholdPowerPercent:uint16
+																																												}
+
+																																												type SDieselExhaustState struct {
+																																													defActive:uint8
+																																													defRange:uint16
+																																													defMask:uint8
+																																													defSpeedLimit:uint8
+																																												}
+
+																																												type SDieselAdBlueState struct {
+																																													text1:uint8
+																																													text2:uint8
+																																													value1:uint16
+																																													value2:uint16
+																																													value3:uint16
+																																												}
+
+																																												type SEngineInfo struct {
+																																													hours:uint16
+																																													idleHours:uint16
+																																													value:uint8
+																																												}
+
+																																												type SPowerDisState struct {
+																																													frontPercentFill:uint8
+																																													backPercentFill:uint8
+																																													displayAnimation:uint8
+																																												}
+
+																																												type STrailerTPMSState struct {
+																																													status:uint8
+																																													thresholdStatus:uint8
+																																													tireCntStatus:uint8
+																																													tirePressureNumColor:uint8
+																																													tireTemperatureNumColor:uint8
+																																													warningStatus:uint8
+																																													tireTempPressColor:uint8
+																																												}
+
+																																												type data_u8_6[0..255] from
+																																												uint8[6]
+
+																																												type STrailerInfo struct {
+																																													status:uint8
+																																													backupAssist:uint8
+																																													reverseGuidance:uint8
+																																													blindSpot:uint8
+																																													accumulatedDistanceStr:data_u8_8
+																																													fuleEconomyStr:data_u8_6
+																																													trailerName:data_u8_32
+																																												}
+
+																																												type SSPRStatus struct {
+																																													steeringWheelAngle:uint8
+																																													pitchAngle:uint8
+																																													rollAngle:uint8
+																																												}
+
+																																												type STrailerLighting struct {
+																																													mask:uint16
+																																												}
+
+																																												type SAirFuelRatioState struct {
+																																													value:uint16
+																																												}
+
+																																												type SAutoStartStopState struct {
+																																													activeStartStopDisplay:uint8
+																																												}
+
+																																												type STrafficSignRecognition
+																																												struct {
+																																													id:uint8
+																																													speedLimitValue:uint8
+																																													^type:uint8
+																																													annex:uint8
+																																													region:uint8
+																																													color:uint8
+																																													dynData:data_u8_2
+																																												}
+
+																																												type data_u8_9[0..255] from
+																																												uint8[9]
+
+																																												type SLaneKeepAssist struct {
+																																													assistStatus:uint8
+																																													RTTStatus:uint8
+																																													markerStatus:uint8
+																																												}
+
+																																												type STrafficJamAssist struct {
+																																													tjaStatus:uint8
+																																													DAStatus:uint8
+																																													laneBias:uint8
+																																												}
+
+																																												type SEcoAdvice struct {
+																																													reasonIcon:uint8
+																																													adviceIcon:uint8
+																																													adviceIconColor:uint8
+																																													speedLimit:uint8
+																																												}
+
+																																												type SDASGenData struct {
+																																													id:uint8
+																																													RTTStatus:uint8
+																																													dynData:uint8
+																																												}
+
+																																												type SDriverAssistData struct {
+																																													id:uint8
+																																													^mode:uint8
+																																													dynData:data_u8_9
+																																												}
+
+																																												type EOatStatus enum {
+																																													EOatStatus_Ok
+																																													EOatStatus_Off = 1
+																																													EOatStatus_DispDashes = 2
+																																													EOatStatus_Last = 3
+																																												}
+
+																																												type SOAT struct {
+																																													value:uint16
+																																													unit:EGaugeUnit
+																																													status:EOatStatus
+																																												}
+
+																																												type SGearAnimStatus struct {
+																																													status:uint8
+																																												}
+
+																																												type SEcoCoachTripState struct {
+																																													accelScore:uint8
+																																													decelScore:uint8
+																																													cruiseScore:uint8
+																																													shiftScore:uint8
+																																													ComplianceScore:uint8
+																																													EcoScore:uint8
+																																													transmisionType:uint8
+																																													currentTrip:uint16
+																																													currentTripUnits:uint8
+																																													lastTrip:uint16
+																																													lastTripUnits:uint8
+																																													msgTextId:uint8
+																																													validMask:uint8
+																																												}
+
+																																												type STireTempState struct {
+																																													tireTempUnit:uint8
+																																													tireTempStat:uint8
+																																													lfTireTemp:uint16
+																																													rfTireTemp:uint16
+																																													lrTireTemp:uint16
+																																													rrTireTemp:uint16
+																																												}
+
+																																												type SOffRoadState struct {
+																																													steeringWheelAngle:uint8
+																																													pitchAngle:uint8
+																																													rollAngle:uint8
+																																												}
+
+																																												type SIODGaugeData struct {
+																																													id:uint8
+																																													status:uint8
+																																													unit:uint8
+																																													value:uint16
+																																												}
+
+																																												type SDriverAssistDisplay struct {
+																																													display:uint8
+																																													counter:uint8
+																																												}
+
+																																												type EMediaText enum {
+																																													EMediaText_None
+																																													EMediaText_CDFileName = 1
+																																													EMediaText_CDTrackName = 2
+																																													EMediaText_DABBlockNumber = 3
+																																													EMediaText_HDRadioSongTitle = 4
+																																													EMediaText_HDRadioArtistName = 5
+																																													EMediaText_SyncSongTitle = 6
+																																													EMediaText_SyncArtist = 7
+																																													EMediaText_SyncTitleAdj = 8
+																																													EMediaText_SyncArtistAdj = 9
+																																													EMediaText_RadioShortStation = 10
+																																													EMediaText_RadioProgramName = 11
+																																													EMediaText_RadioLongStation = 12
+																																													EMediaText_SDARSArtistName = 13
+																																													EMediaText_SyncSourceInfo = 14
+																																													EMediaText_Last = 15
+																																												}
+
+																																												type data_u8_42[0..255] from
+																																												uint8[42]
+																																												type data_u8_40[0..255] from
+																																												uint8[40]
+																																												type data_u8_130[0..255] from
+																																												uint8[130]
+
+																																												type SMediaText struct {
+																																													id:EMediaText
+																																													text:data_u8_40
+																																													^type:EStringEncoding
+																																												}
+
+																																												type SMediaTextExt struct {
+																																													id:EMediaText
+																																													text:data_u8_130
+																																													^type:EStringEncoding
+																																												}
+
+																																												type SSDARSData struct {
+																																													channelNumber:uint16
+																																													title:data_u8_130
+																																													titleType:EStringEncoding
+																																													valid:uint8
+																																												}
+
+																																												type SRadioData struct {
+																																													AMFreq:uint16
+																																													FMFreq:uint16
+																																													valid:uint8
+																																													FMFreqRDS:uint16
+																																												}
+
+																																												type SExtETMStatus struct {
+																																													value:uint8
+																																												}
+
+																																												type SIODSettings struct {
+																																													dynData:data_u8_2
+																																												}
+
+																																												type SMaintStatus struct {
+																																													status:uint8
+																																													value:uint8
+																																													state:uint8
+																																												}
+
+																																												type SLHIStatus struct {
+																																													active:uint8
+																																												}
+
+																																												type ENavStatus enum {
+																																													ENavStatus_Inactive
+																																													ENavStatus_Active = 1
+																																													ENavStatus_Last = 2
+																																												}
+
+																																												type ENaviSpeedSign enum {
+																																													ENaviSpeedSign_NA
+																																													ENaviSpeedSign_ROW = 1
+																																													ENaviSpeedSign_Last = 2
+																																												}
+
+																																												type ENaviUnits enum {
+																																													ENaviUnits_Unknown
+																																													ENaviUnits_Kilometer = 1
+																																													ENaviUnits_Meter = 2
+																																													ENaviUnits_FT = 3
+																																													ENaviUnits_Miles = 4
+																																													ENaviUnits_Last = 5
+																																												}
+
+																																												type SNaviData struct {
+																																													streetName:data_u8_42
+																																													streetNameType:EStringEncoding
+																																													turnIconId:uint8
+																																													speedLimitValue:uint8
+																																													navBarGraphSteps:uint8
+																																													naviDistanceWhole:uint16
+																																													naviDistanceTenth:uint16
+																																													naviDistanceUnit:uint8
+																																													navBarGraphStatus:ENavStatus
+																																													naviSpeedLimitStatus:ENavStatus
+																																													naviSpeedSignType:ENaviSpeedSign
+																																													naviOffRoute:ENavStatus
+																																													naviRoute:ENavStatus
+																																													naviDistancetoDestUnits:ENaviUnits
+																																													naviCompass:ECompassValue
+																																													naviDistancetoDest:uint16
+																																													naviTimetoDestDays:uint8
+																																													naviTimetoDestHours:uint8
+																																													naviTimetoDestMinutes:uint8
+																																												}
+
+																																												type SNaviCmd struct {
+																																													naviCmd:uint8
+																																												}
+
+																																												type SDistanceToEmpty struct {
+																																													feType:EFuelEconomy
+																																													value:uint16
+																																													unit:uint8
+																																													valid:uint8
+																																													dynData:data_u8_5
+																																												}
+
+																																												type ETripCmd enum {
+																																													ETripCmd_AFE_A
+																																													ETripCmd_AFE_B = 1
+																																													ETripCmd_TCAFE_B = 2
+																																													ETripCmd_TCT_A = 3
+																																													ETripCmd_TCT_B = 4
+																																													ETripCmd_TCO_A = 5
+																																													ETripCmd_TCO_B = 6
+																																													ETripCmd_TCAFE_A = 7
+																																													ETripCmd_LS = 8
+																																													ETripCmd_TCAS_A = 9
+																																													ETripCmd_TCAS_B = 10
+																																													ETripCmd_FEH = 11
+																																													ETripCmd_Last = 12
+																																												}
+
+																																												type EDisplayUnit enum {
+																																													EDisplayUnit_Mph
+																																													EDisplayUnit_Kmph = 1
+																																													EDisplayUnit_Centigrade = 2
+																																													EDisplayUnit_Farenheit = 3
+																																													EDisplayUnit_Psi = 4
+																																													EDisplayUnit_Pa = 5
+																																													EDisplayUnit_Bar = 6
+																																													EDisplayUnit_Last = 7
+																																												}
+
+																																												type SDTEHistory struct {
+																																													dtehistoryused:uint8
+																																												}
+
+																																												type data_u8_3[0..255] from
+																																												uint8[3]
+																																												type data_u8_7[0..255] from
+																																												uint8[7]
+
+																																												type SGALCarPlayData struct {
+																																													dynData:data_u8_7
+																																												}
+
+																																												type SSetupSpeed struct {
+																																													speedstatus:uint8
+																																												}
+
+																																												type SSpeedLockStatus struct {
+																																													speedlockstatus:uint8
+																																												}
+
+																																												type SRearBeltMonitor struct {
+																																													count:uint8
+																																													seatselection:uint8
+																																													seatselectionvalue:uint8
+																																												}
+
+																																												type SRangeDisplay struct {
+																																													^mode:uint8
+																																													unit:uint8
+																																													status:EDisplayHMIStatus
+																																													value:uint16
+																																												}
+
+																																												type EListRequest enum {
+																																													EListRequest_GetPhoneList
+																																													EListRequest_DialPhoneList = 1
+																																													EListRequest_GetRadioSources = 2
+																																													EListRequest_ListenRadioSource =
+																																													3
+																																													EListRequest_GetEntertainSources
+																																													= 4
+																																													EListRequest_ListenEntertainSource
+																																													= 5
+																																													EListRequest_GetNavListEListRequest_GetNavList
+																																													= 6
+																																													EListRequest_SelectNavList = 7
+																																													EListRequest_GetFuelStationsList
+																																													= 8
+																																													EListRequest_SelectFuelStationList
+																																													= 9
+																																													EListRequest_GetRadioSourcesNextResponse
+																																													= 10
+																																													EListRequest_Invalid = 255
+																																												}
+
+																																												type EPrefetchReqMenu enum {
+																																													EPrefetchReqMenu_None
+																																													EPrefetchReqMenu_Audio = 1
+																																													EPrefetchReqMenu_Phone = 2
+																																													EPrefetchReqMenu_Navigation = 3
+																																													EPrefetchReqMenu_Last = 4
+																																												}
+
+																																												type SListCmd struct {
+																																													listRequestCmd:EListRequest
+																																													focusItemIndex:uint16
+																																													activeListIndex:uint16
+																																													parentListIndex:uint16
+																																													itemInfoNbrItem:uint16
+																																													prefetchRequestActionCmd:uint8
+																																													prefetchRequestMenuTypeCmd:EPrefetchReqMenu
+																																												}
+
+																																												type SListTimeout struct {
+																																													timeout:uint8
+																																												}
+
+																																												type SAWDGaugeData struct {
+																																													AWDGauge_FrontLeftPixelFill:uint8
+																																													AWDGauge_FrontRightPixelFill:uint8
+																																													AWDGauge_RearLeftPixelFill:uint8
+																																													AWDGauge_RearRightPixelFill:uint8
+																																												}
+
+																																												type SElectricEfficiencyFunction
+																																												struct {
+																																													efficiency:uint16
+																																													efficiencyStatus:uint8
+																																													range:uint8
+																																													rangeStatus:uint8
+																																												}
+
+																																												type SControlPopupStatus struct {
+																																													status:uint8
+																																												}
+
+																																												type SSwUpdateResponse struct {
+																																													serviceId:uint8
+																																													status:uint8
+																																													^data:uint32
+																																												}
+
+																																												type SSwUpdateEraseSwPartReq
+																																												struct {
+																																													swPartId:uint8
+																																													serviceId:uint8
+																																												}
+
+																																												type SSwUpdateDownloadSwPartReq
+																																												struct {
+																																													swPartId:uint8
+																																													startAddress:uint32
+																																													length:uint32
+																																													serviceId:uint8
+																																												}
+
+																																												type SSwUpdateUploadSwPartReq
+																																												struct {
+																																													swPartId:uint8
+																																													startAddress:uint32
+																																													bufferId:uint32
+																																													dataLen:uint32
+																																													length:uint32
+																																													serviceId:uint8
+																																												}
+
+																																												type SSwUpdateDataTransferReq
+																																												struct {
+																																													bufferId:uint32
+																																													startAddress:uint32
+																																													dataLen:uint32
+																																													serviceId:uint8
+																																												}
+
+																																												type SEcoCoachDisplay struct {
+																																													value:sint16
+																																													status:uint8
+																																													visible:uint8
+																																												}
+
+																																												type data_u8_30[0..255] from
+																																												uint8[30]
+
+																																												type SChecksumValue1 struct {
+																																													checksumData1:data_u8_30
+																																												}
+
+																																												type data_u32_3[0..4294967295]
+																																												from uint32[3]
+
+																																												type SSDMExt struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SRTT_Icon struct {
+																																													icon:data_u8_6
+																																												}
+
+																																												type data_u8_1[0..255] from uint8
+																																												type data_u8_21[0..255] from
+																																												uint8[21]
+
+																																												type SWelcomeScreens struct {
+																																													DynData:data_u8_21
+																																												}
+
+																																												type SLocalHazardInformation
+																																												struct {
+																																													LHIDistance:uint16
+																																													LHIUnits:uint8
+																																													LHIDisplayStatus:uint8
+																																												}
+
+																																												type SHighVoltageBatteryDisplay
+																																												struct {
+																																													batterySOC:uint8
+																																													batteryPercMC:uint16
+																																													electricRangeKm:uint8
+																																													electricRangeMi:uint8
+																																												}
+
+																																												type data_u8_22[0..255] from
+																																												uint8[22]
+
+																																												type SWarningsTPMSData struct {
+																																													warningsTPMSData:data_u8_22
+																																												}
+
+																																												type SIlluminationData struct {
+																																													^data:uint8
+																																												}
+
+																																												type ElistItemId enum {
+																																													EListItemId_Header
+																																													EListItemId_Item1 = 1
+																																													EListItemId_Item2 = 2
+																																													EListItemId_Item3 = 3
+																																													EListItemId_Item4 = 4
+																																													EListItemId_Item5 = 5
+																																													EListItemId_Last = 6
+																																												}
+
+																																												type EDataType enum {
+																																													EDataType_GenericText
+																																													EDataType_MediaType = 1
+																																													EDataType_NaviPOI = 2
+																																													EDataType_PhoneCalledId = 3
+																																													EDataType_RadioStation = 4
+																																													EDataType_RadioMixedPresets = 5
+																																													EDataType_RadioSource = 6
+																																													EDataType_Last = 7
+																																												}
+
+																																												type EListItemObjectType enum {
+																																													EListItemObjectType_ListLabel
+																																													EListItemObjectType_Entry = 1
+																																													EListItemObjectType_List = 2
+																																													EListItemObjectType_Invalid = 3
+																																													EListItemObjectType_Last = 4
+																																												}
+
+																																												type EListServer enum {
+																																													EListServer_None
+																																													EListServer_NaviInfo = 1
+																																													EListServer_GenericMedia = 2
+																																													EListServer_PhoneInfo = 3
+																																													EListServer_Radio = 4
+																																													EListServer_ConsideratePrompt = 5
+																																													EListServer_Last = 6
+																																												}
+
+																																												type ELbpListStatus enum {
+																																													ELbpListStatus_Inactive
+																																													ELbpListStatus_Valid = 1
+																																													ELbpListStatus_Updating = 2
+																																													ELbpListStatus_Reserved = 3
+																																													ELbpListStatus_Last = 4
+																																												}
+
+																																												type EItemIcon enum {
+																																													EItemIcon_None
+																																													EItemIcon_Home = 1
+																																													EItemIcon_Mobile = 2
+																																													EItemIcon_Office = 3
+																																													EItemIcon_N = 4
+																																													EItemIcon_NE = 5
+																																													EItemIcon_E = 6
+																																													EItemIcon_SE = 7
+																																													EItemIcon_S = 8
+																																													EItemIcon_SW = 9
+																																													EItemIcon_W = 10
+																																													EItemIcon_NW = 11
+																																													EItemIcon_AM = 12
+																																													EItemIcon_CD = 13
+																																													EItemIcon_SDARS = 14
+																																													EItemIcon_AudioVideoIn = 15
+																																													EItemIcon_UserDevUSB = 16
+																																													EItemIcon_UserDevPhone = 17
+																																													EItemIcon_UserDevMediaPlayer = 18
+																																													EItemIcon_UserDevSDCard = 19
+																																													EItemIcon_UserDevWiFi = 20
+																																													EItemIcon_UserDevBluetoothAudio =
+																																													21
+																																													EItemIcon_LineIn = 22
+																																													EItemIcon_FM = 23
+																																													EItemIcon_DAB = 24
+																																													EItemIcon_Preset_AM = 25
+																																													EItemIcon_Preset_FM = 26
+																																													EItemIcon_Preset_DAB = 27
+																																													EItemIcon_Preset_SDARS = 28
+																																													EItemIcon_Incoming = 29
+																																													EItemIcon_Outgoing = 30
+																																													EItemIcon_Missed = 31
+																																												}
+
+																																												type ECurrentCallID enum {
+																																													ECurrentCallID_Primary
+																																													ECurrentCallID_Secondary = 1
+																																													ECurrentCallID_None = 2
+																																													ECurrentCallID_Last = 3
+																																												}
+
+																																												type EInCallStatus enum {
+																																													EInCallStatus_False
+																																													EInCallStatus_True = 1
+																																													EInCallStatus_Last = 2
+																																												}
+
+																																												type EPhoneIDType enum {
+																																													EPhoneIDType_Unknown
+																																													EPhoneIDType_Current = 1
+																																													EPhoneIDType_Secondary = 2
+																																													EPhoneIDType_Last = 3
+																																												}
+
+																																												type EPhoneLevel enum {
+																																													EphoneLevel_0
+																																													EphoneLevel_1 = 1
+																																													EphoneLevel_2 = 2
+																																													EphoneLevel_3 = 3
+																																													EphoneLevel_4 = 4
+																																													EphoneLevel_5 = 5
+																																													EphoneLevel_Inactive = 6
+																																													EphoneLevel_Last = 7
+																																												}
+
+																																												type EPhoneNetwork enum {
+																																													EPhoneNetwork_NoNetwork
+																																													EPhoneNetwork_InNetwork = 1
+																																													EPhoneNetwork_Roaming = 2
+																																													EPhoneNetwork_NoLinkToPhone = 3
+																																													EPhoneNetwork_NotSupported = 4
+																																													EPhoneNetwork_Inactive = 5
+																																													EPhoneNetwork_Last = 6
+																																												}
+
+																																												type SPhoneGenericData struct {
+																																													muteStatus:uint8
+																																													phoneStatus:EPhoneStatus
+																																													callDuration:uint16
+																																													callCmd:EPhoneCmd
+																																													currentCall:ECurrentCallID
+																																													phoneDisconnect:ENavStatus
+																																													incommingCall:EInCallStatus
+																																													phoneCallCount:uint8
+																																													callIDType:EPhoneIDType
+																																													phoneBatt:EPhoneLevel
+																																													phoneSignal:EPhoneLevel
+																																													phoneNetwork:EPhoneNetwork
+																																												}
+
+																																												type SMediaStatus struct {
+																																													dynData:data_u8_9
+																																												}
+
+																																												type SSDMGenericData struct {
+																																													SDMGenericData:data_u8_3
+																																												}
+
+																																												type SSSTMExt struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SSSMExt struct {
+																																													^data:SSdmArray
+																																												}
+
+																																												type SInfotainmentGenericData
+																																												struct {
+																																													genericData:uint8
+																																												}
+
+																																												type data_u8_54[0..255] from
+																																												uint8[54]
+
+																																												type SPrefetchData struct {
+																																													characterCoding:uint8
+																																													listItemId:ElistItemId
+																																													listItemItemLoaded:uint8
+																																													listItemDataType:EDataType
+																																													listItemObjectType:EListItemObjectType
+																																													listItemActivationEvent:uint8
+																																													listItemIcon:EItemIcon
+																																													listItemIcon3:EItemIcon
+																																													listItemIcon2:EItemIcon
+																																													listItemData1:data_u8_54
+																																													listItemData2:data_u8_22
+																																													listItemStaticItem:uint8
+																																													listItemObjectState:uint8
+																																												}
+
+																																												type SPrefetchStatus struct {
+																																													status:uint16
+																																												}
+
+																																												type SPrefetchGenericData struct {
+																																													serverId:EListServer
+																																													serverId2:EListServer
+																																													listId:uint16
+																																													lbpListServer:uint8
+																																													lbpListId:uint16[0..*]
+																																													lbpListStatus:ELbpListStatus
+																																													nbrOfItems:uint8
+																																												}
+
+																																												type SSafeTT_Status struct {
+																																													safeTTData:data_u8_5
+																																												}
+
+																																												type SSwUpdateMetaReadReq struct {
+																																													startAddress:uint32
+																																													paramId:uint8
+																																													length:uint32
+																																													serviceId:uint8
+																																												}
+
+																																												type SSwUpdateMetaWriteReq struct
+																																												{
+																																													startAddress:uint32
+																																													paramId:uint8
+																																													^data:uint32
+																																													length:uint32
+																																													serviceId:uint8
+																																												}
+
+																																												type SErrorStateCmdResp struct {
+																																													errorStateResponse:uint8
+																																												}
+
+																																												type SErrorStateCmdReq struct {
+																																													errorStateAction:uint8
+																																												}
+
+																																												type SHmiChecksumDataType struct {
+																																													dispCtrlChecksumValue:data_u32_3
+																																													regionid:uint8
+																																													assetid:uint8
+																																												}
+
+																																												type SAdjLimit struct {
+																																													AdjLimit:uint8
+																																												}
+
+																																												type SIODRBM struct {
+																																													dynData:data_u8_20
+																																												}
+
+																																												type SChecksumValue2 struct {
+																																													checksumData2:data_u8_30
+																																												}
+
+																																												type SChecksumValue3 struct {
+																																													checksumData3:data_u8_30
+																																												}
+
+																																												type SChecksumValue4 struct {
+																																													checksumData4:data_u8_30
+																																												}
+
+																																												type SHighVoltageBatteryBEVDisplay
+																																												struct {
+																																													batterySOC:uint8
+																																													chargeColor:uint8
+																																													chargeIcon:uint8
+																																													destinationFlag:uint8
+																																													SoCDestFlag:uint8
+																																													percentDestination:uint8
+																																													HVBPower:uint8
+																																												}
+
+																																												type SPowerDistributionBEV struct
+																																												{
+																																													frontFill:uint8
+																																													rearFill:uint8
+																																													fMotorMode:uint8
+																																													rMotorMode:uint8
+																																												}
+
+																																												type SNotReadyToDrive struct {
+																																													ShutdownChargeStatusText:uint8
+																																													ChargeNowDuration:uint8
+																																													EndChargeTimeDay:uint8
+																																													EndChargeTimeHours:uint8
+																																													EndChargeTimeMinutes:uint8
+																																													StartChargeTimeDay:uint8
+																																													StartChargeTimeHours:uint8
+																																													StartChargeTimeMinutes:uint8
+																																													PowerOnChargeStatusText:uint8
+																																													DestChargeEndTimeDay:uint8
+																																													DestChargeEndTimeHours:uint8
+																																													DestChargeEndTimeMinutes:uint8
+																																													TargetSoc:uint8
+																																													NotReadyToDriveFlags:uint16
+																																												}
+
+																																												type data_u8_14[0..255] from
+																																												uint8[14]
+
+																																												type SElectricRange struct {
+																																													electricRange:uint16
+																																													electricRangeColorStatus:uint8
+																																													distanceToDestination:uint16
+																																													displayDistanceStatus:uint8
+																																													stackGaugeIcons:uint8
+																																												}
+
+																																												type SDAMyView struct {
+																																													myViewDynData:data_u8_8
+																																												}
+
+																																												type SDAMenu struct {
+																																													header:uint8
+																																													DAViewID:uint8
+																																												}
+
+																																												type SDAHMIPoup struct {
+																																													DAHMIpopupDynData:data_u8_2
+																																												}
+
+																																												type SBMInitialDisplayStatus
+																																												struct {
+																																													BMInitialDisplay:uint8
+																																												}
+
+																																												type data_u8_39[0..255] from
+																																												uint8[39]
+
+																																												type SVehicleFleetPhoneNumberSt
+																																												struct {
+																																													VehicleFleetPhoneNumberSt:data_u8_39
+																																												}
+
+																																												type SFleetMenuWarnStatus struct {
+																																													fleetMenuWarnStatus:uint8
+																																												}
+
+																																												type data_u8_1_copy[0..255] from
+																																												uint8[8]
+																																												
+
+
+																																												unique allocatable UCL_PROXY_CDD
+																																												swcName = UclProxyCdd {
+																																													compositions
+																																														UclProxyCdd:S_UclProxyCdd
+																																													ports
+																																														pp_CmpLibCmd_CUclProxyCdd:provided
+																																														if_CS_ModeOnCommand
+																																														ppCS_UclInitShutdown:provided
+																																														UclInitShutdown
+																																														pSR_PowerSystemState:provided
+																																														PowerSystemState
+																																														pSR_PowerExtendShutdownTime:provided
+																																														PowerExtendShutdownTime_Q
+																																														pSR_PowerKeepSystemAwake:provided
+																																														PowerKeepSystemAwake_Q
+																																														pSR_HealthDomainHeartbeat:provided
+																																														HealthDomainHeartbeat_Q
+																																														pSR_HealthDomainFatalError:provided
+																																														HealthDomainFatalError_Q
+																																														rCS_UclSystemCallbacks:required
+																																														UclSystemCallbacks
+																																														rSR_HealthDumpGetHdr:required
+																																														HealthDumpGetHdr_Q
+																																														rSR_HealthDumpGetData:required
+																																														HealthDumpGetData_Q
+																																														pSR_HealthDumpHdrInfo:provided
+																																														HealthDumpHdrInfo_Q
+																																														pSR_HealthDumpData:provided
+																																														HealthDumpData_Q
+																																														rSR_DiagDIDRequest:required
+																																														DiagDIDRequest_Q
+																																														rSR_DiagRoutineRequest:required
+																																														DiagRoutineRequest_Q
+																																														rSR_DiagIOCtrlRequest:required
+																																														DiagIOCtrlRequest_Q
+																																														rSR_IgnState:required IgnState_Q
+																																														rSR_PowerSystemStateReqChange:required
+																																														PowerSystemStateReqChange
+																																														pSR_HealthEventRecord:provided
+																																														HealthEventRecord_Q
+																																												}
+
+																																												importable transportedInterface
+																																												UclInitShutdown {
+																																													Impl_Shutdown():Std_ReturnType {
+																																													}
+																																													Impl_Initialize():Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															Impl_Shutdown.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															Impl_Initialize.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	PowerSystemState {
+																																																		PowerSystemStateData:SPowerSystemState
+																																																		data
+																																																			provided
+																																																				any.DATA_SND_CAN_INVALIDATE
+																																																				=
+																																																				A2TBoolean::A2TFalse
+																																																				any.DATA_SND_IMPLICIT_SEND
+																																																				=
+																																																				A2TBoolean::A2TFalse
+																																																				required
+																																																					any.DATA_RCV_IMPLICIT_RECEIVE
+																																																					=
+																																																					A2TBoolean::A2TFalse
+																																																				}
+																																																				importable
+																																																				transportedInterface
+																																																				PowerExtendShutdownTime_Q
+																																																				{
+																																																					event
+																																																					PowerExtendShutdownTimeData:SPowerExtendShutdownTime
+																																																					data
+														provided
+															any.DATA_SND_CAN_INVALIDATE =
+															A2TBoolean::A2TFalse
+															any.DATA_SND_IMPLICIT_SEND
+															=
+															A2TBoolean::A2TFalse
+															required
+																any.DATA_RCV_IMPLICIT_RECEIVE =
+																A2TBoolean::A2TFalse
+																event
+																	required
+																		PowerExtendShutdownTimeData.EVENT_RCV_RECEIVER_QUEUELENGTH =
+																		5
+																	}
+																	importable transportedInterface PowerKeepSystemAwake_Q {
+																		event PowerKeepSystemAwakeData:SPowerKeepSystemAwake
+																		data
+																			provided
+																				any.DATA_SND_CAN_INVALIDATE =
+																				A2TBoolean::A2TFalse
+																				any.DATA_SND_IMPLICIT_SEND =
+																				A2TBoolean::A2TFalse
+																				required
+																					any.DATA_RCV_IMPLICIT_RECEIVE =
+																					A2TBoolean::A2TFalse
+																					event
+																						required
+																							PowerKeepSystemAwakeData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																							=
+																							5
+																						}
+																						importable transportedInterface HealthDomainHeartbeat_Q
+																						{
+																							event HealthDomainHeartbeatData:SHealthDomainHeartbeat
+																							data
+																								provided
+																									any.DATA_SND_CAN_INVALIDATE =
+																									A2TBoolean::A2TFalse
+																									any.DATA_SND_IMPLICIT_SEND =
+																									A2TBoolean::A2TFalse
+																									required
+																										any.DATA_RCV_IMPLICIT_RECEIVE =
+																										A2TBoolean::A2TFalse
+																										event
+																											required
+																												HealthDomainHeartbeatData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																												=
+																												5
+																											}
+																											importable transportedInterface
+																											HealthDomainFatalError_Q {
+																												event
+																												HealthDomainFatalErrorData:SHealthDomainFatalError
+																												data
+																													provided
+																														any.DATA_SND_CAN_INVALIDATE =
+																														A2TBoolean::A2TFalse
+																														any.DATA_SND_IMPLICIT_SEND =
+																														A2TBoolean::A2TFalse
+																														required
+																															any.DATA_RCV_IMPLICIT_RECEIVE =
+																															A2TBoolean::A2TFalse
+																															event
+																																required
+																																	HealthDomainFatalErrorData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																	=
+																																	2
+																																}
+																																importable transportedInterface
+																																PowerSystemStateReqChange {
+																																	PowerSystemStateReqChangeData:SPowerSystemStateReqChange
+																																	data
+																																		provided
+																																			any.DATA_SND_CAN_INVALIDATE =
+																																			A2TBoolean::A2TFalse
+																																			any.DATA_SND_IMPLICIT_SEND =
+																																			A2TBoolean::A2TFalse
+																																			required
+																																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																																				A2TBoolean::A2TFalse
+																																			}
+																																			importable transportedInterface
+																																			UclSystemCallbacks {
+																																				ErrorNotification(DLInst:uint8,
+																																				ErrorCode:sint32) {
+																																				}
+																																				LinkStatusChanged(DLInst:uint8,
+																																				Status:sint32) {
+																																				}
+																																				call
+																																					required
+																																						ErrorNotification.CALL_CLNT_CLIENTMODE =
+																																						A2TClientMode::A2TSynchronous
+																																						LinkStatusChanged.CALL_CLNT_CLIENTMODE =
+																																						A2TClientMode::A2TSynchronous
+																																						data
+																																							provided
+																																								any.DATA_SND_CAN_INVALIDATE =
+																																								A2TBoolean::A2TFalse
+																																								any.DATA_SND_IMPLICIT_SEND =
+																																								A2TBoolean::A2TFalse
+																																								required
+																																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																																									A2TBoolean::A2TFalse
+																																								}
+																																								importable transportedInterface
+																																								HealthDumpGetHdr_Q {
+																																									event
+																																									HealthDumpGetHdrData:SHealthDumpGetHdr
+																																									data
+																																										provided
+																																											any.DATA_SND_CAN_INVALIDATE =
+																																											A2TBoolean::A2TFalse
+																																											any.DATA_SND_IMPLICIT_SEND =
+																																											A2TBoolean::A2TFalse
+																																											required
+																																												any.DATA_RCV_IMPLICIT_RECEIVE =
+																																												A2TBoolean::A2TFalse
+																																												event
+																																													required
+																																														HealthDumpGetHdrData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																														=
+																																														1
+																																													}
+																																													importable transportedInterface
+																																													HealthDumpGetData_Q {
+																																														event
+																																														HealthDumpGetDataData:SHealthDumpGetData
+																																														data
+																																															provided
+																																																any.DATA_SND_CAN_INVALIDATE =
+																																																A2TBoolean::A2TFalse
+																																																any.DATA_SND_IMPLICIT_SEND =
+																																																A2TBoolean::A2TFalse
+																																																required
+																																																	any.DATA_RCV_IMPLICIT_RECEIVE
+																																																	=
+																																																	A2TBoolean::A2TFalse
+																																																	event
+																																																		required
+																																																			HealthDumpGetDataData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																																			=
+																																																			1
+																																																		}
+																																																		importable
+																																																		transportedInterface
+																																																		HealthDumpHdrInfo_Q {
+																																																			event
+																																																			HealthDumpHdrInfoData:SHealthDumpHdrInfo
+																																																			data
+																																																				provided
+																																																					any.DATA_SND_CAN_INVALIDATE
+																																																					=
+																																																					A2TBoolean::A2TFalse
+																																																					any.DATA_SND_IMPLICIT_SEND
+																																																					=
+																																																					A2TBoolean::A2TFalse
+																																																					required
+														any.DATA_RCV_IMPLICIT_RECEIVE =
+														A2TBoolean::A2TFalse
+														event
+															required
+																HealthDumpHdrInfoData.EVENT_RCV_RECEIVER_QUEUELENGTH =
+																1
+															}
+															importable transportedInterface HealthDumpData_Q {
+																event HealthDumpDataData:SHealthDumpData
+																data
+																	provided
+																		any.DATA_SND_CAN_INVALIDATE =
+																		A2TBoolean::A2TFalse
+																		any.DATA_SND_IMPLICIT_SEND =
+																		A2TBoolean::A2TFalse
+																		required
+																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																			A2TBoolean::A2TFalse
+																			event
+																				required
+																					HealthDumpDataData.EVENT_RCV_RECEIVER_QUEUELENGTH =
+																					1
+																				}
+																				importable transportedInterface DiagDIDRequest_Q {
+																					event DiagDIDRequestData:SDiagDIDRequest
+																					data
+																						provided
+																							any.DATA_SND_CAN_INVALIDATE =
+																							A2TBoolean::A2TFalse
+																							any.DATA_SND_IMPLICIT_SEND =
+																							A2TBoolean::A2TFalse
+																							required
+																								any.DATA_RCV_IMPLICIT_RECEIVE =
+																								A2TBoolean::A2TFalse
+																								event
+																									required
+																										DiagDIDRequestData.EVENT_RCV_RECEIVER_QUEUELENGTH =
+																										2
+																									}
+																									importable transportedInterface DiagRoutineRequest_Q
+																									{
+																										event DiagRoutineRequestData:SDiagRoutineRequest
+																										data
+																											provided
+																												any.DATA_SND_CAN_INVALIDATE =
+																												A2TBoolean::A2TFalse
+																												any.DATA_SND_IMPLICIT_SEND =
+																												A2TBoolean::A2TFalse
+																												required
+																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																													A2TBoolean::A2TFalse
+																													event
+																														required
+																															DiagRoutineRequestData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																															=
+																															2
+																														}
+																														importable transportedInterface
+																														DiagIOCtrlRequest_Q {
+																															event DiagIOCtrlRequestData:SDiagIOCtrlRequest
+																															data
+																																provided
+																																	any.DATA_SND_CAN_INVALIDATE =
+																																	A2TBoolean::A2TFalse
+																																	any.DATA_SND_IMPLICIT_SEND =
+																																	A2TBoolean::A2TFalse
+																																	required
+																																		any.DATA_RCV_IMPLICIT_RECEIVE =
+																																		A2TBoolean::A2TFalse
+																																		event
+																																			required
+																																				DiagIOCtrlRequestData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																				=
+																																				2
+																																			}
+																																			importable transportedInterface
+																																			DiagResponse_Q {
+																																				event DiagResponseData:SDiagResponse
+																																				data
+																																					provided
+																																						any.DATA_SND_CAN_INVALIDATE =
+																																						A2TBoolean::A2TFalse
+																																						any.DATA_SND_IMPLICIT_SEND =
+																																						A2TBoolean::A2TFalse
+																																						required
+																																							any.DATA_RCV_IMPLICIT_RECEIVE =
+																																							A2TBoolean::A2TFalse
+																																							event
+																																								required
+																																									DiagResponseData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																									=
+																																									2
+																																								}
+																																								importable transportedInterface
+																																								IgnState_Q {
+																																									event IgnStateData:SIgnState
+																																									data
+																																										provided
+																																											any.DATA_SND_CAN_INVALIDATE =
+																																											A2TBoolean::A2TFalse
+																																											any.DATA_SND_IMPLICIT_SEND =
+																																											A2TBoolean::A2TFalse
+																																											required
+																																												any.DATA_RCV_IMPLICIT_RECEIVE =
+																																												A2TBoolean::A2TFalse
+																																												event
+																																													required
+																																														IgnStateData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																														=
+																																														5
+																																													}
+																																													importable transportedInterface
+																																													HealthEventRecord_Q {
+																																														event
+																																														HealthEventRecordData:SHealthEventRecord
+																																														data
+																																															provided
+																																																any.DATA_SND_CAN_INVALIDATE =
+																																																A2TBoolean::A2TFalse
+																																																any.DATA_SND_IMPLICIT_SEND =
+																																																A2TBoolean::A2TFalse
+																																																required
+																																																	any.DATA_RCV_IMPLICIT_RECEIVE
+																																																	=
+																																																	A2TBoolean::A2TFalse
+																																																	event
+																																																		required
+																																																			HealthEventRecordData.EVENT_RCV_RECEIVER_QUEUELENGTH
+																																																			=
+																																																			2
+																																																		}
+																																																		package
+																																																		E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.P_UCL_PROXY_CDD
+																																																		
+
+
+																																																		ExternalCode static class
+																																																		S_UclProxyCdd realizes
+																																																		UclInitShutdown,
+																																																		PowerSystemState,
+																																																		PowerExtendShutdownTime_Q,
+																																																		PowerKeepSystemAwake_Q,
+																																																		HealthDomainHeartbeat_Q,
+																																																		HealthDomainFatalError_Q,
+																																																		HealthDumpHdrInfo_Q,
+																																																		HealthDumpData_Q,
+																																																		if_CS_ModeOnCommand,
+																																																		HealthEventRecord_Q {
+																																																			attributes
+																																																				cTimePeriod:uint8 =
+																																																				4
+																																																				runnables
+																																																					CUclProxyCdd_Impl_MainFunction
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														TimingEvent cTimePeriod
+																																																					}
+																																																					CUclProxyCdd_Impl_OnCommand
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														OperationInvokeEvent if_CS_ModeOnCommand.Impl_OnCommand
+																																																					}
+																																																					noPortAccess
+																																																					CUclProxyCdd_Impl_Shutdown
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														OperationInvokeEvent UclInitShutdown.Impl_Shutdown
+																																																					}
+																																																					noPortAccess
+																																																					CUclProxyCdd_Impl_Initialize
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														OperationInvokeEvent UclInitShutdown.Impl_Initialize
+																																																					}
+																																																					noPortAccess
+																																																					OnDre_PowerSystemStateReqChange
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														DataReceiveEvent port
+														E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.UCL_PROXY_CDD.rSR_PowerSystemStateReqChange
+														PowerSystemStateReqChange.PowerSystemStateReqChangeData
+																																																					}
+																																																					OnDre_HealthDumpGetHdr
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														DataReceiveEvent port
+														E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.UCL_PROXY_CDD.rSR_HealthDumpGetHdr
+														HealthDumpGetHdr_Q.HealthDumpGetHdrData
+																																																					}
+																																																					OnDre_HealthDumpGetData
+																																																					fixedMethodApi
+																																																					triggeredBy {
+														DataReceiveEvent port
+														E40_Platform.C_GlobalDesign.SW_Classes.CDD_PACKAGES.UclProxyCdd.UCL_PROXY_CDD.rSR_HealthDumpGetData
+														HealthDumpGetData_Q.HealthDumpGetDataData
+																																																					}
+																																																			}

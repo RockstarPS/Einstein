@@ -1,0 +1,29 @@
+module SWC_DmnMgr
+
+import E40_Platform.C_GlobalDesign.SW_Classes.SWC_PACKAGES.SWC_CORE.DmnMgr.**
+
+prototype @Proto_SWC_DmnMgr :SWC_DmnMgr
+{
+
+DmnMgr= :S_DmnMgr{
+}
+
+ppCS_DmnSystemStateChange{ IntProvider = container->DmnMgr}
+ppSR_DmnInfo{ IntProvider = container->DmnMgr}
+pSR_HealthDumpGetData{ IntProvider = container->DmnMgr}
+pSR_HealthDumpGetHdr{ IntProvider = container->DmnMgr}
+pSR_PowerSystemStateReqChange{ IntProvider = container->DmnMgr}
+ppCS_UclSystemCallbacks{ IntProvider = container->DmnMgr}
+ppCS_DomainMonitoring{ IntProvider = container->DmnMgr}
+pp_CmpLibCmd_CDmnMgr{ IntProvider = container->DmnMgr}
+rSR_HealthDomainFatalError{ }
+rSR_HealthDomainHeartbeat{ }
+rSR_HealthDumpData{ }
+rSR_HealthDumpHdrInfo{ }
+rSR_PowerExtendShutdownTime{ }
+rSR_PowerKeepSystemAwake{ }
+rSR_PowerSystemState{ }
+rpCS_UclInitShutdown{ }
+rpSR_DmnInfo{ }
+rpSR_SleepStatus{ }
+}

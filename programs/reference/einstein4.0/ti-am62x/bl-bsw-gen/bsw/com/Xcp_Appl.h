@@ -1,0 +1,343 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!******************************************************************************************************************
+*   @file Xcp_Appl.h
+*   @ingroup Xcp
+*   @brief This file provides the declaration of the Xcp application components. The implementation to be done as 
+*   per the program requirements. 
+********************************************************************************************************************/
+#ifndef XCP_APPL_H
+#define XCP_APPL_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "Xcp.h"
+/********************************************************************************************************************
+*  PUBLIC MACRO DEFINITIONS                                                                                         *
+********************************************************************************************************************/
+#define XCP_CMB_BYTE_ORDER                          (0x01u)
+#define XCP_CMB_ADDRESS_GRANULARITY                 (0x06u)
+#define XCP_CMB_SLAVE_BLOCK_MODE                    (0x40u)
+#define XCP_CMB_OPTIONAL                            (0x80u)
+
+/* Protocol Info (GET_COMM_MODE_INFO - COMM_OPTIONAL) */
+#define XCP_CMO_MASTER_BLOCK_MODE                   (0x01u)
+#define XCP_CMO_INTERLEAVED_MODE                    (0x02u)
+/********************************************************************************************************************
+*  PUBLIC TYPE DEFINITIONS                                                                                          *
+********************************************************************************************************************/
+
+/********************************************************************************************************************
+*  PUBLIC FUNCTION PROTOTYPES                                                                                       *
+********************************************************************************************************************/
+#define XCP_APPL_START_SEC_CODE
+#include "MemMap.h"
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to notify the conncetion state changes.
+*   @param[in]  XcpChannel  Channel Id type
+*   @param[in]  Xcp_ConnectionState  Xcp connection state
+********************************************************************************************************************/
+FUNC(void,XCP_APPL_CODE) Xcp_ApplConnectionStateNotification(Xcp_ChannelType XcpChannel,uint8 Xcp_ConnectionState);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the seed value.
+*   @param[in]  Resource  resource value to get the seed
+*   @param[out]  SeedPtr  pointer to the seed buffer in which the seed value to be updated
+*   @return returns the seed length
+********************************************************************************************************************/
+FUNC(uint8, XCP_APPL_CODE) Xcp_ApplGetSeed( uint8 Resource, P2VAR(uint8, AUTOMATIC, XCP_APPL_DATA) SeedPtr );
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to unlock the resources based on the key received
+*   @param[in]  KeyPtr  pointer to the Key buffer length 
+*   @param[in]  Length  length of the key buffer
+*   @return returns the unlocked resource value 
+********************************************************************************************************************/
+FUNC(uint8, XCP_CODE) Xcp_ApplUnlock( P2CONST(uint8, AUTOMATIC, XCP_APPL_DATA) KeyPtr, uint8 Length );
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the ID buffer
+*   @param[out]  DataPtr  pointer to the app Id buffer
+*   @param[in]  Id  App Id 
+*   @return returns the length of the buffer
+********************************************************************************************************************/
+FUNC(uint32, XCP_CODE) Xcp_ApplGetIdData( P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR) *DataPtr, uint8 Id );
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the address pointer with the address extension  
+*   @param[in]  XcpChannel  xcp channed id
+*   @param[in]  AddrExt  address extension value 
+*   @param[in]  Addr  address value
+*   @return returns the address with extension
+********************************************************************************************************************/
+FUNC(Xcp_AddressPtrType, XCP_CODE) Xcp_ApplGetAddrPointer
+( 
+    Xcp_ChannelType XcpChannel,
+    uint8 AddrExt,
+    Xcp_AddressPtrType Addr 
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to read the data from the address provided
+*   @param[out]  Dst pointer to update the read data
+*   @param[in]  Src  source address
+*   @param[in]  Size  length of data to read
+*   @return returns the read status
+********************************************************************************************************************/
+FUNC(uint8, XCP_CODE) Xcp_ApplMeasurementRead
+( 
+    P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR) Dst,
+    Xcp_AddressPtrType Src,
+    uint8 Size 
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to write the data to the address provided
+*   @param[in]  Dst write destination address
+*   @param[in]  Src  pointer to write data
+*   @param[in]  Size  length of data to write
+*   @return returns the write status
+********************************************************************************************************************/
+FUNC(uint8, XCP_CODE) Xcp_ApplCalibrationWrite
+( 
+    Xcp_AddressPtrType Dst,
+    P2CONST(uint8, AUTOMATIC, XCP_APPL_VAR) Src,
+    uint8 Size 
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to process the application user command
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  CmdPtr  pointer to xcp user command data
+*   @return returns the xcp command processing status
+********************************************************************************************************************/
+FUNC(uint8 ,XCP_CODE) Xcp_ApplUserCmdProcessor
+(
+    Xcp_ChannelType XcpChannel, 
+    CONSTP2CONST(uint8, AUTOMATIC, XCP_APPL_VAR ) CmdPtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to set the calibration page
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  CalMode  calibration mode value
+*   @param[in]  CalSegmentNumber  calibration segment number
+*   @param[in]  CalPageNumber  calibration page number
+*   @return returns the status of the set calibration request
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplSetCalPage
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 CalMode,
+    uint8 CalSegmentNumber,
+    uint8 CalPageNumber
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the calibration page
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  CalMode  calibration mode value
+*   @param[in]  CalSegmentNumber  calibration segment number
+*   @return returns the calibration page value 
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplGetCalPage
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 CalMode,
+    uint8 CalSegmentNumber
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the segment basic information
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number 
+*   @param[in]  SegmentInfo  calibration segment info
+*   @param[out]  AddressPtr  pointer to get the calibration address
+*   @param[out]  LengthPtr  pointer to get the length 
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplGetSegmentBasicInfo
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber,
+    uint8 SegmentInfo,
+    P2VAR(uint32, AUTOMATIC, XCP_APPL_VAR) AddressPtr,
+    P2VAR(uint32, AUTOMATIC, XCP_APPL_VAR) LengthPtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the segment standard information
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number 
+*   @param[out]  PageStandardInfoPtr  pointer to the calibration standard information buffer
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplGetSegmentStandardInfo
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber,
+    P2VAR(Xcp_PageStandardInfoType, AUTOMATIC, XCP_APPL_VAR) PageStandardInfoPtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the segment address mapping information
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number
+*   @param[in]  SegmentInfo  calibration segment info
+*   @param[in]  MappingIdx  segment address mapping idx value.
+*   @param[out]  PageAddressMappinInfoPtr  pointer to the page address mapping information buffer
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplGetSegmentAddressMappingInfo
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber,
+    uint8 SegmentInfo,
+    uint8 MappingIdx,
+    P2VAR(Xcp_PageAddressMappinInfoType, AUTOMATIC, XCP_APPL_VAR) PageAddressMappinInfoPtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the page information
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number
+*   @param[in]  PageNumber  calibration page number
+*   @param[out]  PagePropertyPtr  pointer to get the page property 
+*   @param[out]  PageInitSegmentPtr  pointer to get the page init segment value 
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplGetPageInfo
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber,
+    uint8 PageNumber,
+    P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR) PagePropertyPtr,
+    P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR) PageInitSegmentPtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to set the segment mode
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number
+*   @param[in]  Mode  segmnet mode to be set
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplSetSegmentMode
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber,
+    uint8 Mode
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the segment mode
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SegmentNumber  calibration segment number
+*   @return returns the current segmnet mode
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplGetSegmentMode
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SegmentNumber
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to copy calibration page
+*   @param[in]  XcpChannel xcp channe id
+*   @param[in]  SrcSegmentNumber  source calibration segment number
+*   @param[in]  SrcPageNumber  source calibration page number
+*   @param[in]  DestSegmentNumber  destination calibration segment number
+*   @param[in]  DestPageNumber  destination calibration page number
+*   @return returns status of the copy process
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplCopyCalPage
+(
+    Xcp_ChannelType XcpChannel,
+    uint8 SrcSegmentNumber,
+    uint8 SrcPageNumber,
+    uint8 DestSegmentNumber,
+    uint8 DestPageNumber
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to start programming 
+*   @return     returns the status of the request
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplProgramStart(void);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to clear/erase the programming address 
+*   @param[in]  Address erase start address
+*   @param[in]  Size    erase size
+*   @return     returns the status of the request
+********************************************************************************************************************/
+FUNC(uint8, XCP_CODE) Xcp_ApplProgramClear( P2CONST(uint8, AUTOMATIC, XCP_APPL_VAR) Address, uint32 Size );
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to program/write the programming data 
+*   @param[in]  ProgramDataPtr pointer to the programming data
+*   @param[in]  AddressPtr    pointer to program start address
+*   @param[in]  Size    program data size
+*   @return     returns the status of the request
+********************************************************************************************************************/
+FUNC(uint8, XCP_CODE) Xcp_ApplProgram
+( 
+    P2CONST(uint8, AUTOMATIC, XCP_APPL_VAR) ProgramDataPtr,
+    P2CONST(uint8, AUTOMATIC, XCP_APPL_VAR) AddressPtr,
+    uint32 Size 
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to reset the ECU
+*   @param[in]  XcpChannel xcp channel id
+********************************************************************************************************************/
+FUNC(void, XCP_CODE) Xcp_ApplReset(Xcp_ChannelType XcpChannel);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to prepare the system for programming
+*   @param[in]  ProgramDataPtr pointer to the programming data
+*   @param[in]  Address    pointer to program start address
+*   @param[in]  Size    program data size
+*   @return     returns the status of the request
+********************************************************************************************************************/
+FUNC(uint8,XCP_CODE) Xcp_ApplProgramPrepare
+(
+    Xcp_ChannelType XcpChannel,
+    P2CONST(uint8, AUTOMATIC, XCP_APPL_VAR) Address,
+    uint32 Size
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to get the current timestamp
+*   @return     returns the current timestamp
+********************************************************************************************************************/
+FUNC(uint32,XCP_CODE) Xcp_ApplGetTimeStamp(void);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to free DAQ
+*   @param[in]  XcpChannel xcp channel id
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplFreeDaq(Xcp_ChannelType XcpChannel);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to process the DAQ  store Resume status
+*   @param[in]  XcpChannel xcp channel id
+*   @param[in]  ResumeStatus DAQ  store Resume status TRUE: store with resume request 
+*               FALSE: store without resume request 
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplDaqResumeStore(Xcp_ChannelType XcpChannel,boolean ResumeStatus);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to process the clear daq request
+*   @param[in]  XcpChannel xcp channel id
+********************************************************************************************************************/
+FUNC(void,XCP_CODE) Xcp_ApplDaqResumeClear(Xcp_ChannelType XcpChannel);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to process the resume calibration store request
+*   @param[in]  XcpChannel xcp channel id
+********************************************************************************************************************/
+FUNC(boolean,XCP_CODE) Xcp_ApplResumeCalStore(Xcp_ChannelType XcpChannel);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to calculate the checksum for the block size
+*   @param[in]  Address pointer to the block address
+*   @param[in]  BlockSize block size
+*   @param[out]  ChecksumPtr pointer to update the the checksum value 
+*   @param[out]  ChecksumTypePtr pointer to update the checksum type 
+*   @return returns the status of the request
+********************************************************************************************************************/
+FUNC(uint8 ,XCP_CODE)Xcp_ApplCalculateChecksum
+(
+    P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR) Address,
+    uint32 BlockSize,
+    P2VAR(uint32, AUTOMATIC, XCP_APPL_VAR) ChecksumPtr,
+    P2VAR(uint8, AUTOMATIC, XCP_APPL_VAR)  ChecksumTypePtr
+);
+/*!******************************************************************************************************************
+*   @brief      This service is called by the Xcp to check the DAQ resume status
+*   @param[in]  XcpChannel xcp channel id
+*   @return     returns the DAQ resume status TRUE: DAQ resume enabled FALSE: DAQ resume disbaled
+********************************************************************************************************************/
+FUNC(boolean ,XCP_CODE)Xcp_ApplCheckDaqResume(Xcp_ChannelType XcpChannel);
+#endif /* XCP_APPL_H */

@@ -1,0 +1,542 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+
+																																							package
+																																							E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.CDD_IF_PACKAGES
+
+																																							stereotype DesignUnit
+
+																																							type EDeviceStatus enum {
+																																								eDeviceNotReady
+																																								eDeviceInitialized = 1
+																																								eDeviceReady = 2
+																																								eDeviceBusy = 3
+																																								eDeviceFault = 4
+																																								eDeviceMaxState = 5
+																																							}
+
+																																							type EDisplayPowerState enum {
+																																								eDisplayIdle
+																																								eDisplayPowerON = 1
+																																								eDisplayNormal = 2
+																																								eDisplayPowerOFF = 3
+																																								eDisplayFault_Handle = 4
+																																								eDisplayMaxPowerState = 5
+																																							}
+
+																																							type EDisplayType enum {
+																																								e_Display10Inch
+																																								e_DisplayMaxDevice = 1
+																																							}
+
+																																							type EDisplayCddStatus enum {
+																																								eDisplayNotReady
+																																								eDisplayReady = 1
+																																								eDisplayBusy = 2
+																																								eDisplayFaultHandle = 3
+																																								eDisplayMaxStatus = 4
+																																							}
+
+																																							type EGammaCorrectionStatus enum {
+																																								eDisplayCdd_GammaCorrection_None
+																																								eDisplayCdd_GammaCorrection_OnGoing =
+																																								1
+																																								eDisplayCdd_GammaCorrection_Success =
+																																								2
+																																								eDisplayCdd_GammaCorrection_Failure =
+																																								3
+																																							}
+
+																																							type Rtc_AlarmType struct {
+																																								day:uint8
+																																								minute:uint8
+																																								hour:uint8
+																																							}
+
+																																							type Rtc_TimeType struct {
+																																								year:uint16
+																																								month:uint8
+																																								week:uint8
+																																								day:uint8
+																																								hour:uint8
+																																								minute:uint8
+																																								second:uint8
+																																							}
+
+																																							type EChimeID enum {
+																																								NO_CHIME_ID
+																																								MAX_CHIME_ID = 1
+																																							}
+
+																																							type EChimeStatus[0..65535] from uint16
+
+																																							type EChimeType enum {
+																																								eChimeEvent
+																																								eChimeContinuous = 15
+																																							}
+
+																																							type ELastToneStatus from boolean
+
+																																							type ESndChnStat enum {
+																																								eSndChnStat_Idle
+																																								eSndChnStat_Tone = 1
+																																								eSndChnStat_DeadTime = 2
+																																								eSndChnStat_DmaFault = 3
+																																								eSndChnStat_SafetyChimeFailed = 4
+																																								eSndChnStat_ValidatingCrc = 5
+																																								eSndChnStat_ValidatingDMAChannel = 6
+																																								eSndChnStat_ValidatingChime = 7
+																																								eSndChnStat_Max = 8
+																																							}
+
+																																							type ESndInterruptType enum {
+																																								eSndCdd_InterruptType_None
+																																								eSndCdd_InterruptType_TypeA = 1
+																																								eSndCdd_InterruptType_TypeB = 2
+																																								eSndCdd_InterruptType_TypeDA = 3
+																																								eSndCdd_InterruptType_TypeDB = 4
+																																								eSndCdd_InterruptType_Immidiate = 5
+																																								eSndCdd_InterruptType_Tone = 6
+																																								eSndCdd_InterruptType_SoundUnit = 7
+																																								eSndCdd_InterruptType_TypeC = 8
+																																								eSndCdd_InterruptType_TypeD = 9
+																																							}
+
+																																							type ESndMixerChannel[0..255] from
+																																							uint8
+
+																																							type ESndToneInterruptableType enum {
+																																								eSndToneInterruptableType_NotInterruptible
+																																								eSndToneInterruptableType_Interruptible
+																																								= 1
+																																							}
+
+																																							type SSndCddChimeData struct {
+																																								ChannelId:uint8
+																																								ChimeType:EChimeType
+																																								DynamicDeadTime:uint16
+																																							}
+
+																																							type SSndToneDB struct {
+																																								pRawTone_ID:uint32
+																																								ToneDeadTime:uint32
+																																								ToneRepetitions:uint8
+																																								Tone_Mixer_Volume:uint8
+																																								Tone_Mixer_FadeIn_Time:uint8
+																																								Tone_Mixer_FadeOut_Time:uint8
+																																								eToneInterruptible:ESndToneInterruptableType
+																																								pLinkedTone:SSndToneDB
+																																							}
+
+																																							type SSndChimeDB struct {
+																																								eChimeID:EChimeID
+																																								ChimeRepeatCnt:uint8
+																																								pLinkedTone:SSndToneDB
+																																								pChimeEndToneID:SSndToneDB
+																																								UniqueWaveID:uint8
+																																								ChimeChnlBaseVolume:uint8
+																																								SecondaryLinkedToneID:SSndToneDB
+																																								SecondaryLinkedEndToneID:SSndToneDB
+																																								SafetyChime:uint8
+																																							}
+
+																																							importable transportedInterface
+																																							TI_Backlight_NotifyDispaly {
+																																								NotifyDisplayPowerState(DeviceId:EDisplayType,
+																																								CompletedPowerState:EDisplayPowerState):Std_ReturnType
+																																								{
+																																								}
+																																								call
+																																									required
+																																										NotifyDisplayPowerState.CALL_CLNT_CLIENTMODE
+																																										=
+																																										A2TClientMode::A2TSynchronous
+																																										data
+																																											provided
+																																												any.DATA_SND_CAN_INVALIDATE =
+																																												A2TBoolean::A2TFalse
+																																												any.DATA_SND_IMPLICIT_SEND =
+																																												A2TBoolean::A2TFalse
+																																												required
+																																													any.DATA_RCV_IMPLICIT_RECEIVE =
+																																													A2TBoolean::A2TFalse
+																																												}
+																																												importable transportedInterface
+																																												TI_Backlight_Service {
+																																													SetBrightnessValue(DeviceName:EDisplayType,
+																																													BrightnessPercentValue:uint16):Std_ReturnType
+																																													{
+																																													}
+																																													GetBrightnessValue(DeviceName:EDisplayType,
+																																													out
+																																													BrightnessPercentValue:uint16):Std_ReturnType
+																																													{
+																																													}
+																																													GetThermalValue(DeviceName:EDisplayType,
+																																													out
+																																													TempValueInMilliCelsius:uint32):Std_ReturnType
+																																													{
+																																													}
+																																													call
+																																														required
+																																															SetBrightnessValue.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															GetBrightnessValue.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															GetThermalValue.CALL_CLNT_CLIENTMODE
+																																															=
+																																															A2TClientMode::A2TSynchronous
+																																															data
+																																																provided
+																																																	any.DATA_SND_CAN_INVALIDATE =
+																																																	A2TBoolean::A2TFalse
+																																																	any.DATA_SND_IMPLICIT_SEND =
+																																																	A2TBoolean::A2TFalse
+																																																	required
+																																																		any.DATA_RCV_IMPLICIT_RECEIVE
+																																																		=
+																																																		A2TBoolean::A2TFalse
+																																																	}
+																																																	importable
+																																																	transportedInterface
+																																																	TI_Backlight_Status {
+																																																		GetStatus(DeviceName:EDisplayType,
+																																																		out
+																																																		DeviceStatus:EDeviceStatus):Std_ReturnType
+																																																		{
+																																																		}
+																																																		call
+																																																			required
+																																																				GetStatus.CALL_CLNT_CLIENTMODE
+																																																				=
+																																																				A2TClientMode::A2TSynchronous
+																																																				data
+																																																					provided
+														any.DATA_SND_CAN_INVALIDATE =
+														A2TBoolean::A2TFalse
+														any.DATA_SND_IMPLICIT_SEND =
+														A2TBoolean::A2TFalse
+														required
+															any.DATA_RCV_IMPLICIT_RECEIVE =
+															A2TBoolean::A2TFalse
+														}
+														importable transportedInterface TI_FaultInjectionHandler {
+															FaultInjectionHandler(StartStopData:uint8, TestListID:uint8,
+															out Data:uint8):Std_ReturnType {
+															}
+															call
+																required
+																	FaultInjectionHandler.CALL_CLNT_CLIENTMODE =
+																	A2TClientMode::A2TSynchronous
+																	data
+																		provided
+																			any.DATA_SND_CAN_INVALIDATE =
+																			A2TBoolean::A2TFalse
+																			any.DATA_SND_IMPLICIT_SEND =
+																			A2TBoolean::A2TFalse
+																			required
+																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																				A2TBoolean::A2TFalse
+																			}
+																			importable transportedInterface TI_FITDID {
+																				CDD_FitManager_RouteFITDID(out Data:uint8, OpStatus:uint8,
+																				out pNrc:uint8):Std_ReturnType {
+																				}
+																				call
+																					required
+																						CDD_FitManager_RouteFITDID.CALL_CLNT_CLIENTMODE =
+																						A2TClientMode::A2TSynchronous
+																						data
+																							provided
+																								any.DATA_SND_CAN_INVALIDATE =
+																								A2TBoolean::A2TFalse
+																								any.DATA_SND_IMPLICIT_SEND =
+																								A2TBoolean::A2TFalse
+																								required
+																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																									A2TBoolean::A2TFalse
+																								}
+																								importable transportedInterface TI_EcuPowerM {
+																									EcuPowerM_RequestPower(device:uint8,
+																									request:uint8):Std_ReturnType {
+																									}
+																									EcuPowerM_GetDeviceStatus(device:uint8, out
+																									status:uint8):Std_ReturnType {
+																									}
+																									call
+																										required
+																											EcuPowerM_RequestPower.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											EcuPowerM_GetDeviceStatus.CALL_CLNT_CLIENTMODE =
+																											A2TClientMode::A2TSynchronous
+																											data
+																												provided
+																													any.DATA_SND_CAN_INVALIDATE =
+																													A2TBoolean::A2TFalse
+																													any.DATA_SND_IMPLICIT_SEND =
+																													A2TBoolean::A2TFalse
+																													required
+																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																														A2TBoolean::A2TFalse
+																													}
+																													importable transportedInterface
+																													TI_Display_GammaCorrection {
+																														SetGammaCorrection(out GmaSetPtr:uint8,
+																														datalength:uint8):Std_ReturnType {
+																														}
+																														GetGammaCorrectionStatus(out
+																														GmaCrStatus:EGammaCorrectionStatus) {
+																														}
+																														data
+																															provided
+																																any.DATA_SND_CAN_INVALIDATE =
+																																A2TBoolean::A2TFalse
+																																any.DATA_SND_IMPLICIT_SEND =
+																																A2TBoolean::A2TFalse
+																																required
+																																	any.DATA_RCV_IMPLICIT_RECEIVE =
+																																	A2TBoolean::A2TFalse
+																																}
+																																importable transportedInterface
+																																TI_Display_I2cSeqCallback {
+																																	I2cSeqEndCallback() {
+																																	}
+																																	data
+																																		provided
+																																			any.DATA_SND_CAN_INVALIDATE =
+																																			A2TBoolean::A2TFalse
+																																			any.DATA_SND_IMPLICIT_SEND =
+																																			A2TBoolean::A2TFalse
+																																			required
+																																				any.DATA_RCV_IMPLICIT_RECEIVE =
+																																				A2TBoolean::A2TFalse
+																																			}
+																																			importable transportedInterface
+																																			TI_Display_Status {
+																																				GetStatus(DeviceId:EDisplayType, out
+																																				DeviceStatus:EDisplayCddStatus, out
+																																				DisplayPowerState:EDisplayPowerState):Std_ReturnType
+																																				{
+																																				}
+																																				SetState(DeviceID:EDisplayType,
+																																				PowerState:EDisplayPowerState):Std_ReturnType
+																																				{
+																																				}
+																																				call
+																																					required
+																																						GetStatus.CALL_CLNT_CLIENTMODE =
+																																						A2TClientMode::A2TSynchronous
+																																						SetState.CALL_CLNT_CLIENTMODE =
+																																						A2TClientMode::A2TSynchronous
+																																						data
+																																							provided
+																																								any.DATA_SND_CAN_INVALIDATE =
+																																								A2TBoolean::A2TFalse
+																																								any.DATA_SND_IMPLICIT_SEND =
+																																								A2TBoolean::A2TFalse
+																																								required
+																																									any.DATA_RCV_IMPLICIT_RECEIVE =
+																																									A2TBoolean::A2TFalse
+																																								}
+																																								importable transportedInterface
+																																								if_CS_TIRtcServices {
+																																									RtcCdd_ClearAlarm():Std_ReturnType {
+																																									}
+																																									RtcCdd_GetTime(out
+																																									p_time:Rtc_TimeType):Std_ReturnType {
+																																									}
+																																									RtcCdd_SetAlarm(p_alarm:Rtc_AlarmType):Std_ReturnType
+																																									{
+																																									}
+																																									RtcCdd_SetTime(p_time:Rtc_TimeType):Std_ReturnType
+																																									{
+																																									}
+																																									call
+																																										required
+																																											RtcCdd_ClearAlarm.CALL_CLNT_CLIENTMODE
+																																											=
+																																											A2TClientMode::A2TSynchronous
+																																											RtcCdd_GetTime.CALL_CLNT_CLIENTMODE
+																																											=
+																																											A2TClientMode::A2TSynchronous
+																																											RtcCdd_SetAlarm.CALL_CLNT_CLIENTMODE
+																																											=
+																																											A2TClientMode::A2TSynchronous
+																																											RtcCdd_SetTime.CALL_CLNT_CLIENTMODE
+																																											=
+																																											A2TClientMode::A2TSynchronous
+																																										}
+																																										importable transportedInterface
+																																										TI_BattMdl_AVP {
+																																											SVPFlag:boolean
+																																											HVP0Flag:boolean
+																																											HVSD0Flag:boolean
+																																											HVSD1Flag:boolean
+																																											HVSD2Flag:boolean
+																																											HVSD3Flag:boolean
+																																											HVSD4Flag:boolean
+																																											LVP0Flag:boolean
+																																											LVP1Flag:boolean
+																																											LVSD0Flag:boolean
+																																											LVSD1Flag:boolean
+																																											LVSD2Flag:boolean
+																																											LVSD3Flag:boolean
+																																											LVSD4Flag:boolean
+																																											data
+																																												provided
+																																													any.DATA_SND_CAN_INVALIDATE =
+																																													A2TBoolean::A2TFalse
+																																													any.DATA_SND_IMPLICIT_SEND =
+																																													A2TBoolean::A2TFalse
+																																													required
+																																														any.DATA_RCV_IMPLICIT_RECEIVE =
+																																														A2TBoolean::A2TFalse
+																																													}
+																																													importable transportedInterface
+																																													TI_BattMdl_Voltage {
+																																														OverVoltageInterruptFlag:boolean
+																																														data
+																																															provided
+																																																any.DATA_SND_CAN_INVALIDATE =
+																																																A2TBoolean::A2TFalse
+																																																any.DATA_SND_IMPLICIT_SEND =
+																																																A2TBoolean::A2TFalse
+																																																required
+																																																	any.DATA_RCV_IMPLICIT_RECEIVE
+																																																	=
+																																																	A2TBoolean::A2TFalse
+																																																}
+																																																importable
+																																																transportedInterface
+																																																if_CS_SndCdd_AmpDiag {
+																																																	GetSpeaker_status(out
+																																																	SpkrState:uint8, out
+																																																	SpkrDiagStatus:uint8):Std_ReturnType
+																																																	{
+																																																	}
+																																																	SpkrAmp_Recovery():Std_ReturnType
+																																																	{
+																																																	}
+																																																	call
+																																																		required
+																																																			GetSpeaker_status.CALL_CLNT_CLIENTMODE
+																																																			=
+																																																			A2TClientMode::A2TSynchronous
+																																																			SpkrAmp_Recovery.CALL_CLNT_CLIENTMODE
+																																																			=
+																																																			A2TClientMode::A2TSynchronous
+																																																			data
+																																																				provided
+																																																					any.DATA_SND_CAN_INVALIDATE
+																																																					=
+																																																					A2TBoolean::A2TFalse
+																																																					any.DATA_SND_IMPLICIT_SEND
+																																																					=
+																																																					A2TBoolean::A2TFalse
+																																																					required
+														any.DATA_RCV_IMPLICIT_RECEIVE =
+														A2TBoolean::A2TFalse
+																																																					}
+																																																					importable
+																																																					transportedInterface
+																																																					if_CS_Sndcdd_Services {
+														RequestToStart(ChimeId:EChimeID,
+														ChimeDataBase:SSndCddChimeData):Std_ReturnType {
+														}
+														RequestToStop(ChannelId:uint8,
+														StopMethod:ESndInterruptType):Std_ReturnType {
+														}
+														CheckChimeStatus(ChimeId:EChimeID, out
+														pChimeStatus:EChimeStatus):Std_ReturnType {
+														}
+														SetUserPersonalizationVolume(VolumePercentage:uint8):Std_ReturnType
+														{
+														}
+														ischannelavailable(ChannelId:uint8):Std_ReturnType {
+														}
+														CheckLastToneStatus(ChimeId:EChimeID, out
+														pLastToneStatus:ELastToneStatus):Std_ReturnType {
+														}
+														UpdateChannelVolume(ChannelId:uint8,
+														VolumePercentage:uint8):Std_ReturnType {
+														}
+														SetDynamicDeadTime(ChannelId:uint8,
+														DeadTime:uint16):Std_ReturnType {
+														}
+														UpdateChimeVolume(ChimeId:uint8,
+														VolumeLevel:uint8):Std_ReturnType {
+														}
+														RequestCustomChime(out
+														pCustomChimeDescP:SSndChimeDB):Std_ReturnType {
+														}
+														StopCustomChime(out
+														pCustomChimeDescP:SSndChimeDB):Std_ReturnType {
+														}
+														RequestToClear_SafetyChimeErrorStatus(ChimeId:EChimeID):Std_ReturnType
+														{
+														}
+														UpdateChimeInfoBuffer(ChimeId:EChimeID,
+														ChimeChannelIdData:uint8):Std_ReturnType {
+														}
+														SetChimeResumeInfoBuffer(ChimeId:EChimeID,
+														ChimeChannelIdData:uint8, out Resume_Count:uint8):Std_ReturnType
+														{
+														}
+														GetChimeResumeInfoBuffer(ChimeId:EChimeID, out
+														Resume_Count:uint8):Std_ReturnType {
+														}
+														ClearChimeResumeInfoBuffer(ChimeId:EChimeID):Std_ReturnType {
+														}
+														call
+															required
+																RequestToStart.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																RequestToStop.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																CheckChimeStatus.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																SetUserPersonalizationVolume.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																ischannelavailable.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																CheckLastToneStatus.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																UpdateChannelVolume.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																SetDynamicDeadTime.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																UpdateChimeVolume.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																RequestCustomChime.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																StopCustomChime.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																RequestToClear_SafetyChimeErrorStatus.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																UpdateChimeInfoBuffer.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																SetChimeResumeInfoBuffer.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																GetChimeResumeInfoBuffer.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																ClearChimeResumeInfoBuffer.CALL_CLNT_CLIENTMODE =
+																A2TClientMode::A2TSynchronous
+																data
+																	provided
+																		any.DATA_SND_CAN_INVALIDATE =
+																		A2TBoolean::A2TFalse
+																		any.DATA_SND_IMPLICIT_SEND =
+																		A2TBoolean::A2TFalse
+																		required
+																			any.DATA_RCV_IMPLICIT_RECEIVE =
+																			A2TBoolean::A2TFalse
+																		}

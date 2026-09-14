@@ -1,0 +1,495 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file EthIf_MemMap.h
+*    @ingroup EthIfConfiguration
+*    @brief This files contains the memory map for the EthIf module.The file should be included in MemMap.h file.
+*    @defgroup EthIfConfiguration
+*    @brief This files contains the memory map for the EthIf module.The file should be included in MemMap.h file.
+********************************************************************************************************************/
+#ifndef ETHIF_MEMMAP_H
+#define ETHIF_MEMMAP_H
+
+/********************************************************************************************************************
+*                                 VAR SECTION MEMMAP                                                                *
+********************************************************************************************************************/
+/*! @brief To be used for all global or static variables */
+
+/********************************************************************************************************************
+*                                 VAR NO_INIT sections                                                              *
+********************************************************************************************************************/
+/*! @brief used for variables that are never cleared and never initialized. */
+/*! @brief Mapping of variable unspecified alignment section */
+#ifdef ETHIF_START_SEC_VAR_NO_INIT_UNSPECIFIED
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_NO_INIT_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_NO_INIT_UNSPECIFIED
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable boolean alignment section */
+#ifdef ETHIF_START_SEC_VAR_NO_INIT_BOOLEAN
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_NO_INIT_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_NO_INIT_BOOLEAN
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_NO_INIT_BOOLEAN
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_NO_INIT_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 8 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_NO_INIT_8
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_NO_INIT_8
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_NO_INIT_8
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_NO_INIT_8
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_NO_INIT_8
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 16 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_NO_INIT_16
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_NO_INIT_16
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_NO_INIT_16
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_NO_INIT_16
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_NO_INIT_16
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 32 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_NO_INIT_32
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_NO_INIT_32
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_NO_INIT_32
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_NO_INIT_32
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_NO_INIT_32
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/********************************************************************************************************************
+*                                 VAR INIT sections                                                                 *
+********************************************************************************************************************/
+/*! @brief used for variables that are initialized with values after every reset.*/
+/*! @brief Mapping of variable unspecified alignment section */
+#ifdef ETHIF_START_SEC_VAR_INIT_UNSPECIFIED
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_UNSPECIFIED
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_UNSPECIFIED
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable boolean alignment section */
+#ifdef ETHIF_START_SEC_VAR_INIT_BOOLEAN
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_BOOLEAN
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_BOOLEAN
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 8 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_INIT_8
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_8
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_8
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_8
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_8
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 16 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_INIT_16
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_16
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_16
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_16
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_16
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/*! @brief Mapping of variable 32 bit alignment section */
+#ifdef ETHIF_START_SEC_VAR_INIT_32
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_32
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_32
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_32
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_32
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/* Local scope */
+#ifdef ETHIF_START_SEC_VAR_INIT_LOCAL_UNSPECIFIED
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_LOCAL_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_UNSPECIFIED
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_LOCAL_UNSPECIFIED
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_LOCAL_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+#ifdef ETHIF_START_SEC_VAR_INIT_LOCAL_8
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section bss = ".bswdata" */
+# undef ETHIF_START_SEC_VAR_INIT_LOCAL_8
+/* Remove this common define if specific section is configured  */
+# define START_SEC_VAR_INIT_8
+#endif
+
+#ifdef ETHIF_STOP_SEC_VAR_INIT_LOCAL_8
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section bss = default*/
+# undef ETHIF_STOP_SEC_VAR_INIT_LOCAL_8
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_VAR
+#endif
+
+/********************************************************************************************************************
+*                                 VAR POWER_ON_INIT sections                                                        *
+********************************************************************************************************************/
+/*! @brief used for variables that are initialized with values only after power on reset. */
+
+/********************************************************************************************************************
+*                                 VAR CLEARED sections                                                              *
+********************************************************************************************************************/
+/*! @brief used for variables that are cleared to zero after every reset. */
+
+/********************************************************************************************************************
+*                                 VAR POWER_ON_CLEARED sections                                                     *
+********************************************************************************************************************/
+/*! @brief used for variables that are cleared to zero only after power on reset. */
+
+/********************************************************************************************************************
+*                                 VAR_FAST SECTION MEMMAP                                                           *
+********************************************************************************************************************/
+/*!  @brief To be used for all global or static variables. To be used for all global or static variables that have at  
+    least one of the following properties: accessed bitwise , frequently used ,high number of accesses in source code.
+    Some platforms allow the use of bit instructions for variables located in this specific RAM area as well as 
+    shorter addressing instructions. This saves code and runtime. */
+    
+/********************************************************************************************************************
+*                                 VAR_SLOW SECTION MEMMAP                                                           *
+********************************************************************************************************************/
+/*!  @brief To be used for all infrequently accessed global or static variables. */
+
+/********************************************************************************************************************
+*                                 INTERNAL_VAR SECTION MEMMAP                                                       *
+********************************************************************************************************************/
+/*!  @brief To be used for global or static variables those are accessible from a calibration tool. */
+
+/********************************************************************************************************************
+*                                 VAR_SAVED_ZONE SECTION MEMMAP                                                     *
+********************************************************************************************************************/
+/*!  @brief To be used for RAM buffers of variables saved in non volatile memory. */
+
+/********************************************************************************************************************
+*                                 CONST_SAVED_RECOVERY_ZONE SECTION MEMMAP                                          *
+********************************************************************************************************************/
+/*!  @brief To be used for ROM buffers of variables saved in non volatile memory. */
+
+/********************************************************************************************************************
+*                                 CONST SECTION MEMMAP                                                              *
+********************************************************************************************************************/
+/*!  @brief To be used for global or static constants. */
+/*! @brief Mapping of const unspecified alignment section */
+#ifdef ETHIF_START_SEC_CONST_UNSPECIFIED
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONST_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_UNSPECIFIED
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONST_UNSPECIFIED
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONST_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of const boolean alignment section */
+#ifdef ETHIF_START_SEC_CONST_BOOLEAN
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONST_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_BOOLEAN
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONST_BOOLEAN
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONST_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of const 8 bit alignment section */
+#ifdef ETHIF_START_SEC_CONST_8
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONST_8
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_8
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONST_8
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONST_8
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of const 16 bit alignment section */
+#ifdef ETHIF_START_SEC_CONST_16
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONST_16
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_16
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONST_16
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONST_16
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of const 32 bit alignment section */
+#ifdef ETHIF_START_SEC_CONST_32
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONST_32
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_32
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONST_32
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONST_32
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+/********************************************************************************************************************
+*                                 CALIB SECTION MEMMAP                                                              *
+********************************************************************************************************************/
+/*!  @brief To be used for calibration constants. */
+
+/********************************************************************************************************************
+*                                 CONFIG_DATA SECTION MEMMAP                                                        *
+********************************************************************************************************************/
+/*!  @brief Constants with attributes that show that they reside in one segment for module configuration*/
+/*! @brief Mapping of config unspecified alignment section */
+#ifdef ETHIF_START_SEC_CONFIG_DATA_UNSPECIFIED
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONFIG_DATA_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_UNSPECIFIED
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of config boolean alignment section */
+#ifdef ETHIF_START_SEC_CONFIG_DATA_BOOLEAN
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONFIG_DATA_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_BOOLEAN
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONFIG_DATA_BOOLEAN
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONFIG_DATA_BOOLEAN
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of config 8 bit alignment section */
+#ifdef ETHIF_START_SEC_CONFIG_DATA_8
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONFIG_DATA_8
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_8
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONFIG_DATA_8
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONFIG_DATA_8
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of config 16 bit alignment section */
+#ifdef ETHIF_START_SEC_CONFIG_DATA_16
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONFIG_DATA_16
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_16
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONFIG_DATA_16
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONFIG_DATA_16
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/*! @brief Mapping of config 32 bit alignment section */
+#ifdef ETHIF_START_SEC_CONFIG_DATA_32
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section rodata = ".bswconst" */
+# undef ETHIF_START_SEC_CONFIG_DATA_32
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CONST_32
+#endif
+
+#ifdef ETHIF_STOP_SEC_CONFIG_DATA_32
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section rodata = default*/
+# undef ETHIF_STOP_SEC_CONFIG_DATA_32
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CONST
+#endif
+
+/********************************************************************************************************************
+*                                 CODE SECTION MEMMAP                                                               *
+********************************************************************************************************************/
+/*!  @brief To be used for mapping code to application block, boot block, external flash etc.*/
+/*! @brief Mapping of  code section */
+#ifdef ETHIF_START_SEC_CODE
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section text = ".bswcode" */
+# undef ETHIF_START_SEC_CODE
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CODE
+#endif
+
+#ifdef ETHIF_STOP_SEC_CODE
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section text = default*/
+# undef ETHIF_STOP_SEC_CODE
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CODE
+#endif
+
+/********************************************************************************************************************
+*                                 CALLOUT_CODE SECTION MEMMAP                                                       *
+********************************************************************************************************************/
+/*!  @brief To be used for mapping callouts of the BSW Modules which shall typically use the global linker settings 
+            for callouts.*/
+/*! @brief Mapping of callout code section */
+#ifdef ETHIF_START_SEC_CALLOUT_CODE
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section text = ".bswcode" */
+# undef ETHIF_START_SEC_CALLOUT_CODE
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CODE
+#endif
+
+#ifdef ETHIF_STOP_SEC_CALLOUT_CODE
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section text = default*/
+# undef ETHIF_STOP_SEC_CALLOUT_CODE
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CODE
+#endif
+
+/*! @brief Mapping of App callback code section */
+#ifdef ETHIF_START_SEC_APPL_CODE
+/* Enter here a #pragma command for opening the specified section eg #pragma ghs section text = ".bswcode" */
+# undef ETHIF_START_SEC_APPL_CODE
+/* Remove this common define if specific section is configured  */
+# define START_SEC_CODE
+#endif
+
+#ifdef ETHIF_STOP_SEC_APPL_CODE
+/* Enter here a #pragma command for closing the specified section , eg #pragma ghs section text = default*/
+# undef ETHIF_STOP_SEC_APPL_CODE
+/* Remove this common define if specific section is configured  */
+# define STOP_SEC_CODE
+#endif
+
+/********************************************************************************************************************
+*                                 CODE_FAST SECTION MEMMAP                                                          *
+********************************************************************************************************************/
+/*!  @brief To be used for code that shall go into fast code memory segments. The FAST sections should be used when 
+    the execution does not happen in a well defined period times but with the knowledge of high frequent access and
+    or high execution time. For example, a callback for a frequent notification.*/
+    
+    
+/********************************************************************************************************************
+*                                 CODE_SLOW SECTION MEMMAP                                                          *
+********************************************************************************************************************/
+/*!  @brief To be used for code that shall go into slow code memory segments. The SLOW sections should be used when 
+    the execution does not happen in a well defined period times but with the knowledge of low frequent access. For
+    example, a callback in case of seldom error. */
+
+
+#endif /* ETHIF_MEMMAP_H */
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

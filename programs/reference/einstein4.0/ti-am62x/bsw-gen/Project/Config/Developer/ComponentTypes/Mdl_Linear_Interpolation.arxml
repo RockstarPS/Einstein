@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--This file was saved with a tool from Vector Informatik GmbH-->
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="B50E06CC-6DA8-4F88-8B9A-6EDEE328909F">
+      <SHORT-NAME>E40_Platform_System_SystemPackage</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="81A911F1-0EB2-498E-B410-C8D02EB0AE58">
+          <SHORT-NAME>Components</SHORT-NAME>
+          <ELEMENTS>
+            <APPLICATION-SW-COMPONENT-TYPE UUID="54915FE6-9F2E-4561-A568-1CF9F031008C">
+              <SHORT-NAME>Mdl_Linear_Interpolation</SHORT-NAME>
+              <PORTS>
+                <P-PORT-PROTOTYPE UUID="65EF2ED8-71A4-4998-B741-8639C275382E">
+                  <SHORT-NAME>pp_Init</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+                <P-PORT-PROTOTYPE UUID="4E865776-789F-4461-A508-490AF0493571">
+                  <SHORT-NAME>pp_LinearInterpolateWord</SHORT-NAME>
+                  <ADMIN-DATA>
+                    <SDGS>
+                      <SDG GID="DV:DEV">
+                        <SD GID="DV:ImportModePreset">Keep</SD>
+                      </SDG>
+                    </SDGS>
+                  </ADMIN-DATA>
+                  <PROVIDED-COM-SPECS>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateByte</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateSByte</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateSWord</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                    <SERVER-COM-SPEC>
+                      <OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateWord</OPERATION-REF>
+                      <QUEUE-LENGTH>1</QUEUE-LENGTH>
+                    </SERVER-COM-SPEC>
+                  </PROVIDED-COM-SPECS>
+                  <PROVIDED-INTERFACE-TREF DEST="CLIENT-SERVER-INTERFACE">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation</PROVIDED-INTERFACE-TREF>
+                </P-PORT-PROTOTYPE>
+              </PORTS>
+              <INTERNAL-BEHAVIORS>
+                <SWC-INTERNAL-BEHAVIOR UUID="872800C2-A071-4538-9166-FE5C507EE764">
+                  <SHORT-NAME>IB_Mdl_Linear_Interpolation</SHORT-NAME>
+                  <EVENTS>
+                    <OPERATION-INVOKED-EVENT UUID="D3C42826-0C5D-4F51-97C9-60B76E93B6DF">
+                      <SHORT-NAME>OIE_pp_LinearInterpolateWord_Mdl_Linear_Interpolation_Get_LinearInterpolateByteTrigByGet_LinearInterpolateByte</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Get_LinearInterpolateByte</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_LinearInterpolateWord</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateByte</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="6FB76835-15B2-4B78-8424-F1C8FECCA500">
+                      <SHORT-NAME>OIE_pp_LinearInterpolateWord_Mdl_Linear_Interpolation_Get_LinearInterpolateSByteTrigByGet_LinearInterpolateSByte</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Get_LinearInterpolateSByte</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_LinearInterpolateWord</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateSByte</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="6E2A610C-643C-4C77-B45B-90E24065DCD9">
+                      <SHORT-NAME>OIE_pp_LinearInterpolateWord_Mdl_Linear_Interpolation_Get_LinearInterpolateSWordTrigByGet_LinearInterpolateSWord</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Get_LinearInterpolateSWord</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_LinearInterpolateWord</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateSWord</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="C674463E-AF3B-4544-9ED8-AA7EC874A1DC">
+                      <SHORT-NAME>OIE_pp_LinearInterpolateWord_Mdl_Linear_Interpolation_Get_LinearInterpolateWordTrigByGet_LinearInterpolateWord</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Get_LinearInterpolateWord</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_LinearInterpolateWord</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_CS_LinearInterpolation/Get_LinearInterpolateWord</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <OPERATION-INVOKED-EVENT UUID="08A8652D-7D16-4E22-A87D-25E00BB29EA3">
+                      <SHORT-NAME>OIE_pp_Init_Mdl_Linear_Interpolation_InitTrigByInit</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Init</START-ON-EVENT-REF>
+                      <OPERATION-IREF>
+                        <CONTEXT-P-PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_Init</CONTEXT-P-PORT-REF>
+                        <TARGET-PROVIDED-OPERATION-REF DEST="CLIENT-SERVER-OPERATION">/E40_Platform_System_SystemPackage/Types/TI_EcumExtInit/Init</TARGET-PROVIDED-OPERATION-REF>
+                      </OPERATION-IREF>
+                    </OPERATION-INVOKED-EVENT>
+                    <TIMING-EVENT UUID="52CCEC97-679F-4BCE-B324-A61309BCD99E">
+                      <SHORT-NAME>TEMdl_Linear_Interpolation_Task</SHORT-NAME>
+                      <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation/Mdl_Linear_Interpolation_Task</START-ON-EVENT-REF>
+                      <PERIOD>0.02</PERIOD>
+                    </TIMING-EVENT>
+                  </EVENTS>
+                  <PORT-API-OPTIONS>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_Init</PORT-REF>
+                    </PORT-API-OPTION>
+                    <PORT-API-OPTION>
+                      <ENABLE-TAKE-ADDRESS>false</ENABLE-TAKE-ADDRESS>
+                      <INDIRECT-API>false</INDIRECT-API>
+                      <PORT-REF DEST="P-PORT-PROTOTYPE">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/pp_LinearInterpolateWord</PORT-REF>
+                    </PORT-API-OPTION>
+                  </PORT-API-OPTIONS>
+                  <RUNNABLES>
+                    <RUNNABLE-ENTITY UUID="1E359D3D-AB03-4E0D-91BA-A4AAE14823B9">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Get_LinearInterpolateByte</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Get_LinearInterpolateByte</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="74728EA0-288D-4551-8A91-6528CD0C5F24">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Get_LinearInterpolateSByte</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Get_LinearInterpolateSByte</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="938BAB46-CBCB-4554-8362-F226D017892C">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Get_LinearInterpolateSWord</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Get_LinearInterpolateSWord</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="C4F53933-5F1D-44EB-B66F-931CBE096F07">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Get_LinearInterpolateWord</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Get_LinearInterpolateWord</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="D7363ED0-684D-42AB-9E36-005DC31FE935">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Init</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Init</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                    <RUNNABLE-ENTITY UUID="6F70C32E-82B5-4B0A-9B61-A07906384633">
+                      <SHORT-NAME>Mdl_Linear_Interpolation_Task</SHORT-NAME>
+                      <CAN-BE-INVOKED-CONCURRENTLY>true</CAN-BE-INVOKED-CONCURRENTLY>
+                      <SYMBOL>Mdl_Linear_Interpolation_Task</SYMBOL>
+                    </RUNNABLE-ENTITY>
+                  </RUNNABLES>
+                  <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+                </SWC-INTERNAL-BEHAVIOR>
+              </INTERNAL-BEHAVIORS>
+            </APPLICATION-SW-COMPONENT-TYPE>
+            <SWC-IMPLEMENTATION UUID="13DE785C-ED25-44D8-A306-4383D899F7E0">
+              <SHORT-NAME>IMPL_Mdl_Linear_Interpolation</SHORT-NAME>
+              <BEHAVIOR-REF DEST="SWC-INTERNAL-BEHAVIOR">/E40_Platform_System_SystemPackage/Components/Mdl_Linear_Interpolation/IB_Mdl_Linear_Interpolation</BEHAVIOR-REF>
+            </SWC-IMPLEMENTATION>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

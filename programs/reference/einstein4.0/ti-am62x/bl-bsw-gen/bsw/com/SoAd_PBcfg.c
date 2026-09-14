@@ -1,0 +1,563 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file SoAd_PBcfg.c
+*    @ingroup SoAd Configuration
+*    @brief This is SoAd Post Build configuration source file. It contains definitions of Post Build
+*    configuration parameters for the SoAd module.
+*    Auto generated code in PCHINNAT at 2024-01-20 21:51:54.517727
+********************************************************************************************************************/
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "SoAd_PBcfg.h"
+#include "DoIP.h"
+#include "DoIP_Cbk.h"
+#include "App_Cbk.h"
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+/* #! SoCon ctrl status */
+/*! @brief Defines the Socket connection ctrl status */
+SOAD_LOCAL VAR(SoAd_SoConCtrlStatusType, SOAD_VAR_NOINIT) SoAd_SoConCtrlStatus[SOAD_NUM_OF_SOCON];
+/* Events for SoCon */
+SOAD_LOCAL VAR(SoAd_SoConEventCtrlStatusType,SOAD_VAR_NOINIT) SoAd_SoConEventCtrlStatus[SOAD_NUM_OF_SOCON];
+/*! @brief Defines the Tx UDP Alive timer */
+SOAD_LOCAL VAR(uint32, SOAD_VAR_NOINIT) SoAd_TxUdpAliveTimer[SOAD_NUM_OF_TX_UDP_ALIVE_TIMER];
+/* #! socket ctrl status */
+/*! @brief Defines the Socket ctrl status */
+SOAD_LOCAL VAR(SoAd_SocketCtrlStatusType, SOAD_VAR_NOINIT) SoAd_SocketCtrlStatus[SOAD_NUM_OF_SOCKET];
+/* #! local addr ctrl status */
+/*! @brief Defines the state of each local IP address */
+SOAD_LOCAL VAR(SoAd_IpAddrStateType, SOAD_VAR_NOINIT) SoAd_IpAddrState[SOAD_NUM_OF_LOCAL_ADDR];
+/* #! Routing group ctrl status */
+/*! @brief Defines the Route group's Pdu route destination ctrl status */
+SOAD_LOCAL VAR(SoAd_RouteGrpPduRouteDestStatusType, SOAD_VAR_NOINIT) SoAd_RouteGrpPduRouteDestCtrlStatus[SOAD_NUM_OF_RG_PDU_ROUTE_DEST];
+/*! @brief Defines the Route group's Socket route destination ctrl status */
+SOAD_LOCAL VAR(SoAd_RouteGrpSocketRouteDestStatusType, SOAD_VAR_NOINIT) SoAd_RouteGrpSocketRouteDestCtrlStatus[SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST];
+/*! @brief Defines the routing group event state for each routing group */
+SOAD_LOCAL VAR(boolean, SOAD_VAR_NOINIT) SoAd_RoutingGroupEventCtrlStatus[SOAD_NUM_OF_ROUTING_GROUP];
+/* #! Tx pdu ctrl status , buffer*/
+/*! @brief Defines the SoCon Tx Pdu Ctrl status */
+SOAD_LOCAL VAR(SoAd_SoConTxPduCtrlStatusType, SOAD_VAR_NOINIT) SoAd_SoConTxPduCtrlStatus[SOAD_NUM_OF_SOCON_TX_PDU_CTRL];
+/*! @brief Defines the Tx Tp buffer Ctrl status */
+SOAD_LOCAL VAR(SoAd_TpTxBufferCtrlStatusType, SOAD_VAR_NOINIT) SoAd_TpTxBufferCtrlStatus[SOAD_NUM_OF_TP_TX_BUFFER];
+/*! @brief Defines the NPdu Udp Ctrl status */
+SOAD_LOCAL VAR(SoAd_NPduUdpTxCtrlStatusType, SOAD_VAR_NOINIT) SoAd_NPduUdpTxCtrlStatus[SOAD_NUM_OF_NPDU_UDP_TX];
+/*! @brief Defines the trigger buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_TriggerBuffer[SOAD_TRIGGER_BUFFER_SIZE];
+/*! @brief Defines the Tp Tx buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_TpTxBuffer[SOAD_TP_TX_BUFFER_SIZE];
+/*! @brief Defines the routing group if buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_RoutingGroupIfTxBuffer[SOAD_ROUTING_GROUP_IF_TX_BUFFER_SIZE];
+/*! @brief Defines the NPdu Udp Tx buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_NPduUdpTxBuffer[SOAD_NPDU_UDP_TX_BUFFER_SIZE];
+/*! @brief Defines the NPdu Udp Tx queue */
+SOAD_LOCAL VAR(SoAd_NPduUdpTxQueueCtrlStatusType, SOAD_VAR_NOINIT) SoAd_NPduUdpTxQueueCtrlStatus[SOAD_NUM_OF_NPDU_UDP_TX_QUEUE];
+/*! @brief Defines the Pdu route Udp tx confirmation event state */
+SOAD_LOCAL VAR(boolean, SOAD_VAR_NOINIT) SoAd_PduRouteEventUdpTxConf[SOAD_NUM_OF_PDU_ROUTE];
+/*! @brief Defines the Tx NPDU UDP Alive timer */
+SOAD_LOCAL VAR(uint32, SOAD_VAR_NOINIT) SoAd_TxUdpNPduTimer[SOAD_NUM_OF_TX_UDP_NPDU_TIMER]; 
+/*! @brief Defines the TCP Tx Queue Data */
+SOAD_LOCAL VAR(SoAd_TcpTxQueueDataType, SOAD_VAR_NOINIT) SoAd_TcpTxQueueData[SOAD_TCP_TX_QUEUE_SIZE];
+/*! @brief Defines the TCP Tx Queue Ctrl status */
+SOAD_LOCAL VAR(SoAd_TcpTxQueueCtrlStatusType, SOAD_VAR_NOINIT) SoAd_TcpTxQueueCtrlStatus[SOAD_TCP_TX_QUEUE_SIZE];
+/*! @brief Defines the Pdu Route ctrl status */
+SOAD_LOCAL VAR(SoAd_PduRouteCtrlStatusType, SOAD_VAR_NOINIT) SoAd_PduRouteCtrlStatus[SOAD_NUM_OF_PDU_ROUTE];
+/* #! Rx pdu ctrl status , buffer*/
+/*! @brief Defines the SoCon Rx Pdu Ctrl status */
+SOAD_LOCAL VAR(SoAd_SoConRxPduCtrlStatusType, SOAD_VAR_NOINIT) SoAd_SoConRxPduCtrlStatus[SOAD_NUM_OF_SOCON_RX_PDU_CTRL];
+/*! @brief Defines the  Rx Tp buffer Ctrl status */
+SOAD_LOCAL VAR(SoAd_TpRxBufferCtrlStatusType, SOAD_VAR_NOINIT) SoAd_TpRxBufferCtrlStatus[SOAD_NUM_OF_TP_RX_BUFFER];
+/*! @brief Defines the Rx If buffer Ctrl status */
+SOAD_LOCAL VAR(SoAd_RxIfBufferCtrlType, SOAD_VAR_NOINIT) SoAd_RxIfBufferCtrl[SOAD_NUM_OF_RX_IF_BUFFER];
+/*! @brief Defines the Rx buffer segment data Ctrl status */
+SOAD_LOCAL VAR(SoAd_RxBufferSegCtrlType, SOAD_VAR_NOINIT) SoAd_RxBufferSegCtrl[SOAD_NUM_OF_RX_BUFFER_SEGMENT];
+/*! @brief Defines the Tp Rx buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_TpRxBuffer[SOAD_TP_RX_BUFFER_SIZE];
+/*! @brief Defines the IF Rx buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_RxIfBuffer[SOAD_RX_IF_BUFFER_SIZE];
+/*! @brief Defines the Rx Meta data buffer */
+SOAD_LOCAL VAR(uint8, SOAD_VAR_NOINIT) SoAd_RxMetaDataBuffer[SOAD_RX_META_DATA_BUFFER_SIZE];
+/*! @brief Defines the Rx segment data buffer */
+SOAD_LOCAL VAR(SoAd_RxBufferSegDataType, SOAD_VAR_NOINIT) SoAd_RxBufferSegData[SOAD_RX_BUFFER_SEGMENT_DATA_SIZE];
+/* bsd ctrl status , buffer */
+/*! @brief Defines the local ip addr ctrl status  - Bsd */
+SOAD_LOCAL SoAd_LocalIpAddrCtrlType SoAd_LocalIpAddrCtrlStatus[SOAD_NUM_OF_LOCAL_ADDR];
+/*! @brief Defines the mapping of bsd network interface index with the local address - bsd*/
+SOAD_LOCAL SoAd_LocalAddrTcpIpCtrlType SoAd_LocalAddrTcpIpCtrlStatus[SOAD_NUM_OF_TCPIP_CTRL];
+/*! @brief Defines the Tcp Tx buffer ctrl status */
+SOAD_LOCAL SoAd_SocketTxBufferCtrlType SoAd_SocketTxBufferCtrlStatus[SOAD_SOCKET_NUM_OF_TX_BUFFER];
+/*! @brief Defines the Socket Tcp Rx buffer ctrl status */
+SOAD_LOCAL SoAd_SocketTcpRxBufferCtrlType SoAd_SocketTcpRxBufferCtrlStatus[SOAD_SOCKET_NUM_OF_TCP_RX_BUFFER];
+/*! @brief Defines the broad cast address control status - bsd */
+SOAD_LOCAL SoAd_SocketBrdAddrCtrlStatusType SoAd_SocketBrdAddrCtrlStatus[SOAD_NUM_OF_SOCKET];
+/*! @brief Defines the  Socket State Event Status - Bsd */
+SOAD_LOCAL boolean SoAd_SocketStateEventStatus[SOAD_NUM_OF_SOCKET];
+/*! @brief Defines the  Socket State Event Status - Bsd */
+SOAD_LOCAL boolean SoAd_SocketTcpTxEventStatus[SOAD_NUM_OF_SOCKET];
+/*! @brief Defines the Socket Tx buffer  */
+SOAD_LOCAL uint8 SoAd_SocketTxBuffer[SOAD_SOCKET_TX_BUFFER_SIZE];
+/*! @brief Defines the Socket Udp Rx buffer  */
+SOAD_LOCAL uint8 SoAd_SocketUdpRxBuffer[SOAD_SOCKET_UDP_RX_BUFFER_SIZE];
+/*! @brief Defines the Socket Tcp Rx buffer  */
+SOAD_LOCAL uint8 SoAd_SocketTcpRxBuffer[SOAD_SOCKET_TCP_RX_BUFFER_SIZE];
+
+/********************************************************************************************************************
+* #! SoAd const config  data                                                                                       *
+********************************************************************************************************************/
+static CONST(SoAd_SoConConfigType, SOAD_CONST) SoAd_SoConConfig[SOAD_NUM_OF_SOCON]=
+{
+    {   0U,  0U,  0U,  0U,  0U,  SOAD_SOCON_IP_ANY_PORT_ANY,  0U,  1U,  0U,  1U,  0U,  0U,  0U,  0U,  0x16u,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U },  /* 0  UdpServerSocketConnection */
+    {   1U,  1U,  1U,  1U,  1U,  SOAD_SOCON_IP_SET_PORT_SET,  2U,  3U,  2U,  3U,  0U,  0U,  0U,  0U,  0x16u,  0U,  1U,  0U,  1U,  1U,  0U,  0U,  0U,  0U,  0U,  0U },  /* 1  UdpClientSocketConnection */
+    {   2U,  2U,  2U,  0U,  2U,  SOAD_SOCON_IP_ANY_PORT_ANY,  4U,  5U,  4U,  5U,  0U,  0U,  0U,  0U,  0x16u,  0U,  0U,  0U,  2U,  2U,  0U,  0U,  0U,  0U,  0U,  0U },  /* 2  TcpServerSocketConnection */
+    {   3U,  3U,  3U,  1U,  3U,  SOAD_SOCON_IP_SET_PORT_SET,  6U,  7U,  6U,  7U,  0U,  0U,  0U,  0U,  0x16u,  1U,  0U,  0U,  3U,  3U,  0U,  0U,  0U,  0U,  0U,  0U },   /* 3  TcpClientSocketConnection */
+    {   4U,  4U,  4U,  0U,  4U,  SOAD_SOCON_IP_ANY_PORT_ANY,  8U,  8U,  8U,  8U,  0U,  0U,  0U,  0U,  0x16u,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U },  /* 4  UdpDoIPServerSocketConnection */
+    {   4U,  5U,  5U,  2U,  5U,  SOAD_SOCON_IP_SET_PORT_SET,  9U,  9U,  SOAD_NUM_OF_SOCKET_ROUTE,  SOAD_NUM_OF_SOCKET_ROUTE,  0U,  0U,  0u,  0u,  0x16u,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U,  0U },  /* 5  UdpDoIPAnnounceServerSocketConnection */
+    {   5U,  6U,  6U,  0U,  6U,  SOAD_SOCON_IP_ANY_PORT_ANY,  10U,  10U,  9U,  9U,  0U,  0U,  0U,  0U,  0x16u,  2U,  0U,  0U,  2U,  2U,  0U,  0U,  0U,  0U,  0U,  0U }   /* 6  TcpDoIPServerSocketConnection */
+};
+
+static CONST(SoAd_SoConGrpConfigType, SOAD_CONST) SoAd_SoConGrpConfig[SOAD_NUM_OF_SOCON_GROUP]=
+{
+    {   0U,  0U,  0U,  0U,  SOAD_NUM_OF_SOCKET,  SOAD_NUM_OF_TCP_SOCKET,                      0U,  0x8cfU,  0x13u },  /* 0  UdpServerSocketConnectionGroup */
+    {   0U,  0U,  1U,  1U,  SOAD_NUM_OF_SOCKET,  SOAD_NUM_OF_TCP_SOCKET,                      1U,  0x9cfU,  0x13u },  /* 1  UdpClientSocketConnectionGroup */
+    /* if msg acceptance filter set, then the remote adress should be set */
+    {   0U,  0U,  2U,  2U,                  7U,                      0U,  SOAD_NUM_OF_UDP_SOCKET,  0x8cfU,  0x34u },  /* 2  TcpServerSocketConnectionGroup */ 
+    {   0U,  0U,  3U,  3U,  SOAD_NUM_OF_SOCKET,                      1U,  SOAD_NUM_OF_UDP_SOCKET,  0x9cfU,  0x1du },  /* 3  TcpClientSocketConnectionGroup */
+    {   0U,  0U,  4U,  5U,  SOAD_NUM_OF_SOCKET,  SOAD_NUM_OF_TCP_SOCKET,                      2U,  0x5834,  0x03u },  /* 4  UdpDoIPServerSocketConnectionGroup */
+    {   0U,  0U,  6U,  6U,                  8U,                      2U,  SOAD_NUM_OF_UDP_SOCKET,  0x5834,  0x24u }   /* 5  TcpDoIPServerSocketConnectionGroup */
+};
+
+static CONST(SoAd_SocketConfigType, SOAD_CONST) SoAd_SocketConfig[SOAD_NUM_OF_SOCKET]=
+{
+    {   0U,  0U,  0U,  FALSE,  0U,  0U },  /* 0  UdpServerSocketConnection */
+    {   1U,  1U,  1U,  FALSE,  0U,  0U },  /* 1  UdpClientSocketConnection */
+    {   2U,  2U,  2U,  TRUE,   0U,  0U },  /* 2  TcpServerSocketConnection */
+    {   3U,  3U,  3U,  TRUE,   1U,  0U },  /* 3  TcpClientSocketConnection */
+    {   4U,  4U,  4U,  FALSE,  0U,  0U },  /* 4  UdpDoIPServerSocketConnection */
+    {   5U,  5U,  4U,  FALSE,  0U,  0U },  /* 5  UdpDoIPAnnounceServerSocketConnection */
+    {   6U,  6U,  5U,  FALSE,  0U,  0U },  /* 6  TcpDoIPServerSocketConnection */
+    {   2U,  2U,  2U,  TRUE,   1U,  0U },  /* 7  TcpServerSocketConnectionGroup */
+    {   6U,  6U,  5U,  TRUE,   1U,  0U },  /* 8  TcpDoIPServerSocketConnectionGroup */
+};
+
+static CONST(SoAd_LocalIpAddrAssignChgFuncType, SOAD_CONST) SoAd_LocalIpAddrAssignChgFuncConfig[SOAD_NUM_OF_LOCAL_IPADDR_ASSIGN_CHG_FUNC]=
+{
+    &DoIP_LocalIpAddrAssignmentChg  /* 0 */
+};
+
+static CONST(SoAd_UpSoConModeChgFuncType, SOAD_CONST) SoAd_UpSoConModeChgFuncConfig[SOAD_NUM_OF_UP_SOCON_MODE_CHG_FUNC]=
+{
+    &DoIP_SoConModeChg  /* 0 */
+};
+
+static CONST(SoAd_RemAddrIpV4ConfigType, SOAD_CONST) SoAd_RemAddrIpV4Config[SOAD_NUM_OF_REM_ADDR_IPV4]=
+{
+    {   0U,  0x00000000u,  0U },  /* 0   */
+    {   0U,  0x0200a8c0u,  0xAcfU },   /* 1   */
+    {   0U,  0xFFFFFFFFu,  0x5834U },   /* 2   */
+    {   24U,  0x0101a8c0u,  0u }   /* 3  */
+};
+
+static CONST(SoAd_SocketUdpConfigType, SOAD_CONST) SoAd_SocketUdpConfig[SOAD_NUM_OF_UDP_SOCKET]=
+{
+    {   TRUE,  FALSE,  TRUE,  FALSE,  1U,  500u,  0U,  0U,  0U },  /* 0  UdpServerSocketConnectionGroup */
+    {   TRUE,  FALSE,  TRUE,  TRUE,  1U,  500u,  1U,  0U,  0U },   /* 1  UdpClientSocketConnectionGroup */
+    {   TRUE,  FALSE,  TRUE,  FALSE,  1U,  500u,  0U,  0U,  0U }  /* 2  UdpServerSocketConnectionGroup */
+};
+
+static CONST(SoAd_SocketTcpConfigType, SOAD_CONST) SoAd_SocketTcpConfig[SOAD_NUM_OF_TCP_SOCKET]=
+{
+    {   FALSE,  FALSE,  0U,  512u,  0U,  0U,  0U },  /* 0  TcpServerSocketConnectionGroup */
+    {   TRUE,  FALSE,  0U,  512U,  0U,  0U,  0U },   /* 1  TcpClientSocketConnectionGroup */
+    {   FALSE,  FALSE,  0U,  512u,  0U,  0U,  0U }  /* 2  TcpServerSocketConnectionGroup */
+};
+
+static CONST(SoAd_PduRouteConfigType, SOAD_CONST) SoAd_PduRouteConfig[SOAD_NUM_OF_PDU_ROUTE]=
+{   
+    {   0U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  0U,  0U,  1U,  0U },  /* 0  UdpServerPduRouteIf */
+    {   0U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  0x04u,  1U,  1U,  1U,  0U },  /* 1  UdpServerPduRouteTp */
+    {   1U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  2U,  2U,  1U,  0U },  /* 2  UdpClientPduRouteIf */
+    {   1U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  0x04u,  3U,  3U,  1U,  0U },  /* 3  UdpClientPduRouteTp */
+    {   2U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  4U,  4U,  1U,  0U },  /* 4  TcpServerPduRouteIf */
+    {   2U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  0x04u,  5U,  5U,  1U,  0U },  /* 5  TcpServerPduRouteTp */
+    {   3U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  6U,  6U,  1U,  0U },  /* 6  TcpClientPduRouteIf */
+    {   3U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  0x04u,  7U,  7U,  1U,  0U },   /* 7  TcpClientPduRouteTp */
+    {   DOIP_TX_PDU_DoIPSoAdUdpTxPdu_1,  0U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  8U,  8U,  1U,  0U },  /* 8  UdpDoIPServerPduRouteTp */
+    {   DOIP_TX_PDU_DoIPSoAdUdpMulticast,  0U,  SOAD_UPPER_LAYER_TYPE_IF,  0x04u,  9U,  9U,  1U,  0U },  /* 9  UdpDoIPServerPduRouteIf */
+    {   DOIP_TX_PDU_DoIPSoAdTcpTxPdu_1,  0U,  SOAD_UPPER_LAYER_TYPE_TP,  0x04u,  10U,  10U,  1U,  0U }   /* 10  TcpDoIPServerPduRouteTp */
+};
+
+static CONST(SoAd_PduRouteDestConfigType, SOAD_CONST) SoAd_PduRouteDestConfig[SOAD_NUM_OF_PDU_ROUTE_DEST]=
+{
+    {   0U,  0U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1000U,  100U,  0U,  0U },  /* 0  UdpServerPduRouteDestIf */
+    {   0U,  1U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1001U,  100U,  1U,  1U },  /* 1  UdpServerPduRouteDestTp */
+    {   1U,  2U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1002U,  100U,  2U,  2U },  /* 2  UdpClientPduRouteDestIf */
+    {   1U,  3U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1003U,  100U,  3U,  3U },  /* 3  UdpClientPduRouteDestTp */
+    {   2U,  4U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1004U,  100U,  4U,  4U },  /* 4  TcpServerPduRouteDestIf */
+    {   2U,  5U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1005U,  100U,  5U,  5U },  /* 5  TcpServerPduRouteDestTp */
+    {   3U,  6U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1006U,  100U,  6U,  6U },  /* 6  TcpClientPduRouteDestIf */
+    {   3U,  7U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  1007U,  100U,  7U,  7U },   /* 7  TcpClientPduRouteDestTp */
+    {   4U,  8U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  0U,     100U,  8U,  8U },  /* 8  UdpDoIPServerPduRouteTpDest */
+    {   5U,  9U,  SOAD_TX_UDP_TRIGGER_ALWAYS,  0U,     100U,  9U,  9U },  /* 9  UdpDoIPServerPduRouteIfDest */
+    {   6U,  10U, SOAD_TX_UDP_TRIGGER_ALWAYS,  0U,     100U,  10U,  10U }   /* 10  TcpDoIPServerPduRouteTpDest */
+};
+
+static CONST(SoAd_RGPduRouteDestConfigType, SOAD_CONST) SoAd_RGPduRouteDestConfig[SOAD_NUM_OF_RG_PDU_ROUTE_DEST]=
+{
+    {0}, /* 0 UdpServerPduRouteDestIf */
+    {1}, /* 1 UdpServerPduRouteDestTp */
+    {2}, /* 2 UdpClientPduRouteDestIf */
+    {3}, /* 3 UdpClientPduRouteDestTp */
+    {4}, /* 4 TcpServerPduRouteDestIf */
+    {5}, /* 5 TcpServerPduRouteDestTp */
+    {6}, /* 6 TcpClientPduRouteDestIf */
+    {7}, /* 7 TcpClientPduRouteDestTp */
+    {8}, /* 8 UdpDoIPServerPduRouteTp */
+    {9}, /* 9 UdpDoIPServerPduRouteIf */
+    {10}  /* 10 TcpDoIPServerPduRouteTp */
+};
+
+static CONST(SoAd_RgPduRouteDestIdxType, SOAD_CONST) SoAd_RgPduRouteDestMapConfig[SOAD_NUM_OF_RG_PDU_ROUTE_DEST_MAP]=
+{
+    0, /* 0 UdpServerPduRouteDestIf */
+    1, /* 1 UdpServerPduRouteDestTp */
+    2, /* 2 UdpClientPduRouteDestIf */
+    3, /* 3 UdpClientPduRouteDestTp */
+    4, /* 4 TcpServerPduRouteDestIf */
+    5, /* 5 TcpServerPduRouteDestTp */
+    6, /* 6 TcpClientPduRouteDestIf */
+    7, /* 7 TcpClientPduRouteDestTp */
+    8, /* 8 UdpDoIPServerPduRouteTp */
+    9, /* 9 UdpDoIPServerPduRouteIf */
+    10  /* 10 TcpDoIPServerPduRouteTp */
+};
+
+static CONST(SoAd_SocketRouteConfigType, SOAD_CONST) SoAd_SocketRouteConfig[SOAD_NUM_OF_SOCKET_ROUTE]=
+{
+    {   0U,  0U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  2000U,  0U,  0U },  /* 0  UdpServerSocketRouteIf */
+    {   0U,  0U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  2001U,  1U,  0U },  /* 1  UdpServerSocketRouteTp */
+    {   1U,  1U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  2002U,  2U,  0U },  /* 2  UdpClientSocketRouteIf */
+    {   1U,  1U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  2003U,  3U,  0U },  /* 3  UdpClientSocketRouteTp */
+    {   2U,  2U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  2004U,  4U,  0U },  /* 4  TcpServerSocketRouteIf */
+    {   2U,  2U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  2005U,  5U,  0U },  /* 5  TcpServerSocketRouteTp */
+    {   3U,  3U,  1U,  SOAD_UPPER_LAYER_TYPE_IF,  2006U,  6U,  0U },  /* 6  TcpClientSocketRouteIf */
+    {   3U,  3U,  1U,  SOAD_UPPER_LAYER_TYPE_TP,  2007U,  7U,  0U },   /* 7  TcpClientSocketRouteTp */
+    {   4U,  DOIP_RX_PDU_DoIPSoAdUdpRxPdu_1,  0U,  SOAD_UPPER_LAYER_TYPE_IF,  0U,     8U,  0U },  /* 8  UdpDoIPServerSocketRouteTp */
+    {   6U,  DOIP_RX_PDU_DoIPSoAdTcpRxPdu_1,  0U,  SOAD_UPPER_LAYER_TYPE_TP,  0U,     9U,  0U }   /* 9  TcpDoIPServerSocketRouteTp */
+};
+
+static CONST(SoAd_SocketRouteDestConfigType, SOAD_CONST) SoAd_SocketRouteDestConfig[SOAD_NUM_OF_SOCKET_ROUTE_DEST]=
+{
+    {   0U,  0U,  0U },  /* 0  UdpServerSocketRouteDestIf */
+    {   0U,  1U,  1U },  /* 1  UdpServerSocketRouteDestTp */
+    {   1U,  2U,  2U },  /* 2  UdpClientSocketRouteDestIf */
+    {   1U,  3U,  3U },  /* 3  UdpClientSocketRouteDestTp */
+    {   2U,  4U,  4U },  /* 4  TcpServerSocketRouteDestIf */
+    {   2U,  5U,  5U },  /* 5  TcpServerSocketRouteDestTp */
+    {   3U,  6U,  6U },  /* 6  TcpClientSocketRouteDestIf */
+    {   3U,  7U,  7U },  /* 7  TcpClientSocketRouteDestTp */
+    {   4U,  8U,  8U },  /* 8  UdpDoIPServerSocketRouteTp */
+    {   6U,  9U,  9U }   /* 9  TcpDoIPServerSocketRouteTp */
+};
+
+static CONST(SoAd_RgSocketRouteDestIdxType, SOAD_CONST) SoAd_RgSocketRouteDestMapConfig[SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST_MAP]=
+{
+    0, /* 0 UdpServerSocketRouteDestIf */
+    1, /* 1 UdpServerSocketRouteDestTp */
+    2, /* 2 UdpClientSocketRouteDestIf */
+    3, /* 3 UdpClientSocketRouteDestTp */
+    4, /* 4 TcpServerSocketRouteDestIf */
+    5, /* 5 TcpServerSocketRouteDestTp */
+    6, /* 6 TcpClientSocketRouteDestIf */
+    7, /* 7 TcpClientSocketRouteDestTp */
+    8, /* 7 UdpDoIPServerSocketRouteTp */
+    9  /* 7 TcpDoIPServerSocketRouteTp */
+};
+
+static CONST(SoAd_RGSocketRouteDestConfigType, SOAD_CONST) SoAd_RGSocketRouteDestConfig[SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST]=
+{
+    {0}, /* 0 UdpServerSocketRouteDestIf */
+    {1}, /* 1 UdpServerSocketRouteDestTp */
+    {2}, /* 2 UdpClientSocketRouteDestIf */
+    {3}, /* 3 UdpClientSocketRouteDestTp */
+    {4}, /* 4 TcpServerSocketRouteDestIf */
+    {5}, /* 5 TcpServerSocketRouteDestTp */
+    {6}, /* 6 TcpClientSocketRouteDestIf */
+    {7},  /* 7 TcpClientSocketRouteDestTp */
+    {8},  /* 8 UdpDoIPServerSocketRouteTp */
+    {9}  /* 9 TcpDoIPServerSocketRouteTp */
+};
+
+static CONST(SoAd_RoutingGroupConfigType, SOAD_CONST) SoAd_RoutingGroupConfig[SOAD_NUM_OF_ROUTING_GROUP]=
+{
+    {   FALSE,  TRUE,  0U,  1U,  0U,  1U },  /* 0  UdpServerRoutingGroup */
+    {   FALSE,  TRUE,  2U,  3U,  2U,  3U },  /* 1  UdpClientRoutingGroup */
+    {   FALSE,  TRUE,  4U,  5U,  4U,  5U },  /* 2  TcpServerRoutingGroup */
+    {   FALSE,  TRUE,  6U,  7U,  6U,  7U },  /* 3  TcpClientRoutingGroup */
+    {   TRUE,   TRUE,  8U,  10U, 8U,  9U }   /* 4  DoIPRoutingGroup */
+};
+
+static CONST(SoAd_TpTxBufferConfigType, SOAD_CONST) SoAd_TpTxBufferConfig[SOAD_NUM_OF_TP_TX_BUFFER]=
+{
+    {0, 4103, 4104}, /* Udp client tp tx buffer  */
+    {4104, 8207, 8208}  /* Udp server tp tx buffer */
+};
+
+static CONST(SoAd_NPduUdpTxConfigType, SOAD_CONST) SoAd_NPduUdpTxConfig[SOAD_NUM_OF_NPDU_UDP_TX]=
+{
+    { TRUE, 0, 0, 4, 0, 99, 0} /* If npdu udp transmit */
+};
+
+static CONST(SoAd_TcpTxQueueConfigType, SOAD_CONST) SoAd_TcpTxQueueConfig[SOAD_NUM_OF_TCP_TX_QUEUE]=
+{
+    {0, 1 , 2 },
+    {2, 3 , 2 },
+    {4, 5 , 2 }
+};
+
+/* for both tcp and udp Tp */
+static CONST(SoAd_TpRxBufferConfigType, SOAD_CONST) SoAd_TpRxBufferConfig[SOAD_NUM_OF_TP_RX_BUFFER]=
+{
+    {0, 511, 512}
+};
+
+/* tcp rx */
+static CONST(SoAd_RxBufferSegConfigType, SOAD_CONST) SoAd_RxBufferSegConfig[SOAD_NUM_OF_RX_BUFFER_SEGMENT]=
+{
+    {0, 9, 10}
+};
+
+/* for both udp tcp if */
+static CONST(SoAd_RxIfBufferConfigType, SOAD_CONST) SoAd_RxIfBufferConfig[SOAD_NUM_OF_RX_IF_BUFFER]=
+{
+    { 0, 99, 100}
+};
+
+static CONST(SoAd_UpperLayerConfigType, SOAD_CONST) SoAd_UpperLayerConfig[SOAD_NUM_OF_UL]=
+{
+    { /* 0 DoIp layer */ 
+        &DoIP_SoAdIfRxIndication,
+        NULL_PTR,
+        &DoIP_SoAdIfTxConfirmation,
+        &DoIP_SoAdTpCopyRxData,
+        &DoIP_SoAdTpCopyTxData,
+        &DoIP_SoAdTpRxIndication,
+        &DoIP_SoAdTpStartOfReception,
+        &DoIP_SoAdTpTxConfirmation
+    },
+    { /* 1 DoIp layer */ 
+        &App_SoAdIfRxIndication,
+        NULL_PTR,
+        &App_SoAdIfTxConfirmation,
+        &App_SoAdTpCopyRxData,
+        &App_SoAdTpCopyTxData,
+        &App_SoAdTpRxIndication,
+        &App_SoAdTpStartOfReception,
+        &App_SoAdTpTxConfirmation
+    }
+};
+/*! @brief Defines the local address configuration */
+static CONST(SoAd_LocalAddrConfigType, SOAD_CONST) SoAd_LocalAddrConfig[SOAD_NUM_OF_LOCAL_ADDR]=
+{
+    {   0U,  SOAD_ADDRESS_TYPE_UNICAST,  SOAD_ASSIGN_TRIGGER_AUTOMATIC,  SOAD_AF_INET,  SOAD_IPADDR_ASSIGNMENT_STATIC,  0U,  3U }   /* 0  LocalAddr1 */
+};
+
+/* @brief Defines the Eth interface name config */
+static const char SoAd_TcpIpCtrlNameBufferConfig[SOAD_TCPIP_OF_CTRL_NAME_BUFFER_SIZE]={'e','t','h','_','d','0','\0'};
+/*!
+ * @brief Defines the Eth interface name buffer config id for the TcpIp ctrl 
+ * CtrlNameBufferStartIdx: Defines the Eth interface name buffer start idx
+ * CtrlNameBufferEndIdx: Defines the Eth interface name buffer end idx
+ * CtrlNameBufferSize: Defines the Eth interface name buffer size
+ */
+static const SoAd_TcpIpCtrlNameIdxConfigType SoAd_TcpIpCtrlNameIdxConfig[SOAD_NUM_OF_TCPIP_CTRL]=
+{
+    { 0 ,6, 7}
+};
+
+/*!
+ * @brief Defines the socket tx buffer config for the TcpIp ctrl . 
+ * TxBufferStartIdx: Defines the socket tx buffer buffer start idx
+ * TxBufferEndIdx: Defines the socket tx buffer buffer end idx
+ * TxBufferSize: Defines the socket tx buffer size
+ */
+static const SoAd_SocketTxBufferConfigType SoAd_SocketTxBufferConfig[SOAD_SOCKET_NUM_OF_TX_BUFFER]=
+{
+    { 0u, 4109u, 4110U},
+    { 4110U, 8119U, 4110U}
+};
+
+/*!
+ * @brief Defines the buffer config for tcp rx buffer.
+ * TcpRxBufferStartIdx : Defines the start Id of the Socket Tcp Rx Buffer
+ * TcpRxBufferEndIdx : Defines the end Id of the Socket Tcp Rx Buffer
+ * TcpRxBufferSize : Defines the size of the Socket Tcp Rx Buffer
+ */
+static const SoAd_SocketTcpRxBufferConfigType SoAd_SocketTcpRxBufferConfig[SOAD_SOCKET_NUM_OF_TCP_RX_BUFFER]=
+{
+    { 0u, 511u, 512U},
+    { 512U, 1023u, 512U},
+    { 1024u, 1535u, 512U}
+};
+
+/* @brief Defines the TcpIp Bsd configuration */
+const SoAd_ConfigType SoAd_ConfigData=
+{
+    .pSoConConfig                       = SoAd_SoConConfig,
+    .pSoConGrpConfig                    = SoAd_SoConGrpConfig,
+    .pSocketConfig                      = SoAd_SocketConfig,
+    .pLocalAddrConfig                   = SoAd_LocalAddrConfig,
+    .pLocalIpAddrAssignChgFuncConfig    = SoAd_LocalIpAddrAssignChgFuncConfig,
+    .pUpSoConModeChgFuncConfig          = SoAd_UpSoConModeChgFuncConfig,
+    .pRemAddrIpV4Config                 = SoAd_RemAddrIpV4Config,
+    .pUpperLayerConfig                  = SoAd_UpperLayerConfig,
+    .pRoutingGroupConfig                = SoAd_RoutingGroupConfig,
+    .pRGPduRouteDestConfig              = SoAd_RGPduRouteDestConfig,
+    .pRGSocketRouteDestConfig           = SoAd_RGSocketRouteDestConfig,
+    .pRgPduRouteDestMapConfig           = SoAd_RgPduRouteDestMapConfig,
+    .pRgSocketRouteDestMapConfig        = SoAd_RgSocketRouteDestMapConfig,
+    .pSocketUdpConfig                   = SoAd_SocketUdpConfig,
+    .pSocketTcpConfig                   = SoAd_SocketTcpConfig,
+    .pPduRouteConfig                    = SoAd_PduRouteConfig,
+    .pPduRouteDestConfig                = SoAd_PduRouteDestConfig,
+    .pTpTxBufferConfig                  = SoAd_TpTxBufferConfig,
+    .pNPduUdpTxConfig                   = SoAd_NPduUdpTxConfig,
+    .pTcpTxQueueConfig                  = SoAd_TcpTxQueueConfig,
+    .pSocketRouteConfig                 = SoAd_SocketRouteConfig,
+    .pSocketRouteDestConfig             = SoAd_SocketRouteDestConfig,
+    .pTpRxBufferConfig                  = SoAd_TpRxBufferConfig,
+    .pRxBufferSegConfig                 = SoAd_RxBufferSegConfig,
+    .pRxIfBufferConfig                  = SoAd_RxIfBufferConfig,
+    .pTcpIpCtrlNameBufferCfg            = SoAd_TcpIpCtrlNameBufferConfig,
+    .pTcpIpCtrlNameIdxCfg               = SoAd_TcpIpCtrlNameIdxConfig,
+    .pSocketTxBufferCfg                 = SoAd_SocketTxBufferConfig,
+    .pSocketTcpRxBufferCfg              = SoAd_SocketTcpRxBufferConfig,
+    .pSoConCtrlStatus                   = SoAd_SoConCtrlStatus,
+    .pSoConEventCtrlStatus              = SoAd_SoConEventCtrlStatus,
+    .pSocketCtrlStatus                  = SoAd_SocketCtrlStatus,
+    .pTxUdpAliveTimer                   = SoAd_TxUdpAliveTimer,
+    .pIpAddrState                       = SoAd_IpAddrState,
+    .pRouteGrpPduRouteDestCtrlStatus    = SoAd_RouteGrpPduRouteDestCtrlStatus,
+    .pRouteGrpSocketRouteDestCtrlStatus = SoAd_RouteGrpSocketRouteDestCtrlStatus,
+    .pRoutingGroupEventCtrlStatus       = SoAd_RoutingGroupEventCtrlStatus,
+    .pSoConTxPduCtrlStatus              = SoAd_SoConTxPduCtrlStatus,
+    .pTpTxBufferCtrlStatus              = SoAd_TpTxBufferCtrlStatus,
+    .pNPduUdpTxCtrlStatus               = SoAd_NPduUdpTxCtrlStatus,
+    .pNPduUdpTxQueueCtrlStatus          = SoAd_NPduUdpTxQueueCtrlStatus,
+    .pTxUdpNPduTimer                    = SoAd_TxUdpNPduTimer,
+    .pTcpTxQueueData                    = SoAd_TcpTxQueueData,
+    .pTcpTxQueueCtrlStatus              = SoAd_TcpTxQueueCtrlStatus,
+    .pPduRouteCtrlStatus                = SoAd_PduRouteCtrlStatus,
+    .pPduRouteEventUdpTxConf            = SoAd_PduRouteEventUdpTxConf,
+    .pTriggerBuffer                     = SoAd_TriggerBuffer,
+    .pTpTxBuffer                        = SoAd_TpTxBuffer,
+    .pRoutingGroupIfTxBuffer            = SoAd_RoutingGroupIfTxBuffer,
+    .pNPduUdpTxBuffer                   = SoAd_NPduUdpTxBuffer,
+    .pSoConRxPduCtrlStatus              = SoAd_SoConRxPduCtrlStatus,
+    .pTpRxBufferCtrlStatus              = SoAd_TpRxBufferCtrlStatus,
+    .pRxIfBufferCtrl                    = SoAd_RxIfBufferCtrl,
+    .pRxBufferSegCtrl                   = SoAd_RxBufferSegCtrl,
+    .pRxBufferSegData                   = SoAd_RxBufferSegData,
+    .pTpRxBuffer                        = SoAd_TpRxBuffer,
+    .pRxIfBuffer                        = SoAd_RxIfBuffer,
+    .pRxMetaDataBuffer                  = SoAd_RxMetaDataBuffer,
+    .pLocalIpAddrCtrlStatus             = SoAd_LocalIpAddrCtrlStatus,
+    .pLocalAddrTcpIpCtrlStatus          = SoAd_LocalAddrTcpIpCtrlStatus,
+    .pSocketTxBufferCtrlStatus          = SoAd_SocketTxBufferCtrlStatus,
+    .pSocketTcpRxBufferCtrlStatus       = SoAd_SocketTcpRxBufferCtrlStatus,
+    .pSocketBrdAddrCtrlStatus           = SoAd_SocketBrdAddrCtrlStatus,
+    .pSocketStateEventStatus            = SoAd_SocketStateEventStatus,
+    .pSocketTcpTxEventStatus            = SoAd_SocketTcpTxEventStatus,
+    .pSocketTxBuffer                    = SoAd_SocketTxBuffer,
+    .pSocketUdpRxBuffer                 = SoAd_SocketUdpRxBuffer,
+    .pSocketTcpRxBuffer                 = SoAd_SocketTcpRxBuffer,
+    .NumOfSoCon                         = SOAD_NUM_OF_SOCON,
+    .NumOfSoConGrp                      = SOAD_NUM_OF_SOCON_GROUP,
+    .NumOfSocket                        = SOAD_NUM_OF_SOCKET,
+    .NumOfRoutingGroup                  = SOAD_NUM_OF_ROUTING_GROUP,
+    .NumOfRemAddrIpV4Id                 = SOAD_NUM_OF_REM_ADDR_IPV4,
+    .NumOfLocalIpAddr                   = SOAD_NUM_OF_LOCAL_ADDR,
+    .NumOfTcpIpCtrl                     = SOAD_NUM_OF_TCPIP_CTRL,
+    .NumOfLocalIpAddrUnicast            = SOAD_NUM_OF_LOCALADDR_UNICAST,
+    .NumOfLocalIpAddrAssignChgFunc      = SOAD_NUM_OF_LOCAL_IPADDR_ASSIGN_CHG_FUNC,
+    .NumOfUpSoConModeChgFunc            = SOAD_NUM_OF_UP_SOCON_MODE_CHG_FUNC,
+    .NumOfUL                            = SOAD_NUM_OF_UL,
+    .NumOfPduRoute                      = SOAD_NUM_OF_PDU_ROUTE,
+    .NumOfPduRouteDest                  = SOAD_NUM_OF_PDU_ROUTE_DEST,
+    .NumOfRgPduRouteDestMap             = SOAD_NUM_OF_RG_PDU_ROUTE_DEST_MAP,
+    .NumOfRgPduRouteDest                = SOAD_NUM_OF_RG_PDU_ROUTE_DEST,
+    .NumOfTxPdu                         = SOAD_NUM_OF_TX_PDU,
+    .NumOfSoConTxPduCtrl                = SOAD_NUM_OF_SOCON_TX_PDU_CTRL,
+    .NumOfSocketRoute                   = SOAD_NUM_OF_SOCKET_ROUTE,
+    .NumOfSocketRouteDest               = SOAD_NUM_OF_SOCKET_ROUTE_DEST,
+    .NumOfRgSocketRouteDestMap          = SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST_MAP,
+    .NumOfRgSocketRouteDest             = SOAD_NUM_OF_RG_SOCKET_ROUTE_DEST,
+    .NumOfRxPdu                         = SOAD_NUM_OF_RX_PDU,
+    .NumOfSoConRxPduCtrl                = SOAD_NUM_OF_SOCON_RX_PDU_CTRL,
+    .NumOfSocketUdp                     = SOAD_NUM_OF_UDP_SOCKET,
+    .NumOfUdpAliveTimer                 = SOAD_NUM_OF_TX_UDP_ALIVE_TIMER,
+    .NumOfNPduUdpTx                     = SOAD_NUM_OF_NPDU_UDP_TX,
+    .NumOfNPduUdpTxQueue                = SOAD_NUM_OF_NPDU_UDP_TX_QUEUE,
+    .NumOfNPduUdpTxTimer                = SOAD_NUM_OF_TX_UDP_NPDU_TIMER,
+    .NumOfSocketTcpId                   = SOAD_NUM_OF_TCP_SOCKET,
+    .NumOfTpTxBuffer                    = SOAD_NUM_OF_TP_TX_BUFFER,
+    .TpTxBufferSize                     = SOAD_TP_TX_BUFFER_SIZE,
+    .RoutingGroupIfTxBufferSize         = SOAD_ROUTING_GROUP_IF_TX_BUFFER_SIZE,
+    .NumOfTpRxBuffer                    = SOAD_NUM_OF_TP_RX_BUFFER,
+    .TpRxBufferSize                     = SOAD_TP_RX_BUFFER_SIZE,
+    .NumOfRxBufferSegment               = SOAD_NUM_OF_RX_BUFFER_SEGMENT,
+    .RxBufferSegmentDataSize            = SOAD_RX_BUFFER_SEGMENT_DATA_SIZE,
+    .RxMetaDataBufferSize               = SOAD_RX_META_DATA_BUFFER_SIZE,
+    .RxIfBufferSize                     = SOAD_NUM_OF_RX_IF_BUFFER,
+    .TriggerBufferSize                  = SOAD_TRIGGER_BUFFER_SIZE,
+    .NPduUdpTxBufferSize                = SOAD_NPDU_UDP_TX_BUFFER_SIZE,
+    .NPduUdpTxQueueRetryCnt             = SOAD_NPDU_UDP_TX_QUEUE_RETRY_CNT,
+    .NumOfTcpTxQueue                    = SOAD_NUM_OF_TCP_TX_QUEUE,
+    .TcpTxQueueSize                     = SOAD_TCP_TX_QUEUE_SIZE,
+    .TcpIpCtrlNameBufferSize            = SOAD_TCPIP_OF_CTRL_NAME_BUFFER_SIZE,
+    .LocalAddrCheckCount                = SOAD_SOCKET_LOCAL_ADDR_CHECK_COUNT,
+    .SocketTxBufferSize                 = SOAD_SOCKET_TX_BUFFER_SIZE,
+    .SocketUdpRxBufferSize              = SOAD_SOCKET_UDP_RX_BUFFER_SIZE,
+    .SocketTcpRxBufferSize              = SOAD_SOCKET_TCP_RX_BUFFER_SIZE,
+    .SocketNumOfTxBuffer                = SOAD_SOCKET_NUM_OF_TX_BUFFER,
+    .SocketNumOfTcpRxBuffer             = SOAD_SOCKET_NUM_OF_TCP_RX_BUFFER
+};
+
+/*
+ * @brief Api to check whether the SoAd PB configuration is valid or not.
+ * @param[in] ConfigPtr pointer to SoAd PB configuration
+ * @return Validity of the PB configuration. TRUE: Valid configuration FALSE:Invalid configuration 
+ */
+FUNC(boolean, SOAD_CODE) SoAd_CheckConfigPtr
+(
+  P2CONST(SoAd_ConfigType, AUTOMATIC, SOAD_APPL_CONST) ConfigPtr
+)
+{  
+    boolean Ret = FALSE; 
+    /* check the \ConfigPtr is same as \SoAd_ConfigData*/
+    if (ConfigPtr != NULL_PTR)
+    {
+        if (ConfigPtr == &SoAd_ConfigData)
+        {
+            Ret = TRUE;
+        }
+    }
+    return Ret;
+}
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/

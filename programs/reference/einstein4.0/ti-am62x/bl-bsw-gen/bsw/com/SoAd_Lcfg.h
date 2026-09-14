@@ -1,0 +1,1831 @@
+/********************************************************************************************************************
+*                                   C O P Y R I G H T                                                               *
+*********************************************************************************************************************
+* Copyright (c) 2019 by Visteon Corporation.       All rights reserved.                                             *
+*                                                                                                                   *
+* NOTICE: This is an unpublished work of authorship, which contains trade secrets.                                  *
+* Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States    *
+* or those of any other country that may have jurisdiction, to protect this work as an unpublished work,            *
+* in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its      *
+* rights under all copyright laws to protect this work as a published work, when appropriate.                       *
+* Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it  *
+* without the written authorization of Visteon Corporation.                                                         *
+********************************************************************************************************************/
+/*!*****************************************************************************************************************
+*    @file SoAd_Lcfg.h
+*    @ingroup SoAdConfiguration
+*    @brief This is SoAd link time configuration header file. It contains definitions of link time
+*    configuration parameters for the SoAd module.
+*    @defgroup SoAdConfiguration
+*    @brief This contains the link time configurations for the SoAd module.
+********************************************************************************************************************/
+#ifndef SOAD_LCFG_H
+#define SOAD_LCFG_H
+/********************************************************************************************************************
+*  HEADER INCLUDES                                                                                                  *
+********************************************************************************************************************/
+#include "SoAd_Cfg.h"
+#include "SoAd_Types.h"
+/********************************************************************************************************************
+* #! SoAd types                                                                                                     *
+* #! macro , typedef declaration                                                                                    *
+********************************************************************************************************************/
+/* Macro for static and inline type */
+#ifndef SOAD_LOCAL 
+#define SOAD_LOCAL  static
+#endif
+
+#ifndef LOCAL_INLINE
+#define LOCAL_INLINE    static inline
+#endif
+
+#ifndef SOAD_LOCAL_INLINE
+#define SOAD_LOCAL_INLINE  LOCAL_INLINE
+#endif
+/* Soad Macros */
+#define SoAd_UtilAddrGetIpv4Addr(RemAddr)       ((RemAddr).SockAddrInetType.Addr[0])
+#define SoAd_UtilAddrGetPort(RemAddr)           ((RemAddr).SockAddrInetType.Port)
+#define SoAd_UtilAddrGetDomain(RemAddr)         ((RemAddr).SockAddrInetType.Domain)
+
+#define SoAd_UtilAddrSetIpv4Addr(RemAddr,Val)  ((RemAddr).SockAddrInetType.Addr[0]=(Val))
+#define SoAd_UtilAddrSetPort(RemAddr,Val)      ((RemAddr).SockAddrInetType.Port=(Val))
+#define SoAd_UtilAddrSetDomain(RemAddr,Val)    ((RemAddr).SockAddrInetType.Domain=(Val))
+
+#define SoAd_UtilpAddrGetIpv4Addr(pAddr)        ((pAddr)->SockAddrInetType.Addr[0])
+#define SoAd_UtilpAddrGetPort(pAddr)            ((pAddr)->SockAddrInetType.Port)
+#define SoAd_UtilpAddrGetDomain(pAddr)          ((pAddr)->SockAddrInetType.Domain)
+
+#define SoAd_UtilpAddrSetIpv4Addr(pAddr,Val)    ((pAddr)->SockAddrInetType.Addr[0]=(Val))
+#define SoAd_UtilpAddrSetPort(pAddr,Val)        ((pAddr)->SockAddrInetType.Port=(Val))
+#define SoAd_UtilpAddrSetDomain(pAddr,Val)      ((pAddr)->SockAddrInetType.Domain=(Val))
+
+#if (SOAD_TCPIP_API == SOAD_TCPIP_API_LINUX)
+typedef uint8 TcpIp_LocalAddrIdType;
+#endif
+/*! @brief Defines the pdu header id size */
+#define SOAD_PDU_HEADER_ID_SIZE     4U
+/*! @brief Defines the pdu header length size */
+#define SOAD_PDU_HEADER_LEN_SIZE    4U
+/*! @brief Defines the pdu header size (SOAD_PDU_HEADER_ID_SIZE+SOAD_PDU_HEADER_LEN_SIZE)*/
+#define SOAD_PDU_HEADER_SIZE        8U
+/*! @brief Defines the PDU header identifier type. */
+typedef uint32 SoAd_PduHeaderIdType;
+/*! @brief Defines the PDU header length type. */
+typedef uint32 SoAd_PduHeaderLenType;
+
+/*! @brief Defines the Rx meta data size */
+#define SOAD_RX_META_DATA_LEN       2u
+/*! @brief Defines the Tx meta data size */
+#define SOAD_TX_META_DATA_LEN       2u
+/*! @brief Defines the wildcard port value */
+# define SOAD_PORT_ANY              0x0000u
+/*! @brief Defines the wildcard Ip address */
+# define SOAD_IPADDR_ANY            0x00000000u
+/*! @brief Defines the defines the default frame priority value */
+#define SOAD_DEFAULT_FRAME_PRIORITY 0u
+                                         /* --  NOT ANY SET */
+#define SOAD_SOCON_IP_SET_PORT_SET 0x03u /* 00  00  00  11  */ /*! @brief IP address set, port set. */
+#define SOAD_SOCON_IP_SET_PORT_ANY 0x06u /* 00  00  01  10  */ /*! @brief IP address set, port wildcard. */
+#define SOAD_SOCON_IP_SET_PORT_NOT 0x12u /* 00  01  00  10  */ /*! @brief IP address set, port not set. */
+#define SOAD_SOCON_IP_ANY_PORT_SET 0x09u /* 00  00  10  01  */ /*! @brief IP address wildcard, port set. */
+#define SOAD_SOCON_IP_ANY_PORT_ANY 0x0Cu /* 00  00  11  00  */ /*! @brief IP address wildcard, port wildcard. */
+#define SOAD_SOCON_IP_ANY_PORT_NOT 0x18u /* 00  01  10  00  */ /*! @brief IP address wildcard, port not set. */
+#define SOAD_SOCON_IP_NOT_PORT_SET 0x21u /* 00  10  00  01  */ /*! @brief IP address not set, port set. */
+#define SOAD_SOCON_IP_NOT_PORT_ANY 0x24u /* 00  10  01  00  */ /*! @brief IP address not set, port wildcard. */
+#define SOAD_SOCON_IP_NOT_PORT_NOT 0x30u /* 00  11  00  00  */ /*! @brief IP address not set, port not set. */
+#define SOAD_SOCON_MASK_IPADDR     0x2Au /* 00  10  10  10  */ /*! @brief Bit mask for IP address state. */
+#define SOAD_SOCON_MASK_PORT       0x15u /* 00  01  01  01  */ /*! @brief Bit mask for port state. */
+#define SOAD_SOCON_MASK_SET        0x03u /* 00  00  00  11  */ /*! @brief Bit mask for state set. */
+#define SOAD_SOCON_MASK_ANY        0x0Cu /* 00  00  11  00  */ /*! @brief Bit mask for state is wildcard. */
+#define SOAD_SOCON_MASK_NOT        0x30u /* 00  11  00  00  */ /*! @brief Bit mask for state not set. */
+/*! @brief Defines the type to indicate state (set, wildcard, not set) of remote address. */
+typedef uint8 SoAd_RemAddrStateType;
+/*! @brief Defines the type of port */
+typedef uint16 SoAd_PortType;
+
+/*! @brief Defines the Unicast local address */
+#define SOAD_ADDRESS_TYPE_UNICAST       0U
+/*! @brief Defines the Multicast local address */
+#define SOAD_ADDRESS_TYPE_MULTICAST     1U
+/*! @brief Defines the type of local address type (unicast or multicast). */
+typedef uint8 SoAd_AddressTypeType;
+
+/*! @brief Defines the Local address assignment triggered automatically */
+#define SOAD_ASSIGN_TRIGGER_AUTOMATIC   0U
+/*! @brief Defines the Local address assignment triggered manually */
+#define SOAD_ASSIGN_TRIGGER_MANUAL      1U
+/*! @brief Defines the type of local address assignment trigger type ( manually by user or automatically.) */
+typedef uint8 SoAd_AssignTriggerType;
+
+/*! @brief Defines the priority value for matching both IP and Port */ 
+# define SOAD_BEST_MATCH_IP_MATCH_PORT_MATCH    4u
+/*! @brief Defines the priority value for matching IP but Port as wildcard */ 
+# define SOAD_BEST_MATCH_IP_MATCH_PORT_ANY      3u
+/*! @brief Defines the priority value for matching Port but IP as wildcard */ 
+# define SOAD_BEST_MATCH_IP_ANY_PORT_MATCH      2u
+/*! @brief Defines the priority value for matching both IP and Port as wildcard */ 
+# define SOAD_BEST_MATCH_IP_ANY_PORT_ANY        1u
+/*! @brief Defines no match found */
+# define SOAD_BEST_MATCH_NONE                   0u
+/*! @brief Defines the priority type for matching socket */
+typedef uint8   SoAd_BestMatchPriorityType;
+
+/*! @brief Defines the Auto connection setup bit mask for Socket connection */
+#define SOAD_SOCON_SOCONGRP_AUTO_SETUP_BIT              0x01U
+/*! @brief Defines the Pdu Route support bit mask for Socket connection */
+#define SOAD_SOCON_PDU_ROUTE_SUPPORT_BIT                0x02U
+/*! @brief Defines the TCP Tx Queue support bit mask for Socket connection */
+#define SOAD_SOCON_TCP_TX_QUEUE_EN_BIT                  0x04U
+/*! @brief Defines the UDP NPdu support bit mask for Socket connection */
+#define SOAD_SOCON_UDP_NPDU_EN_BIT                      0x08U
+/*! @brief Defines the Socket route support bit mask for Socket connection */
+#define SOAD_SOCON_SOCKET_ROUTE_EN_BIT                  0x10U
+/*! @brief Defines the Socket connection configuration option bitmask type */
+typedef uint8 SoAd_SoConCfgOptionMaskType;
+
+/*! @brief Defines the message acceptance filter support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_MSG_ACCEPT_FILTER_BIT             0x01U
+/*! @brief Defines the UDP protocol support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_PROTO_UDP_BIT                     0x02U
+/*! @brief Defines the TCP protocol support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_PROTO_TCP_BIT                     0x04U
+/*! @brief Defines the TCP Initiate support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_TCP_INITIATE_BIT                  0x08U
+/*! @brief Defines the PDU header support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_PDU_HEADER_EN_BIT                 0x10U
+/*! @brief Defines the TCP Immediate Tx confirmation support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_TCP_IMM_TX_CONF_EN_BIT            0x20U
+/*! @brief Defines the acceptance with best matched PDU header support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_BEST_MATCH_PDU_HEADER_EN_BIT      0x40U
+/*! @brief Defines the acceptance with best matched socket route support bit mask for Socket connection group */
+#define SOAD_SOCONGRP_BEST_MATCH_SOCKET_ROUTE_EN_BIT    0x80U
+/*! @brief Defines the Socket connection group configuration option bitmask type */
+typedef uint8 SoAd_SoConGrpCfgOptionMaskType;
+
+/*! @brief Defines the If trigger transmit support bit mask for pdu route */
+#define SOAD_PDU_ROUTE_IF_TRIGGER_TX_EN_BIT             0x01U
+/*! @brief Defines the meta data support bit mask for pdu route */
+#define SOAD_PDU_ROUTE_META_DATA_EN_BIT                 0x02U
+/*! @brief Defines the If tx confirmation support bit mask for pdu route */
+#define SOAD_PDU_ROUTE_IF_TX_CONF_EN_BIT                0x04U
+/*! @brief Defines the pdu route configuration option bitmask type */
+typedef uint8 SoAd_PduRouteCfgOptionMaskType;
+
+/*! @brief Defines the meta data support bit mask for socket route */
+#define SOAD_SOCKET_ROUTE_META_DATA_EN_BIT              0x01U
+/*! @brief Defines the socket route configuration option bitmask type */
+typedef uint8 SoAd_SocketRouteCfgOptionMaskType;
+/* Below values should be defined as per the size of the type */
+/*! @brief Defines the type for Idx of Socket connection group */
+typedef uint8 SoAd_SoConGrpIdxType;
+/*! @brief Defines the type for Socket Id type */
+typedef uint8 SoAd_SocketIdxType;
+/*! @brief Defines the type for Idx of Routing group */
+typedef uint8 SoAd_RoutingGroupIdxType;
+/*! @brief Defines the type for the Idx of Remote addr */
+typedef uint8 SoAd_RemAddrIpV4IdxType;
+/*! @brief Defines the type for the Idx of recv Remote addr */
+typedef uint8 SoAd_RcvRemAddrIpV4IdxType;
+/*! @brief  Defines the TcpIp Local address identifier type . */
+typedef uint8 SoAd_LocalIpAddrIdxType;
+/*! @brief Defines the TcpIpCtrl Idx type */
+typedef uint8 SoAd_TcpIpCtrlIdxType;
+/*! @brief Defines the type for local ip addr Idx */
+typedef uint8 SoAd_LocalIpAddrUnicastIdxType;
+/*! @brief Defines the type for Idx of Local Ip addrss assignment change indication callback function */ 
+typedef uint8 SoAd_LocalIpAddrAssignChgFuncIdxType;
+/*! @brief Defines the type for Idx of socket mode change callback function */ 
+typedef uint8 SoAd_UpSoConModeChgFuncIdxType;
+/*! @brief Defines the type for Idx of Upper layer */ 
+typedef uint8 SoAd_ULIdxType;
+/*! @brief Defines the type for Idx of Pdu Route */
+typedef uint8 SoAd_PduRouteIdxType;
+/*! @brief Defines the type for Idx of Pdu Route Dest */
+typedef uint8 SoAd_PduRouteDestIdxType;
+/*! @brief Defines the type for Idx of Routing group's Pdu Route Dest Map */
+typedef uint8 SoAd_RgPduRouteDestMapIdxType;
+/*! @brief Defines the type for Idx of Routing group's Pdu Route Dest */
+typedef uint8 SoAd_RgPduRouteDestIdxType;
+/*! @brief Defines the type for Idx of Tx Pdu Ctrl */
+typedef uint8 SoAd_SoConTxPduCtrlIdxType;
+/*! @brief Defines the type for Idx of Socket Route */
+typedef uint8 SoAd_SocketRouteIdxType;
+/*! @brief Defines the type for Idx of Socket Route Dest */
+typedef uint8 SoAd_SocketRouteDestIdxType;
+/*! @brief Defines the type for Idx of Routing group's Socket Route Dest Map */
+typedef uint8 SoAd_RgSocketRouteDestMapIdxType;
+/*! @brief Defines the type for Idx of Routing group's Socket Route Dest */
+typedef uint8 SoAd_RgSocketRouteDestIdxType;
+/*! @brief Defines the type for Idx of Rx Pdu Ctrl */
+typedef uint8 SoAd_SoConRxPduCtrlIdxType;
+/*! @brief Defines the type for Idx of socket UDP */
+typedef uint8 SoAd_SocketUdpIdxType;
+/*! @brief Defines the type for Idx of UDP alive timout timer */
+typedef uint8 SoAd_UdpAliveTimerIdxType;
+/*! @brief Defines the type for Idx of Tx NPdu UDP */
+typedef uint8 SoAd_NPduUdpTxIdxType;
+/*! @brief Defines the type for Idx of NPdu UDP Tx Queue */
+typedef uint8 SoAd_NPduUdpTxQueueIdxType;
+/*! @brief Defines the type for Idx of UDP NPdu timout timer */
+typedef uint8 SoAd_NPduUdpTxTimerIdxType;
+/*! @brief Defines the type for NPdu UDP Tx Buffer size*/
+typedef uint16 SoAd_NPduUdpTxBufferSizeType;
+/*! @brief Defines the type for NPdu UDP Tx queue retry count */
+typedef uint16 SoAd_NPduUdpTxQueueRetryCntType;
+/*! @brief Defines the type for Idx of socket TCP */
+typedef uint8 SoAd_SocketTcpIdxType;
+/*! @brief Defines the type for Idx of Tp Tx buffer */
+typedef uint8 SoAd_TpTxBufferIdxType;
+/*! @brief Defines the type for Tp Tx buffer size */
+typedef uint16 SoAd_TpTxBufferSizeType;
+/*! @brief Defines the type for routing group if Tx buffer size */
+typedef uint16 SoAd_RoutingGroupIfTxBufferSizeType;
+/*! @brief Defines the type for the rx meta data buffer size */
+typedef uint16 SoAd_RxMetaDataBufferSizeType;
+/*! @brief Defines the type for Idx of Tp Rx buffer */
+typedef uint8 SoAd_TpRxBufferIdxType;
+/*! @brief Defines the type for of Tp Rx buffer size */
+typedef uint16 SoAd_TpRxBufferSizeType;
+/*! @brief Defines the type for Idx of Rx buffer segment */
+typedef uint8 SoAd_RxBufferSegIdxType;
+/*! @brief Defines the type for Rx buffer segment Data size */
+typedef uint16 SoAd_RxBufferSegDataSizeType;
+/*! @brief Defines the type for Idx of Rx buffer segment Data Level*/
+typedef SoAd_RxBufferSegDataSizeType SoAd_RxBufferSegLevelType;
+/*! @brief Defines the type for Rx If buffer idx */
+typedef uint16 SoAd_RxIfBufferIdxType;
+/*! @brief Defines the type for Rx If buffer size */
+typedef uint16 SoAd_RxIfBufferSizeType;
+/*! @brief Defines the type for Trigger buffer size */
+typedef uint16 SoAd_TriggerBufferSizeType;
+/*! @brief Defines the type for Idx of TCP Tx Queue */
+typedef uint8 SoAd_TcpTxQueueIdxType;
+/*! @brief Defines the type for  TCP Tx Queue Data size */
+typedef uint16 SoAd_TcpTxQueueSizeType;
+typedef uint16 SoAd_SocketTcpRxBufferCtrlIdxType;
+typedef uint16 SoAd_SocketTcpRxBufferIdxType;
+
+/*! @brief Defines the SoAd Init status type */
+typedef enum
+{
+    SOAD_UNINITIALIZED=0u, /*! @brief SoAd module not initialized */
+    SOAD_INITIALIZED /*! @brief SoAd module initialized */
+}SoAd_InitStateType;
+
+/*! @brief Defines the upper layer interface type */
+typedef enum
+{
+/*! @brief Defines the upper layer interface type as IF */
+    SOAD_UPPER_LAYER_TYPE_IF=0u,
+/*! @brief Defines the upper layer interface type as TP */
+    SOAD_UPPER_LAYER_TYPE_TP
+}SoAd_UpperLayerType;
+
+/*! @brief Defines the socket protocol type */
+typedef enum
+{
+/*! @brief Defines the socket protocol type as TCP */
+    SOAD_SOCKET_PROT_TCP=0u,
+/*! @brief Defines the socket protocol type as UDP */
+    SOAD_SOCKET_PROT_UDP
+}SoAd_SocketProtocolType;
+
+/*! @brief Defines the UDP Tx trigger mode type */
+typedef enum
+{
+    /*! @brief Defines the UDP Tx trigger mode type as Triggers transmission with transmit request*/
+    SOAD_TX_UDP_TRIGGER_ALWAYS=0U,
+    /*! @brief Defines the UDP Tx trigger mode type as Does not trigger transmission with transmit request */
+    SOAD_TX_UDP_TRIGGER_NEVER=1U,
+    /*! @brief Defines the UDP Tx trigger mode type as No trigger mode */
+    SOAD_TX_UDP_TRIGGER_NONE=2U
+}SoAd_TxUdpTriggerModeType;
+
+/*! @brief Defines the SoAd socket state type */
+typedef enum
+{
+    /*! @brief Defines the socket state established */ 
+    SOAD_SOCK_STATE_ESTABLISHED=0U,
+    /*! @brief Defines the socket state connecting to remote device */ 
+    SOAD_SOCK_STATE_CONNECT=1U,
+    /*! @brief Defines the socket state listen for incoming connections. */ 
+    SOAD_SOCK_STATE_LISTEN=2U,
+    /*! @brief Defines the socket state closing in progress. */ 
+    SOAD_SOCK_STATE_CLOSING=3U,
+    /*! @brief Defines the socket state closed. */ 
+    SOAD_SOCK_STATE_CLOSED=4U
+}SoAd_SocketStateType;
+
+typedef enum
+{
+    /*! @brief Defines that the Pdu updated/added to NPdu */
+    SOAD_NPDU_OK=0u,
+    /*! @brief Defines that the New PDU does not fit into nPdu */
+    SOAD_NPDU_OVFL_NEW=1u,
+    /*! @brief Updated PDU does not fit into nPdu */
+    SOAD_NPDU_OVFL_UPDATE=2u,
+    /*! @brief Defines that the Did not add or update nPdu */
+    SOAD_NPDU_NOT_OK=3u
+}SoAd_NPduReturnType;
+
+/*! @brief Defines the socket connection close request type */
+typedef enum
+{
+    /*! Indicates that no close is requested for a socket connection. */
+    SOAD_CLOSE_REQ_NONE=0u,
+    /*! Indicates that a socket connection is requested to be closed by a socket close event and
+        reconnect is required. */
+    SOAD_CLOSE_REQ_SOCKET_RECONNECT=1u,
+    /*! Indicates that a socket connection is requested to be closed by a socket close event. */
+    SOAD_CLOSE_REQ_SOCKET=2u,
+    /*! Indicates that a socket connection is requested to be closed and set to reconnect. */
+    SOAD_CLOSE_REQ_RECONNECT=3u,
+    /*! Indicates that a socket connection is requested to be closed and set to offline by service call. */
+    SOAD_CLOSE_REQ_OFFLINE=4u,
+    /*! Indicates that a socket connection is requested to be closed and set to offline in case of any error. */
+    SOAD_CLOSE_REQ_OFFLINE_RESET=5u
+}SoAd_SoConCloseReqType;
+
+/*! SoAd Control status struct */
+/*! @brief Defines the type for the SoCon Control status */
+typedef struct
+{
+    /*! @brief Defines whether Abort is request in close request */
+    boolean                 Abort;  
+    /*! @brief Defines whether the SoCon state change is requested or not  */
+    boolean                 SoConEventStateChange;
+    /*! @brief Defines whether the SoCon Tp reception to be processed in main function  */
+    boolean                 SoConEventTpReception;
+    /*! @brief Defines the number of open and close request */
+    uint8                   OpenCloseCounter;  
+    /*! @brief Defines the SoCon close request type */ 
+    SoAd_SoConCloseReqType  CloseReqType; 
+    /*! @brief Defines the SoCon mode */ 
+    SoAd_SoConModeType      SoConMode;  
+    /*! @brief Defines the remote address of this SoCon */
+    SoAd_SockAddrType       RemoteAddr;  
+    /*! @brief Defines the remote address state of this SoCon */
+    SoAd_RemAddrStateType   RemoteAddrState; 
+    /*! @brief Defines the Received remote address of this SoCon */
+    SoAd_SockAddrType       RcvdRemoteAddr; 
+}SoAd_SoConCtrlStatusType;
+
+/*! @brief Defines the type for SoCon Event ctrl status */
+typedef struct
+{
+    /*! @brief defines the SoCon Event state */
+    boolean EventState;
+    /*! @brief defines the SoCon Event Tp Tx */
+    boolean EventTpTx;
+    /*! @brief defines the SoCon Event Tp Tx Queue state */
+    boolean EventTpTxQueueState;
+    /*! @brief defines the SoCon Event Tp Rx */
+    boolean EventTpRx;
+}SoAd_SoConEventCtrlStatusType;
+
+/*! @brief Defines the type for SoAd Socket ctrl status type */
+typedef struct
+{
+    /*! @brief Defines the Idx of the SoCon for this socket */
+    uint8                   SoConTxActiveIdx;
+    /*! @brief Defines the local port for this socket  */
+    uint16                  LocalPort; 
+    /*! @brief Defines the TcpIp socket identifier for this socket  */
+    SoAd_TcpIpSocketIdType TcpIpSocketId;  
+    /*! @brief Defines the socket state */
+    SoAd_SocketStateType    SocketState;  
+    /*! @brief Defines the number of bytes to be skipped for this socket */
+    uint32                  SkipBytes;  
+} SoAd_SocketCtrlStatusType;
+
+/*! @brief Defines the type for SoAd Routing group's Pdu route dest ctrl status */ 
+typedef struct 
+{
+    /*! @brief Defines whether the Routing group's Pdu route dest is enabled or disabled*/
+    boolean Enabled;
+    /*! @brief Defines whether the Routing group's Pdu route dest trigger request is set or not set */
+    boolean TriggerRequest;
+}SoAd_RouteGrpPduRouteDestStatusType;
+
+/*! @brief Defines the type for SoAd Routing group's socket route dest ctrl status */ 
+typedef struct 
+{
+    /*! @brief Defines whether the Routing group's socket route dest is enabled or disabled*/
+    boolean Enabled;
+    /*! @brief Defines whether the Routing group's socket route dest trigger request is set or not set */
+    boolean TriggerRequest;
+}SoAd_RouteGrpSocketRouteDestStatusType;
+
+/*! @brief Defines the type for SoAd Pdu route ctrl status */ 
+typedef struct 
+{
+    /*! @brief Defines whether the tx confirmation to be processed in the main function */
+    boolean PendingTxConfInMain;
+    /*! @brief Defines the number of pening tx confirmation */
+    SoAd_PduRouteDestIdxType NumOfPendingTxConf;
+}SoAd_PduRouteCtrlStatusType;
+
+/*! @brief Defines the type for SoCon Tx Pdu Ctrl status */
+typedef struct 
+{
+    /*! @brief Defines whether there is cancel request or not for this SoCon */
+    boolean CancelRequest;
+    /*! @brief Defines the current Pdu route dest id transmitted of this SoCon */
+    uint8 PduRouteDestIdx;
+    /*! @brief Defines the total number of tx bytes to be transmitted of this SoCon */
+    PduLengthType TxBytesLen;
+    /*! @brief Defines the total number of pending tx bytes to be transmitted of this SoCon */
+    PduLengthType TxBytesPending;
+    /*! @brief Defines the refernce to the tx data buffer of this SoCon */
+    uint8 * pBuffer;
+}SoAd_SoConTxPduCtrlStatusType;
+
+/*! @brief Defines the type for NPdu Udp Ctrl status */
+typedef struct
+{
+    /*! @brief Defines whether the tx is active for this NPdu UDP */
+    boolean         IsTxActive;
+    /*! @brief Defines the current NPdu Queue level for this NPdu UDP */
+    uint8           NPduLevel;
+    /*! @brief Defines the retry count for this NPdu UDP */
+    uint16          RetryCount;
+    /*! @brief Defines the total length of data to be transmitter for this NPdu UDP */
+    PduLengthType   TotalLength;
+    /*! @brief Defines the current buffer length  for this NPdu UDP */
+    PduLengthType   BufferLength;
+}SoAd_NPduUdpTxCtrlStatusType;
+
+/*! @brief Defines the type for NPdu Udp Queue Ctrl status */
+typedef struct
+{
+    /*! @brief Defines whether the queue data is copied to the buffer for this NPdu UDP Queue */
+    boolean IsCopiedToTxBuffer;
+    /*! @brief Defines whether the queue data length for this NPdu UDP for this NPdu UDP Queue */
+    PduLengthType Length;
+    /*! @brief Defines the NPdu Udp Tx buffer Idx for this NPdu UDP for this NPdu UDP Queue */
+    SoAd_NPduUdpTxBufferSizeType NPduUdpTxBufferIdx;
+    /*! @brief Defines the Pdu Route dest idx to which data to be tranmitted for this NPdu UDP Queue */
+    SoAd_PduRouteDestIdxType PduRouteDestIdx;
+}SoAd_NPduUdpTxQueueCtrlStatusType;
+
+/*! @brief Defines the type for Tx Tp buffer Ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current Tx Tp buffer Id */
+    SoAd_TpTxBufferSizeType CurrentBufferIdx;
+}SoAd_TpTxBufferCtrlStatusType;
+
+/*! @brief Defines the type for Tx Tp Pdu Ctrl status */
+typedef struct 
+{
+    /*! @brief Defines the Tp Tx Pdu cfg id */
+    SoAd_TpTxBufferIdxType TxTpPduCfgId;
+}SoAd_SoConTxTpPduCtrlStatusType;
+
+/*! @brief Defines the type for Tcp Tx Queue data */
+typedef struct
+{
+    /*! @brief Defines the PduRouteIdx of this Tcp Tx Queue data */
+    SoAd_PduRouteIdxType PduRouteIdx;
+    /*! @brief Defines the length of this Tcp Tx Queue data */
+    PduLengthType Length;
+}SoAd_TcpTxQueueDataType;
+
+/*! @brief Defines the type for Tcp Tx Queue Ctrl */
+typedef struct
+{
+    /*! @brief Defines the Tx Queue Ctrl read Idx */
+    SoAd_TcpTxQueueSizeType     ReadIdx;
+    /*! @brief Defines the Tx Queue Ctrl write Idx */
+    SoAd_TcpTxQueueSizeType     WriteIdx;
+    /*! @brief Defines the Tx Queue Ctrl Data counter */
+    SoAd_TcpTxQueueSizeType     DataCounter;
+    /*! @brief Defines the Tx Queue Ctrl total length */
+    PduLengthType               TotalLength;
+}SoAd_TcpTxQueueCtrlStatusType;
+
+/*! @brief Defines the type for SoCon Rx Pdu Ctrl status */
+typedef struct 
+{
+    /*! @brief Defines whether there is cancel request or not for this SoCon */
+    boolean                 CancelRequest;
+    /*! @brief Defines the current socket route id received of this SoCon */
+    SoAd_SocketRouteIdxType SocketRouteIdx;
+    /*! @brief Defines the total number of rx bytes to be received of this SoCon */
+    PduLengthType           RxBytesLen;
+    /*! @brief Defines the number of pending rx bytes to be received of this SoCon */
+    PduLengthType           RxBytesPending;
+    /*! @brief Defines the refernce to the rx data buffer of this SoCon */
+    uint8                   *pBuffer;
+}SoAd_SoConRxPduCtrlStatusType;
+
+/*! @brief Defines the type for Rx If buffer Ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current Rx if buffer Id */
+    SoAd_RxIfBufferSizeType RxIfBufferIdx;
+}SoAd_RxIfBufferCtrlType;
+
+/*! @brief Defines the type for Rx Tp buffer Ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current Rx Tp buffer Id */
+    SoAd_TpRxBufferIdxType CurrentBufferIdx;
+}SoAd_TpRxBufferCtrlStatusType;
+
+/*! @brief Defines the type for Rx buffer segment data Ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current Rx buffer segment data idx */
+    SoAd_RxBufferSegDataSizeType RxBufferSegDataIdx;
+    /*! @brief Defines the current Rx buffer segment level */
+    SoAd_RxBufferSegLevelType RxBufferSegLevel;
+}SoAd_RxBufferSegCtrlType;
+
+/*! @brief Defines the type for Rx buffer segment data status */
+typedef struct
+{
+    /*! @brief Defines the current Rx buffer segment data length */
+    uint16  RxBufferSegDataLength;
+    /*! @brief Defines the pointer to Rx buffer segment data */
+    uint8 * pRxBufferSegData;  
+} SoAd_RxBufferSegDataType;
+
+/*! SoAd Configuration struct */
+/*! @brief This function gets called by the SoAd if an IP address assignment related to a socket connection changes 
+    (i.e. new address assigned or assigned address becomes invalid).*/
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_LocalIpAddrAssignChgFuncType)
+( 
+    SoAd_SoConIdType SoConId,
+    TcpIp_IpAddrStateType State
+);
+/*! @brief Notification about a SoAd socket connection state change, e.g. socket connection gets online. */
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_UpSoConModeChgFuncType)( SoAd_SoConIdType SoConId, SoAd_SoConModeType Mode );
+/*! @brief Indication of a received PDU from a lower layer communication interface module */
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_UpIfRxIndicationFuncType)
+(
+    PduIdType RxPduId,
+    P2CONST(PduInfoType,AUTOMATIC,SOAD_APPL_CONST) PduInfoPtr 
+);
+/*! @brief Within this API, the upper layer module (called module) shall check whether the available data fits into 
+    the buffer size reported by PduInfoPtr->SduLength. If it fits, it shall copy its data into the buffer provided by 
+    PduInfoPtr->SduDataPtr and update the length of the actual copied data in PduInfoPtr->SduLength. If not, it 
+    returns E_NOT_OK without changing PduInfoPtr.*/
+typedef P2FUNC(Std_ReturnType,SOAD_APPL_CODE,SoAd_UpIfTriggerTransmitFuncType)
+(
+    PduIdType TxPduId,
+    P2VAR(PduInfoType,AUTOMATIC,SOAD_APPL_VAR) PduInfoPtr
+);
+/*! @brief The lower layer communication interface module confirms the transmission of a PDU, or the failure to 
+    transmit a PDU.*/
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_UpIfTxConfirmationFuncType)( PduIdType TxPduId, Std_ReturnType result );
+/*! @brief This function is called at the start of receiving an N-SDU. The N-SDU might be fragmented into multiple 
+    N-PDUs (FF with one or more following CFs) or might consist of a single N-PDU (SF). The service shall provide the 
+    currently available maximum buffer size when invoked with TpSduLength equal to 0.*/
+typedef P2FUNC(BufReq_ReturnType,SOAD_APPL_CODE,SoAd_UpTpStartOfReceptionFuncType)
+(
+    PduIdType id,
+    P2CONST(PduInfoType,AUTOMATIC,SOAD_APPL_CONST) info,
+    PduLengthType TpSduLength,
+    P2VAR(PduLengthType,AUTOMATIC,SOAD_APPL_VAR) bufferSizePtr
+);
+/*! @brief This function is called to provide the received data of an I-PDU segment (N-PDU) to the upper layer. 
+    Each call to this function provides the next part of the I-PDU data. The size of the remaining buffer is written 
+    to the position indicated by bufferSizePtr. */
+typedef P2FUNC(BufReq_ReturnType,SOAD_APPL_CODE,SoAd_UpTpCopyRxDataFuncType)
+(
+    PduIdType id,
+    P2CONST(PduInfoType,AUTOMATIC,SOAD_APPL_CONST) info,
+    P2VAR(PduLengthType,AUTOMATIC,SOAD_APPL_VAR) bufferSizePtr 
+);
+/*! @brief Called after an I-PDU has been received via the TP API, the result indicates whether the transmission was 
+    successful or not. */
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_UpTpRxIndicationFuncType)( PduIdType id, Std_ReturnType result );
+/*! @brief This function is called to acquire the transmit data of an I-PDU segment (N-PDU). Each call to this function
+    provides the next part of the I-PDU data unless retry->TpDataState is TP_DATARETRY. In this case the function 
+    restarts to copy the data beginning at the offset from the current position indicated by retry->TxTpDataCnt. 
+    The size of the remaining data is written to the position indicated by availableDataPtr.*/
+typedef P2FUNC(BufReq_ReturnType,SOAD_APPL_CODE,SoAd_UpTpCopyTxDataFuncType)
+(
+    PduIdType id,
+    P2CONST(PduInfoType,AUTOMATIC,SOAD_APPL_CONST) info,
+    P2CONST(RetryInfoType,AUTOMATIC,SOAD_APPL_CONST) retry,
+    P2VAR(PduLengthType,AUTOMATIC,SOAD_APPL_VAR) availableDataPtr 
+);
+/*! @brief Called after an I-PDU has been received via the TP API, the result indicates whether the transmission was 
+    successful or not. */
+typedef P2FUNC(void,SOAD_APPL_CODE,SoAd_UpTpTxConfirmationFuncType)( PduIdType id, Std_ReturnType result );
+
+/*! @brief Defines the type for Routing group configuration */
+typedef struct
+{
+    /*! @brief defines whether the routing group should be enabled at init */
+    boolean EnabledAtInit;
+    /*! @brief defines whether the routing group should be triggerable */
+    boolean IsTriggerable;
+    /*! @brief defines the start idx of RgPduRouteDest  */
+    SoAd_RgPduRouteDestIdxType RgPduRouteDestStartIdx;
+    /*! @brief defines the end idx of RgPduRouteDest  */
+    SoAd_RgPduRouteDestIdxType RgPduRouteDestEndIdx;
+    /*! @brief defines the start idx of RgSocketRouteDest  */
+    SoAd_RgSocketRouteDestIdxType RgSocketRouteDestStartIdx;
+    /*! @brief defines the end idx of RgSocketRouteDest  */
+    SoAd_RgSocketRouteDestIdxType RgSocketRouteDestEndIdx;
+}SoAd_RoutingGroupConfigType;
+
+/*! @brief Defines the type for RgPduRouteDest configuration */
+typedef struct
+{
+    /*! @brief Defines the Socket connection id */
+    SoAd_SoConIdType SoConIdx;
+}SoAd_RGPduRouteDestConfigType;
+
+/*! @brief Defines the type for RgSocketRouteDest configuration */
+typedef struct
+{
+    /*! @brief Defines the Socket connection id */
+    SoAd_SoConIdType SoConIdx;
+}SoAd_RGSocketRouteDestConfigType;
+
+/*! @brief Defines the type for Socket Connection configuration */
+typedef struct
+{
+    /*! @brief  Defines the index of SoCon group (SoAd_SoConGrpConfig) */
+    SoAd_SoConGrpIdxType                        SoConGrpIdx;  
+    /*! @brief  Defines the Socket connection id which is used by other layers  */
+    SoAd_SoConIdType                            SoConId;
+    /*! @brief  Defines the index of socket Id */
+    SoAd_SocketIdxType                          SocketIdx; 
+    /*! @brief  Defines the index of Remote address configuration */
+    SoAd_RemAddrIpV4IdxType                     RemAddrIpV4Idx;
+    /*! @brief  Defines the index to store the received Remote address */   
+    SoAd_RcvRemAddrIpV4IdxType                  RcvRemAddrIpV4Idx;  
+    /*! @brief  Defines the configured remote address state */
+    SoAd_RemAddrStateType                       RemAddrState; 
+    /*! @brief  Defines the start id of the PduRouteDest for this SoConId */
+    SoAd_PduRouteDestIdxType                    PduRouteDestStartIdx;
+    /*! @brief  Defines the end id of the PduRouteDest for this SoConId */
+    SoAd_PduRouteDestIdxType                    PduRouteDestEndIdx;
+    /*! @brief  Defines the start id of the PduRouteDest for this SoConId */
+    SoAd_SocketRouteIdxType                     SocketRouteStartIdx;
+    /*! @brief  Defines the end id of the PduRouteDest for this SoConId */
+    SoAd_SocketRouteIdxType                     SocketRouteEndIdx;
+    /*! @brief  Defines the start id of the SoAd_LocalIpAddrAssignmentChgCbkInd  for this SoConId */
+    SoAd_LocalIpAddrAssignChgFuncIdxType        LocalIpAddrAssignmentChgIndStartIdx;
+    /*! @brief  Defines the end id of the SoAd_LocalIpAddrAssignmentChgCbkInd  for this SoConId */    
+    SoAd_LocalIpAddrAssignChgFuncIdxType        LocalIpAddrAssignmentChgIndEndIdx; 
+    /*! @brief  Defines the start id of the SoAd_SoConModeChgCbkInd for this SoConId */
+    SoAd_UpSoConModeChgFuncIdxType              SoConModeChgCbkIndStartIdx;
+    /*! @brief  Defines the end id of the SoAd_SoConModeChgCbkInd for this SoConId */
+    SoAd_UpSoConModeChgFuncIdxType              SoConModeChgCbkIndEndIdx;  
+    /*! @brief Defines the SoCon configuration option bit mask */
+    SoAd_SoConCfgOptionMaskType                 SoConCfgOptionMask;
+    /*! @brief Defines the id of the TcpTxQueue for this SoConId*/
+    SoAd_TcpTxQueueIdxType                      TcpTxQueueIdx;
+    /*! @brief Defines the id of the Tp Tx Buffer Config for this SoConId */
+    SoAd_TpTxBufferIdxType                      TpTxBufferCfgIdx;
+    /*! @brief Defines the id of the Tp Tx Buffer Config for this SoConId */
+    SoAd_TpRxBufferIdxType                      TpRxBufferCfgIdx;
+    /*! @brief Defines the id of the Tx Pdu Ctrl for this SoConId */
+    SoAd_SoConTxPduCtrlIdxType                  SoConTxPduCtrlIdx;
+    /*! @brief Defines the id of the Rx Pdu Ctrl for this SoConId */
+    SoAd_SoConRxPduCtrlIdxType                  SoConRxPduCtrlIdx;
+    /*! @brief Defines the id of the NPdu UDP Tx for this SoConId */
+    SoAd_NPduUdpTxIdxType                       NPduUdpTxIdx;
+    /*! @brief Defines the start id of the trigger buffer for this SoConId */
+    SoAd_TriggerBufferSizeType                  TriggerBufferStartIdx;
+    /*! @brief Defines the end id of the trigger buffer for this SoConId */
+    SoAd_TriggerBufferSizeType                  TriggerBufferEndIdx;
+    /*! @brief Defines the trigger buffer size for this SoConId */
+    SoAd_TriggerBufferSizeType                  TriggerBufferSize;
+    /*! @brief Defines the Id of the Rx buffer segment for this SoConId */
+    SoAd_RxBufferSegIdxType                     RxBufferSegIdx;
+    /*! @brief Defines the Id of the Rx If buffer for this SoConId */
+    SoAd_RxIfBufferIdxType                      RxIfBufferIdx;
+}SoAd_SoConConfigType;
+
+/*! @brief Defines the SoCon Group configuration type */
+typedef struct 
+{
+    /*! @brief Defines the frame priority of this SoCon Group */
+    uint8                           FramePriority; 
+    /*! @brief Defines the Local address id of this SoCon Group */
+    SoAd_LocalIpAddrIdxType         LocalAddrIdx; 
+    /*! @brief Defines the SoCon start id of this SoCon Group */
+    SoAd_SoConIdType                SoConStartIdx; 
+    /*! @brief Defines the SoCon start id of this SoCon Group */
+    SoAd_SoConIdType                SoConEndIdx;
+    /*! @brief Defines the SocketId for the TCP SoConGroup */
+    SoAd_SocketIdxType               SoConGrpSocketIdx;
+    /*! @brief Defines the TCP id of this SoCon Group */
+    SoAd_SocketTcpIdxType           SocketTcpIdx;
+    /*! @brief Defines the UDP id of this SoCon Group */
+    SoAd_SocketUdpIdxType           SocketUdpIdx;
+    /*! @brief Defines the Local port value of this SoCon Group */
+    SoAd_PortType                   LocalPortOfSoConGrp;
+    /*! @brief Defines the SoCon configuration option bit mask */
+    SoAd_SoConGrpCfgOptionMaskType  SoConCfgGrpOptionMask;  
+}SoAd_SoConGrpConfigType;
+
+
+/*! @brief Defines the type for the Socket Id configuration */
+typedef struct
+{
+    /*! @brief Defines the SoCon start id for this Socket Id */
+    SoAd_SoConIdType      SoConStartIdx;  
+    /*! @brief Defines the SoCon end id for this Socket Id */
+    SoAd_SoConIdType      SoConEndIdx; 
+    /*! @brief Defines the socket connection group id for this Socket Id */
+    SoAd_SoConGrpIdxType  SoConGrpIdx;
+    /* bsd cfg */
+    boolean               TcpRxBufferEnable;
+    SoAd_SocketTcpRxBufferCtrlIdxType   TcpRxBufferCtrlIdx;
+    SoAd_SocketTcpRxBufferIdxType       TcpRxBufferIdx;
+}SoAd_SocketConfigType;
+
+/*! @brief Defines the type for the Ipv4 remote address configuration*/
+typedef struct
+{
+    /*! @brief Defines the remote address netmask */
+    uint8               RemAddrNetMask;
+    /*! @brief Defines the remote IPv4 address */
+    SoAd_IpAddrInetType RemAddrIpV4Addr;  
+    /*! @brief Defines the remote port */
+    SoAd_PortType       RemAddrIpV4Port;  
+}SoAd_RemAddrIpV4ConfigType;
+
+/*! @brief Defines the type for local address configuration */
+typedef struct 
+{
+    /*! @brief Defines the TcpIpCtrl Idx of this local address */
+    SoAd_TcpIpCtrlIdxType       TcpIpCtrlIdx;  
+    /*! @brief Defines the address type of this local address */
+    SoAd_AddressTypeType        AddressType;  
+    /*! @brief Defines the address assignment trigger (automatic/manual) of this local address */
+    SoAd_AssignTriggerType      AssignTriggerType;
+    /*! @brief Defines the Socket domain type. */
+    SoAd_DomainType             DomainType;  
+    /*! @brief Defines the assignment type  */
+    SoAd_IpAddrAssignmentType   AssignTypeOfLocalAddr; 
+    /*! @brief Defines the local address Id in TcpIp  */
+    SoAd_LocalIpAddrIdxType     AddrIdOfLocalAddr;
+    SoAd_RemAddrIpV4IdxType     RemAddrIpV4Idx;
+}SoAd_LocalAddrConfigType;
+
+/*! @brief Defines the type for the Pdu Route configuration */
+typedef struct
+{
+    /*! @brief Defines the confirmation id of the Pdu Route */
+    PduIdType                       TxConfPduId;  
+    /*! @brief Defines the upper layer id of the Pdu Route */
+    SoAd_ULIdxType                  PduRouteULIdx;  
+    /*! @brief Defines the upper layer type of the Pdu Route */
+    SoAd_UpperLayerType             PduRouteULType;  
+    /*! @brief Defines the config option bit mask of Pdu Route */
+    SoAd_PduRouteCfgOptionMaskType  PduRouteCfgOptionMask;  
+    /*! @brief Defines the start id of Pdu Route destination for this Pdu route */
+    SoAd_PduRouteDestIdxType        PduRouteDestStartIdx;
+    /*! @brief Defines the end id of Pdu Route destination for this Pdu route */
+    SoAd_PduRouteDestIdxType        PduRouteDestEndIdx;
+    /*! @brief Defines the number of Pdu Route destination for this Pdu route */
+    SoAd_PduRouteDestIdxType        NumOfPduRouteDest;
+    /*! @brief Defines the minimum length required to transmit on this Pdu route
+        If header enabled : If metadata enabled 2 else 0
+        If header not enabled : If metadata enabled 3 else 1 */
+    PduLengthType                   MinimumLength;
+}SoAd_PduRouteConfigType;
+
+/*! @brief Defines the type for the Pdu Route Destination configuration */
+typedef struct 
+{
+    /*! @brief Defines the SoCon Id of the Pdu route dest */
+    SoAd_SoConIdType                SoConIdx;  
+    /*! @brief Defines the Pdu Route Id of the Pdu route dest */
+    SoAd_PduRouteIdxType            PduRouteIdx;
+    /*! @brief Defines the trigger mode for nPdu Tx mode transmission request always or never */
+    SoAd_TxUdpTriggerModeType       TxUdpTriggerMode; 
+    /*! @brief Defines the header id of the Pdu route dest */
+    SoAd_PduHeaderIdType            TxPduHeaderId;  
+    /*! @brief Defines the UDP trigger timeout to send a nPdu of the Pdu route dest */
+    uint32                          UdpTriggerTimeout;
+    /*! @brief Defines the start Id of RgPduRouteDestMap of the Pdu route dest */
+    SoAd_RgPduRouteDestMapIdxType   RgPduRouteDestMapStartIdx;
+    /*! @brief Defines the end Id of RgPduRouteDestMap of the Pdu route dest */
+    SoAd_RgPduRouteDestMapIdxType   RgPduRouteDestMapEndIdx;
+}SoAd_PduRouteDestConfigType;
+
+/*! @brief Defines the type for the Tx Tp buffer configuration */
+typedef struct
+{
+    /*! @brief Defines the buffer start id Tx Tp Buffer */
+    SoAd_TpTxBufferSizeType TpTxBufferStartIdx;
+    /*! @brief Defines the buffer end id Tx Tp Buffer */
+    SoAd_TpTxBufferSizeType TpTxBufferEndIdx;
+    /*! @brief Defines the buffer size id Tx Tp Buffer */
+    SoAd_TpTxBufferSizeType TpTxBufferSize;
+}SoAd_TpTxBufferConfigType;
+
+/*! @brief Defines the type for the Tx TCP queue configuration */
+typedef struct
+{
+    /*! @brief Defines the queue data start id Tx TCP queue */
+    SoAd_TcpTxQueueSizeType DataStartIdx;
+    /*! @brief Defines the queue data end id Tx TCP queue */
+    SoAd_TcpTxQueueSizeType DataEndIdx;
+    /*! @brief Defines the queue size Tx TCP queue */
+    SoAd_TcpTxQueueSizeType QueueSize;
+}SoAd_TcpTxQueueConfigType;
+
+/*! @brief Defines the type for the Npu UDP Tx configuration */
+typedef struct
+{
+    /*! @brief Defines whether Queue is supported for this Npu UDP Tx */
+    boolean                             QueueSupport;
+    /*! @brief Defines the Socket connection Id for this Npu UDP Tx */
+    SoAd_SoConIdType                    SoConIdx;
+    /*! @brief Defines the start Id of the Queue for this Npu UDP Tx */
+    SoAd_NPduUdpTxQueueIdxType     NPduUdpTxQueueStartIdx;
+    /*! @brief Defines the end Id of the Queue for this Npu UDP Tx */
+    SoAd_NPduUdpTxQueueIdxType     NPduUdpTxQueueEndIdx;
+    /*! @brief Defines the start Id of the buffer for this Npu UDP Tx */
+    SoAd_NPduUdpTxBufferSizeType  NPduUdpTxBufferStartIdx;
+    /*! @brief Defines the end Id of the buffer for this Npu UDP Tx */
+    SoAd_NPduUdpTxBufferSizeType  NPduUdpTxBufferSize;
+    /*! @brief Defines the Timer for this Npu UDP Tx */
+    SoAd_NPduUdpTxTimerIdxType     TxUdpNPduTimerIdx;
+}SoAd_NPduUdpTxConfigType;
+
+/*! @brief Defines the type for the Socket Route configuration */
+typedef struct 
+{
+    /*! @brief Defines the SoCon Id for this Socket Route */
+    SoAd_SoConIdType                    SoConIdx;  
+    /*! @brief Defines the UL Pdu id of this Socket Route */
+    PduIdType                           RxULPduId;  
+    /*! @brief Defines the upper layer id of the Socket Route */
+    SoAd_ULIdxType                      SocketRouteULIdx;  
+    /*! @brief Defines the upper layer type of the Socket Route */
+    SoAd_UpperLayerType                 SocketRouteULType;
+    /*! @brief Defines the Pdu Header id of this Socket Route */
+    SoAd_PduHeaderIdType                RxPduHeaderId;
+    /*! @brief Defines the socket route destination id of this Socket Route */
+    SoAd_SocketRouteDestIdxType         SocketRouteDestIdx;
+    /*! @brief Defines the config option mask bits for this socket route */
+    SoAd_SocketRouteCfgOptionMaskType   SocketRouteCfgOptionMask;
+}SoAd_SocketRouteConfigType;
+
+/*! @brief Defines the type for the Socket Route destination configuration */
+typedef struct
+{
+    /*! @brief Defines the SoCon Id for this Socket Route destination */
+    SoAd_SoConIdType                SoConIdx; 
+    /*! @brief Defines the start Id of RgSocketRouteDestMapfor  this Socket Route destination */
+    SoAd_RgPduRouteDestMapIdxType   RgSocketRouteDestMapStartIdx;
+    /*! @brief Defines the end Id of RgSocketRouteDestMapfor  this Socket Route destination */
+    SoAd_RgPduRouteDestMapIdxType   RgSocketRouteDestMapEndIdx;
+}SoAd_SocketRouteDestConfigType;
+
+/*! @brief Defines the type for the Rx Tp buffer configuration */
+typedef struct
+{
+    /*! @brief Defines the buffer start id Rx Tp Buffer */
+    SoAd_TpRxBufferSizeType TpRxBufferStartIdx;
+    /*! @brief Defines the buffer end id Rx Tp Buffer */
+    SoAd_TpRxBufferSizeType TpRxBufferEndIdx;
+    /*! @brief Defines the buffer size id Rx Tp Buffer */
+    SoAd_TpRxBufferSizeType TpRxBufferSize;
+}SoAd_TpRxBufferConfigType;
+
+/*! @brief Defines the type for the Rx Buffer segment configuration */
+typedef struct
+{
+    /*! @brief Defines the start id of the Rx buffer segment data */
+    SoAd_RxBufferSegDataSizeType RxBufferSegDataStartIdx;
+    /*! @brief Defines the end id of the Rx buffer segment data */
+    SoAd_RxBufferSegDataSizeType RxBufferSegDataEndIdx;
+    /*! @brief Defines the size of the Rx buffer segment data */
+    SoAd_RxBufferSegDataSizeType RxBufferSegDataSizeIdx;
+}SoAd_RxBufferSegConfigType;
+
+/*! @brief Defines the type for the Rx If Buffer configuration */
+typedef struct
+{
+    /*! @brief Defines the start id of the Rx If buffer */
+    SoAd_RxIfBufferSizeType RxIfBufferStartIdx;
+    /*! @brief Defines the end id of the Rx If buffer */
+    SoAd_RxIfBufferSizeType RxIfBufferEndIdx;
+    /*! @brief Defines the size of the Rx If buffer */
+    SoAd_RxIfBufferSizeType RxIfBufferSize;
+}SoAd_RxIfBufferConfigType;
+
+/*! @brief Defines the type for the UDP socket configuration */
+typedef struct
+{
+    /*! @brief Defines whether the UDP checksum calculation in SoAd is enabled or not for this UDP socket */
+    boolean SocketUdpChecksumEnabled;
+    /*! @brief Defines whether the UDP socket is in Listen only mode.(only Rx) for this UDP socket */
+    boolean SocketUdpListenOnly;
+    /*! @brief Defines whether the immediate confirmation support is enabled or not for this UDP socket */
+    boolean ImmTxConfirmation;
+    /*! @brief Defines whether the strict header length support is enabled or not for this UDP socket */
+    boolean UdpStrictHeaderLenCheck;
+    /*! @brief Defines the UDP trigger timeout value for this UDP socket */
+    uint32 UdpTriggerTimeout;
+    /*! @brief Defines the UDP Alive supervision timeout value for this UDP socket */
+    uint32 AliveSupervisionTime;
+    /*! @brief Defines the UDP Alive supervision timer for this UDP socket */
+    SoAd_UdpAliveTimerIdxType      TxUdpAliveTimerIdx;
+    /*! @brief Defines the NPdu UDP Tx buffer minimum length for this UDP socket */
+    SoAd_NPduUdpTxBufferSizeType  NPduUdpTxBufferMin;
+    /*! @brief Defines the number of NPdu UDP Tx queue for this UDP socket */
+    SoAd_NPduUdpTxQueueIdxType     NPduUdpTxQueueSize;
+}SoAd_SocketUdpConfigType;
+
+/*! @brief Defines the type for the TCP socket configuration */
+typedef struct
+{
+    /*! @brief Defines whether the TCP connection is initated by SoAd for this TCP socket */
+    boolean SocketTcpInitiate;
+    /*! @brief Defines whether the TCP keep alive enabled or not for this TCP socket */
+    boolean TcpKeepAlive;
+    /*! @brief Defines whether the congestion control mechanism is used for this TCP socket.
+        TRUE: This TCP connection will NOT use congestion control. 
+        FALSE: This TCP connection will use congestion control. */
+    boolean TcpNoDelay;
+    /*! @brief Defines the minimum Rx buffer size used for this TCP socket. */
+    uint32  TcpRxBufferMin;
+    /*! @brief Defines the Maximum number of times that TCP retransmits an individual data segment before 
+        aborting the connection for this TCP socket. */
+    uint16 KeepAliveProbesMax;
+    /*! @brief Defines the time in seconds between the last data packet sent and the first keepalive probe for 
+        this TCP socket.*/
+    uint32 TcpKeepAliveInterval;
+    /*! @brief Defines the interval in seconds between subsequent keepalive probes. for this TCP socket. */
+    uint32 TcpKeepAliveTime;
+}SoAd_SocketTcpConfigType;
+
+/*! @brief Defines the type for the UL configuration */
+typedef struct 
+{
+    /*! @brief defines the callback Up_[SoAd][If]RxIndication */
+    SoAd_UpIfRxIndicationFuncType       UpIfRxIndicationFunc;
+    /*! @brief defines the callback Up_[SoAd][If]TriggerTransmit */
+    SoAd_UpIfTriggerTransmitFuncType    UpIfTriggerTransmitFunc;
+    /*! @brief defines the callback Up_[SoAd][If]TxConfirmation */
+    SoAd_UpIfTxConfirmationFuncType     UpIfTxConfirmationFunc;
+    /*! @brief defines the callback Up_[SoAd][Tp]CopyRxData */
+    SoAd_UpTpCopyRxDataFuncType         UpTpCopyRxDataFunc;
+    /*! @brief defines the callback Up_[SoAd][Tp]CopyTxData */
+    SoAd_UpTpCopyTxDataFuncType         UpTpCopyTxDataFunc;
+    /*! @brief defines the callback Up_[SoAd][Tp]RxIndication */
+    SoAd_UpTpRxIndicationFuncType       UpTpRxIndicationFunc;
+    /*! @brief defines the callback Up_[SoAd][Tp]StartOfReception */
+    SoAd_UpTpStartOfReceptionFuncType   UpTpStartOfReceptionFunc;
+    /*! @brief defines the callback Up_[SoAd][Tp]TxConfirmation */
+    SoAd_UpTpTxConfirmationFuncType     SoAd_UpTpTxConfirmationFunc;
+} SoAd_UpperLayerConfigType;
+
+/*! @brief Defines the type of the TcpIp Ctrl Name Buffer Size*/
+typedef uint8 SoAd_TcpIpCtrlNameBufferSizeType;
+/*! @brief Defines the type of the Local Addr Check Count */
+typedef uint8 SoAd_LocalAddrCheckCountType;
+/*! @brief Defines the type of the Socket Tx Buffer Size */
+typedef uint16 SoAd_SocketTxBufferSizeType;
+/*! @brief Defines the type of the Socket Tx Buffer Idx */
+typedef uint8 SoAd_SocketTxBufferIdType;
+/*! @brief Defines the type of Socket Udp Rx Buffer Size */
+typedef uint16 SoAd_SocketUdpRxBufferSizeType;
+/*! @brief Defines the type of Socket Tcp Rx Buffer Size */
+typedef uint16 SoAd_SocketTcpRxBufferSizeType;
+/*! @brief Defines the type of Socket Tcp Rx Buffer Idx */
+typedef uint8 SoAd_SocketTcpRxBufferIdType;
+
+/*! @brief Defines the type of Eth interface name buffer config id for the TcpIp ctrl */
+typedef struct
+{
+    /*! @brief Defines the Eth interface name buffer start idx */
+    SoAd_TcpIpCtrlNameBufferSizeType CtrlNameBufferStartIdx;
+    /*! @brief Defines the Eth interface name buffer end idx */
+    SoAd_TcpIpCtrlNameBufferSizeType CtrlNameBufferEndIdx;
+    /*! @brief Defines Defines the Eth interface name buffer size */
+    SoAd_TcpIpCtrlNameBufferSizeType CtrlNameBufferSize;
+} SoAd_TcpIpCtrlNameIdxConfigType;
+/*! @brief Defines the type of socket tx buffer config for the TcpIp ctrl . */
+typedef struct
+{
+    /*! @brief Defines the socket tx buffer buffer start idx */
+    SoAd_SocketTxBufferSizeType TxBufferStartIdx;
+    /*! @brief Defines the socket tx buffer buffer end idx */
+    SoAd_SocketTxBufferSizeType TxBufferEndIdx;
+    /*! @brief Defines the socket tx buffer size */
+    SoAd_SocketTxBufferSizeType TxBufferSize;
+} SoAd_SocketTxBufferConfigType;
+/*!  @brief Defines the type of buffer config for tcp rx buffer.  */
+typedef struct
+{
+    /*! @brief Defines the start Id of the Socket Tcp Rx Buffer */
+    SoAd_SocketTcpRxBufferSizeType TcpRxBufferStartIdx;
+    /*! @brief Defines the end Id of the Socket Tcp Rx Buffer */
+    SoAd_SocketTcpRxBufferSizeType TcpRxBufferEndIdx;
+    /*! @brief Defines the size of the Socket Tcp Rx Buffer*/
+    SoAd_SocketTcpRxBufferSizeType TcpRxBufferSize;
+} SoAd_SocketTcpRxBufferConfigType;
+
+/* #! Ctrl typedef ,struct */
+/*! @brief Local IP address request state. */
+typedef enum
+{
+    /*! @brief IP address has no requests. */
+    SOAD_LOCAL_IP_ADDR_REQ_STATE_NONE=0u,
+    /*! @brief IP address requested */
+    SOAD_LOCAL_IP_ADDR_REQ_STATE_REQUEST=1u,
+    /*! @brief IP address requested to release. */
+    SOAD_LOCAL_IP_ADDR_REQ_STATE_RELEASE=2u
+}SoAd_LocalIpAddrReqStateType;
+/*! @brief Defines the type of LocalIp addr ctrl status */
+typedef struct
+{
+    /* !@brief Defines the flag whether to check the local addr for status check */
+    boolean CheckAvailability;
+    /*! @brief Defines the netmask of the local addr*/
+    uint8 NetMask;
+    /*! @brief Defines the ipv4 addr of the local addr*/
+    SoAd_IpAddrInetType Ipv4Addr;
+    /*! @brief Defines the ip addr request state of the local addr*/
+    SoAd_LocalIpAddrReqStateType IpAddrReqState;
+    /*! @brief Defines the flag to indicate the event for the local address */
+    boolean LocalAddrEventStatus;
+}SoAd_LocalIpAddrCtrlType;
+/*! @brief Defines the type for mapping of bsd network interface index with the local address */
+typedef struct
+{
+    /*! @brief Defines the value of the bsd network interface index */
+    unsigned int  IfNameToIndex;
+}SoAd_LocalAddrTcpIpCtrlType;
+/*! @brief Defines the type for Socket Tcp Rx buffer ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current length of data in the buffer */
+    uint16 Length;
+    /*! @brief Defines the current buffer idx */
+    SoAd_SocketTcpRxBufferSizeType TcpRxBufferIdx;
+}SoAd_SocketTcpRxBufferCtrlType;
+/*! @brief Defines the type for Socket Tx buffer ctrl status */
+typedef struct
+{
+    /*! @brief Defines the current length of data in the buffer */
+    uint16 Length;
+    /*! @brief Defines the Socket id for which the buffer belongs to */
+    SoAd_SocketIdxType SocketIdx;
+}SoAd_SocketTxBufferCtrlType;
+/*! @brief Defines the type for the socket broad cast address control status */
+typedef struct
+{
+    /*! @brief Defines the direct broad cast address bsd socket id */
+    SoAd_SocketIdxType DirectBrdAddrSockId;
+    /*! @brief Defines the limited broad cast address bsd socket id */
+    SoAd_SocketIdxType LimitedBrdAddrSockId;
+}SoAd_SocketBrdAddrCtrlStatusType;
+
+typedef struct 
+{   
+    /*! @brief Defines the Socket Connection configuration */
+    P2CONST(SoAd_SoConConfigType,AUTOMATIC,SOAD_APPL_CONST)                 pSoConConfig;
+    /*! @brief Defines the SoCon Group configuration */
+    P2CONST(SoAd_SoConGrpConfigType,AUTOMATIC,SOAD_APPL_CONST)              pSoConGrpConfig;
+    /*! @brief Defines the Socket Id configuration */
+    P2CONST(SoAd_SocketConfigType,AUTOMATIC,SOAD_APPL_CONST)                pSocketConfig;
+    /* @brief Defines the pointer to the local address configuration */
+    P2CONST(SoAd_LocalAddrConfigType,AUTOMATIC,SOAD_APPL_CONST)             pLocalAddrConfig;
+    /*! @brief Defines the Local Ip Addr Assignment Change Function list */
+    P2CONST(SoAd_LocalIpAddrAssignChgFuncType,AUTOMATIC,SOAD_APPL_CONST)    pLocalIpAddrAssignChgFuncConfig;
+    /*! @brief Defines the SoCon mode Change indication Function list */
+    P2CONST(SoAd_UpSoConModeChgFuncType,AUTOMATIC,SOAD_APPL_CONST)          pUpSoConModeChgFuncConfig;
+    /*! @brief Defines the Ipv4 remote address configuration*/
+    P2CONST(SoAd_RemAddrIpV4ConfigType,AUTOMATIC,SOAD_APPL_CONST)           pRemAddrIpV4Config;
+    /*! @brief Defines the upper layer callback configuration*/
+    P2CONST(SoAd_UpperLayerConfigType,AUTOMATIC,SOAD_APPL_CONST)            pUpperLayerConfig;
+    /* #! routing group cfg */
+    /*! @brief Defines the Routing group configuration */
+    P2CONST(SoAd_RoutingGroupConfigType,AUTOMATIC,SOAD_APPL_CONST)          pRoutingGroupConfig;
+    /*! @brief Defines the RgPduRouteDest configuration */
+    P2CONST(SoAd_RGPduRouteDestConfigType,AUTOMATIC,SOAD_APPL_CONST)        pRGPduRouteDestConfig;
+    /*! @brief Defines the RgSocketRouteDest configuration */
+    P2CONST(SoAd_RGSocketRouteDestConfigType,AUTOMATIC,SOAD_APPL_CONST)     pRGSocketRouteDestConfig;
+    /*! @brief Defines the RgPduRouteDest to PduRouteDest map configuration */
+    P2CONST(SoAd_RgPduRouteDestIdxType,AUTOMATIC,SOAD_APPL_CONST)           pRgPduRouteDestMapConfig;
+    /*! @brief Defines the RgSocketRouteDest to SocketRouteDest map configuration */
+    P2CONST(SoAd_RgSocketRouteDestIdxType,AUTOMATIC,SOAD_APPL_CONST)        pRgSocketRouteDestMapConfig;
+    /* #! socket protocol cfg */
+    /*! @brief Defines the UDP socket configuration */
+    P2CONST(SoAd_SocketUdpConfigType,AUTOMATIC,SOAD_APPL_CONST)             pSocketUdpConfig;
+    /*! @brief Defines the TCP socket configuration */
+    P2CONST(SoAd_SocketTcpConfigType,AUTOMATIC,SOAD_APPL_CONST)             pSocketTcpConfig;
+    /* #! Pdu route cfg */
+    /*! @brief Defines the Pdu Route configuration */
+    P2CONST(SoAd_PduRouteConfigType,AUTOMATIC,SOAD_APPL_CONST)              pPduRouteConfig;
+    /*! @brief Defines the Pdu Route destination configuration */
+    P2CONST(SoAd_PduRouteDestConfigType,AUTOMATIC,SOAD_APPL_CONST)          pPduRouteDestConfig;
+    /*! @brief Defines the Tx Tp buffer configuration */
+    P2CONST(SoAd_TpTxBufferConfigType,AUTOMATIC,SOAD_APPL_CONST)            pTpTxBufferConfig;
+    /*! @brief Defines the NPdu udp tx configuration */
+    P2CONST(SoAd_NPduUdpTxConfigType,AUTOMATIC,SOAD_APPL_CONST)             pNPduUdpTxConfig;
+    /*! @brief Defines the Tcp Tx configuration */
+    P2CONST(SoAd_TcpTxQueueConfigType,AUTOMATIC,SOAD_APPL_CONST)            pTcpTxQueueConfig;
+    /* #! socket route cfg */
+    /*! @brief Defines the Socket Route configuration */
+    P2CONST(SoAd_SocketRouteConfigType,AUTOMATIC,SOAD_APPL_CONST)           pSocketRouteConfig;
+    /*! @brief Defines the Socket Route destination configuration */
+    P2CONST(SoAd_SocketRouteDestConfigType,AUTOMATIC,SOAD_APPL_CONST)       pSocketRouteDestConfig;
+    /*! @brief Defines the Rx Tp buffer configuration */
+    P2CONST(SoAd_TpRxBufferConfigType,AUTOMATIC,SOAD_APPL_CONST)            pTpRxBufferConfig;
+    /*! @brief Defines the Rx buffer segment configuration */
+    P2CONST(SoAd_RxBufferSegConfigType,AUTOMATIC,SOAD_APPL_CONST)           pRxBufferSegConfig;
+    /*! @brief Defines the Rx If buffer configuration */
+    P2CONST(SoAd_RxIfBufferConfigType,AUTOMATIC,SOAD_APPL_CONST)            pRxIfBufferConfig;   
+    /* #! bsd cfg*/ 
+    /* @brief the pointer to the TcpIp Ctrl Name Buffer config */
+    P2CONST(char, AUTOMATIC, SOAD_APPL_CONST)                               pTcpIpCtrlNameBufferCfg; 
+    /*! @brief the pointer to the TcpIp Ctrl Name Buffer Idx config */
+    P2CONST(SoAd_TcpIpCtrlNameIdxConfigType, AUTOMATIC, SOAD_APPL_CONST)    pTcpIpCtrlNameIdxCfg;
+    /*! @brief the pointer to the TcpIp Tx buffer config */
+    P2CONST(SoAd_SocketTxBufferConfigType, AUTOMATIC, SOAD_APPL_CONST)      pSocketTxBufferCfg;
+    /*! @brief the pointer to the TcpIp Tcp Rx buffer config */
+    P2CONST(SoAd_SocketTcpRxBufferConfigType, AUTOMATIC, SOAD_APPL_CONST)   pSocketTcpRxBufferCfg; 
+    /* #! socon status */
+    P2VAR(SoAd_SoConCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)                pSoConCtrlStatus;
+    P2VAR(SoAd_SoConEventCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pSoConEventCtrlStatus;
+    P2VAR(SoAd_SocketCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)               pSocketCtrlStatus;
+    P2VAR(uint32,AUTOMATIC,SOAD_APPL_DATA)                                  pTxUdpAliveTimer;
+    /* local addr status */
+    /*! @brief the pointer to the Socket Tcp Tx Event ctrl status */
+    P2VAR(SoAd_IpAddrStateType,AUTOMATIC,SOAD_APPL_DATA)                    pIpAddrState;
+    /* Routing group ctrl status */
+    P2VAR(SoAd_RouteGrpPduRouteDestStatusType,AUTOMATIC,SOAD_APPL_DATA)     pRouteGrpPduRouteDestCtrlStatus;
+    P2VAR(SoAd_RouteGrpSocketRouteDestStatusType,AUTOMATIC,SOAD_APPL_DATA)  pRouteGrpSocketRouteDestCtrlStatus;
+    P2VAR(boolean,AUTOMATIC,SOAD_APPL_DATA)                                 pRoutingGroupEventCtrlStatus;
+    /* Tx pdu status */
+    P2VAR(SoAd_SoConTxPduCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pSoConTxPduCtrlStatus;
+    P2VAR(SoAd_TpTxBufferCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pTpTxBufferCtrlStatus;
+    P2VAR(SoAd_NPduUdpTxCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)            pNPduUdpTxCtrlStatus;
+    P2VAR(SoAd_NPduUdpTxQueueCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)       pNPduUdpTxQueueCtrlStatus;
+    P2VAR(uint32,AUTOMATIC,SOAD_APPL_DATA)                                  pTxUdpNPduTimer;
+    P2VAR(SoAd_TcpTxQueueDataType,AUTOMATIC,SOAD_APPL_DATA)                 pTcpTxQueueData;
+    P2VAR(SoAd_TcpTxQueueCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pTcpTxQueueCtrlStatus;
+    P2VAR(SoAd_PduRouteCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)             pPduRouteCtrlStatus;
+    P2VAR(boolean,AUTOMATIC,SOAD_APPL_DATA)                                 pPduRouteEventUdpTxConf;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pTriggerBuffer;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pTpTxBuffer;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pRoutingGroupIfTxBuffer;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pNPduUdpTxBuffer;
+    /* Rx Pdu status */
+    P2VAR(SoAd_SoConRxPduCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pSoConRxPduCtrlStatus;
+    P2VAR(SoAd_TpRxBufferCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)           pTpRxBufferCtrlStatus;
+    P2VAR(SoAd_RxIfBufferCtrlType,AUTOMATIC,SOAD_APPL_DATA)                 pRxIfBufferCtrl;
+    P2VAR(SoAd_RxBufferSegCtrlType,AUTOMATIC,SOAD_APPL_DATA)                pRxBufferSegCtrl;
+    P2VAR(SoAd_RxBufferSegDataType,AUTOMATIC,SOAD_APPL_DATA)                pRxBufferSegData;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pTpRxBuffer;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pRxIfBuffer;
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pRxMetaDataBuffer;
+    /* #! bsd Ctrl status */
+    /*! @brief the pointer to the Local Ip Addr Ctrl Status */
+    P2VAR(SoAd_LocalIpAddrCtrlType,AUTOMATIC,SOAD_APPL_DATA)                pLocalIpAddrCtrlStatus;
+    /*! @brief the pointer to the Local Addr TcpIp Ctrl Status */
+    P2VAR(SoAd_LocalAddrTcpIpCtrlType,AUTOMATIC,SOAD_APPL_DATA)             pLocalAddrTcpIpCtrlStatus;
+    /*! @brief the pointer to the Socket Tx Buffer Ctrl Status */
+    P2VAR(SoAd_SocketTxBufferCtrlType,AUTOMATIC,SOAD_APPL_DATA)             pSocketTxBufferCtrlStatus;
+    /*! @brief the pointer to the Socket Rx Buffer Ctrl Status */
+    P2VAR(SoAd_SocketTcpRxBufferCtrlType,AUTOMATIC,SOAD_APPL_DATA)          pSocketTcpRxBufferCtrlStatus;
+    /*! @brief the pointer to the broadcast address ctrl status */
+    P2VAR(SoAd_SocketBrdAddrCtrlStatusType,AUTOMATIC,SOAD_APPL_DATA)        pSocketBrdAddrCtrlStatus;
+    /*! @brief the pointer to the Socket State Event Status */
+    P2VAR(boolean,AUTOMATIC,SOAD_APPL_DATA)                                 pSocketStateEventStatus;
+    /*! @brief the pointer to the Socket Tcp Tx Event Status */
+    P2VAR(boolean,AUTOMATIC,SOAD_APPL_DATA)                                 pSocketTcpTxEventStatus;
+    /*! @brief the pointer to the Socket Tx buffer */
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pSocketTxBuffer;
+    /*! @brief the pointer to the Socket Udp Rx buffer */
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pSocketUdpRxBuffer;
+    /*! @brief the pointer to the Socket Tcp Rx buffer */
+    P2VAR(uint8,AUTOMATIC,SOAD_APPL_DATA)                                   pSocketTcpRxBuffer;
+    /* #! size configuration */
+    CONST(SoAd_SoConIdType,SOAD_APPL_CONST)                                  NumOfSoCon;
+    CONST(SoAd_SoConGrpIdxType,SOAD_APPL_CONST)                              NumOfSoConGrp;
+    /*! @brief Defines the number of sockets */
+    CONST(SoAd_SocketIdxType,SOAD_APPL_CONST)                                NumOfSocket;
+    CONST(SoAd_RoutingGroupIdxType,SOAD_APPL_CONST)                          NumOfRoutingGroup;
+    CONST(SoAd_RemAddrIpV4IdxType,SOAD_APPL_CONST)                           NumOfRemAddrIpV4Id;
+    /*! @brief Defines the number of local Ip address */
+    CONST(SoAd_LocalIpAddrIdxType,SOAD_APPL_CONST)                           NumOfLocalIpAddr;
+    /*! @brief the number of TcpIp ctrl supported */
+    CONST(SoAd_TcpIpCtrlIdxType,SOAD_APPL_CONST)                             NumOfTcpIpCtrl;
+    CONST(SoAd_LocalIpAddrUnicastIdxType,SOAD_APPL_CONST)                    NumOfLocalIpAddrUnicast;
+    CONST(SoAd_LocalIpAddrAssignChgFuncIdxType,SOAD_APPL_CONST)              NumOfLocalIpAddrAssignChgFunc;
+    CONST(SoAd_UpSoConModeChgFuncIdxType,SOAD_APPL_CONST)                    NumOfUpSoConModeChgFunc;
+    CONST(SoAd_ULIdxType,SOAD_APPL_CONST)                                    NumOfUL;
+    CONST(SoAd_PduRouteIdxType,SOAD_APPL_CONST)                              NumOfPduRoute;
+    CONST(SoAd_PduRouteDestIdxType,SOAD_APPL_CONST)                          NumOfPduRouteDest;
+    CONST(SoAd_RgPduRouteDestMapIdxType,SOAD_APPL_CONST)                     NumOfRgPduRouteDestMap;
+    CONST(SoAd_RgPduRouteDestIdxType,SOAD_APPL_CONST)                        NumOfRgPduRouteDest;
+    CONST(PduIdType,SOAD_APPL_CONST)                                         NumOfTxPdu;
+    CONST(SoAd_SoConTxPduCtrlIdxType,SOAD_APPL_CONST)                        NumOfSoConTxPduCtrl;
+    CONST(SoAd_SocketRouteIdxType,SOAD_APPL_CONST)                           NumOfSocketRoute;
+    CONST(SoAd_SocketRouteDestIdxType,SOAD_APPL_CONST)                       NumOfSocketRouteDest;
+    CONST(SoAd_RgSocketRouteDestMapIdxType,SOAD_APPL_CONST)                  NumOfRgSocketRouteDestMap;
+    CONST(SoAd_RgSocketRouteDestIdxType,SOAD_APPL_CONST)                     NumOfRgSocketRouteDest;
+    CONST(PduIdType,SOAD_APPL_CONST)                                         NumOfRxPdu;
+    CONST(SoAd_SoConRxPduCtrlIdxType,SOAD_APPL_CONST)                        NumOfSoConRxPduCtrl;
+    CONST(SoAd_SocketUdpIdxType,SOAD_APPL_CONST)                             NumOfSocketUdp;
+    CONST(SoAd_UdpAliveTimerIdxType,SOAD_APPL_CONST)                         NumOfUdpAliveTimer;
+    CONST(SoAd_NPduUdpTxIdxType,SOAD_APPL_CONST)                             NumOfNPduUdpTx;
+    CONST(SoAd_NPduUdpTxQueueIdxType,SOAD_APPL_CONST)                        NumOfNPduUdpTxQueue;
+    CONST(SoAd_NPduUdpTxTimerIdxType,SOAD_APPL_CONST)                        NumOfNPduUdpTxTimer;
+    CONST(SoAd_SocketTcpIdxType,SOAD_APPL_CONST)                             NumOfSocketTcpId;
+    /* #! buffer configuration */
+    CONST(SoAd_TpTxBufferIdxType,SOAD_APPL_CONST)                            NumOfTpTxBuffer;
+    CONST(SoAd_TpTxBufferSizeType,SOAD_APPL_CONST)                           TpTxBufferSize;
+    CONST(SoAd_RoutingGroupIfTxBufferSizeType,SOAD_APPL_CONST)               RoutingGroupIfTxBufferSize;
+    CONST(SoAd_TpRxBufferIdxType,SOAD_APPL_CONST)                            NumOfTpRxBuffer;
+    CONST(SoAd_TpRxBufferSizeType,SOAD_APPL_CONST)                           TpRxBufferSize;
+    CONST(SoAd_RxBufferSegIdxType,SOAD_APPL_CONST)                           NumOfRxBufferSegment;
+    CONST(SoAd_RxBufferSegDataSizeType,SOAD_APPL_CONST)                      RxBufferSegmentDataSize;
+    CONST(SoAd_RxMetaDataBufferSizeType,SOAD_APPL_CONST)                     RxMetaDataBufferSize;
+    CONST(SoAd_RxIfBufferSizeType,SOAD_APPL_CONST)                           RxIfBufferSize;     
+    CONST(SoAd_TriggerBufferSizeType,SOAD_APPL_CONST)                        TriggerBufferSize;     
+    CONST(SoAd_NPduUdpTxBufferSizeType,SOAD_APPL_CONST)                      NPduUdpTxBufferSize;
+    CONST(SoAd_NPduUdpTxQueueRetryCntType,SOAD_APPL_CONST)                   NPduUdpTxQueueRetryCnt;
+    CONST(SoAd_TcpTxQueueIdxType,SOAD_APPL_CONST)                            NumOfTcpTxQueue;
+    CONST(SoAd_TcpTxQueueSizeType,SOAD_APPL_CONST)                           TcpTxQueueSize;
+    /* bsd size configuration */
+    /*! @brief the size of the TcpIp Ctrl Name Buffer size */
+    CONST(SoAd_TcpIpCtrlNameBufferSizeType,SOAD_APPL_CONST)                  TcpIpCtrlNameBufferSize;
+    /*! @brief the timecount at which the local address need to be checked for changes.(multiple of main 
+        function period)*/
+    CONST(SoAd_LocalAddrCheckCountType,SOAD_APPL_CONST)                      LocalAddrCheckCount;
+    /*! @brief the size of the TcpIp Ctrl Tx Buffer size */
+    CONST(SoAd_SocketTxBufferSizeType,SOAD_APPL_CONST)                       SocketTxBufferSize;
+    /*! @brief the size of the TcpIp Ctrl Udp Rx Buffer size */
+    CONST(SoAd_SocketUdpRxBufferSizeType,SOAD_APPL_CONST)                    SocketUdpRxBufferSize;
+    /*! @brief the size of the TcpIp Ctrl Tcp Rx Buffer size */
+    CONST(SoAd_SocketTcpRxBufferSizeType,SOAD_APPL_CONST)                    SocketTcpRxBufferSize;
+    /*! @brief the number of the TcpIp Ctrl Tx Buffer */
+    CONST(SoAd_SocketTxBufferIdType,SOAD_APPL_CONST)                         SocketNumOfTxBuffer;
+    /*! @brief the number of the TcpIp Ctrl tcp rx buffer */
+    CONST(SoAd_SocketTcpRxBufferIdType,SOAD_APPL_CONST)                      SocketNumOfTcpRxBuffer;
+}SoAd_ConfigType;
+/************************** #! PBCFG START *************************************************************************/
+#define SoAd_SetConfigDataPtr(Val)  (pSoAd_ConfigData=(Val))
+#define SoAd_GetConfigDataPtr()     (pSoAd_ConfigData)
+/* SoAd_SoConConfigType get */
+#define SoAd_CfgGetSoCon(Idx)                                       (SoAd_GetConfigDataPtr()->pSoConConfig[(Idx)])
+#define SoAd_SoConCfgGetSoConGrpIdx(Idx)                            (SoAd_CfgGetSoCon((Idx)).SoConGrpIdx)
+#define SoAd_SoConCfgGetSoConId(Idx)                                (SoAd_CfgGetSoCon((Idx)).SoConId)
+#define SoAd_SoConCfgGetSocketIdx(Idx)                              (SoAd_CfgGetSoCon((Idx)).SocketIdx)
+#define SoAd_SoConCfgGetRemAddrIpV4Idx(Idx)                         (SoAd_CfgGetSoCon((Idx)).RemAddrIpV4Idx)
+#define SoAd_SoConCfgGetRcvRemAddrIpV4Idx(Idx)                      (SoAd_CfgGetSoCon((Idx)).RcvRemAddrIpV4Idx)
+#define SoAd_SoConCfgGetRemAddrState(Idx)                           (SoAd_CfgGetSoCon((Idx)).RemAddrState)
+#define SoAd_SoConCfgGetPduRouteDestStartIdx(Idx)                   (SoAd_CfgGetSoCon((Idx)).PduRouteDestStartIdx)
+#define SoAd_SoConCfgGetPduRouteDestEndIdx(Idx)                     (SoAd_CfgGetSoCon((Idx)).PduRouteDestEndIdx)
+#define SoAd_SoConCfgGetSocketRouteStartIdx(Idx)                    (SoAd_CfgGetSoCon((Idx)).SocketRouteStartIdx)
+#define SoAd_SoConCfgGetSocketRouteEndIdx(Idx)                      (SoAd_CfgGetSoCon((Idx)).SocketRouteEndIdx)
+#define SoAd_SoConCfgGetLocalIpAddrAssignmentChgIndStartIdx(Idx)    (SoAd_CfgGetSoCon((Idx)).LocalIpAddrAssignmentChgIndStartIdx)
+#define SoAd_SoConCfgGetLocalIpAddrAssignmentChgIndEndIdx(Idx)      (SoAd_CfgGetSoCon((Idx)).LocalIpAddrAssignmentChgIndEndIdx)
+#define SoAd_SoConCfgGetSoConModeChgCbkIndStartIdx(Idx)             (SoAd_CfgGetSoCon((Idx)).SoConModeChgCbkIndStartIdx)
+#define SoAd_SoConCfgGetSoConModeChgCbkIndEndIdx(Idx)               (SoAd_CfgGetSoCon((Idx)).SoConModeChgCbkIndEndIdx)
+#define SoAd_SoConCfgGetSoConCfgOptionMask(Idx)                     (SoAd_CfgGetSoCon((Idx)).SoConCfgOptionMask)
+#define SoAd_SoConCfgGetTcpTxQueueIdx(Idx)                          (SoAd_CfgGetSoCon((Idx)).TcpTxQueueIdx)
+#define SoAd_SoConCfgGetTpTxBufferCfgIdx(Idx)                       (SoAd_CfgGetSoCon((Idx)).TpTxBufferCfgIdx)
+#define SoAd_SoConCfgGetTpRxBufferCfgIdx(Idx)                       (SoAd_CfgGetSoCon((Idx)).TpRxBufferCfgIdx)
+#define SoAd_SoConCfgGetSoConTxPduCtrlIdx(Idx)                      (SoAd_CfgGetSoCon((Idx)).SoConTxPduCtrlIdx)
+#define SoAd_SoConCfgGetSoConRxPduCtrlIdx(Idx)                      (SoAd_CfgGetSoCon((Idx)).SoConRxPduCtrlIdx)
+#define SoAd_SoConCfgGetNPduUdpTxIdx(Idx)                           (SoAd_CfgGetSoCon((Idx)).NPduUdpTxIdx)
+#define SoAd_SoConCfgGetTriggerBufferStartIdx(Idx)                  (SoAd_CfgGetSoCon((Idx)).TriggerBufferStartIdx)
+#define SoAd_SoConCfgGetTriggerBufferEndIdx(Idx)                    (SoAd_CfgGetSoCon((Idx)).TriggerBufferEndIdx)
+#define SoAd_SoConCfgGetTriggerBufferSize(Idx)                      (SoAd_CfgGetSoCon((Idx)).TriggerBufferSize)
+#define SoAd_SoConCfgGetRxBufferSegIdx(Idx)                         (SoAd_CfgGetSoCon((Idx)).RxBufferSegIdx)
+#define SoAd_SoConCfgGetRxIfBufferIdx(Idx)                          (SoAd_CfgGetSoCon((Idx)).RxIfBufferIdx)
+#define SoAd_SoConCfgIsSoConGrpAutoConnectionSetupEnabled(Idx)  ((SoAd_SoConCfgGetSoConCfgOptionMask(Idx) & SOAD_SOCON_SOCONGRP_AUTO_SETUP_BIT) != 0U)
+#define SoAd_SoConCfgIsPduRouteSupported(Idx)                   ((SoAd_SoConCfgGetSoConCfgOptionMask(Idx) & SOAD_SOCON_PDU_ROUTE_SUPPORT_BIT) != 0U)
+#define SoAd_SoConCfgIsTcpTxQueueEnabled(Idx)                   ((SoAd_SoConCfgGetSoConCfgOptionMask(Idx) & SOAD_SOCON_TCP_TX_QUEUE_EN_BIT) != 0U)
+#define SoAd_SoConCfgIsUdpNPduSupported(Idx)                    ((SoAd_SoConCfgGetSoConCfgOptionMask(Idx) & SOAD_SOCON_UDP_NPDU_EN_BIT) != 0U)
+#define SoAd_SoConCfgIsSocketRouteSupported(Idx)                ((SoAd_SoConCfgGetSoConCfgOptionMask(Idx) & SOAD_SOCON_SOCKET_ROUTE_EN_BIT) != 0U)
+/* SoAd_SoConGrpConfigType get */
+#define SoAd_CfgGetSoConGrp(Idx)                                (SoAd_GetConfigDataPtr()->pSoConGrpConfig[(Idx)])
+#define SoAd_SoConGrpCfgGetFramePriority(Idx)                   (SoAd_CfgGetSoConGrp((Idx)).FramePriority) 
+#define SoAd_SoConGrpCfgGetLocalAddrIdx(Idx)                    (SoAd_CfgGetSoConGrp((Idx)).LocalAddrIdx) 
+#define SoAd_SoConGrpCfgGetSoConStartIdx(Idx)                   (SoAd_CfgGetSoConGrp((Idx)).SoConStartIdx) 
+#define SoAd_SoConGrpCfgGetSoConEndIdx(Idx)                     (SoAd_CfgGetSoConGrp((Idx)).SoConEndIdx) 
+#define SoAd_SoConGrpCfgGetSoConGrpSocketIdx(Idx)               (SoAd_CfgGetSoConGrp((Idx)).SoConGrpSocketIdx) 
+#define SoAd_SoConGrpCfgGetSocketTcpIdx(Idx)                    (SoAd_CfgGetSoConGrp((Idx)).SocketTcpIdx) 
+#define SoAd_SoConGrpCfgGetSocketUdpIdx(Idx)                    (SoAd_CfgGetSoConGrp((Idx)).SocketUdpIdx) 
+#define SoAd_SoConGrpCfgGetLocalPort(Idx)                       (SoAd_CfgGetSoConGrp((Idx)).LocalPortOfSoConGrp) 
+#define SoAd_SoConGrpCfgGetCfgOptionMask(Idx)                   (SoAd_CfgGetSoConGrp((Idx)).SoConCfgGrpOptionMask)
+#define SoAd_SoConGrpCfgIsMsgAcceptFilterSupported(Idx)         ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_MSG_ACCEPT_FILTER_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsProtoUdpSupported(Idx)                ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_PROTO_UDP_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsProtoTcpSupported(Idx)                ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_PROTO_TCP_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsProtoTcpInitiateEnabled(Idx)          ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_TCP_INITIATE_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsPduHeaderSupported(Idx)               ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_PDU_HEADER_EN_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsTcpImmConfSupported(Idx)              ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_TCP_IMM_TX_CONF_EN_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsBestMatchByPduHeaderEnabled(Idx)      ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_BEST_MATCH_PDU_HEADER_EN_BIT) != 0U)
+#define SoAd_SoConGrpCfgIsBestMatchBySocketRouteEnabled(Idx)    ((SoAd_SoConGrpCfgGetCfgOptionMask(Idx) & SOAD_SOCONGRP_BEST_MATCH_SOCKET_ROUTE_EN_BIT) != 0U)
+/* SoAd_SocketConfigType get */
+#define SoAd_CfgGetSocket(Idx)                          (SoAd_GetConfigDataPtr()->pSocketConfig[(Idx)])
+#define SoAd_SocketCfgGetSoConStartIdx(Idx)             (SoAd_CfgGetSocket((Idx)).SoConStartIdx) 
+#define SoAd_SocketCfgGetSoConEndIdx(Idx)               (SoAd_CfgGetSocket((Idx)).SoConEndIdx) 
+#define SoAd_SocketCfgGetSoConGrpIdx(Idx)               (SoAd_CfgGetSocket((Idx)).SoConGrpIdx) 
+#define SoAd_SocketCfgGetTcpRxBufferEnable(Idx)         (SoAd_CfgGetSocket((Idx)).TcpRxBufferEnable) 
+#define SoAd_SocketCfgGetTcpRxBufferCtrlIdx(Idx)        (SoAd_CfgGetSocket((Idx)).TcpRxBufferCtrlIdx) 
+#define SoAd_SocketCfgGetTcpTcpRxBufferIdx(Idx)         (SoAd_CfgGetSocket((Idx)).TcpRxBufferIdx)  
+/* SoAd_LocalAddrConfigType get*/
+#define SoAd_CfgGetpLocalAddrConfig(Idx)                (SoAd_GetConfigDataPtr()->pLocalAddrConfig[(Idx)])
+#define SoAd_LocalAddrCfgGetTcpIpCtrlIdx(Idx)           (SoAd_CfgGetpLocalAddrConfig((Idx)).TcpIpCtrlIdx)
+#define SoAd_LocalAddrCfgGetAddressType(Idx)            (SoAd_CfgGetpLocalAddrConfig((Idx)).AddressType)
+#define SoAd_LocalAddrCfgGetAssignTriggerType(Idx)      (SoAd_CfgGetpLocalAddrConfig((Idx)).AssignTriggerType)
+#define SoAd_LocalAddrCfgGetDomainType(Idx)             (SoAd_CfgGetpLocalAddrConfig((Idx)).DomainType)
+#define SoAd_LocalAddrCfgGetAssignTypeOfLocalAddr(Idx)  (SoAd_CfgGetpLocalAddrConfig((Idx)).AssignTypeOfLocalAddr)
+#define SoAd_LocalAddrCfgGetAddrIdOfLocalAddr(Idx)      (SoAd_CfgGetpLocalAddrConfig((Idx)).AddrIdOfLocalAddr)
+#define SoAd_LocalAddrCfgGetRemAddrIpV4Idx(Idx)         (SoAd_CfgGetpLocalAddrConfig((Idx)).RemAddrIpV4Idx)
+/* SoAd_LocalIpAddrAssignChgFuncType get*/
+#define SoAd_CfgGetLocalIpAddrAssignChgFunc(Idx)    (SoAd_GetConfigDataPtr()->pLocalIpAddrAssignChgFuncConfig[(Idx)])
+/* SoAd_UpSoConModeChgFuncType get */
+#define SoAd_CfgGetUpSoConModeChgFunc(Idx)          (SoAd_GetConfigDataPtr()->pUpSoConModeChgFuncConfig[(Idx)])
+/* SoAd_RemAddrIpV4ConfigType get */
+#define SoAd_CfgGetRemAddrIpv4(Idx)                 (SoAd_GetConfigDataPtr()->pRemAddrIpV4Config[(Idx)])
+#define SoAd_SocketCfgGetRemAddrIpv4(Idx)           (SoAd_CfgGetRemAddrIpv4((Idx)).RemAddrIpV4Addr)
+#define SoAd_SocketCfgGetRemAddrNetMask(Idx)        (SoAd_CfgGetRemAddrIpv4((Idx)).RemAddrNetMask)
+#define SoAd_SocketCfgGetRemAddrIpv4Port(Idx)       (SoAd_CfgGetRemAddrIpv4((Idx)).RemAddrIpV4Port)
+/* SoAd_UpperLayerConfigType get */
+#define SoAd_CfgGetUpperLayer(Idx)                              (SoAd_GetConfigDataPtr()->pUpperLayerConfig[(Idx)])
+#define SoAd_UpperLayerCfgGetUpIfRxIndicationFunc(Idx)          (SoAd_CfgGetUpperLayer((Idx)).UpIfRxIndicationFunc)
+#define SoAd_UpperLayerCfgGetUpIfTriggerTransmitFunc(Idx)       (SoAd_CfgGetUpperLayer((Idx)).UpIfTriggerTransmitFunc)
+#define SoAd_UpperLayerCfgGetUpIfTxConfirmationFunc(Idx)        (SoAd_CfgGetUpperLayer((Idx)).UpIfTxConfirmationFunc)
+#define SoAd_UpperLayerCfgGetUpTpCopyRxDataFunc(Idx)            (SoAd_CfgGetUpperLayer((Idx)).UpTpCopyRxDataFunc)
+#define SoAd_UpperLayerCfgGetUpTpCopyTxDataFunc(Idx)            (SoAd_CfgGetUpperLayer((Idx)).UpTpCopyTxDataFunc)
+#define SoAd_UpperLayerCfgGetUpTpRxIndicationFunc(Idx)          (SoAd_CfgGetUpperLayer((Idx)).UpTpRxIndicationFunc)
+#define SoAd_UpperLayerCfgGetUpTpStartOfReceptionFunc(Idx)      (SoAd_CfgGetUpperLayer((Idx)).UpTpStartOfReceptionFunc)
+#define SoAd_UpperLayerCfgGetUpTpTxConfirmationFunc(Idx)        (SoAd_CfgGetUpperLayer((Idx)).SoAd_UpTpTxConfirmationFunc)
+/* #! routing group cfg */
+/* SoAd_RoutingGroupConfigType get */
+#define SoAd_CfgGetRoutingGroup(Idx)                            (SoAd_GetConfigDataPtr()->pRoutingGroupConfig[(Idx)])
+#define SoAd_RoutingGroupCfgGetEnabledAtInit(Idx)               (SoAd_CfgGetRoutingGroup((Idx)).EnabledAtInit)
+#define SoAd_RoutingGroupCfgGetIsTriggerable(Idx)               (SoAd_CfgGetRoutingGroup((Idx)).IsTriggerable)
+#define SoAd_RoutingGroupCfgGetRgPduRouteDestStartIdx(Idx)      (SoAd_CfgGetRoutingGroup((Idx)).RgPduRouteDestStartIdx)
+#define SoAd_RoutingGroupCfgGetRgPduRouteDestEndIdx(Idx)        (SoAd_CfgGetRoutingGroup((Idx)).RgPduRouteDestEndIdx)
+#define SoAd_RoutingGroupCfgGetRgSocketRouteDestStartIdx(Idx)   (SoAd_CfgGetRoutingGroup((Idx)).RgSocketRouteDestStartIdx)
+#define SoAd_RoutingGroupCfgGetRgSocketRouteDestEndIdx(Idx)     (SoAd_CfgGetRoutingGroup((Idx)).RgSocketRouteDestEndIdx)
+/* SoAd_RGPduRouteDestConfigType get */
+#define SoAd_CfgGetRGPduRouteDest(Idx)          (SoAd_GetConfigDataPtr()->pRGPduRouteDestConfig[(Idx)])
+#define SoAd_RGPduRouteDestCfgGetSoConIdx(Idx)  (SoAd_CfgGetRGPduRouteDest((Idx)).SoConIdx)
+/* SoAd_RGSocketRouteDestConfigType get */
+#define SoAd_CfgGetRGSocketRouteDest(Idx)           (SoAd_GetConfigDataPtr()->pRGSocketRouteDestConfig[(Idx)])
+#define SoAd_RGSocketRouteDestCfgGetSoConIdx(Idx)   (SoAd_CfgGetRGSocketRouteDest((Idx)).SoConIdx)
+/* SoAd_RgPduRouteDestIdxType get */
+#define SoAd_RgPduRouteDestMapCfgGetRgPduRouteDestIdx(Idx)  (SoAd_GetConfigDataPtr()->pRgPduRouteDestMapConfig[(Idx)])
+/* SoAd_RgSocketRouteDestIdxType get */
+#define SoAd_RgSocketRouteDestMapCfgGetRgSocketRouteDestIdx(Idx)    (SoAd_GetConfigDataPtr()->pRgSocketRouteDestMapConfig[(Idx)])
+/* #! socket protocol cfg */
+/* SoAd_SocketUdpConfigType */
+#define SoAd_CfgGetSocketUdp(Idx)                               (SoAd_GetConfigDataPtr()->pSocketUdpConfig[(Idx)])
+#define SoAd_SocketUdpCfgGetChecksumEnabled(Idx)                (SoAd_CfgGetSocketUdp((Idx)).SocketUdpChecksumEnabled)
+#define SoAd_SocketUdpCfgGetListenOnly(Idx)                     (SoAd_CfgGetSocketUdp((Idx)).SocketUdpListenOnly)
+#define SoAd_SocketUdpCfgGetImmTxConfirmation(Idx)              (SoAd_CfgGetSocketUdp((Idx)).ImmTxConfirmation)
+#define SoAd_SocketUdpCfgGetStrictHeaderLenCheck(Idx)           (SoAd_CfgGetSocketUdp((Idx)).UdpStrictHeaderLenCheck)
+#define SoAd_SocketUdpCfgGetTriggerTimeout(Idx)                 (SoAd_CfgGetSocketUdp((Idx)).UdpTriggerTimeout)
+#define SoAd_SocketUdpCfgGetAliveSupervisionTime(Idx)           (SoAd_CfgGetSocketUdp((Idx)).AliveSupervisionTime)
+#define SoAd_SocketUdpCfgGetTxUdpAliveTimerIdx(Idx)             (SoAd_CfgGetSocketUdp((Idx)).TxUdpAliveTimerIdx)
+#define SoAd_SocketUdpCfgGetNPduUdpTxBufferMin(Idx)             (SoAd_CfgGetSocketUdp((Idx)).NPduUdpTxBufferMin)
+#define SoAd_SocketUdpCfgGetNPduUdpTxQueueSize(Idx)             (SoAd_CfgGetSocketUdp((Idx)).NPduUdpTxQueueSize)
+/* SoAd_SocketTcpConfigType */
+#define SoAd_CfgGetSocketTcp(Idx)                               (SoAd_GetConfigDataPtr()->pSocketTcpConfig[(Idx)])
+#define SoAd_SocketTcpCfgGetTcpInitiate(Idx)                    (SoAd_CfgGetSocketTcp((Idx)).SocketTcpInitiate)
+#define SoAd_SocketTcpCfgGetTcpKeepAlive(Idx)                   (SoAd_CfgGetSocketTcp((Idx)).TcpKeepAlive)
+#define SoAd_SocketTcpCfgGetTcpNoDelay(Idx)                     (SoAd_CfgGetSocketTcp((Idx)).TcpNoDelay)
+#define SoAd_SocketTcpCfgGetTcpRxBufferMin(Idx)                 (SoAd_CfgGetSocketTcp((Idx)).TcpRxBufferMin)
+#define SoAd_SocketTcpCfgGetKeepAliveProbesMax(Idx)             (SoAd_CfgGetSocketTcp((Idx)).KeepAliveProbesMax)
+#define SoAd_SocketTcpCfgGetTcpKeepAliveInterval(Idx)           (SoAd_CfgGetSocketTcp((Idx)).TcpKeepAliveInterval)
+#define SoAd_SocketTcpCfgGetTcpKeepAliveTime(Idx)               (SoAd_CfgGetSocketTcp((Idx)).TcpKeepAliveTime)
+/* #! Pdu route cfg */
+/* SoAd_PduRouteConfigType */
+#define SoAd_CfgGetPduRoute(Idx)                            (SoAd_GetConfigDataPtr()->pPduRouteConfig[(Idx)])
+#define SoAd_PduRouteCfgGetTxConfPduId(Idx)                 (SoAd_CfgGetPduRoute((Idx)).TxConfPduId)
+#define SoAd_PduRouteCfgGetPduRouteULIdx(Idx)               (SoAd_CfgGetPduRoute((Idx)).PduRouteULIdx)
+#define SoAd_PduRouteCfgGetPduRouteULType(Idx)              (SoAd_CfgGetPduRoute((Idx)).PduRouteULType)
+#define SoAd_PduRouteCfgGetPduRouteCfgOptionMask(Idx)       (SoAd_CfgGetPduRoute((Idx)).PduRouteCfgOptionMask)
+#define SoAd_PduRouteCfgGetPduRouteDestStartIdx(Idx)        (SoAd_CfgGetPduRoute((Idx)).PduRouteDestStartIdx)
+#define SoAd_PduRouteCfgGetPduRouteDestEndIdx(Idx)          (SoAd_CfgGetPduRoute((Idx)).PduRouteDestEndIdx)
+#define SoAd_PduRouteCfgGetNumOfPduRouteDest(Idx)           (SoAd_CfgGetPduRoute((Idx)).NumOfPduRouteDest)
+#define SoAd_PduRouteCfgGetMinimumLength(Idx)               (SoAd_CfgGetPduRoute((Idx)).MinimumLength)
+#define SoAd_PduRouteCfgIsIfTriggerTxEnabled(Idx)   ((SoAd_PduRouteCfgGetPduRouteCfgOptionMask(Idx) & SOAD_PDU_ROUTE_IF_TRIGGER_TX_EN_BIT) != 0U)
+#define SoAd_PduRouteCfgIsMetaDataEnabled(Idx)      ((SoAd_PduRouteCfgGetPduRouteCfgOptionMask(Idx) & SOAD_PDU_ROUTE_META_DATA_EN_BIT) != 0U)
+#define SoAd_PduRouteCfgIsIfTxConfEnabled(Idx)      ((SoAd_PduRouteCfgGetPduRouteCfgOptionMask(Idx) & SOAD_PDU_ROUTE_IF_TX_CONF_EN_BIT) != 0U)
+/* SoAd_PduRouteDestConfigType get */
+#define SoAd_CfgGetPduRouteDest(Idx)                            (SoAd_GetConfigDataPtr()->pPduRouteDestConfig[(Idx)])
+#define SoAd_PduRouteDestCfgGetSoConIdx(Idx)                    (SoAd_CfgGetPduRouteDest((Idx)).SoConIdx)
+#define SoAd_PduRouteDestCfgGetPduRouteIdx(Idx)                 (SoAd_CfgGetPduRouteDest((Idx)).PduRouteIdx)
+#define SoAd_PduRouteDestCfgGetTxUdpTriggerMode(Idx)            (SoAd_CfgGetPduRouteDest((Idx)).TxUdpTriggerMode)
+#define SoAd_PduRouteDestCfgGetTxPduHeaderId(Idx)               (SoAd_CfgGetPduRouteDest((Idx)).TxPduHeaderId)
+#define SoAd_PduRouteDestCfgGetUdpTriggerTimeout(Idx)           (SoAd_CfgGetPduRouteDest((Idx)).UdpTriggerTimeout)
+#define SoAd_PduRouteDestCfgGetRgPduRouteDestMapStartIdx(Idx)   (SoAd_CfgGetPduRouteDest((Idx)).RgPduRouteDestMapStartIdx)
+#define SoAd_PduRouteDestCfgGetRgPduRouteDestMapEndIdx(Idx)     (SoAd_CfgGetPduRouteDest((Idx)).RgPduRouteDestMapEndIdx)
+/* SoAd_TpTxBufferConfigType get */
+#define SoAd_CfgGetTpTxBuffer(Idx)                              (SoAd_GetConfigDataPtr()->pTpTxBufferConfig[(Idx)])
+#define SoAd_TpTxBufferCfgGetBufferStartIdx(Idx)                (SoAd_CfgGetTpTxBuffer((Idx)).TpTxBufferStartIdx)
+#define SoAd_TpTxBufferCfgGetBufferEndIdx(Idx)                  (SoAd_CfgGetTpTxBuffer((Idx)).TpTxBufferEndIdx)
+#define SoAd_TpTxBufferCfgGetBufferSize(Idx)                    (SoAd_CfgGetTpTxBuffer((Idx)).TpTxBufferSize)
+/* SoAd_NPduUdpTxConfigType get*/
+#define SoAd_CfgGetNPduUdpTx(Idx)                               (SoAd_GetConfigDataPtr()->pNPduUdpTxConfig[(Idx)])
+#define SoAd_NPduUdpTxCfgGetQueueSupport(Idx)                   (SoAd_CfgGetNPduUdpTx((Idx)).QueueSupport)
+#define SoAd_NPduUdpTxCfgGetSoConIdx(Idx)                       (SoAd_CfgGetNPduUdpTx((Idx)).SoConIdx)
+#define SoAd_NPduUdpTxCfgGetNPduUdpTxQueueStartIdx(Idx)         (SoAd_CfgGetNPduUdpTx((Idx)).NPduUdpTxQueueStartIdx)
+#define SoAd_NPduUdpTxCfgGetNPduUdpTxQueueEndIdx(Idx)           (SoAd_CfgGetNPduUdpTx((Idx)).NPduUdpTxQueueEndIdx)
+#define SoAd_NPduUdpTxCfgGetNPduUdpTxBufferStartIdx(Idx)        (SoAd_CfgGetNPduUdpTx((Idx)).NPduUdpTxBufferStartIdx)
+#define SoAd_NPduUdpTxCfgGetNPduUdpTxBufferSize(Idx)            (SoAd_CfgGetNPduUdpTx((Idx)).NPduUdpTxBufferSize)
+#define SoAd_NPduUdpTxCfgGetTxUdpNPduTimerIdx(Idx)              (SoAd_CfgGetNPduUdpTx((Idx)).TxUdpNPduTimerIdx)
+/* SoAd_TcpTxQueueConfigType get */
+#define SoAd_CfgGetTcpTxQueue(Idx)                              (SoAd_GetConfigDataPtr()->pTcpTxQueueConfig[(Idx)])
+#define SoAd_TcpTxQueueCfgGetDataStartIdx(Idx)                  (SoAd_CfgGetTcpTxQueue((Idx)).DataStartIdx)
+#define SoAd_TcpTxQueueCfgGetDataEndIdx(Idx)                    (SoAd_CfgGetTcpTxQueue((Idx)).DataEndIdx)
+#define SoAd_TcpTxQueueCfgGetQueueSize(Idx)                     (SoAd_CfgGetTcpTxQueue((Idx)).QueueSize)
+/* #! socket route cfg */
+/* SoAd_SocketRouteConfigType get */
+#define SoAd_CfgGetSocketRoute(Idx)                         (SoAd_GetConfigDataPtr()->pSocketRouteConfig[(Idx)])
+#define SoAd_SocketRouteCfgGetSoConIdx(Idx)                 (SoAd_CfgGetSocketRoute((Idx)).SoConIdx)          
+#define SoAd_SocketRouteCfgGetRxULPduId(Idx)                (SoAd_CfgGetSocketRoute((Idx)).RxULPduId)          
+#define SoAd_SocketRouteCfgGetSocketRouteULIdx(Idx)         (SoAd_CfgGetSocketRoute((Idx)).SocketRouteULIdx)          
+#define SoAd_SocketRouteCfgGetSocketRouteULType(Idx)        (SoAd_CfgGetSocketRoute((Idx)).SocketRouteULType)          
+#define SoAd_SocketRouteCfgGetRxPduHeaderId(Idx)            (SoAd_CfgGetSocketRoute((Idx)).RxPduHeaderId)          
+#define SoAd_SocketRouteCfgGetSocketRouteDestIdx(Idx)       (SoAd_CfgGetSocketRoute((Idx)).SocketRouteDestIdx)          
+#define SoAd_SocketRouteCfgGetSocketRouteCfgOptionMask(Idx) (SoAd_CfgGetSocketRoute((Idx)).SocketRouteCfgOptionMask)          
+#define SoAd_SocketRouteCfgIsRxMetaDataEnabled(Idx)         ((SoAd_SocketRouteCfgGetSocketRouteCfgOptionMask(Idx) & SOAD_SOCKET_ROUTE_META_DATA_EN_BIT) != 0U)      
+/* SoAd_SocketRouteDestConfigType get*/
+#define SoAd_CfgGetSocketRouteDest(Idx)                 (SoAd_GetConfigDataPtr()->pSocketRouteDestConfig[(Idx)])
+#define SoAd_SocketRouteDestCfgGetSoConIdx(Idx)         (SoAd_CfgGetSocketRouteDest((Idx)).SoConIdx)
+#define SoAd_SocketRouteDestCfgGetRgSocketRouteDestMapStartIdx(Idx) (SoAd_CfgGetSocketRouteDest((Idx)).RgSocketRouteDestMapStartIdx)
+#define SoAd_SocketRouteDestCfgGetRgSocketRouteDestMapEndIdx(Idx)   (SoAd_CfgGetSocketRouteDest((Idx)).RgSocketRouteDestMapEndIdx)
+/* SoAd_TpRxBufferConfigType get */
+#define SoAd_CfgGetTpRxBuffer(Idx)                      (SoAd_GetConfigDataPtr()->pTpRxBufferConfig[(Idx)])
+#define SoAd_TpRxBufferCfgGetTpRxBufferStartIdx(Idx)    (SoAd_CfgGetTpRxBuffer((Idx)).TpRxBufferStartIdx)
+#define SoAd_TpRxBufferCfgGetTpRxBufferEndIdx(Idx)      (SoAd_CfgGetTpRxBuffer((Idx)).TpRxBufferEndIdx)
+#define SoAd_TpRxBufferCfgGetTpRxBufferSize(Idx)        (SoAd_CfgGetTpRxBuffer((Idx)).TpRxBufferSize)
+/* SoAd_RxBufferSegConfigType get*/
+#define SoAd_CfgGetRxBufferSeg(Idx)                     (SoAd_GetConfigDataPtr()->pRxBufferSegConfig[(Idx)])
+#define SoAd_RxBufferSegCfgGetSegDataStartIdx(Idx)      (SoAd_CfgGetRxBufferSeg((Idx)).RxBufferSegDataStartIdx)
+#define SoAd_RxBufferSegCfgGetSegDataEndIdx(Idx)        (SoAd_CfgGetRxBufferSeg((Idx)).RxBufferSegDataEndIdx)
+#define SoAd_RxBufferSegCfgGetSegDataSize(Idx)          (SoAd_CfgGetRxBufferSeg((Idx)).RxBufferSegDataSizeIdx)
+/* SoAd_RxIfBufferConfigType */
+#define SoAd_CfgGetRxIfBuffer(Idx)          (SoAd_GetConfigDataPtr()->pRxIfBufferConfig[(Idx)])
+#define SoAd_RxIfBufferCfgGetStartIdx(Idx)  (SoAd_CfgGetRxIfBuffer((Idx)).RxIfBufferStartIdx)
+#define SoAd_RxIfBufferCfgGetEndIdx(Idx)    (SoAd_CfgGetRxIfBuffer((Idx)).RxIfBufferEndIdx)
+#define SoAd_RxIfBufferCfgGetSize(Idx)      (SoAd_CfgGetRxIfBuffer((Idx)).RxIfBufferSize)
+/* #! bsd cfg*/ 
+/* pTcpIpCtrlNameBufferCfg get */
+#define SoAd_TcpIpBsdCfgGetpTcpIpCtrlNameBuffer(Idx)    (SoAd_GetConfigDataPtr()->pTcpIpCtrlNameBufferCfg[(Idx)])
+#define SoAd_TcpIpBsdCfgGetPtrToTcpIpCtrlNameBuffer(Idx)  (&(SoAd_GetConfigDataPtr()->pTcpIpCtrlNameBufferCfg[(Idx)]))
+/* SoAd_TcpIpCtrlNameIdxConfigType get */
+#define SoAd_TcpIpBsdCfgGetpTcpIpCtrlNameIdxCfg(Idx)       (SoAd_GetConfigDataPtr()->pTcpIpCtrlNameIdxCfg[(Idx)])
+#define SoAd_TcpIpBsdCfgGetCtrlNameBufferStartIdx(Idx)     (SoAd_TcpIpBsdCfgGetpTcpIpCtrlNameIdxCfg((Idx)).CtrlNameBufferStartIdx)
+#define SoAd_TcpIpBsdCfgGetCtrlNameBufferEndIdx(Idx)       (SoAd_TcpIpBsdCfgGetpTcpIpCtrlNameIdxCfg((Idx)).CtrlNameBufferEndIdx)
+#define SoAd_TcpIpBsdCfgGetCtrlNameBufferSize(Idx)         (SoAd_TcpIpBsdCfgGetpTcpIpCtrlNameIdxCfg((Idx)).CtrlNameBufferSize)
+/* SoAd_SocketTxBufferConfigType get */
+#define SoAd_TcpIpBsdCfgGetpSocketTxBufferCfg(Idx)     (SoAd_GetConfigDataPtr()->pSocketTxBufferCfg[(Idx)])
+#define SoAd_TcpIpBsdCfgGetTxBufferStartIdx(Idx)       (SoAd_TcpIpBsdCfgGetpSocketTxBufferCfg((Idx)).TxBufferStartIdx)
+#define SoAd_TcpIpBsdCfgGetTxBufferEndIdx(Idx)         (SoAd_TcpIpBsdCfgGetpSocketTxBufferCfg((Idx)).TxBufferEndIdx)
+#define SoAd_TcpIpBsdCfgGetTxBufferSize(Idx)           (SoAd_TcpIpBsdCfgGetpSocketTxBufferCfg((Idx)).TxBufferSize)
+/* SoAd_SocketTcpRxBufferConfigType get */
+#define SoAd_TcpIpBsdCfgGetpSocketTcpRxBufferCfg(Idx)  (SoAd_GetConfigDataPtr()->pSocketTcpRxBufferCfg[(Idx)])
+#define SoAd_TcpIpBsdCfgGetTcpRxBufferStartIdx(Idx)    (SoAd_TcpIpBsdCfgGetpSocketTcpRxBufferCfg((Idx)).TcpRxBufferStartIdx)
+#define SoAd_TcpIpBsdCfgGeTcpRxBufferEndIdx(Idx)       (SoAd_TcpIpBsdCfgGetpSocketTcpRxBufferCfg((Idx)).TcpRxBufferEndIdx)
+#define SoAd_TcpIpBsdCfgGetTcpRxBufferSize(Idx)        (SoAd_TcpIpBsdCfgGetpSocketTcpRxBufferCfg((Idx)).TcpRxBufferSize)
+/* #! Ctrl Get/Set macros */
+/* SoAd_SoConCtrlStatus get , set */
+#define SoAd_CtrlGetSoConCtrlStatus(Idx)                    (SoAd_GetConfigDataPtr()->pSoConCtrlStatus[(Idx)])
+#define SoAd_SoConCtrlGetAbort(Idx)                         (SoAd_CtrlGetSoConCtrlStatus((Idx)).Abort)
+#define SoAd_SoConCtrlGetSoConEventStateChange(Idx)         (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConEventStateChange)
+#define SoAd_SoConCtrlGetSoConEventTpReception(Idx)         (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConEventTpReception)
+#define SoAd_SoConCtrlGetOpenCloseReqCount(Idx)             (SoAd_CtrlGetSoConCtrlStatus((Idx)).OpenCloseCounter)
+#define SoAd_SoConCtrlGetCloseReqType(Idx)                  (SoAd_CtrlGetSoConCtrlStatus((Idx)).CloseReqType)
+#define SoAd_SoConCtrlGetSoConMode(Idx)                     (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConMode)
+#define SoAd_SoConCtrlGetRemoteAddrState(Idx)               (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddrState)
+#define SoAd_SoConCtrlGetRemoteAddr(Idx)                    (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr)
+#define SoAd_SoConCtrlGetpRemoteAddr(Idx)                   (&(SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr))
+#define SoAd_SoConCtrlGetRemoteAddrDomain(Idx)              (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.Domain)
+#define SoAd_SoConCtrlGetRemoteAddrPort(Idx)                (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.SockAddrInetType.Port)
+#define SoAd_SoConCtrlGetRemoteAddrIpv4Addr(Idx)            (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.SockAddrInetType.Addr[0])
+#define SoAd_SoConCtrlGetRcvdRemoteAddr(Idx)                (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvdRemoteAddr)
+#define SoAd_SoConCtrlGetRcvRemoteAddrDomain(Idx)           (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvRemoteAddr.Domain)
+#define SoAd_SoConCtrlGetRcvRemoteAddrPort(Idx)             (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvRemoteAddr.SockAddrInetType.Port)
+#define SoAd_SoConCtrlGetRcvRemoteAddrIpv4Addr(Idx)         (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvRemoteAddr.SockAddrInetType.Addr[0])
+#define SoAd_SoConCtrlSetAbort(Idx,Val)                     (SoAd_CtrlGetSoConCtrlStatus((Idx)).Abort=(Val))
+#define SoAd_SoConCtrlSetSoConEventStateChange(Idx,Val)     (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConEventStateChange=(Val))
+#define SoAd_SoConCtrlSetSoConEventTpReception(Idx,Val)     (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConEventTpReception=(Val))
+#define SoAd_SoConCtrlSetOpenCloseReqCount(Idx,Val)         (SoAd_CtrlGetSoConCtrlStatus((Idx)).OpenCloseCounter=(Val))
+#define SoAd_SoConCtrlSetCloseReqType(Idx,Val)              (SoAd_CtrlGetSoConCtrlStatus((Idx)).CloseReqType=(Val))
+#define SoAd_SoConCtrlSetSoConMode(Idx,Val)                 (SoAd_CtrlGetSoConCtrlStatus((Idx)).SoConMode=(Val))
+#define SoAd_SoConCtrlSetRemoteAddrState(Idx,Val)           (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddrState=(Val))
+#define SoAd_SoConCtrlSetRemoteAddrDomain(Idx,Val)          (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.Domain=(Val))
+#define SoAd_SoConCtrlSetRemoteAddrPort(Idx,Val)            (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.SockAddrInetType.Port=(Val))
+#define SoAd_SoConCtrlSetRemoteAddrIpv4Addr(Idx,Val)        (SoAd_CtrlGetSoConCtrlStatus((Idx)).RemoteAddr.SockAddrInetType.Addr[0]=(Val))
+#define SoAd_SoConCtrlSetRcvdRemoteAddr(Idx,Val)            (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvdRemoteAddr=(Val))
+#define SoAd_SoConCtrlSetRcvdRemoteAddrDomain(Idx,Val)      (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvdRemoteAddr.Domain=(Val))
+#define SoAd_SoConCtrlSetRcvdRemoteAddrPort(Idx,Val)        (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvdRemoteAddr.SockAddrInetType.Port=(Val))
+#define SoAd_SoConCtrlSetRcvdRemoteAddrIpv4Addr(Idx,Val)    (SoAd_CtrlGetSoConCtrlStatus((Idx)).RcvdRemoteAddr.SockAddrInetType.Addr[0]=(Val))
+#define SoAd_SoConCtrlIncOpenCloseReqCount(Idx)             (SoAd_CtrlGetSoConCtrlStatus((Idx)).OpenCloseCounter++)
+#define SoAd_SoConCtrlDecOpenCloseReqCount(Idx)             (SoAd_CtrlGetSoConCtrlStatus((Idx)).OpenCloseCounter--)
+#define SoAd_SoConCtrlIsOpenCloseReqPending(Idx)            (SoAd_CtrlGetSoConCtrlStatus((Idx)).OpenCloseCounter > 0u)
+/* SoAd_SoConEventCtrlStatusType get, set */
+#define SoAd_CtrlGetSoConEventCtrlStatus(Idx)               (SoAd_GetConfigDataPtr()->pSoConEventCtrlStatus[(Idx)])
+#define SoAd_SoConEventCtrlGetEventState(Idx)               (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventState)
+#define SoAd_SoConEventCtrlGetEventTpTx(Idx)                (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpTx)
+#define SoAd_SoConEventCtrlGetEventTpTxQueueState(Idx)      (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpTxQueueState)
+#define SoAd_SoConEventCtrlGetEventTpRx(Idx)                (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpRx)
+#define SoAd_SoConEventCtrlSetEventState(Idx,Val)           (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventState=(Val))
+#define SoAd_SoConEventCtrlSetEventTpTx(Idx,Val)            (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpTx=(Val))
+#define SoAd_SoConEventCtrlSetEventTpTxQueueState(Idx,Val)  (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpTxQueueState=(Val))
+#define SoAd_SoConEventCtrlSetEventTpRx(Idx,Val)            (SoAd_CtrlGetSoConEventCtrlStatus(Idx).EventTpRx=(Val))
+/* SoAd_SocketCtrlStatusType get,set */
+#define SoAd_CtrlGetSocketCtrlStatus(Idx)           (SoAd_GetConfigDataPtr()->pSocketCtrlStatus[(Idx)])
+#define SoAd_SocketCtrlGetActiveTxSoCon(Idx)        (SoAd_CtrlGetSocketCtrlStatus((Idx)).SoConTxActiveIdx)
+#define SoAd_SocketCtrlGetLocalPort(Idx)            (SoAd_CtrlGetSocketCtrlStatus((Idx)).LocalPort)
+#define SoAd_SocketCtrlGetTcpIpSocketId(Idx)        (SoAd_CtrlGetSocketCtrlStatus((Idx)).TcpIpSocketId)
+#define SoAd_SocketCtrlGetSocketState(Idx)          (SoAd_CtrlGetSocketCtrlStatus((Idx)).SocketState)
+#define SoAd_SocketCtrlGetSkipBytes(Idx)            (SoAd_CtrlGetSocketCtrlStatus((Idx)).SkipBytes)
+#define SoAd_SocketCtrlSetActiveTxSoCon(Idx,Val)    (SoAd_CtrlGetSocketCtrlStatus((Idx)).SoConTxActiveIdx=(Val))
+#define SoAd_SocketCtrlSetLocalPort(Idx,Val)        (SoAd_CtrlGetSocketCtrlStatus((Idx)).LocalPort=(Val))
+#define SoAd_SocketCtrlSetTcpIpSocketId(Idx,Val)    (SoAd_CtrlGetSocketCtrlStatus((Idx)).TcpIpSocketId=(Val))
+#define SoAd_SocketCtrlSetSocketState(Idx,Val)      (SoAd_CtrlGetSocketCtrlStatus((Idx)).SocketState=(Val))
+#define SoAd_SocketCtrlSetSkipBytes(Idx,Val)        (SoAd_CtrlGetSocketCtrlStatus((Idx)).SkipBytes=(Val))
+/* pTxUdpAliveTimer get, set */
+#define SoAd_CtrlGetTxUdpAliveTimer(Idx)        (SoAd_GetConfigDataPtr()->pTxUdpAliveTimer[(Idx)])
+#define SoAd_CtrlSetTxUdpAliveTimer(Idx,Val)    (SoAd_GetConfigDataPtr()->pTxUdpAliveTimer[(Idx)]=(Val))
+#define SoAd_CtrlDecTxUdpAliveTimer(Idx)        (SoAd_GetConfigDataPtr()->pTxUdpAliveTimer[(Idx)]--)
+#define SoAd_CtrlIncTxUdpAliveTimer(Idx)        (SoAd_GetConfigDataPtr()->pTxUdpAliveTimer[(Idx)]++)
+/* SoAd_IpAddrStateType get , set */
+#define SoAd_CtrlGetIpAddrState(Idx)     (SoAd_GetConfigDataPtr()->pIpAddrState[(Idx)])
+#define SoAd_CtrlSetIpAddrState(Idx,Val) (SoAd_GetConfigDataPtr()->pIpAddrState[(Idx)]=(Val)) 
+/* SoAd_RouteGrpPduRouteDestStatusType get, set*/
+#define SoAd_CtrlGetRouteGrpPduRouteDestCtrlStatus(Idx)             (SoAd_GetConfigDataPtr()->pRouteGrpPduRouteDestCtrlStatus[(Idx)])
+#define SoAd_RoutingGroupPduRouteDestCtrlGetEnabled(Idx)            (SoAd_CtrlGetRouteGrpPduRouteDestCtrlStatus((Idx)).Enabled)
+#define SoAd_RoutingGroupPduRouteDestCtrlGetTriggerRequest(Idx)     (SoAd_CtrlGetRouteGrpPduRouteDestCtrlStatus((Idx)).TriggerRequest)
+#define SoAd_RoutingGroupPduRouteDestCtrlSetEnabled(Idx,Val)        (SoAd_CtrlGetRouteGrpPduRouteDestCtrlStatus((Idx)).Enabled=(Val))
+#define SoAd_RoutingGroupPduRouteDestCtrlSetTriggerRequest(Idx,Val) (SoAd_CtrlGetRouteGrpPduRouteDestCtrlStatus((Idx)).TriggerRequest=(Val))
+/* SoAd_RouteGrpSocketRouteDestStatusType get, set */
+#define SoAd_CtrlGetRouteGrpSocketRouteDestStatus(Idx)                  (SoAd_GetConfigDataPtr()->pRouteGrpSocketRouteDestCtrlStatus[(Idx)])
+#define SoAd_RoutingGroupSocketRouteDestCtrlGetEnabled(Idx)             (SoAd_CtrlGetRouteGrpSocketRouteDestStatus((Idx)).Enabled)
+#define SoAd_RoutingGroupSocketRouteDestCtrlGetTriggerRequest(Idx)      (SoAd_CtrlGetRouteGrpSocketRouteDestStatus((Idx)).TriggerRequest)
+#define SoAd_RoutingGroupSocketRouteDestCtrlSetEnabled(Idx,Val)         (SoAd_CtrlGetRouteGrpSocketRouteDestStatus((Idx)).Enabled=(Val))
+#define SoAd_RoutingGroupSocketRouteDestCtrlSetTriggerRequest(Idx,Val)  (SoAd_CtrlGetRouteGrpSocketRouteDestStatus((Idx)).TriggerRequest=(Val))
+/* pRoutingGroupEventCtrlStatus get, set */
+#define SoAd_CtrlGetRoutingGroupEventCtrlStatus(Idx)        (SoAd_GetConfigDataPtr()->pRoutingGroupEventCtrlStatus[(Idx)])
+#define SoAd_CtrlSetRoutingGroupEventCtrlStatus(Idx,Val)    (SoAd_GetConfigDataPtr()->pRoutingGroupEventCtrlStatus[(Idx)]=(Val))
+/* SoAd_SoConTxPduCtrlStatusType get, set  */
+#define SoAd_CtrlGetSoConTxPduCtrlStatus(Idx)                   (SoAd_GetConfigDataPtr()->pSoConTxPduCtrlStatus[(Idx)])
+#define SoAd_SoConTxPduCtrlGetCancelRequest(Idx)                (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).CancelRequest)                  
+#define SoAd_SoConTxPduCtrlGetPduRouteDestIdx(Idx)              (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).PduRouteDestIdx)                  
+#define SoAd_SoConTxPduCtrlGetTxBytesLen(Idx)                   (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).TxBytesLen)                  
+#define SoAd_SoConTxPduCtrlGetTxBytesPending(Idx)               (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).TxBytesPending)                  
+#define SoAd_SoConTxPduCtrlGetpBuffer(Idx)                      (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).pBuffer) 
+#define SoAd_SoConTxPduCtrlGetpBufferWithOffset(Idx,Offset)     (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).pBuffer[(Offset)]) 
+#define SoAd_SoConTxPduCtrlSetCancelRequest(Idx,Val)            (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).CancelRequest = (Val))                  
+#define SoAd_SoConTxPduCtrlSetPduRouteDestIdx(Idx,Val)          (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).PduRouteDestIdx = (Val))                  
+#define SoAd_SoConTxPduCtrlSetTxBytesLen(Idx,Val)               (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).TxBytesLen = (Val))                  
+#define SoAd_SoConTxPduCtrlSetTxBytesPending(Idx,Val)           (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).TxBytesPending = (Val))                  
+#define SoAd_SoConTxPduCtrlSetpBuffer(Idx,Val)                  (SoAd_CtrlGetSoConTxPduCtrlStatus((Idx)).pBuffer = (Val))
+/* SoAd_TpTxBufferCtrlStatusType get, set */
+#define SoAd_CtrlGetTpTxBufferCtrlStatus(Idx)                   (SoAd_GetConfigDataPtr()->pTpTxBufferCtrlStatus[(Idx)])
+#define SoAd_TpTxBufferCtrlGetCurrentBufferIdx(Idx)             (SoAd_CtrlGetTpTxBufferCtrlStatus((Idx)).CurrentBufferIdx)
+#define SoAd_TpTxBufferCtrlSetCurrentBufferIdx(Idx,Val)         (SoAd_CtrlGetTpTxBufferCtrlStatus((Idx)).CurrentBufferIdx=(Val))
+/* SoAd_NPduUdpTxCtrlStatusType get, set */
+#define SoAd_CtrlGetNPduUdpTxCtrlStatus(Idx)                (SoAd_GetConfigDataPtr()->pNPduUdpTxCtrlStatus[(Idx)])
+#define SoAd_NPduUdpTxCtrlGetIsTxActive(Idx)                (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).IsTxActive)
+#define SoAd_NPduUdpTxCtrlGetNPduLevel(Idx)                 (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).NPduLevel)
+#define SoAd_NPduUdpTxCtrlGetRetryCount(Idx)                (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).RetryCount)
+#define SoAd_NPduUdpTxCtrlGetTotalLength(Idx)               (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).TotalLength)
+#define SoAd_NPduUdpTxCtrlGetBufferLength(Idx)              (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).BufferLength)
+#define SoAd_NPduUdpTxCtrlSetIsTxActive(Idx,Val)            (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).IsTxActive=(Val))
+#define SoAd_NPduUdpTxCtrlSetNPduLevel(Idx,Val)             (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).NPduLevel=(Val))
+#define SoAd_NPduUdpTxCtrlSetRetryCount(Idx,Val)            (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).RetryCount=(Val))
+#define SoAd_NPduUdpTxCtrlSetTotalLength(Idx,Val)           (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).TotalLength=(Val))
+#define SoAd_NPduUdpTxCtrlSetBufferLength(Idx,Val)          (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).BufferLength=(Val))
+#define SoAd_NPduUdpTxCtrlIncNPduLevel(Idx)                 (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).NPduLevel++)
+#define SoAd_NPduUdpTxCtrlDecNPduLevel(Idx)                 (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).NPduLevel--)
+#define SoAd_NPduUdpTxCtrlIncRetryCount(Idx)                (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).RetryCount++)    
+#define SoAd_NPduUdpTxCtrlDecRetryCount(Idx)                (SoAd_CtrlGetNPduUdpTxCtrlStatus((Idx)).RetryCount--)    
+/* SoAd_NPduUdpTxCtrlStatusType get, set */
+#define SoAd_CtrlGetNPduUdpTxQueueCtrlStatus(Idx)               (SoAd_GetConfigDataPtr()->pNPduUdpTxQueueCtrlStatus[(Idx)])
+#define SoAd_NPduUdpTxQueueCtrlGetIsCopiedToTxBuffer(Idx)       (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).IsCopiedToTxBuffer)
+#define SoAd_NPduUdpTxQueueCtrlGetLength(Idx)                   (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).Length)
+#define SoAd_NPduUdpTxQueueCtrlGetNPduUdpTxBufferIdx(Idx)       (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).NPduUdpTxBufferIdx)
+#define SoAd_NPduUdpTxQueueCtrlGetPduRouteDestIdx(Idx)          (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).PduRouteDestIdx)
+#define SoAd_NPduUdpTxQueueCtrlSetIsCopiedToTxBuffer(Idx,Val)   (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).IsCopiedToTxBuffer=(Val))
+#define SoAd_NPduUdpTxQueueCtrlSetLength(Idx,Val)               (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).Length=(Val))
+#define SoAd_NPduUdpTxQueueCtrlSetNPduUdpTxBufferIdx(Idx,Val)   (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).NPduUdpTxBufferIdx=(Val))
+#define SoAd_NPduUdpTxQueueCtrlSetPduRouteDestIdx(Idx,Val)      (SoAd_CtrlGetNPduUdpTxQueueCtrlStatus((Idx)).PduRouteDestIdx=(Val))
+/* pTxUdpNPduTimer get, set */
+#define SoAd_CtrlGetTxUdpNPduTimerCtrl(Idx)       (SoAd_GetConfigDataPtr()->pTxUdpNPduTimer[(Idx)])
+#define SoAd_CtrlSetTxUdpNPduTimer(Idx,Val)       (SoAd_CtrlGetTxUdpNPduTimerCtrl((Idx))=(Val))
+#define SoAd_CtrlGetTxUdpNPduTimer(Idx)           (SoAd_CtrlGetTxUdpNPduTimerCtrl((Idx)))
+#define SoAd_CtrlDecTxUdpNPduTimer(Idx)           (SoAd_CtrlGetTxUdpNPduTimerCtrl((Idx))--)
+#define SoAd_CtrlIncTxUdpNPduTimer(Idx)           (SoAd_CtrlGetTxUdpNPduTimerCtrl((Idx))++)
+/* SoAd_TcpTxQueueDataType get , set */
+#define SoAd_CtrlGetTcpTxQueueDataCtrlStatus(Idx)               (SoAd_GetConfigDataPtr()->pTcpTxQueueData[(Idx)])
+#define SoAd_TcpTxQueueDataCtrlGetPduRouteIdx(Idx)              (SoAd_CtrlGetTcpTxQueueDataCtrlStatus((Idx)).PduRouteIdx)
+#define SoAd_TcpTxQueueDataCtrlGetLength(Idx)                   (SoAd_CtrlGetTcpTxQueueDataCtrlStatus((Idx)).Length)
+#define SoAd_TcpTxQueueDataCtrlSetPduRouteIdx(Idx,Val)          (SoAd_CtrlGetTcpTxQueueDataCtrlStatus((Idx)).PduRouteIdx=(Val))
+#define SoAd_TcpTxQueueDataCtrlSetLength(Idx,Val)               (SoAd_CtrlGetTcpTxQueueDataCtrlStatus((Idx)).Length=(Val))
+/* SoAd_TcpTxQueueCtrlStatusType get , set*/
+#define SoAd_CtrlGetTcpTxQueueCtrlStatus(Idx)                   (SoAd_GetConfigDataPtr()->pTcpTxQueueCtrlStatus[(Idx)])
+#define SoAd_TcpTxQueueCtrlGetReadIdx(Idx)                      (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).ReadIdx)
+#define SoAd_TcpTxQueueCtrlGetWriteIdx(Idx)                     (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).WriteIdx)
+#define SoAd_TcpTxQueueCtrlGetDataCounter(Idx)                  (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).DataCounter)
+#define SoAd_TcpTxQueueCtrlGetTotalLength(Idx)                  (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).TotalLength)
+#define SoAd_TcpTxQueueCtrlSetReadIdx(Idx,Val)                  (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).ReadIdx=(Val))
+#define SoAd_TcpTxQueueCtrlSetWriteIdx(Idx,Val)                 (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).WriteIdx=(Val))
+#define SoAd_TcpTxQueueCtrlSetDataCounter(Idx,Val)              (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).DataCounter=(Val))
+#define SoAd_TcpTxQueueCtrlSetTotalLength(Idx,Val)              (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).TotalLength=(Val))
+#define SoAd_TcpTxQueueCtrlIncDataCounter(Idx)                  (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).DataCounter++)
+#define SoAd_TcpTxQueueCtrlDecDataCounter(Idx)                  (SoAd_CtrlGetTcpTxQueueCtrlStatus((Idx)).DataCounter--)
+/* SoAd_PduRouteCtrlStatusType get, set */
+#define SoAd_CtrlGetPduRouteCtrlStatus(Idx)                 (SoAd_GetConfigDataPtr()->pPduRouteCtrlStatus[(Idx)])
+#define SoAd_PduRouteCtrlGetPendingTxConfInMain(Idx)        (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).PendingTxConfInMain)
+#define SoAd_PduRouteCtrlGetNumOfPendingTxConf(Idx)         (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).NumOfPendingTxConf)
+#define SoAd_PduRouteCtrlSetPendingTxConfInMain(Idx,Val)    (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).PendingTxConfInMain=(Val))
+#define SoAd_PduRouteCtrlSetNumOfPendingTxConf(Idx,Val)     (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).NumOfPendingTxConf=(Val))
+#define SoAd_PduRouteCtrlIncNumOfPendingTxConf(Idx)         (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).NumOfPendingTxConf++)
+#define SoAd_PduRouteCtrlDecNumOfPendingTxConf(Idx)         (SoAd_CtrlGetPduRouteCtrlStatus((Idx)).NumOfPendingTxConf--)
+/* pPduRouteEventUdpTxConf get , set */
+#define SoAd_CtrlGetPduRouteEventUdpTxConf(Idx)             (SoAd_GetConfigDataPtr()->pPduRouteEventUdpTxConf[(Idx)])
+#define SoAd_CtrlSetPduRouteEventUdpTxConf(Idx,Val)         (SoAd_GetConfigDataPtr()->pPduRouteEventUdpTxConf[(Idx)]=(Val))
+/* pTriggerBuffer */
+#define SoAd_CtrlGetTriggerBuffer()     (SoAd_GetConfigDataPtr()->pTriggerBuffer)
+#define SoAd_CtrlGetPtrToTriggerBuffer(Offset)     (&(SoAd_GetConfigDataPtr()->pTriggerBuffer[Offset]))
+/* pTpTxBuffer */
+#define SoAd_CtrlGetTpTxBuffer()     (SoAd_GetConfigDataPtr()->pTpTxBuffer)
+#define SoAd_CtrlGetPtrToTpTxBuffer(Offset)     (&(SoAd_GetConfigDataPtr()->pTpTxBuffer[Offset]))
+/* pRoutingGroupIfTxBuffer */
+#define SoAd_CtrlGetRoutingGroupIfTxBuffer()     (SoAd_GetConfigDataPtr()->pRoutingGroupIfTxBuffer)
+#define SoAd_CtrlGetPtrToRoutingGroupIfTxBuffer(Offset) (&(SoAd_GetConfigDataPtr()->pRoutingGroupIfTxBuffer[Offset]))
+/* pNPduUdpTxBuffer */
+#define SoAd_CtrlGetNPduUdpTxBuffer()     (SoAd_GetConfigDataPtr()->pNPduUdpTxBuffer)
+#define SoAd_CtrlGetPtrToNPduUdpTxBuffer(Offset)     (&(SoAd_GetConfigDataPtr()->pNPduUdpTxBuffer[Offset]))
+/* SoAd_SoConRxPduCtrlStatusType get, set  */
+#define SoAd_CtrlGetSoConRxPduCtrlStatus(Idx)                   (SoAd_GetConfigDataPtr()->pSoConRxPduCtrlStatus[(Idx)])
+#define SoAd_SoConRxPduCtrlGetCancelRequest(Idx)                (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).CancelRequest)                  
+#define SoAd_SoConRxPduCtrlGetSocketRouteIdx(Idx)               (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).SocketRouteIdx)                  
+#define SoAd_SoConRxPduCtrlGetRxBytesLen(Idx)                   (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).RxBytesLen)                  
+#define SoAd_SoConRxPduCtrlGetRxBytesPending(Idx)               (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).RxBytesPending)                  
+#define SoAd_SoConRxPduCtrlGetpBuffer(Idx)                      (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).pBuffer) 
+#define SoAd_SoConRxPduCtrlSetCancelRequest(Idx,Val)            (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).CancelRequest = (Val))                  
+#define SoAd_SoConRxPduCtrlSetSocketRouteIdx(Idx,Val)           (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).SocketRouteIdx = (Val))                  
+#define SoAd_SoConRxPduCtrlSetRxBytesLen(Idx,Val)               (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).RxBytesLen = (Val))                  
+#define SoAd_SoConRxPduCtrlSetRxBytesPending(Idx,Val)           (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).RxBytesPending = (Val))                  
+#define SoAd_SoConRxPduCtrlSetpBuffer(Idx,Val)                  (SoAd_CtrlGetSoConRxPduCtrlStatus((Idx)).pBuffer = (Val))
+/* SoAd_TpRxBufferCtrlStatusType get, set  */
+#define SoAd_CtrlGetTpRxBufferCtrlStatus(Idx)                   (SoAd_GetConfigDataPtr()->pTpRxBufferCtrlStatus[(Idx)])
+#define SoAd_TpRxBufferCtrlGetCurrentBufferIdx(Idx)             (SoAd_CtrlGetTpRxBufferCtrlStatus((Idx)).CurrentBufferIdx)
+#define SoAd_TpRxBufferCtrlSetCurrentBufferIdx(Idx,Val)         (SoAd_CtrlGetTpRxBufferCtrlStatus((Idx)).CurrentBufferIdx=(Val))
+/* SoAd_RxIfBufferCtrlType get, set  */
+#define SoAd_CtrlGetRxIfBufferCtrlStatus(Idx)       (SoAd_GetConfigDataPtr()->pRxIfBufferCtrl[(Idx)])
+#define SoAd_RxIfBufferCtrlGetBufferIdx(Idx)        (SoAd_CtrlGetRxIfBufferCtrlStatus((Idx)).RxIfBufferIdx)
+#define SoAd_RxIfBufferCtrlSetBufferIdx(Idx,Val)    (SoAd_CtrlGetRxIfBufferCtrlStatus((Idx)).RxIfBufferIdx=(Val))
+/* SoAd_RxBufferSegCtrlType get, set  */
+#define SoAd_CtrlGetRxBufferSegCtrlStatus(Idx)          (SoAd_GetConfigDataPtr()->pRxBufferSegCtrl[(Idx)])
+#define SoAd_RxBufferSegCtrlGetSegDataIdx(Idx)          (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegDataIdx)
+#define SoAd_RxBufferSegCtrlGetSegLevel(Idx)            (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegLevel)
+#define SoAd_RxBufferSegCtrlSetSegDataIdx(Idx,Val)      (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegDataIdx=(Val))
+#define SoAd_RxBufferSegCtrlSetSegLevel(Idx,Val)        (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegLevel=(Val))
+#define SoAd_RxBufferSegCtrlIncSegDataIdx(Idx)          (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegDataIdx++)
+#define SoAd_RxBufferSegCtrlDecSegDataIdx(Idx)          (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegDataIdx--)
+#define SoAd_RxBufferSegCtrlIncSegLevel(Idx)            (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegLevel++)
+#define SoAd_RxBufferSegCtrlDecSegLevel(Idx)            (SoAd_CtrlGetRxBufferSegCtrlStatus((Idx)).RxBufferSegLevel--)
+/* SoAd_RxBufferSegDataType get, set  */
+#define SoAd_CtrlGetRxBufferSegDataCtrlStatus(Idx)              (SoAd_GetConfigDataPtr()->pRxBufferSegData[(Idx)])
+#define SoAd_RxBufferSegDataCtrlGetSegDataLength(Idx)           (SoAd_CtrlGetRxBufferSegDataCtrlStatus((Idx)).RxBufferSegDataLength)
+#define SoAd_RxBufferSegDataCtrlGetpRxBufferSegData(Idx)        (SoAd_CtrlGetRxBufferSegDataCtrlStatus((Idx)).pRxBufferSegData)
+#define SoAd_RxBufferSegDataCtrlSetSegDataLength(Idx,Val)       (SoAd_CtrlGetRxBufferSegDataCtrlStatus((Idx)).RxBufferSegDataLength=(Val))
+#define SoAd_RxBufferSegDataCtrlSetpRxBufferSegData(Idx,Val)    (SoAd_CtrlGetRxBufferSegDataCtrlStatus((Idx)).pRxBufferSegData=(Val))
+/* pTpRxBuffer */
+#define SoAd_CtrlGetTpRxBuffer()     (SoAd_GetConfigDataPtr()->pTpRxBuffer)
+#define SoAd_CtrlGetPtrToTpRxBuffer(Offset)     (&(SoAd_GetConfigDataPtr()->pTpRxBuffer[Offset]))
+/* pRxIfBuffer */
+#define SoAd_CtrlGetRxIfBuffer()     (SoAd_GetConfigDataPtr()->pRxIfBuffer)
+#define SoAd_CtrlGetPtrToRxIfBuffer(Offset)     (&(SoAd_GetConfigDataPtr()->pRxIfBuffer[Offset]))
+/* pRxMetaDataBuffer */
+#define SoAd_CtrlGetRxMetaDataBuffer()     (SoAd_GetConfigDataPtr()->pRxMetaDataBuffer)
+/* #! Bsd ctrl status */
+/* SoAd_LocalIpAddrCtrlType get, set*/
+#define SoAd_GetLocalIpAddrCtrlStatus(Idx)                      (SoAd_GetConfigDataPtr()->pLocalIpAddrCtrlStatus[(Idx)])
+#define SoAd_LocalIpAddrCtrlGetCheckAvailability(Idx)           (SoAd_GetLocalIpAddrCtrlStatus((Idx)).CheckAvailability)
+#define SoAd_LocalIpAddrCtrlGetNetMask(Idx)                     (SoAd_GetLocalIpAddrCtrlStatus((Idx)).NetMask)
+#define SoAd_LocalIpAddrCtrlGetIpv4Addr(Idx)                    (SoAd_GetLocalIpAddrCtrlStatus((Idx)).Ipv4Addr)
+#define SoAd_LocalIpAddrCtrlGetIpAddrReqState(Idx)              (SoAd_GetLocalIpAddrCtrlStatus((Idx)).IpAddrReqState)
+#define SoAd_LocalIpAddrCtrlGetLocalAddrEventStatus(Idx)        (SoAd_GetLocalIpAddrCtrlStatus((Idx)).LocalAddrEventStatus)
+#define SoAd_LocalIpAddrCtrlSetCheckAvailability(Idx,Val)       (SoAd_GetLocalIpAddrCtrlStatus((Idx)).CheckAvailability = (Val))
+#define SoAd_LocalIpAddrCtrlSetNetMask(Idx,Val)                 (SoAd_GetLocalIpAddrCtrlStatus((Idx)).NetMask = (Val))
+#define SoAd_LocalIpAddrCtrlSetIpv4Addr(Idx,Val)                (SoAd_GetLocalIpAddrCtrlStatus((Idx)).Ipv4Addr = (Val))
+#define SoAd_LocalIpAddrCtrlSetIpAddrReqState(Idx,Val)          (SoAd_GetLocalIpAddrCtrlStatus((Idx)).IpAddrReqState = (Val))
+#define SoAd_LocalIpAddrCtrlSetLocalAddrEventStatus(Idx,Val)    (SoAd_GetLocalIpAddrCtrlStatus((Idx)).LocalAddrEventStatus = (Val))
+/* SoAd_LocalAddrTcpIpCtrlType get , set*/
+#define SoAd_GetLocalAddrTcpIpCtrlStatus(Idx)               (SoAd_GetConfigDataPtr()->pLocalAddrTcpIpCtrlStatus[(Idx)])
+#define SoAd_LocalAddrTcpIpCtrlGetIfNameToIndex(Idx)        (SoAd_GetLocalAddrTcpIpCtrlStatus((Idx)).IfNameToIndex)
+#define SoAd_LocalAddrTcpIpCtrlSetIfNameToIndex(Idx,Val)    (SoAd_GetLocalAddrTcpIpCtrlStatus((Idx)).IfNameToIndex = (Val))
+/* SoAd_SocketTxBufferCtrlType get set */
+#define SoAd_GetSocketTxBufferCtrlStatus(Idx)               (SoAd_GetConfigDataPtr()->pSocketTxBufferCtrlStatus[(Idx)])
+#define SoAd_SocketTxBufferCtrlGetLength(Idx)               (SoAd_GetSocketTxBufferCtrlStatus((Idx)).Length)
+#define SoAd_SocketTxBufferCtrlGetSocketIdx(Idx)            (SoAd_GetSocketTxBufferCtrlStatus((Idx)).SocketIdx)
+#define SoAd_SocketTxBufferCtrlSetLength(Idx,Val)           (SoAd_GetSocketTxBufferCtrlStatus((Idx)).Length = (Val))
+#define SoAd_SocketTxBufferCtrlSetSocketIdx(Idx,Val)        (SoAd_GetSocketTxBufferCtrlStatus((Idx)).SocketIdx = (Val))
+/* SoAd_SocketTcpRxBufferCtrlType get set */
+#define SoAd_GetSocketTcpRxBufferCtrlStatus(Idx)                (SoAd_GetConfigDataPtr()->pSocketTcpRxBufferCtrlStatus[(Idx)])
+#define SoAd_SocketTcpRxBufferCtrlGetLength(Idx)                (SoAd_GetSocketTcpRxBufferCtrlStatus((Idx)).Length)
+#define SoAd_SocketTcpRxBufferCtrlGetTcpRxBufferIdx(Idx)        (SoAd_GetSocketTcpRxBufferCtrlStatus((Idx)).TcpRxBufferIdx)
+#define SoAd_SocketTcpRxBufferCtrlSetLength(Idx,Val)            (SoAd_GetSocketTcpRxBufferCtrlStatus((Idx)).Length = (Val))
+#define SoAd_SocketTcpRxBufferCtrlSetTcpRxBufferIdx(Idx,Val)    (SoAd_GetSocketTcpRxBufferCtrlStatus((Idx)).TcpRxBufferIdx = (Val))
+/* SoAd_SocketBrdAddrCtrlStatus set get */
+#define SoAd_GetSocketBrdAddrCtrlStatus(Idx)                    (SoAd_GetConfigDataPtr()->pSocketBrdAddrCtrlStatus[(Idx)])
+#define SoAd_SocketBrdAddrCtrlGetDirectBrdAddrSockId(Idx)       (SoAd_GetSocketBrdAddrCtrlStatus((Idx)).DirectBrdAddrSockId)
+#define SoAd_SocketBrdAddrCtrlGetLimitedBrdAddrSockId(Idx)      (SoAd_GetSocketBrdAddrCtrlStatus((Idx)).LimitedBrdAddrSockId)
+#define SoAd_SocketBrdAddrCtrlSetDirectBrdAddrSockId(Idx,Val)   (SoAd_GetSocketBrdAddrCtrlStatus((Idx)).DirectBrdAddrSockId= (Val))
+#define SoAd_SocketBrdAddrCtrlSetLimitedBrdAddrSockId(Idx,Val)  (SoAd_GetSocketBrdAddrCtrlStatus((Idx)).LimitedBrdAddrSockId= (Val))
+/* pSocketStateEventStatus get set */
+#define SoAd_CtrlGetSocketStateEventStatus(Idx)     (SoAd_GetConfigDataPtr()->pSocketStateEventStatus[(Idx)])
+#define SoAd_CtrlSetSocketStateEventStatus(Idx,Val) (SoAd_GetConfigDataPtr()->pSocketStateEventStatus[(Idx)]=(Val))
+/* pSocketStateEventStatus get set */
+#define SoAd_CtrlGetSocketTcpTxEventStatus(Idx)     (SoAd_GetConfigDataPtr()->pSocketTcpTxEventStatus[(Idx)])
+#define SoAd_CtrlSetSocketTcpTxEventStatus(Idx,Val) (SoAd_GetConfigDataPtr()->pSocketTcpTxEventStatus[(Idx)]=(Val))
+/* pSocketTxBuffer get set */
+#define SoAd_CtrlGetSocketTxBuffer(Idx)         (SoAd_GetConfigDataPtr()->pSocketTxBuffer[(Idx)])
+#define SoAd_CtrlSetSocketTxBuffer(Idx,Val)     (SoAd_GetConfigDataPtr()->pSocketTxBuffer[(Idx)]=(Val))
+/* pSocketUdpRxBuffer get set */
+#define SoAd_CtrlGetSocketUdpRxBuffer(Idx)      (SoAd_GetConfigDataPtr()->pSocketUdpRxBuffer[(Idx)])
+#define SoAd_CtrlSetSocketUdpRxBuffer(Idx,Val)  (SoAd_GetConfigDataPtr()->pSocketUdpRxBuffer[(Idx)]=(Val))
+/* pSocketTcpRxBuffer get set */
+#define SoAd_CtrlGetSocketTcpRxBuffer(Idx)      (SoAd_GetConfigDataPtr()->pSocketTcpRxBuffer[(Idx)])
+#define SoAd_CtrlSetSocketTcpRxBuffer(Idx,Val)  (SoAd_GetConfigDataPtr()->pSocketTcpRxBuffer[(Idx)]=(Val))
+/* #! buf size , cfg num */
+#define SoAd_CfgGetNumOfSoCon()                     (SoAd_GetConfigDataPtr()->NumOfSoCon)
+#define SoAd_CfgGetNumOfSoConGrp()                  (SoAd_GetConfigDataPtr()->NumOfSoConGrp)
+#define SoAd_CfgGetNumOfSocket()                    (SoAd_GetConfigDataPtr()->NumOfSocket)
+#define SoAd_CfgGetNumOfRoutingGroup()              (SoAd_GetConfigDataPtr()->NumOfRoutingGroup)
+#define SoAd_CfgGetNumOfRemAddrIpV4()               (SoAd_GetConfigDataPtr()->NumOfRemAddrIpV4Id)
+#define SoAd_CfgGetNumOfLocalIpAddr()               (SoAd_GetConfigDataPtr()->NumOfLocalIpAddr)
+#define SoAd_CfgGetNumOfTcpIpCtrl()                 (SoAd_GetConfigDataPtr()->NumOfTcpIpCtrl)
+#define SoAd_CfgGetNumOfLocalIpAddrUnicast()        (SoAd_GetConfigDataPtr()->NumOfLocalIpAddrUnicast)
+#define SoAd_CfgGetNumOfLocalIpAddrAssignChgFunc()  (SoAd_GetConfigDataPtr()->NumOfLocalIpAddrAssignChgFunc)
+#define SoAd_CfgGetNumOfUpSoConModeChgFunc()        (SoAd_GetConfigDataPtr()->NumOfUpSoConModeChgFunc)
+#define SoAd_CfgGetNumOfUL()                        (SoAd_GetConfigDataPtr()->NumOfUL)
+#define SoAd_CfgGetNumOfPduRoute()                  (SoAd_GetConfigDataPtr()->NumOfPduRoute)
+#define SoAd_CfgGetNumOfPduRouteDest()              (SoAd_GetConfigDataPtr()->NumOfPduRouteDest)
+#define SoAd_CfgGetNumOfRgPduRouteDestMap()         (SoAd_GetConfigDataPtr()->NumOfRgPduRouteDestMap)
+#define SoAd_CfgGetNumOfRgPduRouteDest()            (SoAd_GetConfigDataPtr()->NumOfRgPduRouteDest)
+#define SoAd_CfgGetNumOfTxPdu()                     (SoAd_GetConfigDataPtr()->NumOfTxPdu)
+#define SoAd_CfgGetNumOfSoConTxPduCtrl()            (SoAd_GetConfigDataPtr()->NumOfSoConTxPduCtrl)
+#define SoAd_CfgGetNumOfSocketRoute()               (SoAd_GetConfigDataPtr()->NumOfSocketRoute)
+#define SoAd_CfgGetNumOfSocketRouteDest()           (SoAd_GetConfigDataPtr()->NumOfSocketRouteDest)
+#define SoAd_CfgGetNumOfRgSocketRouteDestMap()      (SoAd_GetConfigDataPtr()->NumOfRgSocketRouteDestMap)
+#define SoAd_CfgGetNumOfRgSocketRouteDest()         (SoAd_GetConfigDataPtr()->NumOfRgSocketRouteDest)
+#define SoAd_CfgGetNumOfRxPdu()                     (SoAd_GetConfigDataPtr()->NumOfRxPdu)
+#define SoAd_CfgGetNumOfSoConRxPduCtrl()            (SoAd_GetConfigDataPtr()->NumOfSoConRxPduCtrl)
+#define SoAd_CfgGetNumOfSocketUdp()                 (SoAd_GetConfigDataPtr()->NumOfSocketUdp)
+#define SoAd_CfgGetNumOfUdpAliveTimer()             (SoAd_GetConfigDataPtr()->NumOfUdpAliveTimer)
+#define SoAd_CfgGetNumOfNPduUdpTx()                 (SoAd_GetConfigDataPtr()->NumOfNPduUdpTx)
+#define SoAd_CfgGetNumOfNPduUdpTxQueue()            (SoAd_GetConfigDataPtr()->NumOfNPduUdpTxQueue)
+#define SoAd_CfgGetNumOfNPduUdpTxTimer()            (SoAd_GetConfigDataPtr()->NumOfNPduUdpTxTimer)
+#define SoAd_CfgGetNumOfSocketTcpId()               (SoAd_GetConfigDataPtr()->NumOfSocketTcpId)
+#define SoAd_CfgGetNumOfTpTxBuffer()                (SoAd_GetConfigDataPtr()->NumOfTpTxBuffer)
+#define SoAd_CfgGetTpTxBufferSize()                 (SoAd_GetConfigDataPtr()->TpTxBufferSize)
+#define SoAd_CfgGetRoutingGroupIfTxBufferSize()     (SoAd_GetConfigDataPtr()->RoutingGroupIfTxBufferSize)
+#define SoAd_CfgGetNumOfTpRxBuffer()                (SoAd_GetConfigDataPtr()->NumOfTpRxBuffer)
+#define SoAd_CfgGetTpRxBufferSize()                 (SoAd_GetConfigDataPtr()->TpRxBufferSize)
+#define SoAd_CfgGetNumOfRxBufferSegment()           (SoAd_GetConfigDataPtr()->NumOfRxBufferSegment)
+#define SoAd_CfgGetRxBufferSegmentDataSize()        (SoAd_GetConfigDataPtr()->RxBufferSegmentDataSize)
+#define SoAd_CfgGetRxIfBufferSize()                 (SoAd_GetConfigDataPtr()->RxIfBufferSize)
+#define SoAd_CfgGetTriggerBufferSize()              (SoAd_GetConfigDataPtr()->TriggerBufferSize)
+#define SoAd_CfgGetNPduUdpTxBufferSize()            (SoAd_GetConfigDataPtr()->NPduUdpTxBufferSize)
+#define SoAd_CfgGetNPduUdpTxQueueRetryCnt()         (SoAd_GetConfigDataPtr()->NPduUdpTxQueueRetryCnt)
+#define SoAd_CfgGetNumOfTcpTxQueue()                (SoAd_GetConfigDataPtr()->NumOfTcpTxQueue)
+#define SoAd_CfgGetTcpTxQueueSize()                 (SoAd_GetConfigDataPtr()->TcpTxQueueSize)
+#define SoAd_CfgGetTcpIpCtrlNameBufferSize()        (SoAd_GetConfigDataPtr()->TcpIpCtrlNameBufferSize)
+#define SoAd_CfgGetLocalAddrCheckCount()            (SoAd_GetConfigDataPtr()->LocalAddrCheckCount)
+#define SoAd_CfgGetSocketTxBufferSize()             (SoAd_GetConfigDataPtr()->SocketTxBufferSize)
+#define SoAd_CfgGetSocketUdpRxBufferSize()          (SoAd_GetConfigDataPtr()->SocketUdpRxBufferSize)
+#define SoAd_CfgGetSocketTcpRxBufferSize()          (SoAd_GetConfigDataPtr()->SocketTcpRxBufferSize)
+#define SoAd_CfgGetSocketNumOfTxBuffer()            (SoAd_GetConfigDataPtr()->SocketNumOfTxBuffer)
+#define SoAd_CfgGetSocketNumOfTcpRxBuffer()         (SoAd_GetConfigDataPtr()->SocketNumOfTcpRxBuffer)
+/************************** #! PBCFG END *************************************************************************/
+/********************************************************************************************************************
+* #! GLOBAL VARIABLES                                                                                               *
+********************************************************************************************************************/
+/*! @breif Defines init state of the SoAd module */
+extern VAR(SoAd_InitStateType, SOAD_VAR_NOINIT) SoAd_InitStatus;
+/********************************************************************************************************************
+* #! SoAd const config  data                                                                                        *
+********************************************************************************************************************/
+extern P2CONST(SoAd_ConfigType,AUTOMATIC,SOAD_APPL_CONST) pSoAd_ConfigData;
+#endif /* SOAD_LCFG_H */
+
+/*******************************************************************************************************************
+*                                 END OF FILE                                                                      *
+********************************************************************************************************************/
+
+

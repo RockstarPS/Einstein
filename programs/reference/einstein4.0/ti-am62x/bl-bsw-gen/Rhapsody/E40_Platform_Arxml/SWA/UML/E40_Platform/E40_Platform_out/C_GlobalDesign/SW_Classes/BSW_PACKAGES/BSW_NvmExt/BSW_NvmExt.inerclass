@@ -1,0 +1,119 @@
+import autoCreatedTypes.*
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_NvmExt.*
+
+import A2T_TC.A2T_TC_FWK.A2T_SYS.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.BSW_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_NvmExt.P_SWC_NvmExt.*
+
+import A2T_TC.A2T_TC_FWK.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.COMMON_IF_PACKAGES.*
+
+import E40_Platform.C_GlobalDesign.SW_Classes.IF_PACKAGES.*
+
+
+
+																								package
+																								E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_NvmExt
+
+																								stereotype DesignUnit
+																								
+
+
+																								unique allocatable SWC_NvmExt swcName = NvMExt {
+																									compositions
+																										NvMExt:S_NvMExt
+																									ports
+																										pp_CS_NvmExt_GetPendingStatus:provided
+																										TI_NvmExt_GetPendingStatus
+																										pp_CS_NvmExtStartReadAll:provided
+																										TI_NvmExt_StartNvmReadAll
+																										pp_CS_NvMExt_SleepOperations:provided
+																										TI_NvMExt_SleepOperations
+																										pp_CS_NvMExt_GetNvMExtReadAllStatus:provided
+																										TI_NvMExt_GetReadAllStatus
+																										pp_SR_NvMExt_WakeupStatus:provided
+																										TI_NvMExt_WakeupStatus
+																										pp_CS_NvMExt_ReadBlock:provided TI_NvMExt_ReadBlock
+																										pp_CS_NvMExt_WriteBlock:provided
+																										TI_NvMExt_WriteBlock
+																										pp_CS_NvMExt_GetErrorStatus:provided
+																										TI_NvMExt_GetErrorStatus
+																										pp_CS_NvMExt_RestoreBlockDefaults:provided
+																										TI_NvMExt_RestoreBlockDefaults
+																								}
+
+																								package
+																								E40_Platform.C_GlobalDesign.SW_Classes.BSW_PACKAGES.BSW_NvmExt.P_SWC_NvmExt
+																								
+
+
+																								ExternalCode static class S_NvMExt realizes
+																								TI_NvmExt_GetPendingStatus, TI_NvmExt_StartNvmReadAll,
+																								TI_NvMExt_SleepOperations, TI_NvMExt_GetReadAllStatus,
+																								TI_NvMExt_WakeupStatus,
+																								TI_NvMExt_RestoreBlockDefaults,
+																								TI_NvMExt_GetErrorStatus, TI_NvMExt_ReadBlock,
+																								TI_NvMExt_WriteBlock {
+																									attributes
+																										cTimePeriod:uint8 =
+																										10
+																										runnables
+																											MainFunction triggeredBy {
+																												TimingEvent cTimePeriod
+																											}
+																											SpeedupRunnable triggeredBy {
+																												TimingEvent cTimePeriod
+																											}
+																											noPortAccess NvMExt_GetPendingStatus fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvmExt_GetPendingStatus.NvMExt_GetPendingStatus
+																											}
+																											noPortAccess NvMExt_ReadAll fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvmExt_StartNvmReadAll.NvMExt_ReadAll
+																											}
+																											noPortAccess NvMExt_ReadytoSleep fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_SleepOperations.NvMExt_ReadytoSleep
+																											}
+																											noPortAccess NvMExt_RequestSleep fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_SleepOperations.NvMExt_RequestSleep
+																											}
+																											noPortAccess NvMExt_CancelSleep fixedMethodApi
+																											triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_SleepOperations.NvMExt_CancelSleep
+																											}
+																											noPortAccess NvmExt_GetNvMReadAllStatus
+																											fixedMethodApi triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_GetReadAllStatus.NvmExt_GetNvMReadAllStatus
+																											}
+																											noPortAccess NvMExt_RestoreBlockDefaults
+																											fixedMethodApi triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_RestoreBlockDefaults.NvMExt_RestoreBlockDefaults
+																											}
+																											NvMExt_GetErrorStatus fixedMethodApi triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_GetErrorStatus.NvMExt_GetErrorStatus
+																											}
+																											NvMExt_ReadBlock fixedMethodApi triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_ReadBlock.NvMExt_ReadBlock
+																											}
+																											NvMExt_WriteBlock fixedMethodApi triggeredBy {
+																												OperationInvokeEvent
+																												TI_NvMExt_WriteBlock.NvMExt_WriteBlock
+																											}
+																									}

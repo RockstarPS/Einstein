@@ -1,0 +1,90 @@
+#! python3
+"""
+"""
+
+__author__ = 'ssulaim1'
+__date__ = '30-Dec-2018'
+
+import os
+import sys
+import json
+import inspect
+import datetime
+import subprocess
+from pathlib import Path
+from functools import wraps
+from functools import partial
+
+
+config_path = '../configs'
+
+
+if sys.version_info.major == 2:
+	print('Fatal: Run with python3 interpreter')
+	print('Cannot proceed further in python2')
+	raise SystemExit
+
+
+def _path_safe(func, exec_dir):
+	cwd = os.getcwd()
+	caller_file = inspect.stack()[1].filename
+	caller_file = str(Path(caller_file))
+	caller_path = caller_file.rsplit(os.sep, maxsplit=1)[0]
+	exec_dir = Path(caller_path) / Path(exec_dir) if exec_dir else Path(caller_path)
+
+	@wraps(func)
+	def wrapper(*args, **kwargs):
+		os.chdir(exec_dir)
+		result = func(*args, **kwargs)
+		os.chdir(cwd)
+		return result
+	return wrapper
+
+
+path_safe = lambda x = None: partial(_path_safe, exec_dir=x)
+exec_in_path = lambda func, path, *args, **kwargs: path_safe(path)(func)(*args, **kwargs)
+
+
+def read_config(config_file):
+	calling_dir = os.getcwd()
+	file_dir = os.path.realpath(os.path.dirname(__file__))
+	os.chdir(file_dir)
+	with open(Path(config_path) / config_file) as cf:
+		configuration = json.load(cf)
+	os.chdir(calling_dir)
+	return configuration
+
+
+def singleton(cls):
+	instances = {}
+
+	def construct(*args, **kwargs):
+		if cls not in instances:
+			instances[cls] = cls(*args, **kwargs)
+		return instances[cls]
+	return construct
+
+
+def exec_cmd_sync(cmd):
+	process = subprocess.Popen(cmd)
+	process.wait()
+	return process
+
+
+def exec_py3_sync(filename):
+	file_abs_path = os.path.join(os.getcwd(), Path(filename))
+	return exec_cmd_sync(f'python3 {file_abs_path}')
+
+
+def add_date_to_filename(filename, date=None):
+	name, extn = filename.rsplit('.', maxsplit=1)
+	if date is None:
+		date = str(datetime.date.today())
+	elif type(date) is datetime.date:
+		date = str(date)
+	elif type(date) is str:
+		pass
+	else:
+		raise TypeError('Invalid date type!')
+	return f'{name}_{date}.{extn}'
+
