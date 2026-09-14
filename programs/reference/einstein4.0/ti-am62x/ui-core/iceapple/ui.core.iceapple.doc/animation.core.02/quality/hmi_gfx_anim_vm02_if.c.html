@@ -1,0 +1,171 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_gfx_anim_vm02_if.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2011. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_gfx_anim_if.c
+   20:	**
+   21:	** Description:    This file is created to interface anim core with View 
+   22:	**                 Manager 02. This is an optional file.
+   23:	**
+   24:	** Organization:   Driver Information Software Section,
+   25:	**                 Visteon
+   26:	**
+   27:	**============================================================================
+   28:	**
+   29:	**==========================================================================*/
+   30:	#define HMI_GFX_ANIM_IF_C
+   31:	
+   32:	/*============================================================================
+   33:	** I N C L U D E   F I L E S
+   34:	**==========================================================================*/
+   35:	#include "hmi_gfx_anim_engine.h"
+   36:	#include "hmi_gfx_anim_engine.cfg"
+   37:	#include "hmi_logic_state_handler.h"
+   38:	
+   39:	#ifdef  __cplusplus
+   40:	extern "C" {
+   41:	#endif
+   42:	
+   43:	/*============================================================================
+   44:	** I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S
+   45:	**==========================================================================*/
+   46:	
+   47:	/*============================================================================
+   48:	** I N T E R N A L   F U N C T I O N   P R O T O T Y P E S
+   49:	**==========================================================================*/
+   50:	
+   51:	/*============================================================================
+   52:	** M E M O R Y   A L L O C A T I O N
+   53:	**==========================================================================*/
+   54:	
+   55:	/*============================================================================
+   56:	** E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S
+   57:	**==========================================================================*/
+   58:	
+   59:	#ifdef LSH_ANIMATION_SUPPORT_ENABLED
+   60:	/*============================================================================
+   61:	** Function Name:    hmi_lsh_start_animation
+   62:	** Visibility:       global
+   63:	** Description:      Starts the animation
+   64:	** Invocation:       By VM02
+   65:	** Inputs/Outputs:   In  : Information animation to be started
+   66:	**                   Out : Returns TRUE if animation is started else FALSE
+   67:	** Critical Section: None.
+   68:	** Created:          27-Nov-2012 by EMANOJ1
+   69:	** Updated:          27-Nov-2012 by EMANOJ1
+   70:	**==========================================================================*/
+   71:	UINT32 hmi_lsh_start_animation(UINT32 p_state_id, UINT32 p_anim_id)
+   72:	{
+   73:	   UINT32 fl_animation_started = (UINT32)FALSE;
+   74:	#if GFX_NUM_ANIMATIONS &gt; 0
+   75:	   if(p_anim_id != (UINT32)ANIM_MAX_ID)
+   76:	   {
+   77:	      if(hmi_gfx_anim_replay_fwd(p_state_id, p_anim_id) == (UINT32)GFX_ANIM_STATE_RUNNING)
+   78:	      {
+   79:	          fl_animation_started = (UINT32)TRUE;
+   80:	      }
+   81:	   }
+   82:	#endif
+   83:	   return(fl_animation_started);
+   84:	}
+   85:	
+   86:	/*============================================================================
+   87:	** Function Name:    hmi_lsh_stop_animation
+   88:	** Visibility:       global
+   89:	** Description:      Stops the requested animation
+   90:	** Invocation:       By VM02
+   91:	** Inputs/Outputs:   Information on animation to be stopped
+   92:	** Critical Section: None.
+   93:	** Created:          27-Nov-2012 by EMANOJ1
+   94:	** Updated:          27-Nov-2012 by EMANOJ1
+   95:	**==========================================================================*/
+   96:	void hmi_lsh_stop_animation(UINT32 p_state_id, UINT32 p_anim_id)
+   97:	{
+   98:	#if GFX_NUM_ANIMATIONS &gt; 0
+   99:	    (void)hmi_gfx_anim_stop(p_state_id, p_anim_id);
+  100:	#endif
+  101:	}
+  102:	#endif
+  103:	
+  104:	/*============================================================================
+  105:	**
+  106:	**============================================================================
+  107:	** C M S    R E V I S I O N    N O T E S
+  108:	**============================================================================
+  109:	**
+  110:	** For each change to this file, be sure to record:
+  111:	** 1.  Who made the change and when the change was made.
+  112:	** 2.  Why the change was made and the intended result.
+  113:	**
+  114:	** CMS Rev #        Date         By
+  115:	** CMS Rev X.X      mm/dd/yy     CDSID
+  116:	**
+  117:	**============================================================================
+  118:	**
+  119:	** CMS Rev 1.2      03-Sep-15    ARAJASE2
+  120:	** Resolved compiler warnings in hmi_lsh_start_animation and hmi_lsh_stop_animation.
+  121:	** Removed unused parameter
+  122:	**
+  123:	** CMS Rev 1.1      16-Apr-13    EMANOJ1
+  124:	** QAC 7.1 fixes
+  125:	**
+  126:	** CMS Rev 1.0      27-Nov-12    EMANOJ1
+  127:	** Creation.
+  128:	**==========================================================================*/
+  129:	#ifdef  __cplusplus
+  130:	}
+  131:	#endif
+  132:	
+  133:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_gfx_anim_vm02_if.c (133 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0000              0
+     6           0.0000              0
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0000              0
+</PRE>
+
+</BODY></HTML>

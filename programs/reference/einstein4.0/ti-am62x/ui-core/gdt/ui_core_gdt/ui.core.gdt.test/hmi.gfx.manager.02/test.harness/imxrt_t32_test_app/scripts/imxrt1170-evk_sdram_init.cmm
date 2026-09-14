@@ -1,0 +1,340 @@
+; --------------------------------------------------------------------------------
+; @Title: SDRAM setup example on IMXRT1170-EVK
+; @Description:
+;Initialize SDRAM on IMXRT1170-EVK 
+;   Prerequisites:
+;    * Connect Debug Cable to J1
+;      or
+;      Connect Combiprobe/uTrace to J1
+; @Keywords: ARM, Cortex-M7
+; @Author:AHR, Hugo Osornio
+; @Board: IMXRT1170-EVK
+; @Chip: IMXRT1176-CM7
+; @Copyright: (C) 1989-2020 Lauterbach GmbH, licensed for use with TRACE32(R) only
+; @Copyright: (C) 2020 NXP, Modified to add SDRAM Initialization
+; --------------------------------------------------------------------------------
+; $Id: imxrt1170-evk_sdram_init.cmm 15919 2020-04-08 11:19:14Z aregaieg $
+
+
+WinCLEAR
+
+; --------------------------------------------------------------------------------
+; initialize and start the debugger
+RESet
+SYStem.RESet
+SYStem.CPU IMXRT1176-CM7
+SYStem.CONFIG.DEBUGPORTTYPE SWD
+SYStem.Option DUALPORT ON
+SYStem.MemAccess DAP
+SYStem.JtagClock 10MHz
+SYStem.Up
+
+;--------------------------------------------------------------------------------
+; Initialize clocks
+GOSUB SetSemcClock
+GOSUB SDRAMInit
+
+ENDDO
+
+SetSemcClock:
+(
+  GOSUB EnablePllLdo
+  GOSUB InitSysPll2
+  GOSUB InitSysPll2Pfd1
+  ; Set SEMC root clock
+  ; Use sys pll2 pfd1 divided by 3: 198Mh
+  Data.Set A:0x40CC0200 %LE %Long 0x00000602
+   
+  RETURN
+)
+
+EnablePllLdo:
+(
+  LOCAL &val
+  Data.Set A:0x40C84820 %LE %Long 0x00000000
+  Data.Set A:0x40C84830 %LE %Long 0x00000105
+  &val = Data.Long(A:0x40C84500)
+  &val = &val|0x10000
+  Data.Set A:0x40C84500 %LE %Long &val 
+  wait 200.ms
+  Data.Set A:0x40C84580 %LE %Long 0x00000100
+  wait 100.ms
+  Data.Set A:0x40C84570 %LE %Long 0x00000010
+  
+  RETURN
+)
+
+InitSysPll2:
+(
+  LOCAL &val &val2
+  &val = Data.Long(A:0x40C84240)
+  ;IF ((&val&(0x800000))!=0)
+  ;(
+  ;  &val = &val&(~0x40000000)
+  ;	Data.Set A:0x40C84240 %LE %Long 0x00000010
+  ;	RETURN
+  ;  )
+  
+  &val = Data.Long(A:0x40C84270)
+  &val = &val|0x80808080
+  Data.Set A:0x40C84270 %LE %Long &val
+  
+  &val = Data.Long(A:0x40C84240)
+  &val = &val&(~0x802000)
+  &val = &val|0x40000000
+  Data.Set A:0x40C84240 %LE %Long &val
+  
+  ;--ANADIG_PLL_PLL_528_MFN
+  Data.Set A:0x40C84280 %LE %Long 0
+
+  ;--ANADIG_PLL_PLL_528_MFI
+  Data.Set A:0x40C84290 %LE %Long 22
+
+  ;--ANADIG_PLL_PLL_528_MFD
+  Data.Set A:0x40C842A0 %LE %Long 0x0FFFFFFF
+ 
+  ;--ANADIG_PLL_PLL_528_CTRL
+  &val = 0x8|0x40000000
+  Data.Set A:0x40C84240 %LE %Long 0x0FFFFFFF
+  wait 30.ms
+
+  ;--ANADIG_PLL_PLL_528_CTRL
+  &val = Data.Long(A:0x40C84240)
+  &val = &val|0x800000|0x800
+  Data.Set A:0x40C84240 %LE %Long &val
+  wait 250.ms
+  
+  &val = Data.Long(A:0x40C84240)
+  &val = &val&(~0x800)
+  Data.Set A:0x40C84240 %LE %Long &val
+  &val2 = 0
+  WHILE (&val2==0)
+  (
+    &val = Data.Long(A:0x40C84240)
+    &val2 = &val&0x20000000
+  )
+  
+  &val = &val|0x2000
+  Data.Set A:0x40C84240 %LE %Long &val
+
+  &val = &val&(~0x40000000)
+  Data.Set A:0x40C84240 %LE %Long &val
+
+  RETURN  
+)
+
+InitSysPll2Pfd1:
+(
+  LOCAL &reg &stable
+  ; ANADIG_PLL_PLL_528_PFD
+  &reg = Data.Long(A:0x40C84270)
+  IF (((&reg&0x8000)!=0)||(((&reg&0x3F00)>>8)!=16))
+  (
+    &stable = &reg&0x4000;
+	&reg = &reg|0x8000
+	Data.Set A:0x40C84270 %LE %Long &reg
+	
+	&reg = Data.Long(A:0x40C84270)
+	&reg = &reg&(~0x3F00)
+	&reg = &reg|(16<<8)
+	Data.Set A:0x40C84270 %LE %Long &reg
+	
+	&reg = Data.Long(A:0x40C84250)
+	&reg = &reg^0x4
+	Data.Set A:0x40C84250 %LE %Long &reg
+	
+	&reg = Data.Long(A:0x40C84270)
+	&reg = &reg&(~0x8000)
+	Data.Set A:0x40C84270 %LE %Long &reg
+	WHILE (&reg==&stable)
+	(
+	  &reg = Data.Long(A:0x40C84270)
+	)
+  )
+  ELSE
+  (
+    &reg = &reg&(~0x8000)
+	Data.Set A:0x40C84270 %LE %Long &reg
+  )
+  
+  RETURN
+)
+
+SDRAMInit:
+(
+    ; Config IOMUX
+    Data.Set A:0x400E8010 %LE %Long 0x00000000
+    Data.Set A:0x400E8014 %LE %Long 0x00000000
+    Data.Set A:0x400E8018 %LE %Long 0x00000000
+    Data.Set A:0x400E801C %LE %Long 0x00000000
+    Data.Set A:0x400E8020 %LE %Long 0x00000000
+    Data.Set A:0x400E8024 %LE %Long 0x00000000
+    Data.Set A:0x400E8028 %LE %Long 0x00000000
+    Data.Set A:0x400E802C %LE %Long 0x00000000
+    Data.Set A:0x400E8030 %LE %Long 0x00000000
+    Data.Set A:0x400E8034 %LE %Long 0x00000000
+    Data.Set A:0x400E8038 %LE %Long 0x00000000
+    Data.Set A:0x400E803C %LE %Long 0x00000000
+    Data.Set A:0x400E8040 %LE %Long 0x00000000
+    Data.Set A:0x400E8044 %LE %Long 0x00000000
+    Data.Set A:0x400E8048 %LE %Long 0x00000000
+    Data.Set A:0x400E804C %LE %Long 0x00000000
+    Data.Set A:0x400E8050 %LE %Long 0x00000000
+    Data.Set A:0x400E8054 %LE %Long 0x00000000
+    Data.Set A:0x400E8058 %LE %Long 0x00000000
+    Data.Set A:0x400E805C %LE %Long 0x00000000
+    Data.Set A:0x400E8060 %LE %Long 0x00000000
+    Data.Set A:0x400E8064 %LE %Long 0x00000000
+    Data.Set A:0x400E8068 %LE %Long 0x00000000
+    Data.Set A:0x400E806C %LE %Long 0x00000000
+    Data.Set A:0x400E8070 %LE %Long 0x00000000
+    Data.Set A:0x400E8074 %LE %Long 0x00000000
+    Data.Set A:0x400E8078 %LE %Long 0x00000000
+    Data.Set A:0x400E807C %LE %Long 0x00000000
+    Data.Set A:0x400E8080 %LE %Long 0x00000000
+    Data.Set A:0x400E8084 %LE %Long 0x00000000
+    Data.Set A:0x400E8088 %LE %Long 0x00000000
+    Data.Set A:0x400E808C %LE %Long 0x00000000
+    Data.Set A:0x400E8090 %LE %Long 0x00000000
+    Data.Set A:0x400E8094 %LE %Long 0x00000000
+    Data.Set A:0x400E8098 %LE %Long 0x00000000
+    Data.Set A:0x400E809C %LE %Long 0x00000000
+    Data.Set A:0x400E80A0 %LE %Long 0x00000000
+    Data.Set A:0x400E80A4 %LE %Long 0x00000000
+    Data.Set A:0x400E80A8 %LE %Long 0x00000000
+    Data.Set A:0x400E80AC %LE %Long 0x00000010 ; EMC_39, DQS PIN, enable SION
+    Data.Set A:0x400E80B0 %LE %Long 0x00000000
+    Data.Set A:0x400E80B4 %LE %Long 0x00000000
+    Data.Set A:0x400E80B8 %LE %Long 0x00000000
+    Data.Set A:0x400E80BC %LE %Long 0x00000000
+    Data.Set A:0x400E80C0 %LE %Long 0x00000000
+    Data.Set A:0x400E80C4 %LE %Long 0x00000000
+    Data.Set A:0x400E80C8 %LE %Long 0x00000000
+    Data.Set A:0x400E80CC %LE %Long 0x00000000
+    Data.Set A:0x400E80D0 %LE %Long 0x00000000
+    Data.Set A:0x400E80D4 %LE %Long 0x00000000
+    Data.Set A:0x400E80D8 %LE %Long 0x00000000
+    Data.Set A:0x400E80DC %LE %Long 0x00000000
+    Data.Set A:0x400E80E0 %LE %Long 0x00000000
+    Data.Set A:0x400E80E4 %LE %Long 0x00000000
+    Data.Set A:0x400E80E8 %LE %Long 0x00000000
+    Data.Set A:0x400E80EC %LE %Long 0x00000000
+    Data.Set A:0x400E80F0 %LE %Long 0x00000000
+    Data.Set A:0x400E80F4 %LE %Long 0x00000000
+    Data.Set A:0x400E80F8 %LE %Long 0x00000000
+    Data.Set A:0x400E80FC %LE %Long 0x00000000
+    Data.Set A:0x400E8100 %LE %Long 0x00000000
+    Data.Set A:0x400E8104 %LE %Long 0x00000000
+    Data.Set A:0x400E8108 %LE %Long 0x00000000
+
+    ; PAD ctrl
+    ; PDRV = 1b (normal PULL = 10b (PD)
+    Data.Set A:0x400E8254 %LE %Long 0x00000008
+    Data.Set A:0x400E8258 %LE %Long 0x00000008
+    Data.Set A:0x400E825C %LE %Long 0x00000008
+    Data.Set A:0x400E8260 %LE %Long 0x00000008
+    Data.Set A:0x400E8264 %LE %Long 0x00000008
+    Data.Set A:0x400E8268 %LE %Long 0x00000008
+    Data.Set A:0x400E826C %LE %Long 0x00000008
+    Data.Set A:0x400E8270 %LE %Long 0x00000008
+    Data.Set A:0x400E8274 %LE %Long 0x00000008
+    Data.Set A:0x400E8278 %LE %Long 0x00000008
+    Data.Set A:0x400E827C %LE %Long 0x00000008
+    Data.Set A:0x400E8280 %LE %Long 0x00000008
+    Data.Set A:0x400E8284 %LE %Long 0x00000008
+    Data.Set A:0x400E8288 %LE %Long 0x00000008
+    Data.Set A:0x400E828C %LE %Long 0x00000008
+    Data.Set A:0x400E8290 %LE %Long 0x00000008
+    Data.Set A:0x400E8294 %LE %Long 0x00000008
+    Data.Set A:0x400E8298 %LE %Long 0x00000008
+    Data.Set A:0x400E829C %LE %Long 0x00000008
+    Data.Set A:0x400E82A0 %LE %Long 0x00000008
+    Data.Set A:0x400E82A4 %LE %Long 0x00000008
+    Data.Set A:0x400E82A8 %LE %Long 0x00000008
+    Data.Set A:0x400E82AC %LE %Long 0x00000008
+    Data.Set A:0x400E82B0 %LE %Long 0x00000008
+    Data.Set A:0x400E82B4 %LE %Long 0x00000008
+    Data.Set A:0x400E82B8 %LE %Long 0x00000008
+    Data.Set A:0x400E82BC %LE %Long 0x00000008
+    Data.Set A:0x400E82C0 %LE %Long 0x00000008
+    Data.Set A:0x400E82C4 %LE %Long 0x00000008
+    Data.Set A:0x400E82C8 %LE %Long 0x00000008
+    Data.Set A:0x400E82CC %LE %Long 0x00000008
+    Data.Set A:0x400E82D0 %LE %Long 0x00000008
+    Data.Set A:0x400E82D4 %LE %Long 0x00000008
+    Data.Set A:0x400E82D8 %LE %Long 0x00000008
+    Data.Set A:0x400E82DC %LE %Long 0x00000008
+    Data.Set A:0x400E82E0 %LE %Long 0x00000008
+    Data.Set A:0x400E82E4 %LE %Long 0x00000008
+    Data.Set A:0x400E82E8 %LE %Long 0x00000008
+    Data.Set A:0x400E82EC %LE %Long 0x00000008
+    Data.Set A:0x400E82F0 %LE %Long 0x00000008
+    Data.Set A:0x400E82F4 %LE %Long 0x00000008
+    Data.Set A:0x400E82F8 %LE %Long 0x00000008
+    Data.Set A:0x400E82FC %LE %Long 0x00000008
+    Data.Set A:0x400E8300 %LE %Long 0x00000008
+    Data.Set A:0x400E8304 %LE %Long 0x00000008
+    Data.Set A:0x400E8308 %LE %Long 0x00000008
+    Data.Set A:0x400E830C %LE %Long 0x00000008
+    Data.Set A:0x400E8310 %LE %Long 0x00000008
+    Data.Set A:0x400E8314 %LE %Long 0x00000008
+    Data.Set A:0x400E8318 %LE %Long 0x00000008
+    Data.Set A:0x400E831C %LE %Long 0x00000008
+    Data.Set A:0x400E8320 %LE %Long 0x00000008
+    Data.Set A:0x400E8324 %LE %Long 0x00000008
+    Data.Set A:0x400E8328 %LE %Long 0x00000008
+    Data.Set A:0x400E832C %LE %Long 0x00000008
+    Data.Set A:0x400E8330 %LE %Long 0x00000008
+    Data.Set A:0x400E8334 %LE %Long 0x00000008
+    Data.Set A:0x400E8338 %LE %Long 0x00000008
+    Data.Set A:0x400E833C %LE %Long 0x00000008
+    Data.Set A:0x400E8400 %LE %Long 0x00000008
+    Data.Set A:0x400E8404 %LE %Long 0x00000008
+    Data.Set A:0x400E8408 %LE %Long 0x00000008
+    Data.Set A:0x400E840C %LE %Long 0x00000008
+
+    ; Config SDR Controller Registers
+    Data.Set A:0x400d4000 %LE %Long 0x10000004 ; MCR
+    Data.Set A:0x400d4008 %LE %Long 0x00030524 ; BMCR0
+    Data.Set A:0x400d400C %LE %Long 0x06030524 ; BMCR1
+    Data.Set A:0x400d4010 %LE %Long 0x8000001D ; BR0, 64MB
+
+    Data.Set A:0x400d4040 %LE %Long 0x00000F32 ; SDRAMCR0, 32bit
+    Data.Set A:0x400d4044 %LE %Long 0x00772A22 ; SDRAMCR1
+    Data.Set A:0x400d4048 %LE %Long 0x00010A0D ; SDRAMCR2
+    Data.Set A:0x400d404C %LE %Long 0x21210408 ; SDRAMCR3
+
+    Data.Set A:0x400d4090 %LE %Long 0x80000000 ; IPCR0
+    Data.Set A:0x400d4094 %LE %Long 0x00000002 ; IPCR1
+    Data.Set A:0x400d4098 %LE %Long 0x00000000 ; IPCR2
+
+    Data.Set A:0x400d409C %LE %Long 0xA55A000F ; IPCMD, SD_CC_IPREA
+    GOSUB SDRAM_WaitIpCmdDone
+    Data.Set A:0x400d409C %LE %Long 0xA55A000C ; SD_CC_IAF
+    GOSUB SDRAM_WaitIpCmdDone
+    Data.Set A:0x400d409C %LE %Long 0xA55A000C ; SD_CC_IAF
+    GOSUB SDRAM_WaitIpCmdDone
+    Data.Set A:0x400d40A0 %LE %Long 0x00000033 ; IPTXDAT
+    Data.Set A:0x400d409C %LE %Long 0xA55A000A ; SD_CC_IMS
+    GOSUB SDRAM_WaitIpCmdDone
+
+    Data.Set A:0x400d404C %LE %Long 0x21210409 ; enable sdram self refresh after initialization done.
+
+    PRINT "SDRAM init done"
+	
+	RETURN
+)
+
+
+SDRAM_WaitIpCmdDone:
+(
+  LOCAL &reg
+  &reg = 0;
+  WHILE ((&reg&0x3)==0)
+  (
+    &reg = Data.Long(A:0x400D403C)
+  )
+  Data.Set A:0x400D403C %LE %Long 0x00000003
+  
+  RETURN
+)

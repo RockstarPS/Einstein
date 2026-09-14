@@ -1,0 +1,39 @@
+#include "hmi_gfx_mgr02_layout.h"
+#include "hmi_logic_state_handler.h"
+
+UINT8 scr_startup_event(LSH_EVENT_HANDLER_STATUS_T * p_event_hndl_status_SP)
+{  
+   return(LSH_STATUS_ABSORBED);
+}
+UINT8 scr_opening_anim_event(LSH_EVENT_HANDLER_STATUS_T * p_event_hndl_status_SP)
+{  
+   return(LSH_STATUS_ABSORBED);
+}
+void scr_startup_focus(LSH_FOCUS_HANDLER_STATUS_T *p_focus_hndl_status_SP)
+{  
+}
+void scr_opening_anim_focus(LSH_FOCUS_HANDLER_STATUS_T *p_focus_hndl_status_SP)
+{  
+}
+void scr_startup_pres(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}
+void scr_opening_anim_pres(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}

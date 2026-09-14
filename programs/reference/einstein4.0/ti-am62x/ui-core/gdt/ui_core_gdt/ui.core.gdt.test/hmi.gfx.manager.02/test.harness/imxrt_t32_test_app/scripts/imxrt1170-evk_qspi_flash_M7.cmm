@@ -1,0 +1,44 @@
+LOCAL &path_to_bin &address &path_to_symbols
+ENTRY &path_to_bin &address &path_to_symbols
+
+
+RESet
+SYStem.RESet
+SYStem.CPU IMXRT1176-CM7
+;SYStem.CONFIG.DEBUGPORTTYPE SWD
+SYStem.CONFIG.DEBUGPORTTYPE JTAG
+;SYStem.CONFIG.CONNECTOR MIPI20T
+SYStem.MemAccess DAP
+SYStem.JtagClock 10MHz
+Trace.DISable
+
+SYStem.Option VECTRESET OFF
+SYStem.Up
+
+
+; Flash programming
+
+; prepare flash programming (declarations)
+
+DO ~~/demo/arm/flash/imxrt1170-snor PREPAREONLY
+
+
+; ReProgram Flash
+FLASH.ReProgram ALL
+Data.LOAD.Binary &path_to_bin &address
+FLASH.ReProgram OFF
+
+;WAIT !STATE.RUN()
+
+
+IF String.len("&path_to_symbols")!=0
+(
+  Data.LOAD.Elf &path_to_symbols /noCODE
+  ;Data.LOAD.Elf &path_to_symbols
+  Data.LOAD.Elf &path_to_symbols 0x00000000--0x0003FFFF
+
+)
+
+B::List
+
+ENDDO

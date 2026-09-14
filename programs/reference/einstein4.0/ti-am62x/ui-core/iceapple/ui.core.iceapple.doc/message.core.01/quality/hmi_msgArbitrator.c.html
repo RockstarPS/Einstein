@@ -1,0 +1,332 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_msgArbitrator.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2009. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_msgArbitrator.c
+   20:	**
+   21:	** Description:    Message Core component.  This module detects application
+   22:	**                  message triggers and passes them to the sequencer for
+   23:	**                  displaying to the user.
+   24:	**
+   25:	** Organization:   Driver Information Software Section,
+   26:	**                 DI Core Engineering Department
+   27:	**
+   28:	**==========================================================================*/
+   29:	#define hmi_msgArbitrator_C
+   30:	
+   31:	/*==========================================================================*/
+   32:	/*  I N C L U D E   F I L E S                                               */
+   33:	/*==========================================================================*/
+   34:	#include "system.h"
+   35:	#include "hmi_msgArbitrator.h"
+   36:	#include "hmi_msgArbitrator.cfg"
+   37:	#include "localSemaphores.h"
+   38:	
+   39:	/*==========================================================================*/
+   40:	/* I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S    */
+   41:	/*==========================================================================*/
+   42:	
+   43:	
+   44:	/*==========================================================================*/
+   45:	/* I N T E R N A L   F U N C T I O N   P R O T O T Y P E S                  */
+   46:	/*==========================================================================*/
+   47:	
+   48:	
+   49:	/*==========================================================================*/
+   50:	/* M E M O R Y   A L L O C A T I O N                                        */
+   51:	/*==========================================================================*/
+   52:	static LOCAL_SEMAPHORES(arb_MessageStatus, MSG_NUM_MESSAGES);
+   53:	#define MSG_STATUS_INACTIVE (FALSE)
+   54:	#define MSG_STATUS_ACTIVE   (TRUE)
+   55:	
+   56:	/*==========================================================================*/
+   57:	/* E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S      */
+   58:	/*==========================================================================*/
+   59:	
+   60:	void msg_ArbitratorInitialise(void)
+   61:	/*============================================================================
+   62:	**  Visibility:     Public (.h)
+   63:	**----------------------------------------------------------------------------
+   64:	**  Description:    Initialise arbitrator data.
+   65:	**
+   66:	**  Parameters:     None.
+   67:	**
+   68:	**  Returns:        None.
+   69:	**----------------------------------------------------------------------------
+   70:	** Created: AFERRIS2 12/Apr/2010
+   71:	**==========================================================================*/
+   72:	{
+   73:	  CLEAR_ALL_SEMAPHORES(arb_MessageStatus);
+   74:	}
+   75:	
+   76:	
+   77:	void msg_ArbitratorUpdate(UINT8 Ignition)
+   78:	/*============================================================================
+   79:	**  Visibility:     Public (.h)
+   80:	**----------------------------------------------------------------------------
+   81:	**  Description:    Check state of all messages and pass on changes to the client.
+   82:	**
+   83:	**  Parameters:     None.
+   84:	**
+   85:	**  Returns:        None.
+   86:	**----------------------------------------------------------------------------
+   87:	** Created: AFERRIS2 12/Apr/2010
+   88:	**==========================================================================*/
+   89:	{
+   90:	  UINT32 i;
+   91:	  UINT8  msgStatus;
+   92:	  UINT8  msgCurrentState;
+   93:	  MSG_MESSAGE_STRUCT const * ptrMessage;
+   94:	  SIF_STATUS conditionStatus;
+   95:	
+   96:	  ptrMessage = &amp;messageList[0];
+   97:	
+   98:	  for (i=0UL; i &lt; (UINT32)MSG_NUM_MESSAGES; i++)
+   99:	  {
+  100:	    TEST_INDICATE(i);
+  101:	    msgStatus = MSG_STATUS_INACTIVE;
+  102:	
+  103:	    #ifdef MSG_FREEZE_IGN_MODE
+  104:	    /*------------------------------------------------------------------*/
+  105:	    /* Check current IGN state to process all the warnings              */
+  106:	    /*------------------------------------------------------------------*/
+  107:	
+  108:	    if (TESTBIT(Ignition, MSG_FREEZE_IGN_MODE) )
+  109:	    {
+  110:	      /*--------------------------------------------------------------*/
+  111:	      /* Check whether the warning is configured in Freeze state      */
+  112:	      /*--------------------------------------------------------------*/
+  113:	      if(TESTBIT(MSG_FREEZE_IGN_MODE, ptrMessage-&gt;ActiveStates) )
+  114:	      {
+  115:	        /*----------------------------------------------------------*/
+  116:	        /* Message is configured in Freeze state, So set warning    */
+  117:	        /* check is required as TRUE                                */
+  118:	        /*----------------------------------------------------------*/
+  119:	        msgCurrentState = TRUE;
+  120:	      }
+  121:	      else
+  122:	      {
+  123:	        /*----------------------------------------------------------*/
+  124:	        /* Message is NOT configured in Freeze state, So set warning*/
+  125:	        /* check is required as FALSE                               */
+  126:	        /*----------------------------------------------------------*/
+  127:	        msgCurrentState = FALSE;
+  128:	      }
+  129:	    }
+  130:	    else
+  131:	    {
+  132:	      msgCurrentState = TRUE;
+  133:	    }
+  134:	
+  135:	
+  136:	    if(FALSE != msgCurrentState)
+  137:	    #endif
+  138:	    {
+  139:	      /*------------------------------------------------------------------*/
+  140:	      /* Check current IGN state is configured for this warning message.  */
+  141:	      /*------------------------------------------------------------------*/
+  142:	
+  143:	      if (TESTBIT(Ignition, ptrMessage-&gt;ActiveStates) )
+  144:	      {
+  145:	        conditionStatus = SIF_EXEC(ptrMessage-&gt;CheckActiveCondition,
+  146:	          msgCurrentState,
+  147:	          ptrMessage-&gt;ConditionQualifier);
+  148:	        if (sif_OK != conditionStatus)
+  149:	        {
+  150:	          /*----------------------------------------------------------*/
+  151:	          /* If returned status is not "OK" then we can't rely on     */
+  152:	          /* the data so assume message request is FALSE              */
+  153:	          /*----------------------------------------------------------*/
+  154:	          msgCurrentState = MSG_CONDITION_OFF;
+  155:	        }
+  156:	
+  157:	        switch (msgCurrentState)
+  158:	        {
+  159:	        case MSG_CONDITION_RETRIGGER:
+  160:	          /*----------------------------------------------------------*/
+  161:	          /* Retrigger the message to restart the display timer to    */
+  162:	          /* start the progress bar newly(if the same msg in display) */
+  163:	          /*----------------------------------------------------------*/
+  164:	          msgStatus = MSG_STATUS_ACTIVE;
+  165:	          MSG_ARBITRATOR_RETRIGGER(i);
+  166:	          break;
+  167:	
+  168:	        case MSG_CONDITION_FORCED:
+  169:	          /*----------------------------------------------------------*/
+  170:	          /* Forcing message to be ACTIVE and behave as though this   */
+  171:	          /* is a new message request.                                */
+  172:	          /*----------------------------------------------------------*/
+  173:	          CLR_SEMAPHORE(arb_MessageStatus, (UINT16)i);    /* ### QAC WARNING:4130 ### */
+  174:	          msgStatus = MSG_STATUS_ACTIVE;
+  175:	          break;
+  176:	
+  177:	        case MSG_CONDITION_ACTIVE:
+  178:	          /*----------------------------------------------------------*/
+  179:	          /* Normal action when a message is ACTIVE.                  */
+  180:	          /*----------------------------------------------------------*/
+  181:	          msgStatus = MSG_STATUS_ACTIVE;
+  182:	          break;
+  183:	
+  184:	        default:
+  185:	          /*----------------------------------------------------------*/
+  186:	          /* Nothing to do since the default is to set the            */
+  187:	          /* message as INACTIVE                                      */
+  188:	          /*----------------------------------------------------------*/
+  189:	          break;
+  190:	        }
+  191:	      }
+  192:	
+  193:	      /*------------------------------------------------------------------*/
+  194:	      /* Notify client if message goes INACTIVE or becomes ACTIVE.        */
+  195:	      /*------------------------------------------------------------------*/
+  196:	      if (MSG_STATUS_INACTIVE != msgStatus)
+  197:	      {
+  198:	        if (MSG_STATUS_INACTIVE == GET_SEMAPHORE(arb_MessageStatus, (UINT16)i))
+  199:	        {
+  200:	          MSG_ARBITRATOR_ADD(i);
+  201:	          SET_SEMAPHORE(arb_MessageStatus, (UINT16)i);
+  202:	        }
+  203:	      }
+  204:	      else
+  205:	      {
+  206:	        if (MSG_STATUS_INACTIVE != GET_SEMAPHORE(arb_MessageStatus, (UINT16)i))
+  207:	        {
+  208:	          msgStatus = MSG_ARBITRATOR_REMOVE(i, Ignition);
+  209:	
+  210:	          /*-------------------------------------------------------*/
+  211:	          /* Clear the Msg Arbitration status flag only if message */
+  212:	          /* is removal is accepted by Sequencer                   */
+  213:	          /*-------------------------------------------------------*/
+  214:	          if(0 != msgStatus)
+  215:	          {
+  216:	            CLR_SEMAPHORE(arb_MessageStatus, (UINT16)i);    /* ### QAC WARNING:4130 ### */
+  217:	          }
+  218:	        }
+  219:	      }
+  220:	    }
+  221:	
+  222:	    ptrMessage++;
+  223:	  }
+  224:	}
+  225:	
+  226:	/*==========================================================================*/
+  227:	/* R E V I S I O N    N O T E S                                             */
+  228:	/*==========================================================================*/
+  229:	/* For each change to this file, be sure to record:
+  230:	** 1.  Who made the change and when the change was made.
+  231:	** 2.  Why the change was made and the intended result.
+  232:	**==========================================================================*/
+  233:	
+  234:	/****************************************************************************
+  235:	**  Date  : 06/Apr/2010
+  236:	**  by    : AFERRIS2
+  237:	**  Ref   : None.
+  238:	**  Change: Initial version.
+  239:	**
+  240:	*****************************************************************************/
+  241:	
+  242:	/****************************************************************************
+  243:	**  Date: 06/May/2010     by: AFERRIS2        Ref: None.
+  244:	**  Change: 1.  Add checking of status from the application message request
+  245:	**              interfaces.
+  246:	**
+  247:	**  Checks: COMPILER - NOT CHECKED       QAC - NOT CHECKED
+  248:	*****************************************************************************/
+  249:	
+  250:	/****************************************************************************
+  251:	**  Date: 07/Jul/2010     by: AFERRIS2        Ref:
+  252:	**  Change: 1.  Removed QAC warning from TESTBIT operation.
+  253:	**          2.  2 warnings remain from the use of CLR_SEMAPHORE (cannot be eliminated)
+  254:	**
+  255:	**  Checks: COMPILER - NO WARNINGS       QAC - 2 WARNINGS
+  256:	*****************************************************************************/
+  257:	
+  258:	/****************************************************************************
+  259:	**  Date: 12/Mar/2012     by: vsarava2        Ref:DCR 3190/3191
+  260:	**  Change: 1. Freeze mode condition enabled before checking the warning state.
+  261:	**             So, if warning is not configured for Freeze Ign mode, then warning
+  262:	**             active state shall not be checked and the update not passed to client
+  263:	**             if warning is configued for freezeign mode, then warning trigger
+  264:	**             condition is checked and updated to client(sequencer).
+  265:	**             This code shall be included only if FREEZE_IGN_MODE is defined.
+  266:	**
+  267:	**  Checks: COMPILER - NO WARNINGS       QAC - 2 WARNINGS
+  268:	*****************************************************************************/
+  269:	
+  270:	/****************************************************************************
+  271:	**  Date: 12/Mar/2012     by: vsarava2        Ref: BSDI00112440 / BSDI00111853
+  272:	**  Change: 1. Retrigger option added to restart the message again if it is
+  273:	**             currently in display
+  274:	**
+  275:	**  Checks: COMPILER - NO WARNINGS       QAC - 2 WARNINGS
+  276:	*****************************************************************************/
+  277:	
+  278:	/****************************************************************************
+  279:	**  Date: 10/Aug/2013     by: vsarava2        Ref: RTC 60620
+  280:	**  Msg Arbitrator Remove function called with Ignition state and updated to
+  281:	**  check sequencer remove status to update the Arbitration flags.
+  282:	*****************************************************************************/
+  283:	
+  284:	/****************************************************************************
+  285:	**  Date: 28/Apr/2015     by: adevi        
+  286:	**  Alignment corrected.
+  287:	*****************************************************************************/
+  288:	
+  289:	/****************************************************************************
+  290:	**  Date: 29/Jun/2015     by: adevi        Ref: RTC 365702
+  291:	**  Change: QAC warnings resolved for Honda THAA
+  292:	*****************************************************************************/
+  293:	
+  294:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_msgArbitrator.c (294 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0000              0
+     6           0.0000              0
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0000              0
+</PRE>
+
+</BODY></HTML>

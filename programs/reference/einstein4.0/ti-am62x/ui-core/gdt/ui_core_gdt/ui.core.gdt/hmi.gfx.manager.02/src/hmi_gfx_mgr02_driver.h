@@ -1,0 +1,90 @@
+/*============================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2011. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**============================================================================
+**
+** Name:           hmi_gfx_mgr02_driver.h
+**
+** Description:    Interface header for the graphics manager for the
+**                 Kepler Spectrum/RainbowLite Platform.
+**
+** Organization:   Driver Information Software Section,
+**
+**============================================================================
+**
+**==========================================================================*/
+#ifndef HMI_GFX_MGR02_DRIVER_H
+#define HMI_GFX_MGR02_DRIVER_H
+
+/*============================================================================
+** I N C L U D E   F I L E S
+**==========================================================================*/
+#include "system.h"
+
+/*============================================================================
+** T Y P E   D E F I N I T I O N S
+**==========================================================================*/
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+#ifdef GFX_MGR02_KEPLER
+/*============================================================================
+** E N T R Y   P O I N T S
+**==========================================================================*/
+
+void hmi_gfx_mgr02_driver_startup(void);
+void hmi_gfx_mgr02_driver_shutdown(void);
+void hmi_gfx_mgr02_driver_dcu_isr(void);
+void hmi_gfx_mgr02_driver_enable_dcu(void);
+void hmi_gfx_mgr02_driver_disable_dcu(void);
+void hmi_gfx_mgr02_driver_init_layer(UINT32 layer);
+#ifdef HMI_GFX_MGR02_ENABLE_DCU_TEST
+void hmi_gfx_mgr02_EnableDCUTest(void);
+UINT32 hmi_gfx_mgr02_SetColorBarRGB(UINT32 color_bar_num, UINT32 rgb_value);
+#endif
+#endif /* #ifdef GFX_MGR02_KEPLER */
+#ifdef  __cplusplus
+}
+#endif
+/*============================================================================
+** D A T A   A C C E S S   S E R V I C E S
+**==========================================================================*/
+
+/*============================================================================
+**
+**============================================================================
+** C M S    R E V I S I O N    N O T E S
+**============================================================================
+**
+** For each change to this file, be sure to record:
+** 1.  Who made the change and when the change was made.
+** 2.  Why the change was made and the intended result.
+**
+** CMS Rev #        Date         By
+** CMS Rev X.X      mm/dd/yy     CDSID
+**
+**============================================================================
+**
+**
+** Updated          16-Mar-2012  ASHEKHAR
+**
+** CMS Rev 1.0      05-May-11    EMANOJ1
+** Creation.
+**==========================================================================*/
+
+/* end of file =============================================================*/
+#endif

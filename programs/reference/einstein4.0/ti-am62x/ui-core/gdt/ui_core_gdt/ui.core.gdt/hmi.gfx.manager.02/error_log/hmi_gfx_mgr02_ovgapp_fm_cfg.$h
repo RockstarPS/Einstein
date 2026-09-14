@@ -1,0 +1,374 @@
+/******************************************************************************
+*                              Copyright Statement
+*                        CONFIDENTIAL VISTEON CORPORATION
+*
+*  This is an unpublished work of authorship, which contains trade secrets,
+*  created in 2016. Visteon Corporation owns all rights to this work and
+*  intends to maintain it in confidence to preserve its trade secret status.
+*  Visteon Corporation reserves the right, under the copyright laws of the
+*  United States or those of any other country that may have  jurisdiction,
+*  to protect this work as an unpublished work, in the event of an inadvertent
+*  or deliberate unauthorized publication. Visteon Corporation also reserves
+*  its rights under all copyright laws to protect this work as a published
+*  work, when appropriate. Those having access to this work may not copy it,
+*  use it, modify it or disclose the information contained in it without the
+*  written authorization of Visteon Corporation.
+*
+*******************************************************************************
+*
+*  Module:      hmi_gfx_mgr02_ovgapp_fm_cfg.h
+*  Description: Fault logging        
+*  Author:             
+*  Date:               
+*
+*******************************************************************************/
+
+#ifndef HMI_GFX_MGR02_OVGAPP_FM_CFG_H
+#define HMI_GFX_MGR02_OVGAPP_FM_CFG_H
+
+/******************************************************************************
+* Include files
+******************************************************************************/
+#include "hmi_gfx_mgr02_layout.h"
+
+/******************************************************************************
+* Data types - Macros and typedefs
+******************************************************************************/
+
+#define GFX_BIT0            (0x00000001u)
+#define GFX_BIT1            (0x00000002u)
+#define GFX_BIT2            (0x00000004u)
+#define GFX_BIT3            (0x00000008u)
+#define GFX_BIT4            (0x00000010u)
+#define GFX_BIT5            (0x00000020u)
+#define GFX_BIT6            (0x00000040u)
+#define GFX_BIT7            (0x00000080u)
+#define GFX_BIT8            (0x00000100u)
+#define GFX_BIT9            (0x00000200u)
+#define GFX_BIT10           (0x00000400u)
+#define GFX_BIT11           (0x00000800u)
+#define GFX_BIT12           (0x00001000u)
+#define GFX_BIT13           (0x00002000u)
+#define GFX_BIT14           (0x00004000u)
+#define GFX_BIT15           (0x00008000u)
+#define GFX_BIT16           (0x00010000u)
+#define GFX_BIT17           (0x00020000u)
+#define GFX_BIT18           (0x00040000u)
+#define GFX_BIT19           (0x00080000u)
+#define GFX_BIT20           (0x00100000u)
+#define GFX_BIT21           (0x00200000u)
+#define GFX_BIT22           (0x00400000u)
+#define GFX_BIT23           (0x00800000u)
+#define GFX_BIT24           (0x01000000u)
+#define GFX_BIT25           (0x02000000u)
+#define GFX_BIT26           (0x04000000u)
+#define GFX_BIT27           (0x08000000u)
+#define GFX_BIT28           (0x10000000u)
+#define GFX_BIT29           (0x20000000u)
+#define GFX_BIT30           (0x40000000u)
+#define GFX_BIT31           (0x80000000u)
+
+#define GFX_BIT_NONE        (0x00000000u)
+#define GFX_BIT_ALL         (0xFFFFFFFFu)
+
+/* =============================================================================
+//
+//  Public Macros Section
+//
+// ========================================================================== */
+
+/* GFX_MGR02_OPEN_VG with Renesas library */
+#ifdef GFX_MGR02_RENESAS_OPENVG_LIB
+#define GFX_CFG_MONITOR_CRITICAL_ERROR_MASK                       (GFX_MGR02_EGLBINDAPI_FAULT               | \
+                                                                   GFX_MGR02_EGLINITIALIZE_FAULT            | \
+																   GFX_MGR02_EGLCHOOSECONFIG_FAULT          | \
+																   GFX_MGR02_CREATE_PBUFFERSURFACE_FAULT    | \
+																   GFX_MGR02_CREATENATIVEPIXMAP_FAULT       | \
+																   GFX_MGR02_CREATENATIVEWINDOW_FAULT       | \
+																   GFX_MGR02_EGLCREATEWINDOWSURFACE_FAULT   | \
+																   GFX_MGR02_EGLCREATECONTEXT_FAULT         | \
+																   GFX_MGR02_EGLMAKECURRENT_FAULT           | \
+																   GFX_MGR02_EGLGETDISPLAY_FAULT            | \
+																   GFX_MGR02_EGLSTARTUP_FAULT               | \
+																   GFX_MGR02_NCGSYS_FRAMEMEMCREATE_FAULT    | \
+																   GFX_MGR02_VGSTARTUP_FAULT                  \
+																   )  
+#else
+/* GFX_MGR02_FARADAY or GFX_MGR02_OPEN_VG with kepler platform */
+#define GFX_CFG_MONITOR_CRITICAL_ERROR_MASK                       (GFX_MGR02_GPU_INIT_FAULT                 | \
+																   GFX_MGR02_EGLBINDAPI_FAULT               | \
+																   GFX_MGR02_EGLINITIALIZE_FAULT            | \
+																   GFX_MGR02_EGLCHOOSECONFIG_FAULT          | \
+																   GFX_MGR02_CREATE_PBUFFERSURFACE_FAULT    | \
+																   GFX_MGR02_CREATENATIVEPIXMAP_FAULT       | \
+																   GFX_MGR02_CREATENATIVEWINDOW_FAULT       | \
+																   GFX_MGR02_EGLCREATEWINDOWSURFACE_FAULT   | \
+																   GFX_MGR02_EGLCREATECONTEXT_FAULT         | \
+																   GFX_MGR02_EGLMAKECURRENT_FAULT           | \
+																   GFX_MGR02_EGLGETDISPLAY_FAULT            | \
+																   GFX_MGR02_VG_OUT_OF_MEMORY_FAULT           \
+																   )
+#endif
+
+
+/*
+S.No	API	                         Return value	Return description
+			
+	Init API's					   
+			
+1	gpu_init	                     EGLBoolean	      FALSE, if fails
+2	eglBindAPI	                     EGLBoolean	      FALSE, if fails
+3	eglGetDispaly	                 EGLDisplay	      NULL, if fails
+4	eglInitialize	                 EGLBoolean	      FALSE, if fails
+5	eglChooseConfig	                 EGLBoolean		  FALSE, if fails
+6	eglCreateContext	             EGLContext		  NULL, if fails
+7	eglCreatePbufferSurface	         EGLSurface		  NULL, if fails
+8	eglGetConfigAttrib	             EGLBoolean		  FALSE, if fails
+9	eglGetPbufferDimFSL	             EGLBoolean		  FALSE, if fails
+10	vgStartUp		                                  VG_REL_NO_ERROR
+			
+	Shutdown API's		
+			
+			
+11	eglDestroyContext	             EGLBoolean		  FALSE, if fails
+12	eglDestroySurface	             EGLBoolean		  FALSE, if fails
+13	eglTerminate					 EGLBoolean		  FALSE, if fails
+14	gpu_fini						 EGLBoolean		  FALSE, if fails
+			
+			
+	Run API's		
+			
+15	vgDestroyImage					void			 "VG_BAD_HANDLE_ERROR
+                                                     –-if image is not a valid image handle, or is not shared with the current context"                                                     – if image is not a valid image handle, or is not shared with the current context"
+16	vgDestroyConstImageFSL		
+17	vgDestroyPath					void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if path is not a valid path handle, or is not shared with the current context"
+18	vgDestroyPaint					void	        "ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if paint is not a valid paint handle, or is not shared with the current context"
+19	vgSetParameteri					void			"VG_BAD_HANDLE_ERROR
+													– if object is not a valid handle, or is not shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if paramType is not a valid value from the appropriate enumeration"
+20	vgCreateImage					VGImage			"ERRORS
+													VG_UNSUPPORTED_IMAGE_FORMAT_ERROR
+													– if format is not a valid value from the VGImageFormat enumeration
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if width or height are less than or equal to 0
+													– if width is greater than VG_MAX_IMAGE_WIDTH
+													– if height is greater than VG_MAX_IMAGE_HEIGHT
+													– if width*height is greater than VG_MAX_IMAGE_PIXELS
+													– if width*height*(pixel size of format) is greater than
+													VG_MAX_IMAGE_BYTES
+													– if allowedQuality is not a bitwise OR of values from the
+													VGImageQuality enumeration"
+21	vgCreatePath					VGPath			"ERRORS
+													VG_UNSUPPORTED_PATH_FORMAT_ERROR
+													– if pathFormat is not a supported format
+													 VG_ILLEGAL_ARGUMENT_ERROR
+													– if datatype is not a valid value from the VGPathDatatype enumeration
+													– if scale is equal to 0"
+22	vgAppendPathData				void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if dstPath is not a valid path handle, or is not shared with the current
+														context
+													VG_PATH_CAPABILITY_ERROR
+													– if VG_PATH_CAPABILITY_APPEND_TO is not enabled for dstPath
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if pathSegments or pathData is NULL
+													– if pathData is not properly aligned
+													– if numSegments is less than or equal to 0
+													– if pathSegments contains an illegal command"
+23	vgSetParameterfv				void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if object is not a valid handle, or is not shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if paramType is not a valid value from the appropriate enumeration
+													– if paramType refers to a vector parameter in vgSetParameterf or
+														vgSetParameteri
+													– if paramType refers to a scalar parameter in vgSetParameterfv or
+														vgSetParameteriv and count is not equal to 1
+													– if value is not a legal enumerated value for the given parameter in
+														vgSetParameterf or vgSetParameteri, or if values[i] is not a legal
+														enumerated value for the given parameter in vgSetParameterfv or
+														vgSetParameteriv for 0 ? i < count
+													– if values is NULL in vgSetParameterfv or vgSetParameteriv and count is
+														greater than 0
+													– if values is not properly aligned in vgSetParameterfv or vgSetParameteriv
+													– if count is less than 0 in vgSetParameterfv or vgSetParameteriv"
+24	vgSetPaint						void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if paint is neither a valid paint handle nor equal to VG_INVALID_HANDLE,
+													 or is not shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if paintModes is not a valid bitwise OR of values from the VGPaintMode
+														enumeration"
+25	vgCreateFont					VGFont			"ERRORS
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if glyphCapacityHint is negative"
+26	vgSetGlyphToPath				void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if font is not a valid font handle, or is not shared with the current context
+													– if path is not a valid font handle or VG_INVALID_HANDLE, or is not shared
+														with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if the pointer to glyphOrigin or escapement is NULL or is not properly
+														aligned"
+27	vgSeti							void			"ERRORS
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if paramType is not a valid value from the VGParamType enumeration
+													– if paramType refers to a vector parameter in vgSetf or vgSeti
+													– if paramType refers to a scalar parameter in vgSetfv or vgSetiv and count is
+													  not equal to 1
+													– if value is not a legal enumerated value for the given parameter in vgSetf or
+														vgSeti, or if values[i] is not a legal enumerated value for the given parameter
+														in vgSetfv or vgSetiv for 0 ? i < count
+													– if values is NULL in vgSetfv or vgSetiv and count is greater than 0
+													– if values is not properly aligned in vgSetfv or vgSetiv
+													– if count is less than 0 in vgSetfv or vgSetiv
+													– if count is not a valid value for the given parameter"
+28	vgSetiv							same as above	same as above
+29	vgSetf							same as above	same as above
+30	vgDrawPath						void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if path is not a valid path handle, or is not shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if paintModes is not a valid bitwise OR of values from the VGPaintMode
+														enumeration"
+31	vgFinish						void	
+32	vgLoadIdentity					void	
+33	vgLoadMatrix					void			"ERRORS
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if m is NULL
+													– if m is not properly aligned"
+34	vgTranslate						void	
+35	vgMultMatrix					void			"ERRORS
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if m is NULL
+													– if m is not properly aligned"
+36	vgDrawImage						void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if image is not a valid image handle, or is not shared with the current
+														context
+													VG_IMAGE_IN_USE_ERROR
+													– if image is currently a rendering target"
+37	vgCreatePaint					VGPaint			"If insufficient memory is available to allocate a
+													new object, VG_INVALID_HANDLE is returned."
+38	vgClear							void			"ERRORS
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if width or height is less than or equal to 0"
+39	vgPaintPattern					void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if paint is not a valid paint handle, or is not shared with the current context
+													– if pattern is neither a valid image handle nor equal to
+													VG_INVALID_HANDLE, or is not shared with the current context
+													VG_IMAGE_IN_USE_ERROR
+													– if pattern is currently a rendering target"
+40	vgImageSubData					void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if image is not a valid image handle, or is not shared with the current
+														context
+													VG_IMAGE_IN_USE_ERROR
+													– if image is currently a rendering target
+													VG_UNSUPPORTED_IMAGE_FORMAT_ERROR
+													– if dataFormat is not a valid value from the VGImageFormat enumeration
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if width or height is less than or equal to 0
+													– if data is NULL
+													– if data is not properly aligned"
+41	vgSetGlyphToImage				void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if font is not a valid font handle, or is not shared with the current context
+													– if image is not a valid font handle or VG_INVALID_HANDLE, or is not
+														shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if the pointer to glyphOrigin or escapement is NULL or is not properly
+														aligned
+													VG_IMAGE_IN_USE_ERROR
+													– if image is currently a rendering target"
+42	vgDrawGlyph						void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if font is not a valid font handle, or is not shared with the current context
+													VG_ILLEGAL_ARGUMENT_ERROR
+													– if glyphIndex has not been defined for a given font object
+													– if paintModes is not a valid bitwise OR of values from the VGPaintMode
+														enumeration, or 0"
+43	vgDestroyFont					void			"ERRORS
+													VG_BAD_HANDLE_ERROR
+													– if font is not a valid font handle, or is not shared with the current context"
+
+44	vgSetfv	                        void	        same as 28,29 and 30
+
+45  vgCreateConstImageFSL           VGImage         "If insufficient memory is available to allocate a
+													new object, VG_INVALID_HANDLE is returned." 
+
+*/
+
+/* If user wants to add other possible errors also to the mask for given api, they can addd */
+/* Here most of the api's generate errors as "invalid argument" or "invalid handle" and
+   for these api we ll not going to monitor for any error hence do mask with no error
+*/
+#define vgDestroyImage_ERROR_MASK		          (GFX_MGR02_VG_NO_ERROR)		    
+#define vgDestroyConstImageFSL_ERROR_MASK		  (GFX_MGR02_VG_NO_ERROR)
+#define vgDestroyPath_ERROR_MASK	              (GFX_MGR02_VG_NO_ERROR)
+#define vgDestroyPaint_ERROR_MASK	              (GFX_MGR02_VG_NO_ERROR)
+#define vgSetParameteri_ERROR_MASK	              (GFX_MGR02_VG_NO_ERROR)
+#define vgCreateImage_ERROR_MASK                  (GFX_MGR02_VG_NO_ERROR)
+#define vgCreatePath_ERROR_MASK	                  (GFX_MGR02_VG_NO_ERROR)
+#define vgAppendPathData_ERROR_MASK	              (GFX_MGR02_VG_NO_ERROR)
+#define vgSetParameterfv_ERROR_MASK	              (GFX_MGR02_VG_NO_ERROR)
+#define vgSetPaint_ERROR_MASK		              (GFX_MGR02_VG_NO_ERROR)
+#define vgCreateFont_ERROR_MASK	                  (GFX_MGR02_VG_NO_ERROR)
+#define vgSetGlyphToPath_ERROR_MASK               (GFX_MGR02_VG_NO_ERROR)
+#define vgSeti_ERROR_MASK                         (GFX_MGR02_VG_NO_ERROR)
+#define vgSetiv_ERROR_MASK						  (GFX_MGR02_VG_NO_ERROR)
+#define vgSetf_ERROR_MASK						  (GFX_MGR02_VG_NO_ERROR)
+#define vgDrawPath_ERROR_MASK					  (GFX_MGR02_VG_NO_ERROR)
+#define vgFinish_ERROR_MASK		                  (GFX_MGR02_VG_NO_ERROR)
+#define vgLoadIdentity_ERROR_MASK                 (GFX_MGR02_VG_NO_ERROR)
+#define vgLoadMatrix_ERROR_MASK	                  (GFX_MGR02_VG_NO_ERROR)
+#define vgTranslate_ERROR_MASK					  (GFX_MGR02_VG_NO_ERROR)
+#define vgMultMatrix_ERROR_MASK					  (GFX_MGR02_VG_NO_ERROR)
+#define vgDrawImage_ERROR_MASK					  (GFX_MGR02_VG_NO_ERROR)
+#define vgCreatePaint_ERROR_MASK	              (GFX_MGR02_VG_OUT_OF_MEMORY_FAULT)
+#define vgClear_ERROR_MASK						  (GFX_MGR02_VG_NO_ERROR)
+#define vgPaintPattern_ERROR_MASK				  (GFX_MGR02_VG_NO_ERROR)
+#define vgImageSubData_ERROR_MASK				  (GFX_MGR02_VG_NO_ERROR)
+#define vgSetGlyphToImage_ERROR_MASK			  (GFX_MGR02_VG_NO_ERROR)
+#define vgDrawGlyph_ERROR_MASK				      (GFX_MGR02_VG_NO_ERROR)
+#define vgSetfv_ERROR_MASK				          (GFX_MGR02_VG_NO_ERROR)
+#define vgDestroyFont_ERROR_MASK				  (GFX_MGR02_VG_NO_ERROR)
+#define vgCreateConstImageFSL_ERROR_MASK          (GFX_MGR02_VG_OUT_OF_MEMORY_FAULT)
+															   
+															   
+#endif
+
+/*============================================================================
+ **
+ **============================================================================
+ ** C M S    R E V I S I O N    N O T E S
+ **============================================================================
+ **
+ ** For each change to this file, be sure to record:
+ ** 1.  Who made the change and when the change was made.
+ ** 2.  Why the change was made and the intended result.
+ **
+ ** CMS Rev #        Date         By
+ ** CMS Rev X.X      mm/dd/yy     CDSID
+ **
+ **============================================================================
+ **
+ ** CMS Rev 1.0      30-Jan-2017    SBOLLAM
+ ** Traceability:    RTC ID: 750237
+ ** Description:     Initial version creation. This file can be
+ **                  update by application as per their requirement
+ ** 
+ **==========================================================================*/															   
+															   
+
+
+
+
+
+

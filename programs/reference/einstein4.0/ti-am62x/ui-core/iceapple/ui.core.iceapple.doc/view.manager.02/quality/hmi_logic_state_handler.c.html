@@ -1,0 +1,1771 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_logic_state_handler.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	 **
+    3:	 **                     CONFIDENTIAL VISTEON CORPORATION
+    4:	 **
+    5:	 ** This is an unpublished work of authorship, which contains trade secrets,
+    6:	 ** created in 2010. Visteon Corporation owns all rights to this work and
+    7:	 ** intends to maintain it in confidence to preserve its trade secret status.
+    8:	 ** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	 ** United States or those of any other country that may have jurisdiction,
+   10:	 ** to protect this work as an unpublished work, in the event of an
+   11:	 ** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	 ** also reserves its rights under all copyright laws to protect this work as
+   13:	 ** a published work, when appropriate. Those having access to this work may
+   14:	 ** not copy it, use it, modify it or disclose the information contained in
+   15:	 ** it without the written authorization of Visteon Corporation.
+   16:	 **
+   17:	 **============================================================================
+   18:	 **
+   19:	 ** Name:           hmi_logic_state_handler.c
+   20:	 **
+   21:	 ** Description:    This module handles the logic state (screen) priority
+   22:	 **                 stack management for multiple layers, manages the
+   23:	 **                 presentation callback for active states/screens in the
+   24:	 **                 priority stack and routes the button events to the
+   25:	 **                 active states/screens in the priority stack.
+   26:	 **
+   27:	 ** Organization:   Driver Information Software Section,
+   28:	 **                 Visteon
+   29:	 **
+   30:	 **============================================================================
+   31:	 **
+   32:	 **==========================================================================*/
+   33:	#define HMI_LOGIC_STATE_HANDLER_C
+   34:	
+   35:	/*============================================================================
+   36:	 ** I N C L U D E   F I L E S
+   37:	 **==========================================================================*/
+   38:	#include "hmi_logic_state_handler.h"
+   39:	#include "hmi_view_manager_02_autocode.h"
+   40:	#include "hmi_view_manager_02.h"
+   41:	
+   42:	/*============================================================================
+   43:	 ** I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S
+   44:	 **==========================================================================*/
+   45:	#ifndef UNUSED_VAR 
+   46:	#define UNUSED_VAR(X)  do { if(0 == (X)){} } while(0) 
+   47:	#endif
+   48:	/*
+   49:	** Typedefine to hold the configuration associated to a logic state.
+   50:	** priority    - Priority of the logic state.
+   51:	** layer_id    - Layer ID of the logic state.
+   52:	** handler_idx - Index in to event handler functions in l_lsh_ev_handler_config_SA[].
+   53:	*/
+   54:	typedef struct
+   55:	{
+   56:	   UINT8 priority;
+   57:	   UINT8 handler_idx;
+   58:	   UINT8 layer_id;
+   59:	}LSH_DISP_STATE_CONF_T;
+   60:	
+   61:	/*
+   62:	** Type defines to hold the display priority stack configuration for a layer.
+   63:	** ptr        - Pointer to a prioty stack LSH_STATE_ID_T array
+   64:	** deact_ptr  - Pointer to LSH_STATE_ID_T array where deactivated states are stored. This
+   65:	**              used by the hmi_lsh_task() to decide whether the presentation
+   66:	**              callback to be invoked to notify the deactivations.
+   67:	** change_ptr - Indicates that either ptr or deact_ptr contents are updated due to
+   68:	**              a hmi_lsh_add_state() or hmi_lsh_remove_state()
+   69:	** hap_ptr    - Pointer to a UINT8 which hold the highest active priority (hap)
+   70:	**              for the layer.
+   71:	** size       - Specifies the size of priority stack.
+   72:	*/
+   73:	typedef struct
+   74:	{
+   75:	   SFhmi_view_manager_02InstanceStruct * vm_ptr;
+   76:	   UINT8                               * hap_ptr;
+   77:	   UINT8                                 size;
+   78:	}LSH_DPM_STACK_CONF_T;
+   79:	
+   80:	#include "hmi_logic_state_handler.dat"
+   81:	
+   82:	/*============================================================================
+   83:	 ** I N T E R N A L   F U N C T I O N   P R O T O T Y P E S
+   84:	 **==========================================================================*/
+   85:	
+   86:	/*============================================================================
+   87:	 ** M E M O R Y   A L L O C A T I O N
+   88:	 **==========================================================================*/
+   89:	
+   90:	/*
+   91:	** Following table contains the button id range for all the configured
+   92:	** number of button slots.
+   93:	*/
+   94:	static const LSH_BUTTON_SLOT_CONFIG_T lc_sed_button_slot_config_SA[LSH_NUMBER_OF_BUTTON_SLOTS] =
+   95:	{
+   96:	   LSH_BUTTON_ID_SLOT_CONFIG_LIST
+   97:	};
+   98:	
+   99:	/*
+  100:	** This holds the current status information of the individual slots.
+  101:	** SED will use this status to register button id's against a display
+  102:	** id.
+  103:	*/
+  104:	static LSH_BUTTON_SLOT_STATUS_T l_sed_button_status_S[LSH_NUMBER_OF_BUTTON_SLOTS];
+  105:	
+  106:	/*
+  107:	** holds the button ID and state to be remapped incase the LSH
+  108:	** was not able to find the button in any of the slots. In such case
+  109:	** the request will be stored in to this variables and processed later.
+  110:	** This is to handle a case where the hmi_lsh_remap_button_events called
+  111:	** from a button handler when the requested button is still not registred
+  112:	** So hmi_lsh_remap_button_events may not find the button in any of the slots
+  113:	** So the request will be stored in to the variables and when the
+  114:	** hmi_lsh_post_button_eventfinally register the button event, will register
+  115:	** the button to l_remap_target_ls_id.
+  116:	*/
+  117:	volatile UINT16         l_remap_button_id_U16;
+  118:	volatile LSH_STATE_ID_T l_remap_target_ls_id;
+  119:	volatile UINT8          l_remap_target_ls_client_id;
+  120:	
+  121:	/*============================================================================
+  122:	 ** E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S
+  123:	 **==========================================================================*/
+  124:	
+  125:	/*============================================================================
+  126:	 ** Function Name:    hmi_lsh_initialize
+  127:	 ** Visibility:       global
+  128:	 ** Description:      This is the initialization function for the LSH. This
+  129:	 **                   function initializes all status variable maintained by
+  130:	 **                   LSH.
+  131:	 ** Invocation:       Invoked by application when ever LSH needs to be
+  132:	 **                   initialized
+  133:	 ** Inputs/Outputs:   p_init_type_U8 indicates the init type as Cold or Warm.
+  134:	 ** Critical Section: None.
+  135:	 ** Created:          19-Feb-2010 by EMANOJ1
+  136:	 ** Updated:          29-Dec-2010 by EMANOJ1
+  137:	 **==========================================================================*/
+  138:	void hmi_lsh_initialize(UINT8 p_init_type_U8)
+  139:	{
+  140:	    UINT8 fl_count_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+  141:	    LSH_BUTTON_SLOT_STATUS_T * fl_sed_button_status_SP = &amp;l_sed_button_status_S[0];
+  142:	    LSH_DPM_STACK_CONF_T const * fl_dpm_config_SP;
+  143:	    UINT8 fl_layer_id_U8 = LSH_NUMBER_OF_LAYERS;
+  144:	
+  145:	    hmi_view_manager_02_initializer();
+  146:	
+  147:	    /*
+  148:	    ** Free all button slots
+  149:	    */
+  150:	    while (fl_count_U8 &gt; 0)
+  151:	    {
+  152:	        fl_count_U8--;
+  153:	        fl_sed_button_status_SP-&gt;button_id = LSH_INVALID_BUTTON_ID;
+  154:	        fl_sed_button_status_SP-&gt;state = LSH_BUTTON_INACTIVE_STATE;
+  155:	        fl_sed_button_status_SP-&gt;logic_state_id = LSH_NUMBER_OF_LOGIC_STATES;
+  156:	        fl_sed_button_status_SP-&gt;client_id = (UINT8)LSH_INVALID_CLIENT_ID;
+  157:	        fl_sed_button_status_SP = &amp;fl_sed_button_status_SP[1];
+  158:	    }
+  159:	
+  160:	    /*
+  161:	    ** Free all the logic current display state, previous state
+  162:	    ** and stack changed flags.
+  163:	    */
+  164:	    while(fl_layer_id_U8 &gt; 0)
+  165:	    {
+  166:	        #if LSH_NUMBER_OF_LAYERS &gt; 1
+  167:	        fl_layer_id_U8--;
+  168:	        #else
+  169:	        fl_layer_id_U8 = 0;
+  170:	        #endif
+  171:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_layer_id_U8];
+  172:	
+  173:	        if (fl_dpm_config_SP-&gt;size &gt; 0)
+  174:	        {
+  175:	            SFhmi_view_manager_02InstanceStruct * fl_dpm_stack_P = fl_dpm_config_SP-&gt;vm_ptr;
+  176:	
+  177:	            fl_count_U8 = 0;
+  178:	
+  179:	            while (fl_count_U8 &lt; fl_dpm_config_SP-&gt;size)
+  180:	            {
+  181:	                initialize_hmi_view_manager_02(fl_dpm_stack_P);
+  182:	                /*fl_dpm_stack_P-&gt;l_priority = fl_count_U8;*/
+  183:	                fl_dpm_stack_P++;
+  184:	                fl_count_U8++;
+  185:	            }
+  186:	            *fl_dpm_config_SP-&gt;hap_ptr = fl_dpm_config_SP-&gt;size;
+  187:	        }
+  188:	    }
+  189:	    l_remap_button_id_U16 = LSH_INVALID_BUTTON_ID;
+  190:	    l_remap_target_ls_id  = LSH_NUMBER_OF_LOGIC_STATES;
+  191:	    l_remap_target_ls_client_id  = (UINT8)LSH_INVALID_CLIENT_ID;
+  192:	    UNUSED_VAR(p_init_type_U8);
+  193:	}
+  194:	
+  195:	/*============================================================================
+  196:	 ** Function Name:    void hmi_lsh_add_state()
+  197:	 ** Visibility:       global
+  198:	 ** Description:      This function adds the passed logic state to the priority
+  199:	 **                   table. If this has a higher priority than the the activate
+  200:	 **                   states in the table, then a focus lost notification is
+  201:	 **                   given to the next low priority state.
+  202:	 **                   If a logic state is replaced then call the presentation
+  203:	 **                   of the removed state to notify that the logic state is
+  204:	 **                   deactivated so that it can perform any display removal
+  205:	 **                   activities.
+  206:	 ** Invocation:       Invoked by logic components when ever it needs a logic state
+  207:	 **                   to be activated.
+  208:	 ** Inputs/Outputs:   in  - Logic state id to be activated in p_logic_state_id_U8.
+  209:	 **                   out - Bitwise OR of the following
+  210:	 **                         LSH_INVALID_STATUS    if passed state id is invalid
+  211:	 **                         LSH_LOST_FOCUS_STATUS if passed state is added and is
+  212:	 **                                               not having focus currently.
+  213:	 **                         LSH_GOT_FOCUS_STATUS  if passed state is added and is
+  214:	 **                                               having focus currently.
+  215:	 **                         LSH_ANIM_STARTED_STATUS if animation is requested and
+  216:	 **                                                 accepted by the anim core.
+  217:	 **                                                 in this case a focus callback
+  218:	 **                                                 will be made on completion of
+  219:	 **                                                 animation
+  220:	 ** Critical Section: None.
+  221:	 ** Created:          19-Feb-2010 by EMANOJ1
+  222:	 ** Updated:          27-Dec-2010 by EMANOJ1
+  223:	 **==========================================================================*/
+  224:	UINT8 hmi_lsh_add_state(LSH_STATE_ID_T    p_logic_state_id_U8
+  225:	                     #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  226:	                       ,UINT8 p_anim_id
+  227:	                     #endif
+  228:	                       )
+  229:	{
+  230:	    UINT8 fl_focus_state_U8 = LSH_INVALID_STATUS;
+  231:	
+  232:	    if (p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  233:	    {
+  234:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  235:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  236:	        UINT8                         fl_priority_U8;
+  237:	
+  238:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+  239:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  240:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  241:	
+  242:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  243:	        {
+  244:	            hmi_vm_add_state(  &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8],
+  245:	                                LSH_VM_STATE_ID(LSH_INVALID_CLIENT_ID,p_logic_state_id_U8),
+  246:	                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  247:	                               p_anim_id
+  248:	                            #else
+  249:	                               ANIM_MAX_ID
+  250:	                            #endif
+  251:	                            );
+  252:	            fl_focus_state_U8 = 0;
+  253:	        }
+  254:	    }
+  255:	    return(fl_focus_state_U8);
+  256:	}
+  257:	
+  258:	/*============================================================================
+  259:	 ** Function Name:    hmi_lsh_remove_state
+  260:	 ** Visibility:       global
+  261:	 ** Description:      This function removes the passed logic state from the priority
+  262:	 **                   table. If this was the highest priority state, then a focus
+  263:	 **                   gained notification is given to the next high priority state.
+  264:	 **                   Also calls the presentation to notify that the logic state is
+  265:	 **                   deactivated so that it can perform any display removal
+  266:	 **                   activities.
+  267:	 ** Invocation:       Invoked by logic components when ever it needs a logic state
+  268:	 **                   to be deactivated.
+  269:	 ** Inputs/Outputs:   in  - Logic state id to be deactivated in p_logic_state_id_U8.
+  270:	 **                   out - Bitwise OR of the following
+  271:	 **                         LSH_INVALID_STATUS     if passed state id is invalid
+  272:	 **                         LSH_DEACTIVATED_STATUS if passed state is removed.
+  273:	 **                         LSH_ANIM_STARTED_STATUS if animation is requested and
+  274:	 **                                                 accepted by the anim core.
+  275:	 **                                                 in this case a focus callback
+  276:	 **                                                 will be made on completion of
+  277:	 **                                                 animation
+  278:	 ** Critical Section: None.
+  279:	 ** Created:          19-Feb-2010 by EMANOJ1
+  280:	 ** Updated:          29-Dec-2010 by EMANOJ1
+  281:	 **==========================================================================*/
+  282:	UINT8 hmi_lsh_remove_state(  LSH_STATE_ID_T p_logic_state_id_U8
+  283:	                          #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  284:	                           , UINT8 p_anim_id
+  285:	                          #endif
+  286:	                          )
+  287:	{
+  288:	    UINT8 fl_focus_state_U8 = LSH_INVALID_STATUS;
+  289:	
+  290:	    if (p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  291:	    {
+  292:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  293:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  294:	        UINT8                         fl_priority_U8;
+  295:	
+  296:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+  297:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  298:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  299:	
+  300:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  301:	        {
+  302:	            hmi_vm_remove_state(  &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8],
+  303:	                                LSH_VM_STATE_ID(LSH_INVALID_CLIENT_ID,p_logic_state_id_U8),
+  304:	                               #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  305:	                                  p_anim_id
+  306:	                               #else
+  307:	                                  ANIM_MAX_ID
+  308:	                               #endif
+  309:	                               );
+  310:	            fl_focus_state_U8 = 0;
+  311:	        }
+  312:	    }
+  313:	    return(fl_focus_state_U8);
+  314:	}
+  315:	
+  316:	/*============================================================================
+  317:	 ** Function Name:    void hmi_lsh_add_state_ext()
+  318:	 ** Visibility:       global
+  319:	 ** Description:      This function adds the passed logic state to the priority
+  320:	 **                   table. If this has a higher priority than the the activate
+  321:	 **                   states in the table, then a focus lost notification is
+  322:	 **                   given to the next low priority state.
+  323:	 **                   If a logic state is replaced then call the presentation
+  324:	 **                   of the removed state to notify that the logic state is
+  325:	 **                   deactivated so that it can perform any display removal
+  326:	 **                   activities.
+  327:	 ** Invocation:       Invoked by logic components when ever it needs a logic state
+  328:	 **                   to be activated.
+  329:	 ** Inputs/Outputs:   in  - Logic state id to be activated in p_logic_state_id_U8.
+  330:	 **                   out - Bitwise OR of the following
+  331:	 **                         LSH_INVALID_STATUS    if passed state id is invalid
+  332:	 **                         LSH_LOST_FOCUS_STATUS if passed state is added and is
+  333:	 **                                               not having focus currently.
+  334:	 **                         LSH_GOT_FOCUS_STATUS  if passed state is added and is
+  335:	 **                                               having focus currently.
+  336:	 **                         LSH_ANIM_STARTED_STATUS if animation is requested and
+  337:	 **                                                 accepted by the anim core.
+  338:	 **                                                 in this case a focus callback
+  339:	 **                                                 will be made on completion of
+  340:	 **                                                 animation
+  341:	 ** Critical Section: None.
+  342:	 ** Created:          19-Feb-2010 by EMANOJ1
+  343:	 ** Updated:          27-Dec-2010 by EMANOJ1
+  344:	 **==========================================================================*/
+  345:	UINT8 hmi_lsh_add_state_ext(  LSH_STATE_ID_T p_logic_state_id_U8
+  346:	                       #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  347:	                        , UINT8   p_anim_id
+  348:	                       #endif
+  349:	                       ,UINT8 p_client_id_U8
+  350:	                       )
+  351:	{
+  352:	    UINT8 fl_focus_state_U8 = LSH_INVALID_STATUS;
+  353:	
+  354:	    if (p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  355:	    {
+  356:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  357:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  358:	        UINT8                         fl_priority_U8;
+  359:	
+  360:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+  361:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  362:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  363:	
+  364:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  365:	        {
+  366:	            hmi_vm_add_state(  &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8],
+  367:	                            LSH_VM_STATE_ID(p_client_id_U8,p_logic_state_id_U8),
+  368:	                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  369:	                               p_anim_id
+  370:	                            #else
+  371:	                               ANIM_MAX_ID
+  372:	                            #endif
+  373:	                            );
+  374:	            fl_focus_state_U8 = 0;
+  375:	        }
+  376:	    }
+  377:	    return(fl_focus_state_U8);
+  378:	}
+  379:	
+  380:	/*============================================================================
+  381:	 ** Function Name:    hmi_lsh_remove_state_ext
+  382:	 ** Visibility:       global
+  383:	 ** Description:      This function removes the passed logic state from the priority
+  384:	 **                   table. If this was the highest priority state, then a focus
+  385:	 **                   gained notification is given to the next high priority state.
+  386:	 **                   Also calls the presentation to notify that the logic state is
+  387:	 **                   deactivated so that it can perform any display removal
+  388:	 **                   activities.
+  389:	 ** Invocation:       Invoked by logic components when ever it needs a logic state
+  390:	 **                   to be deactivated.
+  391:	 ** Inputs/Outputs:   in  - Logic state id to be deactivated in p_logic_state_id_U8.
+  392:	 **                   out - Bitwise OR of the following
+  393:	 **                         LSH_INVALID_STATUS     if passed state id is invalid
+  394:	 **                         LSH_DEACTIVATED_STATUS if passed state is removed.
+  395:	 **                         LSH_ANIM_STARTED_STATUS if animation is requested and
+  396:	 **                                                 accepted by the anim core.
+  397:	 **                                                 in this case a focus callback
+  398:	 **                                                 will be made on completion of
+  399:	 **                                                 animation
+  400:	 ** Critical Section: None.
+  401:	 ** Created:          19-Feb-2010 by EMANOJ1
+  402:	 ** Updated:          29-Dec-2010 by EMANOJ1
+  403:	 **==========================================================================*/
+  404:	UINT8 hmi_lsh_remove_state_ext(  LSH_STATE_ID_T p_logic_state_id_U8
+  405:	                          #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  406:	                           , UINT8 p_anim_id
+  407:	                          #endif
+  408:	                          ,UINT8 p_client_id_U8
+  409:	                          )
+  410:	{
+  411:	    UINT8 fl_focus_state_U8 = LSH_INVALID_STATUS;
+  412:	
+  413:	    if (p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  414:	    {
+  415:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  416:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  417:	        UINT8                         fl_priority_U8;
+  418:	
+  419:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+  420:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  421:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  422:	
+  423:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  424:	        {
+  425:	            hmi_vm_remove_state(  &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8],
+  426:	                            LSH_VM_STATE_ID(p_client_id_U8,p_logic_state_id_U8),
+  427:	                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  428:	                               p_anim_id
+  429:	                            #else
+  430:	                               ANIM_MAX_ID
+  431:	                            #endif
+  432:	                               );
+  433:	            fl_focus_state_U8 = 0;
+  434:	        }
+  435:	    }
+  436:	    return(fl_focus_state_U8);
+  437:	}
+  438:	
+  439:	/*============================================================================
+  440:	 ** Function Name:    hmi_lsh_get_focus_status
+  441:	 ** Visibility:       global
+  442:	 ** Description:      This function returns the focus status for the requested
+  443:	 **                   logic state ID.
+  444:	 ** Invocation:       Invoked by VM statemachine and application when required.
+  445:	 ** Inputs/Outputs:   in  - Logic state id in p_logic_state_id_U8.
+  446:	 **                   out - any of the following
+  447:	 **                         LSH_FOCUS_STATUS_INACTIVE if none of the states has
+  448:	 **                                                   focus
+  449:	 **                         LSH_FOCUS_STATUS_OK if requested state has focus
+  450:	 **                         LSH_FOCUS_STATUS_HIDEN if requested state has no
+  451:	 **                                                focus
+  452:	 **                         LSH_FOCUS_STATUS_INVALID invalid state id passed
+  453:	 ** Critical Section: None.
+  454:	 ** Created:          07-Apr-2011 by EMANOJ1
+  455:	 ** Updated:          07-Apr-2011 by EMANOJ1
+  456:	 **==========================================================================*/
+  457:	UINT32 hmi_lsh_get_focus_status(LSH_STATE_ID_T p_logic_state_id_U8)
+  458:	{
+  459:	    LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  460:	    LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  461:	    UINT32                        fl_priority_U8;
+  462:	    UINT32                        fl_status_U32;
+  463:	
+  464:	    if(p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  465:	    {
+  466:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+  467:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  468:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  469:	
+  470:	        if(*fl_dpm_config_SP-&gt;hap_ptr &gt;= fl_dpm_config_SP-&gt;size)
+  471:	        {
+  472:	           /*
+  473:	           ** There is no High Priority state available
+  474:	           */
+  475:	           fl_status_U32 = LSH_FOCUS_STATUS_INACTIVE;
+  476:	        }
+  477:	        else if(*fl_dpm_config_SP-&gt;hap_ptr == fl_priority_U8)
+  478:	        {
+  479:	           /*
+  480:	           ** Passes state is the Highest priority state
+  481:	           */
+  482:	           fl_status_U32 = LSH_FOCUS_STATUS_OK;
+  483:	        }
+  484:	        else
+  485:	        {
+  486:	           /*
+  487:	           ** Passed state is hidden below another high priority
+  488:	           ** state.
+  489:	           */
+  490:	           fl_status_U32 = LSH_FOCUS_STATUS_HIDEN;
+  491:	        }
+  492:	    }
+  493:	    else
+  494:	    {
+  495:	        fl_status_U32 = LSH_FOCUS_STATUS_INVALID;
+  496:	    }
+  497:	    return(fl_status_U32);
+  498:	}
+  499:	
+  500:	/*============================================================================
+  501:	 ** Function Name:    hmi_lsh_focus_handler
+  502:	 ** Visibility:       private
+  503:	 ** Description:      This function invokes the focus handler of passed state.
+  504:	 ** Invocation:       Invoked by VM statemachine only.
+  505:	 ** Inputs/Outputs:   in  - Logic state id in p_logic_state_id_U8.
+  506:	 **                         focus status in p_status_U8
+  507:	 **                   out - none
+  508:	 ** Critical Section: None.
+  509:	 ** Created:          07-Apr-2011 by EMANOJ1
+  510:	 ** Updated:          26-Jan-2014 by NKRISHN9
+  511:	 **==========================================================================*/
+  512:	void hmi_lsh_focus_handler(UINT16 p_logic_state_id_U16, UINT8 p_status_U8)
+  513:	{
+  514:	#if LSH_NUMBER_OF_EV_HANDLERS &gt; 0
+  515:	    LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  516:	    LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  517:	    LSH_EV_HANDLER_CONF_T const * fl_handler_SP;
+  518:	    LSH_FOCUS_HANDLER_T         * fl_focus_handler_FP;
+  519:	    UINT32                        fl_priority_U8;
+  520:	    LSH_FOCUS_HANDLER_STATUS_T    fl_focus_hndl_status_S;
+  521:	
+  522:	
+  523:	    fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[LSH_GET_STATE_ID(p_logic_state_id_U16)];
+  524:	    fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  525:	    fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  526:	
+  527:	    fl_focus_hndl_status_S.logic_state_id = LSH_GET_STATE_ID(p_logic_state_id_U16);
+  528:	    fl_focus_hndl_status_S.client_id      = LSH_GET_CLIENT_ID(p_logic_state_id_U16);
+  529:	    fl_focus_hndl_status_S.focus_status   = p_status_U8;
+  530:	
+  531:	    if (fl_state_conf_SP-&gt;handler_idx &lt; LSH_NUMBER_OF_EV_HANDLERS)
+  532:	    {
+  533:	      fl_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_state_conf_SP-&gt;handler_idx];
+  534:	
+  535:	      if((fl_handler_SP-&gt;presentation != LSH_NULL_PRESN_HANDLER) &amp;&amp; (fl_handler_SP-&gt;focus != LSH_NULL_FOCUS_HANDLER))
+  536:	      {
+  537:	        fl_focus_handler_FP = fl_handler_SP-&gt;focus;
+  538:	        
+  539:	        if((p_status_U8 &amp; LSH_GOT_FOCUS_STATUS) != 0)
+  540:	        {
+  541:	           if((*fl_dpm_config_SP-&gt;hap_ptr &gt;= fl_dpm_config_SP-&gt;size) ||
+  542:	              (*fl_dpm_config_SP-&gt;hap_ptr &lt;=  fl_priority_U8))
+  543:	           {
+  544:	              if(*fl_dpm_config_SP-&gt;hap_ptr &lt;  fl_priority_U8)
+  545:	              {
+  546:	                 /*
+  547:	                 ** Passed priority is higher than the hap_ptr, so
+  548:	                 ** Issue lost focus notification to the HAP state.
+  549:	                 */
+  550:	                 LSH_FOCUS_HANDLER_STATUS_T    fl_hap_focus_hndl_sts_S;
+  551:	                 UINT32                        fl_hap_handler_index;
+  552:	                 LSH_EV_HANDLER_CONF_T const * fl_hap_handler_SP;
+  553:	
+  554:	                 fl_hap_focus_hndl_sts_S.logic_state_id = LSH_GET_STATE_ID(fl_dpm_config_SP-&gt;vm_ptr[*fl_dpm_config_SP-&gt;hap_ptr].l_gfx_active_state_id);
+  555:	
+  556:	                 if(fl_hap_focus_hndl_sts_S.logic_state_id &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  557:	                 {
+  558:	                     fl_hap_handler_index = lc_lsh_screen_config_SA[fl_hap_focus_hndl_sts_S.logic_state_id].handler_idx;
+  559:	                     if (fl_hap_handler_index &lt; LSH_NUMBER_OF_EV_HANDLERS)
+  560:	                     {
+  561:	                         fl_hap_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_hap_handler_index];
+  562:	                         if (fl_hap_handler_SP-&gt;focus != LSH_NULL_FOCUS_HANDLER)
+</PRE>
+<A NAME="ERR_LINE_563"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  563:	                         {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(563) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_961"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  564:	                             fl_hap_focus_hndl_sts_S.focus_id     = LSH_GET_STATE_ID(p_logic_state_id_U16);
+  565:	                             fl_hap_focus_hndl_sts_S.focus_status = LSH_LOST_FOCUS_STATUS;
+  566:	                             fl_hap_focus_hndl_sts_S.client_id    = LSH_GET_CLIENT_ID(fl_dpm_config_SP-&gt;vm_ptr[*fl_dpm_config_SP-&gt;hap_ptr].l_gfx_active_state_id);
+  567:	                             fl_hap_handler_SP-&gt;focus(&amp;fl_hap_focus_hndl_sts_S);
+  568:	                             #ifdef LSH_FOCUS_STATUS_FOR_ALL_SCREEN
+  569:	                                LSH_FOCUS_STATUS_FOR_ALL_SCREEN(&amp;fl_hap_focus_hndl_sts_S);
+  570:	                             #endif
+  571:	                         }
+  572:	                     }
+  573:	                 }
+  574:	              }
+  575:	              /*
+  576:	              ** Update the heighest active priority if
+  577:	              ** 1. passed state is of greater priority than hap_ptr OR
+  578:	              ** 2. if the hap_ptr is invalid
+  579:	              */
+  580:	              if((fl_focus_handler_FP != LSH_NULL_FOCUS_HANDLER) &amp;&amp; (fl_handler_SP-&gt;focus != LSH_NULL_FOCUS_HANDLER))
+  581:	              {
+  582:	                 if(*fl_dpm_config_SP-&gt;hap_ptr &gt;= fl_dpm_config_SP-&gt;size)
+  583:	                 {
+  584:	                   fl_focus_hndl_status_S.focus_id = fl_focus_hndl_status_S.logic_state_id;
+  585:	                 }
+  586:	                 else
+  587:	                 {
+  588:	                   fl_focus_hndl_status_S.focus_id = LSH_GET_STATE_ID(fl_dpm_config_SP-&gt;vm_ptr[*fl_dpm_config_SP-&gt;hap_ptr].l_gfx_active_state_id);
+  589:	                 }
+  590:	                 fl_focus_hndl_status_S.focus_status = p_status_U8;
+  591:	                 fl_handler_SP-&gt;focus(&amp;fl_focus_hndl_status_S);
+  592:	                 #ifdef LSH_FOCUS_STATUS_FOR_ALL_SCREEN
+  593:	                    LSH_FOCUS_STATUS_FOR_ALL_SCREEN(&amp;fl_focus_hndl_status_S);
+  594:	                 #endif
+  595:	
+  596:	              }
+  597:	              *fl_dpm_config_SP-&gt;hap_ptr = (UINT8)fl_priority_U8;
+  598:	           }
+  599:	           else
+  600:	           {
+  601:	              /*
+  602:	              ** Not the heighest priority state, so pass the status as
+  603:	              ** LSH_LOST_FOCUS_STATUS.
+  604:	              */
+  605:	              if((fl_focus_handler_FP != LSH_NULL_FOCUS_HANDLER) &amp;&amp; (fl_handler_SP-&gt;focus != LSH_NULL_FOCUS_HANDLER))
+  606:	              {
+  607:	                 fl_focus_hndl_status_S.focus_status &amp;= (UINT8)~LSH_GOT_FOCUS_STATUS;
+  608:	                 fl_focus_hndl_status_S.focus_status |= LSH_LOST_FOCUS_STATUS;
+  609:	                 fl_focus_hndl_status_S.focus_id      = LSH_GET_STATE_ID(fl_dpm_config_SP-&gt;vm_ptr[*fl_dpm_config_SP-&gt;hap_ptr].l_gfx_active_state_id);
+  610:	                 fl_handler_SP-&gt;focus(&amp;fl_focus_hndl_status_S);
+  611:	                 #ifdef LSH_FOCUS_STATUS_FOR_ALL_SCREEN
+  612:	                    LSH_FOCUS_STATUS_FOR_ALL_SCREEN(&amp;fl_focus_hndl_status_S);
+  613:	                 #endif
+  614:	
+  615:	              }
+  616:	           }
+  617:	        }
+  618:	        else
+  619:	        {
+  620:	           if((p_status_U8 &amp; LSH_DEACTIVATED_STATUS) != 0)
+  621:	           {
+  622:	              /*
+  623:	              ** Reset the HAP if the HAP matches with the deactivated
+  624:	              ** states priority.
+  625:	              */
+  626:	              if(*fl_dpm_config_SP-&gt;hap_ptr == fl_priority_U8)
+  627:	              {
+  628:	                 *fl_dpm_config_SP-&gt;hap_ptr = fl_dpm_config_SP-&gt;size;
+  629:	              }
+  630:	           }
+  631:	           if((fl_focus_handler_FP != LSH_NULL_FOCUS_HANDLER) &amp;&amp; (fl_handler_SP-&gt;focus != LSH_NULL_FOCUS_HANDLER))
+  632:	           {
+  633:	              fl_focus_hndl_status_S.focus_id = LSH_GET_STATE_ID(p_logic_state_id_U16);
+  634:	              fl_handler_SP-&gt;focus(&amp;fl_focus_hndl_status_S);
+  635:	              #ifdef LSH_FOCUS_STATUS_FOR_ALL_SCREEN
+  636:	                LSH_FOCUS_STATUS_FOR_ALL_SCREEN(&amp;fl_focus_hndl_status_S);
+  637:	              #endif
+  638:	           }
+  639:	        }
+  640:	      }
+  641:	    }
+  642:	#endif
+  643:	}
+  644:	
+  645:	/*============================================================================
+  646:	 ** Function Name:    hmi_lsh_run_presentation
+  647:	 ** Visibility:       private
+  648:	 ** Description:      This function invokes the presentation handler of passed state.
+  649:	 ** Invocation:       Invoked by VM statemachine only.
+  650:	 ** Inputs/Outputs:   in  - Logic state id in p_logic_state_id_U8.
+  651:	 **                         status in p_status_U8
+  652:	 **                         client id in p_client_id
+  653:	 **                   out - none
+  654:	 ** Critical Section: None.
+  655:	 ** Created:          07-Apr-2011 by EMANOJ1
+  656:	 ** Updated:          27-aug-2013 by NKRISHN9
+  657:	 **==========================================================================*/
+  658:	void hmi_lsh_run_presentation(UINT16 p_logic_state_id_U16, UINT8 p_status)
+  659:	{
+  660:	#if LSH_NUMBER_OF_EV_HANDLERS &gt; 0
+  661:	    LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  662:	    LSH_EV_HANDLER_CONF_T const * fl_handler_SP;
+  663:	    LSH_PRESN_HANDLER_STATUS_T fl_handler_status_S;
+  664:	    if((LSH_GET_STATE_ID((p_logic_state_id_U16))) &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  665:	    {
+  666:	       fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[LSH_GET_STATE_ID(p_logic_state_id_U16)];
+  667:	       if (fl_state_conf_SP-&gt;handler_idx &lt; LSH_NUMBER_OF_EV_HANDLERS)
+  668:	       {
+  669:	          fl_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_state_conf_SP-&gt;handler_idx];
+  670:	          if (fl_handler_SP-&gt;presentation != LSH_NULL_PRESN_HANDLER)
+  671:	          {
+  672:	             fl_handler_status_S.logic_state_id = LSH_GET_STATE_ID(p_logic_state_id_U16);
+  673:	             fl_handler_status_S.presentation_status = p_status;
+  674:	             fl_handler_status_S.client_id = LSH_GET_CLIENT_ID(p_logic_state_id_U16);
+  675:	             fl_handler_SP-&gt;presentation(&amp;fl_handler_status_S);
+  676:	          }
+  677:	       }
+  678:	    }
+  679:	#endif
+  680:	}
+  681:	
+  682:	/*============================================================================
+  683:	 ** Function Name:    hmi_lsh_execute_presentation
+  684:	 ** Visibility:       global
+  685:	 ** Description:      This function executes the presentation for the passed
+  686:	 **                   logical state if the passed state is active. Presentation
+  687:	 **                   scheduling is blocked for a priority level or whole when
+  688:	 **                   an animation is in progress. This provides a means to
+  689:	 **                   schedule a blocked presentation when required by the anim
+  690:	 **                   core.
+  691:	 ** Invocation:       Invoked by animation core to schedule the presentation
+  692:	 **                   for a specified logical state during the animation sequence.
+  693:	 ** Inputs/Outputs:   None.
+  694:	 ** Critical Section: None.
+  695:	 ** Created:          29-Dec-2010 by EMANOJ1
+  696:	 ** Updated:          06-Apr-2011 by EMANOJ1
+  697:	 **==========================================================================*/
+  698:	void hmi_lsh_execute_presentation(UINT16 p_logic_state_id_U16)
+  699:	{
+  700:	    if (LSH_GET_STATE_ID(p_logic_state_id_U16) &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  701:	    {
+  702:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  703:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  704:	        UINT8                         fl_priority_U8;
+  705:	
+  706:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[LSH_GET_STATE_ID(p_logic_state_id_U16)];
+  707:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  708:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  709:	
+  710:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  711:	        {
+  712:	            hmi_vm_force_presentation(&amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8]);
+  713:	        }
+  714:	    }
+  715:	}
+  716:	
+  717:	/*============================================================================
+  718:	 ** Function Name:    hmi_lsh_task_ext
+  719:	 ** Visibility:       global
+  720:	 ** Description:      hmi_lsh_task() executes all the logic states where as 
+  721:	 **                   this function executes the lsh task for a given logic state
+  722:	 **                   This can be used by application if they wish to selectively 
+  723:	 **                   run the lsh task for specific states.
+  724:	 ** Invocation:       .
+  725:	 ** Inputs/Outputs:   None.
+  726:	 ** Critical Section: None.
+  727:	 ** Created:          17-Jan-2015 by EMANOJ1
+  728:	 ** Updated:          17-Jan-2015 by EMANOJ1
+  729:	 **==========================================================================*/
+  730:	void hmi_lsh_task_ext(UINT16 p_logic_state_id_U16)
+  731:	{
+  732:	    if (LSH_GET_STATE_ID(p_logic_state_id_U16) &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  733:	    {
+  734:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+  735:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+  736:	        UINT8                         fl_priority_U8;
+  737:	
+  738:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[LSH_GET_STATE_ID(p_logic_state_id_U16)];
+  739:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+  740:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+  741:	
+  742:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+  743:	        {
+  744:	           hmi_vm_tick(&amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8]);
+  745:	        }
+  746:	    }
+  747:	}
+  748:	
+  749:	/*============================================================================
+  750:	 ** Function Name:    hmi_lsh_task
+  751:	 ** Visibility:       global
+  752:	 ** Description:      This function implements the presentation function handling
+  753:	 **                   for the active logic states available in the priority table.
+  754:	 **                   This will invoke presentation function of active logic states
+  755:	 **                   Presetation will be invoked with following status parameter
+  756:	 **                   LSH_DEACTIVATED_STATUS - Indicates that associated logic state
+  757:	 **                                            is deactivated. Presentation can use
+  758:	 **                                            this to deactivate display.
+  759:	 **                   LSH_ACTIVATED_STATUS   - Indicates that associated logic state
+  760:	 **                                            is activated. Use this bring up the
+  761:	 **                                            screen and all the contents for the
+  762:	 **                                            first time
+  763:	 **                   LSH_REFRESH_STATUS     - Indicates that logic state is already
+  764:	 **                                            active and presentation only need to
+  765:	 **                                            refresh the changed items.
+  766:	 **                   When animation support is enabled the whole presentation
+  767:	 **                   or for a particular priority can be disabled using
+  768:	 **                   configuration to prevent interference to animation.
+  769:	 ** Invocation:       Invoked by clients periodically or when ever necessary to
+  770:	 **                   update the presentation.
+  771:	 ** Inputs/Outputs:   None.
+  772:	 ** Critical Section: None.
+  773:	 ** Created:          19-Feb-2010 by EMANOJ1
+  774:	 ** Updated:          16-Jul-2010 by EMANOJ1
+  775:	 **==========================================================================*/
+  776:	void hmi_lsh_task(void)
+  777:	{
+  778:	    LSH_DPM_STACK_CONF_T const * fl_dpm_config_SP;
+  779:	    SFhmi_view_manager_02InstanceStruct * fl_vm_instance_SP;
+  780:	    UINT32 fl_layer_id_U8 = LSH_NUMBER_OF_LAYERS;
+  781:	    SINT32 fl_priority_S8;
+  782:	
+  783:	    while(fl_layer_id_U8 &gt; 0)
+  784:	    {
+  785:	        #if LSH_NUMBER_OF_LAYERS &gt; 1
+  786:	        fl_layer_id_U8--;
+  787:	        #else
+  788:	        fl_layer_id_U8 = 0;
+  789:	        #endif
+  790:	
+  791:	        fl_dpm_config_SP  = &amp;lc_lsh_dpm_config_SA[fl_layer_id_U8];
+  792:	        fl_priority_S8    = (SINT32)fl_dpm_config_SP-&gt;size;
+  793:	        fl_priority_S8--;
+  794:	        fl_vm_instance_SP = &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_S8];
+  795:	        /*
+  796:	        ** This function executes from high priority to low so that
+  797:	        ** if a high priority state gets deactivated, hmi_lsh_focus_handler
+  798:	        ** can set the next highest priority in the same cycle itself.
+  799:	        */
+  800:	        while(fl_priority_S8 &gt;= 0)
+  801:	        {
+  802:	           fl_priority_S8--;
+  803:	           hmi_vm_tick(fl_vm_instance_SP);
+  804:	           fl_vm_instance_SP--;
+  805:	        }
+  806:	    }
+  807:	}
+  808:	
+  809:	/*============================================================================
+  810:	 ** Function Name:    hmi_lsh_post_button_event
+  811:	 ** Visibility:       global
+  812:	 ** Description:      Application needs to call this function when ever
+  813:	 **                   it detects a button event. This routine will
+  814:	 **                   deliver the button events from high priority display
+  815:	 **                   to low priority display until a priority display
+  816:	 **                   returns the status as LSH_STATUS_ABSORBED.
+  817:	 **                   If none of the active displays in priority table
+  818:	 **                   absorbs the button, the button event is given to the
+  819:	 **                   LSH_DEFAULT_BUTTON_EVENT_HANDLER.
+  820:	 ** Invocation:       Invoked by application when ever button event is detected.
+  821:	 ** Inputs/Outputs:   Button ID in p_button_id_U16 and state of the button in
+  822:	 **                   p_button_event_U8.
+  823:	 ** Critical Section: None.
+  824:	 ** Created:          19-Feb-2010 by EMANOJ1
+  825:	 ** Updated:          26-Jan-2014 by NKRISHN9
+  826:	 **==========================================================================*/
+  827:	void hmi_lsh_post_button_event(UINT16 p_button_id_U16, UINT8 p_button_event_U8)
+  828:	{
+  829:	    LSH_EVENT_HANDLER_STATUS_T fl_btn_hndlr_status;
+  830:	#if LSH_NUMBER_OF_EV_HANDLERS &gt; 0
+  831:	    UINT8          fl_return_state_U8 = LSH_STATUS_NONE;
+  832:	    SFhmi_view_manager_02InstanceStruct * fl_vm_inst_P;
+  833:	    LSH_DPM_STACK_CONF_T          const * fl_dpm_config_SP;
+  834:	    UINT8          fl_dpm_stack_count;
+  835:	    UINT8          fl_layer_id_U8;
+  836:	    UINT8          fl_count_U8;
+  837:	    UINT8          fl_slot_id_U8;
+  838:	    UINT8          fl_free_slot_id_U8;
+  839:	    UINT8          fl_found_config_U8;
+  840:	    UINT8          fl_active_client_id;
+  841:	    LSH_STATE_ID_T fl_active_state;
+  842:	    UINT16         fl_anim_mask;
+  843:	
+  844:	    fl_count_U8 = 0;
+  845:	    fl_slot_id_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+  846:	    fl_free_slot_id_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+  847:	    fl_found_config_U8 = FALSE;
+  848:	    /*
+  849:	    ** Find the slot of the passed button id if already present in slot array.
+  850:	    ** If its a new button then get a free slot for the button.
+  851:	    */
+  852:	    while ((fl_slot_id_U8 == LSH_NUMBER_OF_BUTTON_SLOTS) &amp;&amp; (fl_count_U8 &lt; LSH_NUMBER_OF_BUTTON_SLOTS))
+  853:	    {
+  854:	        if ((p_button_id_U16 &gt;= lc_sed_button_slot_config_SA[fl_count_U8].start_button_id) &amp;&amp; (p_button_id_U16
+  855:	                &lt;= lc_sed_button_slot_config_SA[fl_count_U8].end_button_id))
+  856:	        {
+  857:	            if (l_sed_button_status_S[fl_count_U8].button_id == p_button_id_U16)
+  858:	            {
+  859:	                fl_slot_id_U8 = fl_count_U8;
+  860:	            }
+  861:	            else if (fl_free_slot_id_U8 == LSH_NUMBER_OF_BUTTON_SLOTS)
+  862:	            {
+  863:	                if (l_sed_button_status_S[fl_count_U8].button_id == LSH_INVALID_BUTTON_ID)
+  864:	                {
+  865:	                    /* make a note of the first free slot */
+  866:	                    fl_free_slot_id_U8 = fl_count_U8;
+  867:	                }
+  868:	                else
+  869:	                {
+  870:	                    fl_count_U8++;
+  871:	                }
+  872:	            }
+  873:	            else
+  874:	            {
+  875:	                fl_count_U8++;
+  876:	            }
+  877:	            fl_found_config_U8 = TRUE;
+  878:	        }
+  879:	        else if (fl_found_config_U8 == FALSE)
+  880:	        {
+  881:	            /*
+  882:	            ** We haven't yet found the configured slot area for the passed button ID.
+  883:	            ** So moving to next slot.
+  884:	            */
+  885:	            fl_count_U8++;
+  886:	        }
+  887:	        else
+  888:	        {
+  889:	            /*
+  890:	            ** We have scanned all the configured slot locations for the specified
+  891:	            ** button, so no point in searching other slots. So exiting.
+  892:	            */
+  893:	            fl_count_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+  894:	        }
+  895:	    }
+  896:	    /*
+  897:	    ** If the button was not already present in the slot array, then assign a
+  898:	    ** free slot for it.
+  899:	    */
+  900:	    if (fl_slot_id_U8 == LSH_NUMBER_OF_BUTTON_SLOTS)
+  901:	    {
+  902:	        fl_slot_id_U8 = fl_free_slot_id_U8;
+  903:	    }
+  904:	    /*
+  905:	    ** Now perform the button event dispatching only if slot is available.
+  906:	    */
+  907:	    if (fl_slot_id_U8 != LSH_NUMBER_OF_BUTTON_SLOTS)
+  908:	    {
+  909:	        if (l_sed_button_status_S[fl_slot_id_U8].button_id != p_button_id_U16)
+  910:	        {
+  911:	            /*
+  912:	            ** First event for the Button. So find the consumer of this event by
+  913:	            ** passing events from high priority to low priority states.
+  914:	            */
+  915:	            l_sed_button_status_S[fl_slot_id_U8].button_id = p_button_id_U16;
+  916:	            l_sed_button_status_S[fl_slot_id_U8].state = p_button_event_U8;
+  917:	            l_sed_button_status_S[fl_slot_id_U8].logic_state_id = LSH_NUMBER_OF_LOGIC_STATES;
+  918:	            l_sed_button_status_S[fl_slot_id_U8].client_id = (UINT8)LSH_INVALID_CLIENT_ID;
+  919:	            /*
+  920:	            ** Start the dispatch with high priority layer to low priority layer
+  921:	            ** In each layer high priority display to low priority display.
+  922:	            */
+  923:	            fl_layer_id_U8 = LSH_NUMBER_OF_LAYERS;
+  924:	            while(fl_layer_id_U8 &gt; 0)
+  925:	            {
+  926:	                #if LSH_NUMBER_OF_LAYERS &gt; 1
+  927:	                fl_layer_id_U8--;
+  928:	                #else
+  929:	                fl_layer_id_U8 = 0;
+  930:	                #endif
+  931:	                fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_layer_id_U8];
+  932:	
+  933:	                if (fl_dpm_config_SP-&gt;size &gt; 0)
+  934:	                {
+  935:	                    fl_vm_inst_P     = &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_dpm_config_SP-&gt;size - 1];
+  936:	                    fl_dpm_stack_count = fl_dpm_config_SP-&gt;size;
+  937:	
+  938:	                    while (fl_dpm_stack_count &gt; 0)
+  939:	                    {
+  940:	                        fl_dpm_stack_count--;
+  941:	                        fl_active_state     = LSH_GET_STATE_ID(fl_vm_inst_P-&gt;l_gfx_active_state_id);
+  942:	                        fl_active_client_id = LSH_GET_CLIENT_ID(fl_vm_inst_P-&gt;l_gfx_active_state_id);
+  943:	                        if((fl_vm_inst_P-&gt;l_gfx_prev_focus &amp; LSH_ANIM_STARTED_STATUS) != 0)
+  944:	                        {
+  945:	                           fl_anim_mask = LSH_ANIM_MASK;
+  946:	                        }
+  947:	                        else
+  948:	                        {
+  949:	                           fl_anim_mask = 0;
+  950:	                        }
+  951:	                        if (fl_active_state &lt; LSH_NUMBER_OF_LOGIC_STATES)
+  952:	                        {
+  953:	                            LSH_EV_HANDLER_CONF_T const * fl_handler_SP;
+  954:	
+  955:	                            fl_count_U8 = lc_lsh_screen_config_SA[fl_active_state].handler_idx;
+  956:	                            if (fl_count_U8 &lt; LSH_NUMBER_OF_EV_HANDLERS)
+  957:	                            {
+  958:	                                fl_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_count_U8];
+  959:	
+  960:	                                if (fl_handler_SP-&gt;event != LSH_NULL_EVENT_HANDLER)
+</PRE>
+<A NAME="ERR_LINE_961"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  961:	                                {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(961) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_1040"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  962:	                                    /*
+  963:	                                    ** Clear the remap requests so that we will in a position
+  964:	                                    ** to identify if fl_handler_SP-&gt;event() has requested for
+  965:	                                    ** a remap from the fl_handler_SP-&gt;event() context
+  966:	                                    */
+  967:	                                    l_remap_button_id_U16 = LSH_INVALID_BUTTON_ID;
+  968:	                                    l_remap_target_ls_id  = LSH_NUMBER_OF_LOGIC_STATES;
+  969:	                                    l_remap_target_ls_client_id = LSH_INVALID_CLIENT_ID;
+  970:	                                    fl_btn_hndlr_status.logic_state_id = fl_active_state;
+  971:	                                    fl_btn_hndlr_status.client_id = fl_active_client_id;
+  972:	                                    fl_btn_hndlr_status.button_command = LSH_GET_COMMAND(p_button_id_U16, p_button_event_U8|fl_anim_mask);
+  973:	                                    fl_return_state_U8 = fl_handler_SP-&gt;event(&amp;fl_btn_hndlr_status);
+  974:	                                    if ((fl_return_state_U8 &amp; LSH_STATUS_ABSORBED) != 0)
+  975:	                                    {
+</PRE>
+<A NAME="ERR_LINE_976"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  976:	                                        if((l_remap_target_ls_id  != LSH_NUMBER_OF_LOGIC_STATES) &amp;&amp;\
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3415.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(976) ++ WARNING ++: &lt;=7=(3415) Right hand operand of '&amp;&amp;' or '||' is an expression with possible side effects.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  977:	                                           (l_remap_button_id_U16 == p_button_id_U16))
+  978:	                                        {
+  979:	
+  980:	                                           /*
+  981:	                                           ** If the remap has been called and the button ID matches,
+  982:	                                           ** then register the button to l_remap_target_ls_id as
+  983:	                                           ** fl_active_state may want to remap the event
+  984:	                                           */
+  985:	                                           l_sed_button_status_S[fl_slot_id_U8].logic_state_id = l_remap_target_ls_id;
+  986:	                                           l_sed_button_status_S[fl_slot_id_U8].client_id = l_remap_target_ls_client_id;
+  987:	                                        }
+  988:	                                        else
+  989:	                                        {
+  990:	                                           /*
+  991:	                                           ** Register the button against the state and break the loop.
+  992:	                                           */
+  993:	                                           l_sed_button_status_S[fl_slot_id_U8].logic_state_id = fl_active_state;
+  994:	                                           l_sed_button_status_S[fl_slot_id_U8].client_id = fl_active_client_id;
+  995:	                                        }
+  996:	                                        fl_dpm_stack_count = 0;
+  997:	                                        fl_layer_id_U8     = 0;
+  998:	                                    }
+  999:	                                }
+ 1000:	                            }
+ 1001:	                        }
+ 1002:	                        fl_vm_inst_P--;
+ 1003:	                    }
+ 1004:	                }
+ 1005:	            }
+ 1006:	        }
+ 1007:	        else
+ 1008:	        {
+ 1009:	            /*
+ 1010:	            ** Button is already registered, so deliver the button events to the
+ 1011:	            ** registred state.
+ 1012:	            */
+ 1013:	            if (l_sed_button_status_S[fl_slot_id_U8].state != LSH_BUTTON_FREEZE_STATUS)
+ 1014:	            {
+ 1015:	                UINT8 fl_client_id;
+ 1016:	                LSH_STATE_ID_T fl_logic_state;
+ 1017:	                fl_logic_state = l_sed_button_status_S[fl_slot_id_U8].logic_state_id;
+ 1018:	                fl_client_id = l_sed_button_status_S[fl_slot_id_U8].client_id;
+ 1019:	
+ 1020:	                if (fl_logic_state &lt; LSH_NUMBER_OF_LOGIC_STATES)
+ 1021:	                {
+ 1022:	                    LSH_EV_HANDLER_CONF_T const * fl_handler_SP;
+ 1023:	                    LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+ 1024:	                    UINT8                         fl_priority_U8;
+ 1025:	
+ 1026:	                    fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[fl_logic_state];
+ 1027:	                    fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+ 1028:	                    fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+ 1029:	
+ 1030:	                    if((LSH_GET_STATE_ID(fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_gfx_active_state_id) == fl_logic_state)&amp;&amp;\
+ 1031:	                       (LSH_GET_CLIENT_ID(fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_gfx_active_state_id) == fl_client_id))
+ 1032:	                    {
+ 1033:	                        fl_count_U8 = lc_lsh_screen_config_SA[fl_logic_state].handler_idx;
+ 1034:	                        if (fl_count_U8 &lt; LSH_NUMBER_OF_EV_HANDLERS)
+ 1035:	                        {
+ 1036:	                            fl_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_count_U8];
+ 1037:	                            if (fl_handler_SP-&gt;event != LSH_NULL_EVENT_HANDLER)
+ 1038:	                            {
+ 1039:	                                if((fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_gfx_prev_focus &amp; LSH_ANIM_STARTED_STATUS) != 0)
+</PRE>
+<A NAME="ERR_LINE_1040"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1040:	                                {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(1040) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_1044"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1041:	                                   fl_anim_mask = LSH_ANIM_MASK;
+ 1042:	                                }
+ 1043:	                                else
+</PRE>
+<A NAME="ERR_LINE_1044"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1044:	                                {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(1044) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1045:	                                   fl_anim_mask = 0;
+ 1046:	                                }
+ 1047:	                                fl_btn_hndlr_status.logic_state_id = fl_logic_state;
+ 1048:	                                fl_btn_hndlr_status.client_id = fl_client_id;
+ 1049:	                                fl_btn_hndlr_status.button_command = LSH_GET_COMMAND(p_button_id_U16, p_button_event_U8|fl_anim_mask);
+ 1050:	                                fl_return_state_U8 = fl_handler_SP-&gt;event(&amp;fl_btn_hndlr_status);
+ 1051:	                            }
+ 1052:	                        }
+ 1053:	                    }
+ 1054:	                }
+ 1055:	                else
+ 1056:	                {
+ 1057:	                    /*
+ 1058:	                    ** This button is not registered to any logic state, so issue to default handler
+ 1059:	                    */
+ 1060:	                    fl_return_state_U8 = LSH_STATUS_NONE;
+ 1061:	                }
+ 1062:	            }
+ 1063:	            /* In Button Freeze state, the buttons should not be passed to the default handler */
+ 1064:	            else
+ 1065:	            {
+ 1066:	               fl_return_state_U8 = LSH_STATUS_ABSORBED;
+ 1067:	            }
+ 1068:	        }
+ 1069:	        if (p_button_event_U8 == LSH_BUTTON_INACTIVE_STATE)
+ 1070:	        {
+ 1071:	            /*
+ 1072:	            ** Relese the slot on button release
+ 1073:	            */
+ 1074:	            #ifdef LSH_UNFREEZE_BUTTON_EVENT_HANDLER
+ 1075:	            if(LSH_BUTTON_FREEZE_STATUS==l_sed_button_status_S[fl_slot_id_U8].state)
+ 1076:	            {
+ 1077:	              fl_btn_hndlr_status.logic_state_id = l_sed_button_status_S[fl_slot_id_U8].logic_state_id;
+ 1078:	              fl_btn_hndlr_status.client_id =  l_sed_button_status_S[fl_slot_id_U8].client_id;
+</PRE>
+<A NAME="ERR_LINE_1079"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1079:	              fl_btn_hndlr_status.button_command = LSH_GET_COMMAND(p_button_id_U16, p_button_event_U8);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2985.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_logic_state_handler.c(1079) ++ WARNING ++: &lt;=7=(2985) This operation is redundant. The value of the result is always that of the left-hand operand.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1080:	              (void) LSH_UNFREEZE_BUTTON_EVENT_HANDLER(&amp;fl_btn_hndlr_status);
+ 1081:	            }
+ 1082:	            #endif
+ 1083:	            l_sed_button_status_S[fl_slot_id_U8].button_id = LSH_INVALID_BUTTON_ID;
+ 1084:	            l_sed_button_status_S[fl_slot_id_U8].logic_state_id = LSH_NUMBER_OF_LOGIC_STATES;
+ 1085:	            l_sed_button_status_S[fl_slot_id_U8].client_id = (UINT8)LSH_INVALID_CLIENT_ID;
+ 1086:	        }
+ 1087:	    }
+ 1088:	#ifdef LSH_NEED_DEFAULT_BUTTON_EVENT_HANDLER
+ 1089:	 #if LSH_NEED_DEFAULT_BUTTON_EVENT_HANDLER &gt; 0
+ 1090:	    if((fl_return_state_U8 == LSH_STATUS_NONE)&amp;&amp;(fl_slot_id_U8&lt;LSH_NUMBER_OF_BUTTON_SLOTS))
+ 1091:	    {
+ 1092:	        fl_btn_hndlr_status.logic_state_id = l_sed_button_status_S[fl_slot_id_U8].logic_state_id;
+ 1093:	        fl_btn_hndlr_status.client_id =  l_sed_button_status_S[fl_slot_id_U8].client_id;
+ 1094:	        fl_btn_hndlr_status.button_command = LSH_GET_COMMAND(p_button_id_U16, p_button_event_U8);
+ 1095:	        (void) hmi_lsh_default_button_event_handler(&amp;fl_btn_hndlr_status);
+ 1096:	    }
+ 1097:	 #endif
+ 1098:	#else
+ 1099:	 #error "LSH_NEED_DEFAULT_BUTTON_EVENT_HANDLER needs to be set to either 0 or 1"
+ 1100:	#endif
+ 1101:	
+ 1102:	#else /* #if LSH_NUMBER_OF_EV_HANDLERS &gt; 0 */
+ 1103:	    fl_btn_hndlr_status.logic_state_id = LSH_NUMBER_OF_LOGIC_STATES;
+ 1104:	    fl_btn_hndlr_status.client_id  = LSH_INVALID_CLIENT_ID;
+ 1105:	    fl_btn_hndlr_status.button_command = LSH_GET_COMMAND(p_button_id_U16, p_button_event_U8);
+ 1106:	    (void) hmi_lsh_default_button_event_handler(&amp;fl_btn_hndlr_status);
+ 1107:	#endif
+ 1108:	}
+ 1109:	
+ 1110:	/*============================================================================
+ 1111:	 ** Function Name:    hmi_lsh_freeze_button_events_ext
+ 1112:	 ** Visibility:       global
+ 1113:	 ** Description:      Application needs to call this function when ever
+ 1114:	 **                   it wants to freeze buttons registered against a display id.
+ 1115:	 **                   After calling this function SED will stop the processing
+ 1116:	 **                   of buttons registered against the passed display id until
+ 1117:	 **                   all the buttons become SED_BUTTON_INACTIVE_EVENT.
+ 1118:	 **                   Generaly this function will be configured in the DPM to notify
+ 1119:	 **                   SED when ever a display id gets removed or loses its
+ 1120:	 **                   focus (becomes inactive), so that those buttons can be
+ 1121:	 **                   freezed.
+ 1122:	 ** Invocation:       Invoked when ever a display id is removed.
+ 1123:	 **                   Invoked by application when ever it wants to freeze buttons
+ 1124:	 **                   registered against a display id.
+ 1125:	 ** Inputs/Outputs:   display identifier.
+ 1126:	 ** Critical Section: None.
+ 1127:	 ** Created:          24-Jan-2014 by NKRISHN9
+ 1128:	 ** Updated:          24-Jan-2014 by NKRISHN9
+ 1129:	 **==========================================================================*/
+ 1130:	void hmi_lsh_freeze_button_events_ext(LSH_STATE_ID_T p_logic_state_id_U16, UINT8 p_client_id_U8)
+ 1131:	{
+ 1132:	    UINT8 fl_count_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+ 1133:	    LSH_BUTTON_SLOT_STATUS_T * fl_sed_button_status_SP = &amp;l_sed_button_status_S[0];
+ 1134:	
+ 1135:	    if (p_logic_state_id_U16 == LSH_ALL_LOGIC_STATES)
+ 1136:	    {
+ 1137:	        /*
+ 1138:	        ** Freeze all the buttons
+ 1139:	        */
+ 1140:	        while (fl_count_U8 &gt; 0)
+ 1141:	        {
+ 1142:	            fl_count_U8--;
+ 1143:	            if (fl_sed_button_status_SP-&gt;logic_state_id &lt; LSH_NUMBER_OF_LOGIC_STATES)
+ 1144:	            {
+ 1145:	                fl_sed_button_status_SP-&gt;state = LSH_BUTTON_FREEZE_STATUS;
+ 1146:	            }
+ 1147:	            fl_sed_button_status_SP = &amp;fl_sed_button_status_SP[1];
+ 1148:	        }
+ 1149:	    }
+ 1150:	    else
+ 1151:	    {
+ 1152:	        /*
+ 1153:	        ** Freeze buttons registred against a logic state.
+ 1154:	        */
+ 1155:	        while (fl_count_U8 &gt; 0)
+ 1156:	        {
+ 1157:	            fl_count_U8--;
+ 1158:	            if ((fl_sed_button_status_SP-&gt;logic_state_id == p_logic_state_id_U16)\
+ 1159:	                  &amp;&amp;(fl_sed_button_status_SP-&gt;client_id==p_client_id_U8))
+ 1160:	            {
+ 1161:	                fl_sed_button_status_SP-&gt;state = LSH_BUTTON_FREEZE_STATUS;
+ 1162:	            }
+ 1163:	            fl_sed_button_status_SP = &amp;fl_sed_button_status_SP[1];
+ 1164:	        }
+ 1165:	    }
+ 1166:	}
+ 1167:	
+ 1168:	/*============================================================================
+ 1169:	 ** Function Name:    hmi_lsh_freeze_button_events
+ 1170:	 ** Visibility:       global
+ 1171:	 ** Description:      Application needs to call this function when ever
+ 1172:	 **                   it wants to freeze buttons registered against a display id.
+ 1173:	 **                   After calling this function SED will stop the processing
+ 1174:	 **                   of buttons registered against the passed display id until
+ 1175:	 **                   all the buttons become SED_BUTTON_INACTIVE_EVENT.
+ 1176:	 **                   Generaly this function will be configured in the DPM to notify
+ 1177:	 **                   SED when ever a display id gets removed or loses its
+ 1178:	 **                   focus (becomes inactive), so that those buttons can be
+ 1179:	 **                   freezed.
+ 1180:	 ** Invocation:       Invoked when ever a display id is removed.
+ 1181:	 **                   Invoked by application when ever it wants to freeze buttons
+ 1182:	 **                   registered against a display id.
+ 1183:	 ** Inputs/Outputs:   display identifier.
+ 1184:	 ** Critical Section: None.
+ 1185:	 ** Created:          19-Feb-2010 by EMANOJ1
+ 1186:	 ** Updated:          24-Jan-2014 by nkrishn9
+ 1187:	 **==========================================================================*/
+ 1188:	void hmi_lsh_freeze_button_events(LSH_STATE_ID_T p_logic_state_id_U16)
+ 1189:	{
+ 1190:	    hmi_lsh_freeze_button_events_ext(p_logic_state_id_U16, LSH_INVALID_CLIENT_ID);
+ 1191:	}
+ 1192:	
+ 1193:	/*============================================================================
+ 1194:	 ** Function Name:    hmi_lsh_remap_button_events_ext
+ 1195:	 ** Visibility:       global
+ 1196:	 ** Description:      1. This function allows a logic state to remap a registered
+ 1197:	 **                      p_button_id_U16 to a new logic state p_target_ls_id_U8.
+ 1198:	 **                      This can be used on situations like a source_state opens a
+ 1199:	 **                      a higher priority p_target_ls_id based a p_button_id_U16 press
+ 1200:	 **                      and source_state expects the the p_target_ls_id to preocess the
+ 1201:	 **                      further button events related to p_button_id_U16.
+ 1202:	 **                   2. If the target state is specified as LSH_NUMBER_OF_LOGIC_STATES
+ 1203:	 **                      then the button slot corresponding to p_button_id_U16 is
+ 1204:	 **                      freed so that further events of the p_button_id_U16 is
+ 1205:	 **                      redistributed.
+ 1206:	 **
+ 1207:	 ** Invocation:       Invoked when ever there is a real need.
+ 1208:	 ** Inputs/Outputs:   in  - Button ID and target logic state ID's.
+ 1209:	 **                   Make sure that you pass the button ID and not the encoded
+ 1210:	 **                   command in case of a LSH_ENCODE_BUTTON_ID_AND_STATE build.
+ 1211:	 ** Critical Section: None.
+ 1212:	 ** Created:          26-Jan-2014 by NKRISHN9
+ 1213:	 ** Updated:          26-Jan-2014 by NKRISHN9
+ 1214:	 **==========================================================================*/
+ 1215:	void hmi_lsh_remap_button_events_ext(UINT16 p_button_id_U16, LSH_STATE_ID_T p_target_ls_id, UINT8 p_client_id_U8)
+ 1216:	{
+ 1217:	#if LSH_NUMBER_OF_EV_HANDLERS &gt; 0
+ 1218:	    LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+ 1219:	    LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+ 1220:	    UINT16                fl_active_logic_state;
+ 1221:	    UINT16                fl_active_gfx_state;
+ 1222:	    UINT8                 fl_priority_U8;
+ 1223:	
+ 1224:	    if (p_target_ls_id &lt; LSH_NUMBER_OF_LOGIC_STATES)
+ 1225:	    {
+ 1226:	        UINT16 fl_target_vm_ls_id;
+ 1227:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[p_target_ls_id];
+ 1228:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+ 1229:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+ 1230:	        fl_active_logic_state = fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_logic_active_state_id;
+ 1231:	        fl_active_gfx_state   = fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_gfx_active_state_id;
+ 1232:	
+ 1233:	        fl_target_vm_ls_id = (UINT16)LSH_VM_STATE_ID(p_client_id_U8,p_target_ls_id);
+ 1234:	        if((fl_active_logic_state == fl_target_vm_ls_id) || (fl_active_gfx_state == fl_target_vm_ls_id))
+ 1235:	        {
+ 1236:	            /*
+ 1237:	            ** Both Source and Target state are active
+ 1238:	            */
+ 1239:	            UINT8 fl_count_U8;
+ 1240:	            fl_count_U8 = lc_lsh_screen_config_SA[p_target_ls_id].handler_idx;
+ 1241:	            if (fl_count_U8 &lt; LSH_NUMBER_OF_EV_HANDLERS)
+ 1242:	            {
+ 1243:	                LSH_EV_HANDLER_CONF_T const * fl_handler_SP;
+ 1244:	                fl_handler_SP = &amp;lc_lsh_ev_handler_config_SA[fl_count_U8];
+ 1245:	                if (fl_handler_SP-&gt;event != LSH_NULL_EVENT_HANDLER)
+ 1246:	                {
+ 1247:	                    /*
+ 1248:	                    ** Remap button slot registry to the p_target_ls_id only
+ 1249:	                    ** if the p_target_ls_id has got a valid event handler.
+ 1250:	                    ** Store the request to l_remap_button_id_U16 and
+ 1251:	                    ** l_remap_target_ls_id to process it later incase we cannot
+ 1252:	                    ** find the button ID in any of the slots.
+ 1253:	                    */
+ 1254:	                    LSH_BUTTON_SLOT_STATUS_T * fl_sed_button_status_SP = &amp;l_sed_button_status_S[0];
+ 1255:	                    l_remap_button_id_U16 = p_button_id_U16;
+ 1256:	                    l_remap_target_ls_id  = p_target_ls_id;
+ 1257:	                    l_remap_target_ls_client_id = p_client_id_U8;
+ 1258:	                    fl_count_U8           = LSH_NUMBER_OF_BUTTON_SLOTS;
+ 1259:	                    while (fl_count_U8 &gt; 0)
+ 1260:	                    {
+ 1261:	                        fl_count_U8--;
+ 1262:	                        if ((fl_sed_button_status_SP-&gt;button_id     == p_button_id_U16) &amp;&amp;
+ 1263:	                            (fl_sed_button_status_SP-&gt;logic_state_id != LSH_NUMBER_OF_LOGIC_STATES))
+ 1264:	                        {
+ 1265:	                            /* reassign the slot and exit loop */
+ 1266:	                            fl_sed_button_status_SP-&gt;logic_state_id = p_target_ls_id;
+ 1267:	                            fl_sed_button_status_SP-&gt;client_id = p_client_id_U8;
+ 1268:	                            fl_count_U8                             = 0;
+ 1269:	                            /* we were able to find the button ID, so clear the request from store */
+ 1270:	                            l_remap_button_id_U16                   = LSH_INVALID_BUTTON_ID;
+ 1271:	                            l_remap_target_ls_id                    = LSH_NUMBER_OF_LOGIC_STATES;
+ 1272:	                            l_remap_target_ls_client_id             = LSH_INVALID_CLIENT_ID;
+ 1273:	                        }
+ 1274:	                        else
+ 1275:	                        {
+ 1276:	                            fl_sed_button_status_SP = &amp;fl_sed_button_status_SP[1];
+ 1277:	                        }
+ 1278:	                    }
+ 1279:	                }
+ 1280:	            }
+ 1281:	        }
+ 1282:	    }
+ 1283:	    else
+ 1284:	    {
+ 1285:	        /*
+ 1286:	        ** LSH_NUMBER_OF_LOGIC_STATES is specified as target state so clear the
+ 1287:	        ** registred slots with p_source_ls_id to allow a re-distribution of
+ 1288:	        ** registered button events.
+ 1289:	        */
+ 1290:	        UINT8 fl_count_U8 = LSH_NUMBER_OF_BUTTON_SLOTS;
+ 1291:	        LSH_BUTTON_SLOT_STATUS_T * fl_sed_button_status_SP = &amp;l_sed_button_status_S[0];
+ 1292:	        while (fl_count_U8 &gt; 0)
+ 1293:	        {
+ 1294:	            fl_count_U8--;
+ 1295:	            if (fl_sed_button_status_SP-&gt;button_id == p_button_id_U16)
+ 1296:	            {
+ 1297:	                /* init the slot and exit the loop */
+ 1298:	                fl_sed_button_status_SP-&gt;button_id      = LSH_INVALID_BUTTON_ID;
+ 1299:	                fl_sed_button_status_SP-&gt;state          = LSH_BUTTON_INACTIVE_STATE;
+ 1300:	                fl_sed_button_status_SP-&gt;logic_state_id = LSH_NUMBER_OF_LOGIC_STATES;
+ 1301:	                fl_sed_button_status_SP-&gt;client_id      = (UINT8)LSH_INVALID_CLIENT_ID;
+ 1302:	                fl_count_U8                             = 0;
+ 1303:	            }
+ 1304:	            else
+ 1305:	            {
+ 1306:	                fl_sed_button_status_SP = &amp;fl_sed_button_status_SP[1];
+ 1307:	            }
+ 1308:	        }
+ 1309:	    }
+ 1310:	#endif
+ 1311:	}
+ 1312:	
+ 1313:	/*============================================================================
+ 1314:	 ** Function Name:    hmi_lsh_remap_button_events
+ 1315:	 ** Visibility:       global
+ 1316:	 ** Description:      1. This function allows a logic state to remap a registered
+ 1317:	 **                      p_button_id_U16 to a new logic state p_target_ls_id_U8.
+ 1318:	 **                      This can be used on situations like a source_state opens a
+ 1319:	 **                      a higher priority p_target_ls_id based a p_button_id_U16 press
+ 1320:	 **                      and source_state expects the the p_target_ls_id to preocess the
+ 1321:	 **                      further button events related to p_button_id_U16.
+ 1322:	 **                   2. If the target state is specified as LSH_NUMBER_OF_LOGIC_STATES
+ 1323:	 **                      then the button slot corresponding to p_button_id_U16 is
+ 1324:	 **                      freed so that further events of the p_button_id_U16 is
+ 1325:	 **                      redistributed.
+ 1326:	 **
+ 1327:	 ** Invocation:       Invoked when ever there is a real need.
+ 1328:	 ** Inputs/Outputs:   in  - Button ID and target logic state ID's.
+ 1329:	 **                   Make sure that you pass the button ID and not the encoded
+ 1330:	 **                   command in case of a LSH_ENCODE_BUTTON_ID_AND_STATE build.
+ 1331:	 ** Critical Section: None.
+ 1332:	 ** Created:          25-Dec-2010 by EMANOJ1
+ 1333:	 ** Updated:          1-Jan-2014 by NKRISHN9
+ 1334:	 **==========================================================================*/
+ 1335:	void hmi_lsh_remap_button_events(UINT16 p_button_id_U16, LSH_STATE_ID_T p_target_ls_id)
+ 1336:	{
+ 1337:	  hmi_lsh_remap_button_events_ext(p_button_id_U16, p_target_ls_id, LSH_INVALID_CLIENT_ID);
+ 1338:	}
+ 1339:	
+ 1340:	#ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1341:	/*============================================================================
+ 1342:	 ** Function Name:    hmi_lsh_animation_done_cb
+ 1343:	 ** Visibility:       global
+ 1344:	 ** Description:      This function is the callback function for the animation
+ 1345:	 **                   completion.
+ 1346:	 ** Invocation:       Invoked by Animation components when on completing an animation.
+ 1347:	 **
+ 1348:	 ** Inputs/Outputs:   in  - Logic state id to be activated in p_logic_state_id_U8.
+ 1349:	 ** Critical Section: None.
+ 1350:	 ** Created:          23-Jun-2010 by GPURUSO1
+ 1351:	 ** Updated:          03-Jan-2011 by EMANOJ1
+ 1352:	 **==========================================================================*/
+ 1353:	void hmi_lsh_animation_done_cb(UINT8 p_prio_U8, UINT32 p_logic_state_id_U32, UINT8 p_anim_ID)
+ 1354:	{
+ 1355:	    if (LSH_GET_STATE_ID((UINT16)p_logic_state_id_U32) &lt; LSH_NUMBER_OF_LOGIC_STATES)
+ 1356:	    {
+ 1357:	        LSH_DPM_STACK_CONF_T  const * fl_dpm_config_SP;
+ 1358:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+ 1359:	        UINT8                         fl_priority_U8;
+ 1360:	
+ 1361:	        fl_state_conf_SP = &amp;lc_lsh_screen_config_SA[LSH_GET_STATE_ID((UINT16)p_logic_state_id_U32)];
+ 1362:	        fl_priority_U8   = fl_state_conf_SP-&gt;priority;
+ 1363:	        fl_dpm_config_SP = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+ 1364:	
+ 1365:	        if (fl_priority_U8 &lt; fl_dpm_config_SP-&gt;size)
+ 1366:	        {
+ 1367:	           hmi_vm_animation_completed(&amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8]);
+ 1368:	        }
+ 1369:	    }
+ 1370:	    UNUSED_VAR(p_prio_U8);
+ 1371:	    UNUSED_VAR(p_anim_ID);
+ 1372:	}
+ 1373:	
+ 1374:	/*============================================================================
+ 1375:	** Function Name:    hmi_lsh_inspect_scr_animation_status
+ 1376:	** Visibility:       global
+ 1377:	** Description:      return animation active status for a screen
+ 1378:	** Invocation:       Invoked by application to inspect animation active status
+ 1379:	**
+ 1380:	** Inputs/Outputs:   in  - Priority
+ 1381:	** Critical Section: None.
+ 1382:	** Created:          29-Jul-2014 by NKRISHN9
+ 1383:	** Updated:          29-Jul-2014 by NKRISHN9
+ 1384:	**==========================================================================*/
+ 1385:	BOOLEAN  hmi_lsh_inspect_scr_animation_status(LSH_STATE_ID_T p_logic_state_id_U8, UINT8 p_client_id_U8)
+ 1386:	{
+ 1387:	    BOOLEAN r_animation_active = FALSE;
+ 1388:	    if (p_logic_state_id_U8 &lt; LSH_NUMBER_OF_LOGIC_STATES)
+ 1389:	    {
+ 1390:	        LSH_DISP_STATE_CONF_T const * fl_state_conf_SP;
+ 1391:	        UINT8                         fl_priority_U8;
+ 1392:	        LSH_DPM_STACK_CONF_T const * fl_dpm_config_SP;
+ 1393:	
+ 1394:	        fl_state_conf_SP   = &amp;lc_lsh_screen_config_SA[p_logic_state_id_U8];
+ 1395:	        fl_priority_U8     = fl_state_conf_SP-&gt;priority;
+ 1396:	        fl_dpm_config_SP  = &amp;lc_lsh_dpm_config_SA[fl_state_conf_SP-&gt;layer_id];
+ 1397:	        if(fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8].l_gfx_active_state_id==\
+ 1398:	            LSH_VM_STATE_ID(p_client_id_U8,p_logic_state_id_U8))
+ 1399:	        {
+ 1400:	            r_animation_active = hmi_lsh_inspect_animation_status(fl_priority_U8,
+ 1401:	                fl_state_conf_SP-&gt;layer_id);
+ 1402:	        }
+ 1403:	    }
+ 1404:	    return(r_animation_active);
+ 1405:	}
+ 1406:	
+ 1407:	/*============================================================================
+ 1408:	 ** Function Name:    hmi_lsh_inspect_animation_status
+ 1409:	 ** Visibility:       global
+ 1410:	 ** Description:      return animation active status for 
+ 1411:	                      a layer - valid layer id &amp; max priority 
+ 1412:	                      a priority -  valid layer id &amp; valid priority 
+ 1413:	 ** Invocation:       Invoked by application to inspect animation active status
+ 1414:	 **
+ 1415:	 ** Inputs/Outputs:   in  - Priority
+ 1416:	 ** Critical Section: None.
+ 1417:	 ** Created:          22-Aug-2013 by NKRISHN9
+ 1418:	 ** Updated:          22-Aug-2013 by NKRISHN9
+ 1419:	 **==========================================================================*/
+ 1420:	BOOLEAN  hmi_lsh_inspect_animation_status(UINT8 p_prio_U8, UINT32 p_layer_id_U32)
+ 1421:	{
+ 1422:	    BOOLEAN r_animation_active;
+ 1423:	    r_animation_active=FALSE;
+ 1424:	    if(p_layer_id_U32 &lt; LSH_NUMBER_OF_LAYERS)
+ 1425:	    {
+ 1426:	      LSH_DPM_STACK_CONF_T const * fl_dpm_config_SP;
+ 1427:	      SFhmi_view_manager_02InstanceStruct * fl_vm_instance_SP;
+ 1428:	
+ 1429:	      UINT8 fl_priority_U8;
+ 1430:	
+ 1431:	      fl_dpm_config_SP  = &amp;lc_lsh_dpm_config_SA[p_layer_id_U32];
+ 1432:	
+ 1433:	      if(p_prio_U8&lt;fl_dpm_config_SP-&gt;size)
+ 1434:	      {
+ 1435:	        fl_vm_instance_SP = &amp;fl_dpm_config_SP-&gt;vm_ptr[p_prio_U8];
+ 1436:	        r_animation_active=(BOOLEAN)hmi_vm_animation_active_status(fl_vm_instance_SP);
+ 1437:	      }
+ 1438:	      else
+ 1439:	      {
+ 1440:	        for(fl_priority_U8=0;((fl_priority_U8&lt;fl_dpm_config_SP-&gt;size)&amp;&amp;(r_animation_active==FALSE));\
+ 1441:	                                fl_priority_U8++)
+ 1442:	        {
+ 1443:	          fl_vm_instance_SP = &amp;fl_dpm_config_SP-&gt;vm_ptr[fl_priority_U8];
+ 1444:	          r_animation_active=(BOOLEAN)hmi_vm_animation_active_status(fl_vm_instance_SP);
+ 1445:	        }
+ 1446:	      }
+ 1447:	    }
+ 1448:	    return(r_animation_active);
+ 1449:	}
+ 1450:	
+ 1451:	/*============================================================================
+ 1452:	 ** Function Name:    hmi_lsh_inspect_state_animation_id
+ 1453:	 ** Visibility:       global
+ 1454:	 ** Description:      animation active status for 
+ 1455:	                      a layer - valid layer id &amp; max priority 
+ 1456:	                      a priority -  valid layer id &amp; valid priority 
+ 1457:	 ** Invocation:       Invoked by application to inspect animation active id.
+ 1458:	 **                   Do not use this interface for entire application logic or state design. The proper design
+ 1459:	                        is "tracking the proper state of system by modeling and make appropriate logical decision
+ 1460:	                        in model". Heavily relying and revolving around viewer status is not advisable.
+ 1461:	                        logic_active_anim_id - current anim id in input context.
+ 1462:	                        logic_deactivate_anim_id - current close anim id in input context.
+ 1463:	                        graphic_active_anim_id - current active anim id in graphics(output screen)
+ 1464:	 ** Inputs/Outputs:   in  - Priority, layer and anim state
+ 1465:	 ** Critical Section: None.
+ 1466:	 ** Created:          25-Aug-2015 by NKRISHN9
+ 1467:	 ** Updated:          25-Aug-2015 by NKRISHN9
+ 1468:	 **==========================================================================*/
+ 1469:	void hmi_lsh_inspect_state_animation_id(UINT8 p_prio_U8, UINT32 p_layer_id_U32, LSH_ANIM_STATE_ID * const p_state)
+ 1470:	{
+ 1471:	   
+ 1472:	    if(p_layer_id_U32 &lt; LSH_NUMBER_OF_LAYERS)
+ 1473:	    {
+ 1474:	      LSH_DPM_STACK_CONF_T const * fl_dpm_config_SP;
+ 1475:	      SFhmi_view_manager_02InstanceStruct * fl_vm_inst_P;
+ 1476:	
+ 1477:	      fl_dpm_config_SP  = &amp;lc_lsh_dpm_config_SA[p_layer_id_U32];
+ 1478:	
+ 1479:	      if(p_prio_U8&lt;fl_dpm_config_SP-&gt;size)
+ 1480:	      {
+ 1481:	        fl_vm_inst_P = &amp;fl_dpm_config_SP-&gt;vm_ptr[p_prio_U8];
+ 1482:	        p_state-&gt;logic_active_anim_id=fl_vm_inst_P-&gt;l_logic_active_anim_id;
+ 1483:	        p_state-&gt;logic_deactivate_anim_id=fl_vm_inst_P-&gt;l_gfx_deactivate_anim;
+ 1484:	        p_state-&gt;graphic_active_anim_id=fl_vm_inst_P-&gt;l_gfx_active_anim_id;
+ 1485:	      }
+ 1486:	    }
+ 1487:	}
+ 1488:	
+ 1489:	#endif
+ 1490:	
+ 1491:	/*============================================================================
+ 1492:	 **
+ 1493:	 **============================================================================
+ 1494:	 ** C M S    R E V I S I O N    N O T E S
+ 1495:	 **============================================================================
+ 1496:	 **
+ 1497:	 ** For each change to this file, be sure to record:
+ 1498:	 ** 1.  Who made the change and when the change was made.
+ 1499:	 ** 2.  Why the change was made and the intended result.
+ 1500:	 **
+ 1501:	 ** CMS Rev #        Date         By
+ 1502:	 ** CMS Rev X.X      mm/dd/yy     CDSID
+ 1503:	 **
+ 1504:	 **============================================================================
+ 1505:	 ** CMS Rev 1.33     1-Sep-2015    NKRISHN9
+ 1506:	 ** Added hmi_lsh_inspect_state_animation_id interface. 
+ 1507:	 **
+ 1508:	 ** CMS Rev 1.32 17-Feb-2015    NKRISHN9
+ 1509:	     The animation id in input and output context of graphics is provided as below in new interface,
+ 1510:	     logic_active_anim_id - current anim id in input context.
+ 1511:	     logic_deactivate_anim_id - current close anim id in input context.
+ 1512:	     graphic_active_anim_id - current active anim id in graphics(output screen)
+ 1513:	 ** CMS Rev 1.31     17-Feb-2015    EMANOJ1
+ 1514:	 ** Added hmi_lsh_task_ext to support Rtc #290842 (hmi_lsh_execute_presentation() 
+ 1515:	 ** doesnot execute the Presentation for the newly added LSH Priority when 
+ 1516:	 ** hmi_lsh_task is not executed)
+ 1517:	 **
+ 1518:	 ** CMS Rev 1.30     10-Feb-2015    kkubendi
+ 1519:	 ** Compiler Warnings resolved for Honda THAA.
+ 1520:	 **
+ 1521:	 ** CMS Rev 1.30     06-Feb-2015    arajase2
+ 1522:	 ** QAC 8.1.2 Warnings resolved.
+ 1523:	 **
+ 1524:	 ** CMS Rev 1.29     12-Dec-2014    nkrishn9
+ 1525:	 ** Focus id defect. changes to give high priority screen id in low priority focus hndlr.
+ 1526:	 **
+ 1527:	 ** CMS Rev 1.28     19-May-2014    EMANOJ1
+ 1528:	 ** hmi_lsh_focus_handler updated to fix P42M coverity issues 10791, 10799
+ 1529:	 **
+ 1530:	 ** CMS Rev 1.27     26-Jan-2014    NKRISHN9
+ 1531:	 ** Define the LSH_UNFREEZE_BUTTON_EVENT_HANDLER macro, if aplication is required to get the 
+ 1532:	 ** release event of all button id for the freezed screen.
+ 1533:	 **
+ 1534:	 ** CMS Rev 1.26     26-Jan-2014    NKRISHN9
+ 1535:	 ** hmi_lsh_focus_handler will not consider the focus status of logic state if
+ 1536:	 ** focus and presentation handler is not configured for corresponding state.
+ 1537:	 ** LSH_FOCUS_STATUS_FOR_ALL_SCREEN handler configuration is added to give the 
+ 1538:	 ** focus status of all screen in one handler (Requirement for sync of MFD).
+ 1539:	 ** Added client id to button event handler and related changes in freeze,
+ 1540:	 ** remap button event interface.
+ 1541:	 **
+ 1542:	 ** CMS Rev 1.25     1-0ct-2013    NKRISHN9
+ 1543:	 ** hmi_lsh_post_button_event is updated to absorb the button id state if 
+ 1544:	 ** corresponding screen is removed for subsequent button state (screen removed
+ 1545:	 ** during press state). 
+ 1546:	 ** Merged vmuthusu(SANAND2) following changes,
+ 1547:	 ** Blocked the button from passing on to the default handler during Button
+ 1548:	 ** Freeze State, in the function hmi_lsh_post_button_event() 
+ 1549:	 **
+ 1550:	 ** CMS Rev 1.24     27-Aug-2013    NKRISHN9
+ 1551:	 ** Added interface hmi_lsh_inspect_animation_status
+ 1552:	 ** Presentation structure and its interface is update with client id.
+ 1553:	 **
+ 1554:	 ** CMS Rev 1.23     07-Dec-2012    EMANOJ1
+ 1555:	 ** Removed the dependancy with animation core 01 in order to make it work with
+ 1556:	 ** new animation core 02. By removing the direct dependancy, any animation could 
+ 1557:	 ** be integrated.
+ 1558:	 **
+ 1559:	 ** Added two interfaces to start and stop animation, this needs to be implemented
+ 1560:	 ** by apps if animation support is enabled. hmi_lsh_start_animation() and 
+ 1561:	 ** hmi_lsh_stop_animation()
+ 1562:	 **
+ 1563:	 ** CMS Rev 1.22     09-Oct-2012    ASHEKHAR
+ 1564:	 **  Changed the focus, presentation, event handler individual parameters to
+ 1565:	 **  structure members.
+ 1566:	 **
+ 1567:	 ** CMS Rev 1.21     04-Jul-2012    EMANOJ1
+ 1568:	 ** #ifndef MATLAB_MEX_FILE protection removed as this code might be used by
+ 1569:	 ** application inside another matlab simulation and under the simulation
+ 1570:	 ** environment matlab will define MATLAB_MEX_FILE causing the view manager
+ 1571:	 ** init functions to blocked and not being invoked.
+ 1572:	 **
+ 1573:	 ** CMS Rev 1.20     06-Apr-2011    EMANOJ1
+ 1574:	 ** hmi_lsh_execute_presentation updated fix an array overindex issue per
+ 1575:	 ** SMIS PR.ID.42589 issue#1
+ 1576:	 **
+ 1577:	 ** CMS Rev 1.19     30-Mar-2011    EMANOJ1
+ 1578:	 ** hmi_lsh_execute_presentation updated to fix issue reported by vmuthusu
+ 1579:	 ** that presentation is not called with LSH_DEACTIVATED_STATUS if a logic
+ 1580:	 ** state is removed.
+ 1581:	 **
+ 1582:	 ** CMS Rev 1.18     03-Jan-2011    EMANOJ1
+ 1583:	 ** hmi_lsh_animation_done_cb updated to fix an issue where the focus handler
+ 1584:	 ** was not invoked initimating a logic state deactivation after animation.
+ 1585:	 **
+ 1586:	 ** CMS Rev 1.17     29-Dec-2010    EMANOJ1
+ 1587:	 ** Introduced l_remap_button_id_U16 and l_remap_target_ls_id to store the request
+ 1588:	 ** if the hmi_lsh_remap_button_events() cannot find the button ID in any of the
+ 1589:	 ** slots. This was added to handle a case where the hmi_lsh_remap_button_events()
+ 1590:	 ** was called from an event handler during ButtonX's first event. In this scenario
+ 1591:	 ** hmi_lsh_remap_button_events() will not find ButtonX in any of the slots as it
+ 1592:	 ** is not registered. So hmi_lsh_remap_button_events() will fail in this case
+ 1593:	 ** To overcome this, under this scenario hmi_lsh_remap_button_events will store the
+ 1594:	 ** request in to l_remap_button_id_U16 and l_remap_target_ls_id AND the
+ 1595:	 ** hmi_lsh_post_button_event will do the remap after ButtonX is registered.
+ 1596:	 **
+ 1597:	 ** CMS Rev 1.16     28-Dec-2010    EMANOJ1
+ 1598:	 ** hmi_lsh_remove_state updated to pass return status as LSH_DEACTIVATED_STATUS
+ 1599:	 ** if animation is not done by animation core.
+ 1600:	 **
+ 1601:	 ** CMS Rev 1.15     27-Dec-2010    EMANOJ1
+ 1602:	 ** 1. hmi_lsh_add_state
+ 1603:	 **    a. modified to update the LSH stack with passed state immediately
+ 1604:	 **       With this change hmi_lsh_add_state_confirmed function is no longer required
+ 1605:	 **       and so is removed.
+ 1606:	 **    b. hmi_lsh_add_state is modified to have return status in LSH_ANIMATION_SUPPORT_ENABLED
+ 1607:	 **       build as well.
+ 1608:	 **    c. Modified hmi_lsh_add_state to provide LSH_ANIM_STARTED_STATUS as a status to
+ 1609:	 **       focus handler when an animation is requested to is in progress with animation
+ 1610:	 **       core.
+ 1611:	 ** 2. hmi_lsh_remove_state
+ 1612:	 **    a. modified to perform a removal of state from the LSH stack
+ 1613:	 **       immediately. With this change hmi_lsh_remove_state_confirmed is no longer
+ 1614:	 **       required and so is removed.
+ 1615:	 **    b. Modified to have return status indicating removal and animation progress.
+ 1616:	 ** 3. Added hmi_lsh_animation_done_cb for the animation core to indicate
+ 1617:	 **    completion of animations.
+ 1618:	 ** 4. Added hmi_lsh_remap_button_events to remap a button ID to a new logic state
+ 1619:	 **
+ 1620:	 ** CMS Rev 1.14     23-Dec-2010    GPURUSO1
+ 1621:	 ** Added support to block only the individual Priorit's Presentation
+ 1622:	 ** when an animation is active for that priority
+ 1623:	 **
+ 1624:	 ** ** CMS Rev 1.13     20-Dec-2010    GPURUSO1
+ 1625:	 ** Moved the definition of the macro to block the presenation to the .cfg.
+ 1626:	 ** Modified the code of the focus handler to have the ANIMATION_COMPLETED status
+ 1627:	 ** only to the valid animations.
+ 1628:	 **
+ 1629:	 ** CMS Rev 1.12     18-Oct-2010    EMANOJ
+ 1630:	 ** Modified the default Initialisation for the Button Handlers to LSH_STATUS_NONE
+ 1631:	 ** so that when there are no states added the button events are handled by the
+ 1632:	 ** default button handlers.
+ 1633:	 ** Handled the Return type of the Button Handler if the press event is already
+ 1634:	 ** registered with a state, And if the state is not processing the later button
+ 1635:	 ** events, the events are routed to the default button handlers
+ 1636:	 **
+ 1637:	 ** CMS Rev 1.11     16-Jul-2010    EMANOJ
+ 1638:	 ** Ref-SMIS PR-ID 34516
+ 1639:	 ** Updated hmi_lsh_task to Optimize the for loop.
+ 1640:	 **
+ 1641:	 ** CMS Rev 1.10     14-Jul-2010    EMANOJ
+ 1642:	 ** Ref-BSDI00090066
+ 1643:	 ** Updated hmi_lsh_task to first invoke all deactivated presetation callbacks
+ 1644:	 ** followed by the active ones so that the layers can be deallocated before
+ 1645:	 ** building the new displays in Kepler platform (C520).
+ 1646:	 ** Called the presetation from low priority to high priority so that the layer
+ 1647:	 ** allocation can be done in increasing priority order by the presentation.
+ 1648:	 **
+ 1649:	 ** CMS Rev 1.9      10-Jul-2010    EMANOJ
+ 1650:	 ** Remembering the previous state for registering the button press when there
+ 1651:	 ** is change in the state triggered by the RX handler.
+ 1652:	 **
+ 1653:	 ** CMS Rev 1.8      10-Jul-2010    GPURUSO1
+ 1654:	 ** Added code for the boundary checking for out of range for lc_lsh_ev_handler_config_SA.
+ 1655:	 **
+ 1656:	 ** CMS Rev 1.7      25-Jun-2010    GPURUSO1
+ 1657:	 ** Added support for the Animation. An Parameter has been added to the public
+ 1658:	 ** interface and the code flow has been modified.
+ 1659:	 **
+ 1660:	 ** CMS Rev 1.6      25-May-2010    EMANOJ1
+ 1661:	 ** hmi_lsh_post_button_event updated to fix a scenario where the button event
+ 1662:	 ** handler itself caused a hmi_lsh_remove_state and thus removing the state.
+ 1663:	 ** This caused the button event to be passed on to the default event handler.
+ 1664:	 **
+ 1665:	 ** CMS Rev 1.5      12-May-2010    EMANOJ1
+ 1666:	 ** LSH_EVENT_HANDLER_T updated to pass logic state id also as a parameter.
+ 1667:	 **
+ 1668:	 ** CMS Rev 1.4      16-Apr-2010    EMANOJ1
+ 1669:	 ** Added return value for hmi_lsh_add_state() to initimate the caller, whether
+ 1670:	 ** the specified state has got the focus or not.
+ 1671:	 **
+ 1672:	 ** CMS Rev 1.3      16-Apr-2010    GYUVAMAT
+ 1673:	 ** Fixed QAC warnings.
+ 1674:	 **
+ 1675:	 ** CMS Rev 1.2      17-Mar-2010    VMUTHUSU
+ 1676:	 ** Initialize the fl_return_state_U8 variable to LSH_STATUS_NONE and update it
+ 1677:	 ** with the return value of the event handler after it was invoked so that the
+ 1678:	 ** default handler will be invoked correctly.
+ 1679:	 **
+ 1680:	 **
+ 1681:	 ** CMS Rev 1.1      11-Mar-2010    EMANOJ1
+ 1682:	 ** Added LSH_DEFAULT_BUTTON_EVENT_HANDLER function to hmi_lsh_post_button_event()
+ 1683:	 ** to handle unhandled button events. Changed the return type of
+ 1684:	 ** hmi_lsh_post_button_event to void.
+ 1685:	 **
+ 1686:	 ** CMS Rev 1.0      19-Feb-2010    EMANOJ1
+ 1687:	 ** Creation.
+ 1688:	 **==========================================================================*/
+ 1689:	
+ 1690:	/* end of file =============================================================*/
+ 1691:	
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_logic_state_handler.c (1691 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0012              2
+     6           0.0024              4
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0035              6
+</PRE>
+
+</BODY></HTML>

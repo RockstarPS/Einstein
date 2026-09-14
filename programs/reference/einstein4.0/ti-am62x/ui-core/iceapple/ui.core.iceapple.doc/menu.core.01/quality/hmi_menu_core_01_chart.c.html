@@ -1,0 +1,1532 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_menu_core_01_chart.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*
+    2:	 * Stateflow code generation for chart:
+    3:	 *    hmi_menu_core_01_model/hmi_menu_core_01_chart
+    4:	 * 
+    5:	 * Target Name                          : autocode
+    6:	 * Stateflow Version                    : 6.7.0.14.00.0.000001
+    7:	 * Date of code generation              : 12-Oct-2015 12:40:30
+    8:	 */
+    9:	
+   10:	/* Include files */
+   11:	#include "hmi_menu_core_01_model_autocode.h"
+   12:	#include "hmi_menu_core_01_chart.h"
+   13:	
+   14:	/* Type Definitions */
+   15:	
+   16:	/* Named Constants */
+   17:	#define event_HMI_MENU_OPEN_EV          (8U)
+   18:	#define event_HMI_MENU_CLOSE_EV         (5U)
+   19:	#define event_HMI_MENU_DATA_AVAIL_EV    (7U)
+   20:	#define event_HMI_MENU_ANIM_EXIT_EV     (0U)
+   21:	#define event_HMI_MENU_BTN_ACTIONS_EV   (6U)
+   22:	#define event_HMI_MENU_BTN_MC_RELEASE_EV (15U)
+   23:	#define event_HMI_MENU_FS_BTN_EV        (12U)
+   24:	#define event_HMI_MENU_FS_BTN_REL_EV    (2U)
+   25:	#define event_HMI_MENU_FS_REPEAT_TIMEOUT_EV (1U)
+   26:	#define event_HMI_MENU_WAIT_TEMP_TIMEOUT_EV (11U)
+   27:	#define event_HMI_MENU_FS_REPEAT_TIMER_EV (9U)
+   28:	#define event_HMI_MENU_FS_INACTIVE_EV   (13U)
+   29:	#define event_HMI_MENU_REBUILD_EV       (3U)
+   30:	#define event_HMI_MENU_ANIM_STARTED_EV  (10U)
+   31:	#define event_HMI_MENU_WAIT_ANIM_EXIT_EV (4U)
+   32:	#define IN_NO_ACTIVE_CHILD              (0)
+   33:	#define IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST (2)
+   34:	#define IN_HMI_MENU_ANIM_INACTIVE_ST    (2)
+   35:	#define IN_HMI_MENU_WAIT_FOR_ANIM_EXIT  (2)
+   36:	#define IN_HMI_MENU_FAST_SCROLL_LIST_END_ST (3)
+   37:	#define IN_HMI_MENU_WAIT_ANIM_RUNNING_ST (1)
+   38:	#define IN_HMI_MENU_ANIM_ACTIVE_ST      (1)
+   39:	#define IN_HMI_MENU_INACTIVE_ST         (2)
+   40:	#define IN_HMI_MENU_ACTIVE_ST           (1)
+   41:	#define IN_HMI_MENU_SCROLL_ST           (3)
+   42:	#define IN_HMI_MENU_WAIT_ST             (4)
+   43:	#define IN_HMI_MENU_WAIT_TEMP_TMR_ST    (2)
+   44:	#define IN_HMI_MENU_WAIT_ACTIVE_ST      (1)
+   45:	#define IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST (1)
+   46:	
+   47:	/* Variable Declarations */
+   48:	
+   49:	/* Variable Definitions */
+   50:	
+   51:	/* Function Declarations */
+   52:	static void HMI_MENU_LOGIC_ST(SFhmi_menu_core_01_chartInstanceStruct
+   53:	 *chartInstance);
+   54:	static void
+   55:	exit_internal_HMI_MENU_LOGIC_ST(SFhmi_menu_core_01_chartInstanceStruct
+   56:	 *chartInstance);
+   57:	static void HMI_MENU_WAIT_ST(SFhmi_menu_core_01_chartInstanceStruct
+   58:	 *chartInstance);
+   59:	static void HMI_MENU_ANIM_ST(SFhmi_menu_core_01_chartInstanceStruct
+   60:	 *chartInstance);
+   61:	
+   62:	/* Function Definitions */
+   63:	void initialize_hmi_menu_core_01_chart(SFhmi_menu_core_01_chartInstanceStruct
+   64:	 *chartInstance)
+   65:	{
+   66:	  uint8_T b_previousEvent;
+   67:	  uint8_T c_previousEvent;
+</PRE>
+<A NAME="ERR_LINE_68"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   68:	  chartInstance-&gt;is_active_HMI_MENU_ANIM_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(68) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_70"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   69:	  chartInstance-&gt;is_HMI_MENU_ANIM_ST = 0U;
+</PRE>
+<A NAME="ERR_LINE_70"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   70:	  chartInstance-&gt;is_active_HMI_MENU_FAST_SCROLL_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(70) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_71"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_71"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   71:	  chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(71) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_73"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   72:	  chartInstance-&gt;is_active_HMI_MENU_LOGIC_ST = 0U;
+</PRE>
+<A NAME="ERR_LINE_73"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   73:	  chartInstance-&gt;is_HMI_MENU_LOGIC_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(73) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_76"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   74:	  chartInstance-&gt;is_HMI_MENU_WAIT_ST = 0U;
+   75:	  chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST = 0U;
+</PRE>
+<A NAME="ERR_LINE_76"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   76:	  chartInstance-&gt;l_menu_action_U8 = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(76) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_77"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_77"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   77:	  chartInstance-&gt;l_menu_action_output_U16 = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(77) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_110"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   78:	  chartInstance-&gt;l_get_btn_result_U8 = 0U;
+   79:	  chartInstance-&gt;l_btn_cmd_U16 = 0U;
+   80:	  chartInstance-&gt;l_menu_id_U8 = 0U;
+   81:	  chartInstance-&gt;l_btn_rel_in_fast_scroll = 0U;
+   82:	  chartInstance-&gt;l_menu_state = 0U;
+   83:	  chartInstance-&gt;l_repeat_count = 0U;
+   84:	  chartInstance-&gt;l_btn_status_BOOL = 0U;
+   85:	  chartInstance-&gt;fast_scroll_active = 0U;
+   86:	  chartInstance-&gt;fast_scroll_active_rel = 0U;
+   87:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+   88:	  _sfEvent_hmi_menu_core_01_model_ = CALL_EVENT;
+   89:	  /* Entry: hmi_menu_core_01_chart */
+   90:	  /* Entry: HMI_MENU_LOGIC_ST */
+</PRE>
+<A NAME="ERR_LINE_91"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   91:	  if(chartInstance-&gt;is_active_HMI_MENU_LOGIC_ST != 1) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(91) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_107"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(91) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_107"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   92:	    chartInstance-&gt;is_active_HMI_MENU_LOGIC_ST = 1U;
+   93:	    chartInstance-&gt;l_menu_action_output_U16 = 0U;
+   94:	    chartInstance-&gt;l_menu_action_U8 = 0U;
+   95:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+   96:	    chartInstance-&gt;l_repeat_count = 0U;
+   97:	    chartInstance-&gt;l_btn_cmd_U16 = 0U;
+   98:	    chartInstance-&gt;l_btn_rel_in_fast_scroll = 0U;
+   99:	    chartInstance-&gt;l_btn_status_BOOL = 0U;
+  100:	#endif
+  101:	  }
+  102:	  /* Entry: HMI_MENU_INACTIVE_ST */
+  103:	  chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  104:	  /* Entry: HMI_MENU_ANIM_ST */
+  105:	  chartInstance-&gt;is_active_HMI_MENU_ANIM_ST = 1U;
+  106:	  /* Entry: HMI_MENU_ANIM_INACTIVE_ST */
+</PRE>
+<A NAME="ERR_LINE_107"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  107:	  if(chartInstance-&gt;is_HMI_MENU_ANIM_ST != IN_HMI_MENU_ANIM_INACTIVE_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(107) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_154"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(107) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_154"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  108:	    chartInstance-&gt;is_HMI_MENU_ANIM_ST = (uint8_T)IN_HMI_MENU_ANIM_INACTIVE_ST;
+  109:	    c_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+</PRE>
+<A NAME="ERR_LINE_110"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  110:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_WAIT_ANIM_EXIT_EV;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(110) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_124"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  111:	    /* During: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+</PRE>
+<A NAME="ERR_LINE_112"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  112:	    if((chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2996.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(112) ++ WARNING ++: &lt;=7=(2996) The result of this logical operation is always 'false'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_113"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  113:	      IN_HMI_MENU_WAIT_FOR_ANIM_EXIT) &amp;&amp; (_sfEvent_hmi_menu_core_01_model_ ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2992.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(113) ++ WARNING ++: &lt;=7=(2992) The value of this 'if' controlling expression is always 'false'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  114:	      event_HMI_MENU_WAIT_ANIM_EXIT_EV)) {
+  115:	      /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  116:	      /* Entry: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+</PRE>
+<A NAME="ERR_LINE_117"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  117:	      chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2880.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(117) ++ WARNING ++: &lt;=7=(2880) This code is unreachable.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  118:	        (uint8_T)IN_HMI_MENU_WAIT_ANIM_RUNNING_ST;
+  119:	      hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  120:	       chartInstance-&gt;l_menu_id_U8);
+  121:	      hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  122:	       MENU_CB_ACTION_WAIT);
+  123:	    }
+</PRE>
+<A NAME="ERR_LINE_124"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  124:	    _sfEvent_hmi_menu_core_01_model_ = c_previousEvent;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(124) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_812"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  125:	  }
+  126:	  /* Entry: HMI_MENU_FAST_SCROLL_ST */
+  127:	  chartInstance-&gt;is_active_HMI_MENU_FAST_SCROLL_ST = 1U;
+  128:	  /* Entry: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  129:	  chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  130:	    (uint8_T)IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST;
+  131:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  132:	}
+  133:	
+  134:	void hmi_menu_core_01_chart(SFhmi_menu_core_01_chartInstanceStruct
+  135:	 *chartInstance)
+  136:	{
+  137:	  boolean_T temp;
+  138:	  /* During: hmi_menu_core_01_chart */
+  139:	  HMI_MENU_LOGIC_ST(chartInstance);
+  140:	  HMI_MENU_ANIM_ST(chartInstance);
+  141:	  /* During: HMI_MENU_FAST_SCROLL_ST */
+  142:	  if(chartInstance-&gt;is_active_HMI_MENU_FAST_SCROLL_ST != 0) {
+  143:	    if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_CLOSE_EV) {
+  144:	      /* Exit: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  145:	      /* Exit: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  146:	      /* Exit: HMI_MENU_FAST_SCROLL_LIST_END_ST */
+  147:	      /* Entry: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  148:	      chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  149:	        (uint8_T)IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST;
+  150:	    } else {
+  151:	      switch(chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST) {
+  152:	       case IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST:
+  153:	        /* During: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+</PRE>
+<A NAME="ERR_LINE_154"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  154:	        if(chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(154) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_194"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(154) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_194"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  155:	         IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST) {
+  156:	          if(_sfEvent_hmi_menu_core_01_model_ ==
+  157:	           event_HMI_MENU_FS_REPEAT_TIMEOUT_EV) {
+  158:	            hmi_menu_logic_stop_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,
+  159:	             chartInstance-&gt;l_menu_id_U8);
+  160:	            temp = (chartInstance-&gt;l_repeat_count &gt;
+  161:	              HMI_MENU_SCROLL_REPEAT_COUNT);
+</PRE>
+<A NAME="ERR_LINE_162"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  162:	            if(temp) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3344.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(162) ++ WARNING ++: &lt;=7=(3344) Controlling expression is not an 'essentially Boolean' expression.</A></B><A HREF="#ERR_LINE_166"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  163:	              temp = (hmi_menu_logic_is_FS_Enabled(chartInstance-&gt;l_menu_id_U8)
+  164:	               == TRUE);
+  165:	            }
+</PRE>
+<A NAME="ERR_LINE_166"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  166:	            if(temp) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3344.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(166) ++ WARNING ++: &lt;=7=(3344) Controlling expression is not an 'essentially Boolean' expression.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  167:	              chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_FAST;
+  168:	              hmi_menu_logic_start_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,
+  169:	               chartInstance-&gt;l_menu_id_U8);
+  170:	              if(chartInstance-&gt;l_btn_status_BOOL == HMI_MENU_BTN_STATUS_IN) {
+  171:	                chartInstance-&gt;l_btn_status_BOOL =
+  172:	                  ((boolean_T)HMI_MENU_BTN_STATUS_LONG != 0);
+  173:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  174:	                chartInstance-&gt;l_btn_cmd_U16 =
+  175:	                  (uint16_T)hmi_menu_logic_FS_convert_Btn_status(chartInstance-&gt;l_btn_status_BOOL,
+  176:	                 chartInstance-&gt;
+  177:	                 l_btn_cmd_U16);
+  178:	#else
+  179:	                chartInstance-&gt;l_btn_cmd_U16 = (uint16_T)MENU_BTN_INVALID;
+  180:	#endif
+  181:	              }
+  182:	            } else {
+  183:	              chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_NORMAL;
+  184:	              hmi_menu_logic_start_timer(MENU_CORE_FASTSCROLL_CNT_INCR_TIMER,
+  185:	               chartInstance-&gt;l_menu_id_U8);
+  186:	              chartInstance-&gt;l_repeat_count++;
+  187:	              chartInstance-&gt;l_btn_status_BOOL =
+  188:	                ((boolean_T)HMI_MENU_BTN_STATUS_IN != 0);
+  189:	            }
+  190:	            /* Exit: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  191:	            chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  192:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  193:	            /* Entry: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+</PRE>
+<A NAME="ERR_LINE_194"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  194:	            if(chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST !=
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(194) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_619"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(194) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_558"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  195:	             IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST) {
+  196:	              chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  197:	                (uint8_T)IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST;
+  198:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  199:	              chartInstance-&gt;l_get_btn_result_U8 =
+  200:	                (uint8_T)hmi_menu_button_handler(chartInstance-&gt;l_menu_id_U8,
+  201:	               chartInstance-&gt;l_btn_cmd_U16,
+  202:	               chartInstance-&gt;l_menu_state);
+  203:	#else
+  204:	              chartInstance-&gt;l_get_btn_result_U8 =
+  205:	                (uint8_T)MENU_CB_ACTION_COMPLETED;
+  206:	#endif
+  207:	            }
+  208:	          } else if(_sfEvent_hmi_menu_core_01_model_ ==
+  209:	           event_HMI_MENU_FS_INACTIVE_EV) {
+  210:	            /* Exit: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  211:	            /* Entry: HMI_MENU_FAST_SCROLL_LIST_END_ST */
+  212:	            chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  213:	              (uint8_T)IN_HMI_MENU_FAST_SCROLL_LIST_END_ST;
+  214:	            hmi_menu_logic_stop_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,
+  215:	             chartInstance-&gt;l_menu_id_U8);
+  216:	            hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  217:	             chartInstance-&gt;l_menu_action_output_U16);
+  218:	            chartInstance-&gt;l_repeat_count = 0U;
+  219:	            chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_NORMAL;
+  220:	            hmi_menu_logic_Set_MenuState(chartInstance-&gt;l_menu_id_U8,
+  221:	             MENU_STATE_NORMAL);
+  222:	          } else if(_sfEvent_hmi_menu_core_01_model_ ==
+  223:	           event_HMI_MENU_FS_BTN_REL_EV) {
+  224:	            hmi_menu_logic_stop_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,
+  225:	             chartInstance-&gt;l_menu_id_U8);
+  226:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  227:	            chartInstance-&gt;l_get_btn_result_U8 =
+  228:	              (uint8_T)hmi_menu_button_handler(chartInstance-&gt;l_menu_id_U8,
+  229:	             chartInstance-&gt;l_btn_cmd_U16,
+  230:	             chartInstance-&gt;l_menu_state);
+  231:	#else
+  232:	            chartInstance-&gt;l_get_btn_result_U8 =
+  233:	              (uint8_T)MENU_CB_ACTION_COMPLETED;
+  234:	#endif
+  235:	            chartInstance-&gt;l_repeat_count = 0U;
+  236:	            if(chartInstance-&gt;l_menu_state == MENU_STATE_FAST) {
+  237:	              hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  238:	               chartInstance-&gt;l_menu_action_output_U16);
+  239:	              chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_NORMAL;
+  240:	              hmi_menu_logic_Set_MenuState(chartInstance-&gt;l_menu_id_U8,
+  241:	               MENU_STATE_NORMAL);
+  242:	              /* Exit: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  243:	              /* Entry: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  244:	              chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  245:	                (uint8_T)IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST;
+  246:	            } else {
+  247:	              chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_NORMAL;
+  248:	              hmi_menu_logic_Set_MenuState(chartInstance-&gt;l_menu_id_U8,
+  249:	               MENU_STATE_NORMAL);
+  250:	              /* Exit: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  251:	              /* Entry: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  252:	              chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  253:	                (uint8_T)IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST;
+  254:	            }
+  255:	          } else {
+  256:	            if(_sfEvent_hmi_menu_core_01_model_ ==
+  257:	             event_HMI_MENU_FS_REPEAT_TIMER_EV) {
+  258:	              hmi_menu_logic_start_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,
+  259:	               chartInstance-&gt;l_menu_id_U8);
+  260:	            }
+  261:	            /* hmi_menu_logic_stop_timer(MENU_CORE_FASTSCROLL_RUN_WAIT_TIMER,l_menu_id_U8); */
+  262:	          }
+  263:	        }
+  264:	        break;
+  265:	       case IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST:
+  266:	        /* During: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  267:	        if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_FS_BTN_EV) {
+  268:	          chartInstance-&gt;l_repeat_count = 1U;
+  269:	          chartInstance-&gt;l_menu_state = (uint8_T)MENU_STATE_NORMAL;
+  270:	          hmi_menu_logic_start_timer(MENU_CORE_FASTSCROLL_CNT_START_TIMER,
+  271:	           chartInstance-&gt;l_menu_id_U8);
+  272:	          /* Exit: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  273:	          /* Entry: HMI_MENU_FAST_SCROLL_ACTIVE_ST */
+  274:	          chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  275:	            (uint8_T)IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST;
+  276:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  277:	          chartInstance-&gt;l_get_btn_result_U8 =
+  278:	            (uint8_T)hmi_menu_button_handler(chartInstance-&gt;l_menu_id_U8,
+  279:	           chartInstance-&gt;l_btn_cmd_U16,
+  280:	           chartInstance-&gt;l_menu_state);
+  281:	#else
+  282:	          chartInstance-&gt;l_get_btn_result_U8 = (uint8_T)MENU_CB_ACTION_COMPLETED;
+  283:	#endif
+  284:	        }
+  285:	        break;
+  286:	       case IN_HMI_MENU_FAST_SCROLL_LIST_END_ST:
+  287:	        /* During: HMI_MENU_FAST_SCROLL_LIST_END_ST */
+  288:	        if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_FS_BTN_REL_EV) {
+  289:	          /* Exit: HMI_MENU_FAST_SCROLL_LIST_END_ST */
+  290:	          /* Entry: HMI_MENU_FAST_SCROLL_INACTIVE_ST */
+  291:	          chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST =
+  292:	            (uint8_T)IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST;
+  293:	        }
+  294:	        break;
+  295:	       default:
+  296:	        chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  297:	        break;
+  298:	      }
+  299:	    }
+  300:	  }
+  301:	}
+  302:	
+  303:	void hmi_menu_chart_Menu_FSTimeout(SFhmi_menu_core_01_chartInstanceStruct
+  304:	 *chartInstance)
+  305:	{
+  306:	  uint8_T b_previousEvent;
+  307:	  /* Function Call: hmi_menu_chart_Menu_FSTimeout */
+  308:	  if(!(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST)) {
+  309:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  310:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_FS_REPEAT_TIMEOUT_EV;
+  311:	    hmi_menu_core_01_chart(chartInstance);
+  312:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  313:	  } else {
+  314:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  315:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_FS_REPEAT_TIMER_EV;
+  316:	    hmi_menu_core_01_chart(chartInstance);
+  317:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  318:	  }
+  319:	}
+  320:	
+  321:	uint8_T hmi_menu_chart_FS_btn_result(SFhmi_menu_core_01_chartInstanceStruct
+</PRE>
+<A NAME="ERR_LINE_322"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  322:	 *chartInstance)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3673.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(322) ++ WARNING ++: &lt;=5=(3673) The object addressed by the pointer parameter 'chartInstance' is not modified and so the pointer could be of type 'pointer to const'.</A></B><A HREF="#ERR_LINE_329"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  323:	{
+  324:	  /* Function Call: hmi_menu_chart_FS_btn_result */
+  325:	  return chartInstance-&gt;l_get_btn_result_U8;
+  326:	}
+  327:	
+  328:	boolean_T hmi_menu_chart_is_FS_st(SFhmi_menu_core_01_chartInstanceStruct
+</PRE>
+<A NAME="ERR_LINE_329"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  329:	 *chartInstance)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3673.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(329) ++ WARNING ++: &lt;=5=(3673) The object addressed by the pointer parameter 'chartInstance' is not modified and so the pointer could be of type 'pointer to const'.</A></B><A HREF="#ERR_LINE_1183"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  330:	{
+  331:	  /* Function Call: hmi_menu_chart_is_FS_st */
+  332:	  return chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_SCROLL_ST;
+  333:	}
+  334:	
+  335:	void hmi_menu_chart_anim_started(SFhmi_menu_core_01_chartInstanceStruct
+  336:	 *chartInstance)
+  337:	{
+  338:	  uint8_T b_previousEvent;
+  339:	  /* Function Call: hmi_menu_chart_anim_started */
+  340:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  341:	  _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_ANIM_STARTED_EV;
+  342:	  HMI_MENU_ANIM_ST(chartInstance);
+  343:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  344:	}
+  345:	
+  346:	void hmi_menu_chart_close(SFhmi_menu_core_01_chartInstanceStruct *chartInstance)
+  347:	{
+  348:	  uint8_T b_previousEvent;
+  349:	  /* Function Call: hmi_menu_chart_close */
+  350:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  351:	  _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_CLOSE_EV;
+  352:	  hmi_menu_core_01_chart(chartInstance);
+  353:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  354:	}
+  355:	
+  356:	void hmi_menu_chart_Menu_open(SFhmi_menu_core_01_chartInstanceStruct
+  357:	 *chartInstance, uint8_T p_menu_id_U8, uint16_T
+  358:	 p_cb_return_val_U16)
+  359:	{
+  360:	  uint8_T b_previousEvent;
+  361:	  /* Function Call: hmi_menu_chart_Menu_open */
+  362:	  if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_INACTIVE_ST) {
+  363:	    chartInstance-&gt;l_menu_action_output_U16 = p_cb_return_val_U16;
+  364:	    chartInstance-&gt;l_menu_id_U8 = p_menu_id_U8;
+  365:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  366:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_OPEN_EV;
+  367:	    hmi_menu_core_01_chart(chartInstance);
+  368:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  369:	  } else {
+  370:	    chartInstance-&gt;l_menu_id_U8 = p_menu_id_U8;
+  371:	  }
+  372:	}
+  373:	
+  374:	void hmi_menu_chart_FS_Btn_process(SFhmi_menu_core_01_chartInstanceStruct
+  375:	 *chartInstance, uint8_T p_menu_ID_U8, uint16_T
+  376:	 p_button_cmd_U16)
+  377:	{
+  378:	  uint8_T b_previousEvent;
+  379:	  /* Function Call: hmi_menu_chart_FS_Btn_process */
+  380:	  if(chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST ==
+  381:	   IN_HMI_MENU_FAST_SCROLL_INACTIVE_ST) {
+  382:	    chartInstance-&gt;l_btn_cmd_U16 = p_button_cmd_U16;
+  383:	    chartInstance-&gt;l_menu_id_U8 = p_menu_ID_U8;
+  384:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  385:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_FS_BTN_EV;
+  386:	    hmi_menu_core_01_chart(chartInstance);
+  387:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  388:	  } else {
+  389:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  390:	    if(hmi_menu_logic_FS_check_is_Btn_rel(p_button_cmd_U16) == TRUE) {
+  391:	      chartInstance-&gt;l_btn_cmd_U16 = p_button_cmd_U16;
+  392:	      chartInstance-&gt;l_menu_id_U8 = p_menu_ID_U8;
+  393:	      b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  394:	      _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_FS_BTN_REL_EV;
+  395:	      hmi_menu_core_01_chart(chartInstance);
+  396:	      _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  397:	    }
+  398:	#endif
+  399:	  }
+  400:	}
+  401:	
+  402:	void hmi_menu_chart_DataAvailable(SFhmi_menu_core_01_chartInstanceStruct
+  403:	 *chartInstance)
+  404:	{
+  405:	  uint8_T b_previousEvent;
+  406:	  /* Function Call: hmi_menu_chart_DataAvailable */
+  407:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  408:	  _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_DATA_AVAIL_EV;
+  409:	  hmi_menu_core_01_chart(chartInstance);
+  410:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  411:	}
+  412:	
+  413:	void hmi_menu_chart_anim_exit(SFhmi_menu_core_01_chartInstanceStruct
+  414:	 *chartInstance)
+  415:	{
+  416:	  uint8_T b_previousEvent;
+  417:	  /* Function Call: hmi_menu_chart_anim_exit */
+  418:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  419:	  _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_ANIM_EXIT_EV;
+  420:	  HMI_MENU_ANIM_ST(chartInstance);
+  421:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  422:	}
+  423:	
+  424:	void hmi_menu_chart_Wait_temp_timeout(SFhmi_menu_core_01_chartInstanceStruct
+  425:	 *chartInstance)
+  426:	{
+  427:	  uint8_T b_previousEvent;
+  428:	  /* Function Call: hmi_menu_chart_Wait_temp_timeout */
+  429:	  b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+  430:	  _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_WAIT_TEMP_TIMEOUT_EV;
+  431:	  hmi_menu_core_01_chart(chartInstance);
+  432:	  _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+  433:	}
+  434:	
+  435:	static void HMI_MENU_LOGIC_ST(SFhmi_menu_core_01_chartInstanceStruct
+  436:	 *chartInstance)
+  437:	{
+</PRE>
+<A NAME="ERR_LINE_438"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  438:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(438) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_757"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  439:	  /* During: HMI_MENU_LOGIC_ST */
+  440:	  if(chartInstance-&gt;is_active_HMI_MENU_LOGIC_ST != 0) {
+  441:	    guard1 = false;
+  442:	    if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_CLOSE_EV) {
+  443:	      exit_internal_HMI_MENU_LOGIC_ST(chartInstance);
+  444:	      /* Entry: HMI_MENU_INACTIVE_ST */
+  445:	      chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  446:	    } else if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_REBUILD_EV) {
+  447:	      if((chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_FASTUP) ||
+  448:	       (chartInstance-&gt;l_menu_action_output_U16 ==
+  449:	        MENU_CB_ACTION_FASTDOWN)) {
+  450:	        exit_internal_HMI_MENU_LOGIC_ST(chartInstance);
+  451:	        /* Entry: HMI_MENU_SCROLL_ST */
+  452:	        if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST != IN_HMI_MENU_SCROLL_ST) {
+  453:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_SCROLL_ST;
+  454:	          /* Function Call: hmi_menu_fast_scroll_trigger */
+  455:	          if(chartInstance-&gt;fast_scroll_active == FALSE) {
+  456:	            hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  457:	             chartInstance-&gt;l_menu_action_output_U16);
+  458:	            chartInstance-&gt;fast_scroll_active = ((boolean_T)TRUE != 0);
+  459:	          } else if(chartInstance-&gt;fast_scroll_active_rel == TRUE) {
+  460:	            chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  461:	            chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  462:	          } else {
+  463:	            /*  Do Nothing
+  464:	               QAC 8.1.2 Fix */
+  465:	          }
+  466:	        }
+  467:	      } else if(chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_WAIT) {
+  468:	        exit_internal_HMI_MENU_LOGIC_ST(chartInstance);
+  469:	        /* Entry: HMI_MENU_WAIT_ST */
+  470:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  471:	        /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+  472:	        if(chartInstance-&gt;is_HMI_MENU_WAIT_ST != IN_HMI_MENU_WAIT_TEMP_TMR_ST) {
+  473:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  474:	            (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  475:	          hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  476:	           chartInstance-&gt;l_menu_id_U8);
+  477:	        }
+  478:	      } else {
+  479:	        /* for MENU_CB_ACTION_ANIMATION|MENU_CB_ACTION_COMPLETED */
+  480:	        if(hmi_menu_logic_MenuIsOpen(chartInstance-&gt;l_menu_id_U8) == FALSE) {
+  481:	          exit_internal_HMI_MENU_LOGIC_ST(chartInstance);
+  482:	          /* Entry: HMI_MENU_INACTIVE_ST */
+  483:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  484:	        } else {
+  485:	          exit_internal_HMI_MENU_LOGIC_ST(chartInstance);
+  486:	          /* Entry: HMI_MENU_ACTIVE_ST */
+  487:	          if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST != IN_HMI_MENU_ACTIVE_ST) {
+  488:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+  489:	            chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  490:	            chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  491:	          }
+  492:	        }
+  493:	      }
+  494:	    } else {
+  495:	      switch(chartInstance-&gt;is_HMI_MENU_LOGIC_ST) {
+  496:	       case IN_HMI_MENU_ACTIVE_ST:
+  497:	        /* During: HMI_MENU_ACTIVE_ST */
+  498:	        if((_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_BTN_ACTIONS_EV)
+  499:	         &amp;&amp; ((chartInstance-&gt;is_HMI_MENU_ANIM_ST ==
+  500:	           IN_HMI_MENU_ANIM_INACTIVE_ST) ||
+</PRE>
+<A NAME="ERR_LINE_501"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  501:	          (hmi_menu_logic_is_menu_action_allowed_in_anim_state(chartInstance-&gt;l_menu_action_U8)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3415.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(501) ++ WARNING ++: &lt;=7=(3415) Right hand operand of '&amp;&amp;' or '||' is an expression with possible side effects.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  502:	           == TRUE))) {
+  503:	          chartInstance-&gt;l_menu_action_output_U16 =
+  504:	            (uint16_T)hmi_menu_logic_process_menu_action(chartInstance-&gt;l_menu_id_U8,
+  505:	           chartInstance-&gt;
+  506:	           l_menu_action_U8);
+  507:	          if((chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_FASTUP)
+  508:	           || (chartInstance-&gt;l_menu_action_output_U16 ==
+  509:	            MENU_CB_ACTION_FASTDOWN)) {
+  510:	            /* Exit: HMI_MENU_ACTIVE_ST */
+  511:	            /* Entry: HMI_MENU_SCROLL_ST */
+  512:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_SCROLL_ST;
+  513:	            /* Function Call: hmi_menu_fast_scroll_trigger */
+  514:	            if(chartInstance-&gt;fast_scroll_active == FALSE) {
+  515:	              hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  516:	               chartInstance-&gt;l_menu_action_output_U16);
+  517:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)TRUE != 0);
+  518:	            } else if(chartInstance-&gt;fast_scroll_active_rel == TRUE) {
+  519:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  520:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  521:	            } else {
+  522:	              /*  Do Nothing
+  523:	                 QAC 8.1.2 Fix */
+  524:	            }
+  525:	          } else if(chartInstance-&gt;l_menu_action_output_U16 ==
+  526:	           MENU_CB_ACTION_WAIT) {
+  527:	            /* Exit: HMI_MENU_ACTIVE_ST */
+  528:	            /* Entry: HMI_MENU_WAIT_ST */
+  529:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  530:	            /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+  531:	            if(chartInstance-&gt;is_HMI_MENU_WAIT_ST !=
+  532:	             IN_HMI_MENU_WAIT_TEMP_TMR_ST) {
+  533:	              chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  534:	                (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  535:	              hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  536:	               chartInstance-&gt;l_menu_id_U8);
+  537:	            }
+  538:	          } else {
+  539:	            /* for MENU_CB_ACTION_ANIMATION|MENU_CB_ACTION_COMPLETED */
+  540:	            if(hmi_menu_logic_MenuIsOpen(chartInstance-&gt;l_menu_id_U8) == FALSE) {
+  541:	              /* Exit: HMI_MENU_ACTIVE_ST */
+  542:	              /* Entry: HMI_MENU_INACTIVE_ST */
+  543:	              chartInstance-&gt;is_HMI_MENU_LOGIC_ST =
+  544:	                (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  545:	            } else {
+  546:	              /* Exit: HMI_MENU_ACTIVE_ST */
+  547:	              /* Entry: HMI_MENU_ACTIVE_ST */
+  548:	              chartInstance-&gt;is_HMI_MENU_LOGIC_ST =
+  549:	                (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+  550:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  551:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  552:	            }
+  553:	          }
+  554:	        }
+  555:	        break;
+  556:	       case IN_HMI_MENU_INACTIVE_ST:
+  557:	        /* During: HMI_MENU_INACTIVE_ST */
+</PRE>
+<A NAME="ERR_LINE_558"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  558:	        if((chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_INACTIVE_ST) &amp;&amp;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(558) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_619"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  559:	         (_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_OPEN_EV)) {
+  560:	          if(chartInstance-&gt;l_menu_action_output_U16 ==
+  561:	           MENU_CB_ACTION_COMPLETED) {
+  562:	            /* Exit: HMI_MENU_INACTIVE_ST */
+  563:	            /* Entry: HMI_MENU_ACTIVE_ST */
+  564:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+  565:	            chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  566:	            chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  567:	          } else if((chartInstance-&gt;l_menu_action_output_U16 ==
+  568:	            MENU_CB_ACTION_FASTUP) || (chartInstance-&gt;l_menu_action_output_U16
+  569:	            ==
+  570:	            MENU_CB_ACTION_FASTDOWN)) {
+  571:	            /* Exit: HMI_MENU_INACTIVE_ST */
+  572:	            /* Entry: HMI_MENU_SCROLL_ST */
+  573:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_SCROLL_ST;
+  574:	            /* Function Call: hmi_menu_fast_scroll_trigger */
+  575:	            if(chartInstance-&gt;fast_scroll_active == FALSE) {
+  576:	              hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  577:	               chartInstance-&gt;l_menu_action_output_U16);
+  578:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)TRUE != 0);
+  579:	            } else if(chartInstance-&gt;fast_scroll_active_rel == TRUE) {
+  580:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  581:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  582:	            } else {
+  583:	              /*  Do Nothing
+  584:	                 QAC 8.1.2 Fix */
+  585:	            }
+  586:	          } else if(chartInstance-&gt;l_menu_action_output_U16 ==
+  587:	           MENU_CB_ACTION_WAIT) {
+  588:	            /* Exit: HMI_MENU_INACTIVE_ST */
+  589:	            /* Entry: HMI_MENU_WAIT_ST */
+  590:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  591:	            /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+  592:	            if(chartInstance-&gt;is_HMI_MENU_WAIT_ST !=
+  593:	             IN_HMI_MENU_WAIT_TEMP_TMR_ST) {
+  594:	              chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  595:	                (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  596:	              hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  597:	               chartInstance-&gt;l_menu_id_U8);
+  598:	            }
+  599:	          } else {
+  600:	            /* for MENU_CB_ACTION_ANIMATION|MENU_CB_ACTION_COMPLETED */
+  601:	            if(hmi_menu_logic_MenuIsOpen(chartInstance-&gt;l_menu_id_U8) == FALSE) {
+  602:	              /* Exit: HMI_MENU_INACTIVE_ST */
+  603:	              /* Entry: HMI_MENU_INACTIVE_ST */
+  604:	              chartInstance-&gt;is_HMI_MENU_LOGIC_ST =
+  605:	                (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  606:	            } else {
+  607:	              /* Exit: HMI_MENU_INACTIVE_ST */
+  608:	              /* Entry: HMI_MENU_ACTIVE_ST */
+  609:	              chartInstance-&gt;is_HMI_MENU_LOGIC_ST =
+  610:	                (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+  611:	              chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  612:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  613:	            }
+  614:	          }
+  615:	        }
+  616:	        break;
+  617:	       case IN_HMI_MENU_SCROLL_ST:
+  618:	        /* During: HMI_MENU_SCROLL_ST */
+</PRE>
+<A NAME="ERR_LINE_619"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  619:	        if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_SCROLL_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(619) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_809"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(619) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_809"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  620:	          if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_BTN_ACTIONS_EV) {
+  621:	            chartInstance-&gt;l_menu_action_output_U16 =
+  622:	              (uint16_T)hmi_menu_logic_process_menu_action(chartInstance-&gt;l_menu_id_U8,
+  623:	             chartInstance-&gt;
+  624:	             l_menu_action_U8);
+  625:	            guard1 = true;
+</PRE>
+<A NAME="ERR_LINE_626"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  626:	          } else if(_sfEvent_hmi_menu_core_01_model_ ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(626) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  627:	           event_HMI_MENU_BTN_MC_RELEASE_EV) {
+  628:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  629:	            chartInstance-&gt;l_menu_action_output_U16 =
+  630:	              (uint16_T)hmi_menu_logic_MenuCompletion(chartInstance-&gt;l_menu_id_U8);
+  631:	#else
+  632:	            chartInstance-&gt;l_menu_action_output_U16 =
+  633:	              (uint16_T)hmi_menu_logic_MenuCompletion();
+  634:	#endif
+  635:	            /*  hmi_menu_chart_FS_end_action(); */
+  636:	            chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  637:	            guard1 = true;
+  638:	          }
+  639:	        }
+  640:	        break;
+  641:	       case IN_HMI_MENU_WAIT_ST:
+  642:	        HMI_MENU_WAIT_ST(chartInstance);
+  643:	        break;
+  644:	       default:
+  645:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  646:	        break;
+  647:	      }
+  648:	    }
+  649:	    if(guard1 == true) {
+  650:	      if((chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_FASTUP) ||
+  651:	       (chartInstance-&gt;l_menu_action_output_U16 ==
+  652:	        MENU_CB_ACTION_FASTDOWN)) {
+  653:	        /* Exit: HMI_MENU_SCROLL_ST */
+  654:	        /* Entry: HMI_MENU_SCROLL_ST */
+  655:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_SCROLL_ST;
+  656:	        /* Function Call: hmi_menu_fast_scroll_trigger */
+  657:	        if(chartInstance-&gt;fast_scroll_active == FALSE) {
+  658:	          hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  659:	           chartInstance-&gt;l_menu_action_output_U16);
+  660:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)TRUE != 0);
+  661:	        } else if(chartInstance-&gt;fast_scroll_active_rel == TRUE) {
+  662:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  663:	          chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  664:	        } else {
+  665:	          /*  Do Nothing
+  666:	             QAC 8.1.2 Fix */
+  667:	        }
+  668:	      } else if(chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_WAIT) {
+  669:	        /* Exit: HMI_MENU_SCROLL_ST */
+  670:	        /* Entry: HMI_MENU_WAIT_ST */
+  671:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  672:	        /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+  673:	        if(chartInstance-&gt;is_HMI_MENU_WAIT_ST != IN_HMI_MENU_WAIT_TEMP_TMR_ST) {
+  674:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  675:	            (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  676:	          hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  677:	           chartInstance-&gt;l_menu_id_U8);
+  678:	        }
+  679:	      } else {
+  680:	        /* for MENU_CB_ACTION_ANIMATION|MENU_CB_ACTION_COMPLETED */
+  681:	        if(hmi_menu_logic_MenuIsOpen(chartInstance-&gt;l_menu_id_U8) == FALSE) {
+  682:	          /* Exit: HMI_MENU_SCROLL_ST */
+  683:	          /* Entry: HMI_MENU_INACTIVE_ST */
+  684:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+  685:	        } else {
+  686:	          /* Exit: HMI_MENU_SCROLL_ST */
+  687:	          /* Entry: HMI_MENU_ACTIVE_ST */
+  688:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+  689:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  690:	          chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  691:	        }
+  692:	      }
+  693:	    }
+  694:	  }
+  695:	}
+  696:	
+  697:	static void
+  698:	exit_internal_HMI_MENU_LOGIC_ST(SFhmi_menu_core_01_chartInstanceStruct
+  699:	 *chartInstance)
+  700:	{
+  701:	  switch(chartInstance-&gt;is_HMI_MENU_LOGIC_ST) {
+  702:	   case IN_HMI_MENU_ACTIVE_ST:
+  703:	    /* Exit: HMI_MENU_ACTIVE_ST */
+  704:	    chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  705:	    break;
+  706:	   case IN_HMI_MENU_INACTIVE_ST:
+  707:	    /* Exit: HMI_MENU_INACTIVE_ST */
+  708:	    chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  709:	    break;
+  710:	   case IN_HMI_MENU_SCROLL_ST:
+  711:	    /* Exit: HMI_MENU_SCROLL_ST */
+  712:	    chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  713:	    break;
+  714:	   case IN_HMI_MENU_WAIT_ST:
+  715:	    switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  716:	     case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  717:	      switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  718:	       case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  719:	        /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  720:	        hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  721:	         MENU_CB_ACTION_WAIT);
+  722:	        chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+  723:	        chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  724:	        break;
+  725:	       case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+  726:	        /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  727:	        chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  728:	        break;
+  729:	       default:
+  730:	        chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  731:	        break;
+  732:	      }
+  733:	      /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+  734:	      chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  735:	      break;
+  736:	     case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+  737:	      /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+  738:	      chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  739:	      break;
+  740:	     default:
+  741:	      chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  742:	      break;
+  743:	    }
+  744:	    /* Exit: HMI_MENU_WAIT_ST */
+  745:	    hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER, chartInstance-&gt;l_menu_id_U8);
+  746:	    chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  747:	    break;
+  748:	   default:
+  749:	    chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  750:	    break;
+  751:	  }
+  752:	}
+  753:	
+  754:	static void HMI_MENU_WAIT_ST(SFhmi_menu_core_01_chartInstanceStruct
+  755:	 *chartInstance)
+  756:	{
+</PRE>
+<A NAME="ERR_LINE_757"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  757:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(757) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  758:	  uint16_T fl_cb_result;
+  759:	  /* During: HMI_MENU_WAIT_ST */
+  760:	  if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST) {
+  761:	    guard1 = false;
+  762:	    if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_DATA_AVAIL_EV) {
+  763:	      if(chartInstance-&gt;l_btn_rel_in_fast_scroll != FALSE) {
+  764:	        chartInstance-&gt;l_btn_rel_in_fast_scroll = ((boolean_T)FALSE != 0);
+  765:	#ifdef HMI_MENU_FAST_SCROLL_ENABLE
+  766:	        hmi_menu_logic_Set_MenuState(chartInstance-&gt;l_menu_id_U8,
+  767:	         MENU_STATE_NORMAL);
+  768:	        fl_cb_result =
+  769:	          (uint16_T)hmi_menu_logic_MenuCompletion(chartInstance-&gt;l_menu_id_U8);
+  770:	#else
+  771:	        fl_cb_result = (uint16_T)hmi_menu_logic_MenuCompletion();
+  772:	#endif
+  773:	        if(fl_cb_result == MENU_CB_ACTION_WAIT) {
+  774:	          hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  775:	           MENU_CB_ACTION_FASTUP);
+  776:	          switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  777:	           case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  778:	            switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  779:	             case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  780:	              /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  781:	              hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  782:	               MENU_CB_ACTION_WAIT);
+  783:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+  784:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  785:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+  786:	              break;
+  787:	             case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+  788:	              /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  789:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  790:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+  791:	              break;
+  792:	             default:
+  793:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  794:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+  795:	              break;
+  796:	            }
+  797:	            /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+  798:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  799:	            break;
+  800:	           case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+  801:	            /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+  802:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  803:	            break;
+  804:	           default:
+  805:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  806:	            break;
+  807:	          }
+  808:	          /* Exit: HMI_MENU_WAIT_ST */
+</PRE>
+<A NAME="ERR_LINE_809"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  809:	          if(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(809) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_817"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(809) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_817"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  810:	            hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  811:	             chartInstance-&gt;l_menu_id_U8);
+</PRE>
+<A NAME="ERR_LINE_812"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  812:	            chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(812) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1038"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  813:	          }
+  814:	          /* Entry: HMI_MENU_WAIT_ST */
+  815:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  816:	          /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+</PRE>
+<A NAME="ERR_LINE_817"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  817:	          if(chartInstance-&gt;is_HMI_MENU_WAIT_ST != IN_HMI_MENU_WAIT_TEMP_TMR_ST)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(817) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_984"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(817) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_859"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  818:	          {
+  819:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  820:	              (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  821:	            hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  822:	             chartInstance-&gt;l_menu_id_U8);
+  823:	          }
+  824:	        } else {
+  825:	          guard1 = true;
+  826:	        }
+  827:	      } else {
+  828:	        guard1 = true;
+  829:	      }
+  830:	    } else {
+  831:	      switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  832:	       case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  833:	        /* During: HMI_MENU_WAIT_ACTIVE_ST */
+  834:	        switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  835:	         case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  836:	          break;
+  837:	         case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+  838:	          /* During: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  839:	          if(_sfEvent_hmi_menu_core_01_model_ ==
+  840:	           event_HMI_MENU_WAIT_ANIM_EXIT_EV) {
+  841:	            /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  842:	            /* Entry: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  843:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  844:	              (uint8_T)IN_HMI_MENU_WAIT_ANIM_RUNNING_ST;
+  845:	            hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  846:	             chartInstance-&gt;l_menu_id_U8);
+  847:	            hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  848:	             MENU_CB_ACTION_WAIT);
+  849:	          }
+  850:	          break;
+  851:	         default:
+  852:	          chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  853:	            (uint8_T)IN_NO_ACTIVE_CHILD;
+  854:	          break;
+  855:	        }
+  856:	        break;
+  857:	       case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+  858:	        /* During: HMI_MENU_WAIT_TEMP_TMR_ST */
+</PRE>
+<A NAME="ERR_LINE_859"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  859:	        if((chartInstance-&gt;is_HMI_MENU_WAIT_ST == IN_HMI_MENU_WAIT_TEMP_TMR_ST)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(859) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_984"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  860:	         &amp;&amp; (_sfEvent_hmi_menu_core_01_model_ ==
+  861:	          event_HMI_MENU_WAIT_TEMP_TIMEOUT_EV)) {
+  862:	          /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+  863:	          /* Entry: HMI_MENU_WAIT_ACTIVE_ST */
+  864:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  865:	            (uint8_T)IN_HMI_MENU_WAIT_ACTIVE_ST;
+  866:	          if(chartInstance-&gt;is_HMI_MENU_ANIM_ST == IN_HMI_MENU_ANIM_INACTIVE_ST)
+  867:	          {
+  868:	            /* Entry: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  869:	            if(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST !=
+  870:	             IN_HMI_MENU_WAIT_ANIM_RUNNING_ST) {
+  871:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  872:	                (uint8_T)IN_HMI_MENU_WAIT_ANIM_RUNNING_ST;
+  873:	              hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  874:	               chartInstance-&gt;l_menu_id_U8);
+  875:	              hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  876:	               MENU_CB_ACTION_WAIT);
+  877:	            }
+  878:	          } else {
+  879:	            /* Entry: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  880:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  881:	              (uint8_T)IN_HMI_MENU_WAIT_FOR_ANIM_EXIT;
+  882:	          }
+  883:	        }
+  884:	        break;
+  885:	       default:
+  886:	        chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  887:	        break;
+  888:	      }
+  889:	    }
+  890:	    if(guard1 == true) {
+  891:	      chartInstance-&gt;l_menu_action_output_U16 =
+  892:	        (uint16_T)hmi_menu_logic_MenuDataAvailable(chartInstance-&gt;l_menu_id_U8);
+  893:	      if((chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_FASTUP) ||
+  894:	       (chartInstance-&gt;l_menu_action_output_U16 ==
+  895:	        MENU_CB_ACTION_FASTDOWN)) {
+  896:	        switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  897:	         case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  898:	          switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  899:	           case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  900:	            /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  901:	            hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  902:	             MENU_CB_ACTION_WAIT);
+  903:	            chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+  904:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  905:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  906:	            break;
+  907:	           case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+  908:	            /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  909:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  910:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  911:	            break;
+  912:	           default:
+  913:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  914:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  915:	            break;
+  916:	          }
+  917:	          /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+  918:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  919:	          break;
+  920:	         case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+  921:	          /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+  922:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  923:	          break;
+  924:	         default:
+  925:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  926:	          break;
+  927:	        }
+  928:	        /* Exit: HMI_MENU_WAIT_ST */
+  929:	        hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  930:	         chartInstance-&gt;l_menu_id_U8);
+  931:	        /* Entry: HMI_MENU_SCROLL_ST */
+  932:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_SCROLL_ST;
+  933:	        /* Function Call: hmi_menu_fast_scroll_trigger */
+  934:	        if(chartInstance-&gt;fast_scroll_active == FALSE) {
+  935:	          hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+  936:	           chartInstance-&gt;l_menu_action_output_U16);
+  937:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)TRUE != 0);
+  938:	        } else if(chartInstance-&gt;fast_scroll_active_rel == TRUE) {
+  939:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+  940:	          chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+  941:	        } else {
+  942:	          /*  Do Nothing
+  943:	             QAC 8.1.2 Fix */
+  944:	        }
+  945:	      } else if(chartInstance-&gt;l_menu_action_output_U16 == MENU_CB_ACTION_WAIT) {
+  946:	        switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  947:	         case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  948:	          switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  949:	           case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  950:	            /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  951:	            hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  952:	             MENU_CB_ACTION_WAIT);
+  953:	            chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+  954:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  955:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  956:	            break;
+  957:	           case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+  958:	            /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+  959:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  960:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  961:	            break;
+  962:	           default:
+  963:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+  964:	              (uint8_T)IN_NO_ACTIVE_CHILD;
+  965:	            break;
+  966:	          }
+  967:	          /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+  968:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  969:	          break;
+  970:	         case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+  971:	          /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+  972:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  973:	          break;
+  974:	         default:
+  975:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  976:	          break;
+  977:	        }
+  978:	        /* Exit: HMI_MENU_WAIT_ST */
+  979:	        hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+  980:	         chartInstance-&gt;l_menu_id_U8);
+  981:	        /* Entry: HMI_MENU_WAIT_ST */
+  982:	        chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_WAIT_ST;
+  983:	        /* Entry: HMI_MENU_WAIT_TEMP_TMR_ST */
+</PRE>
+<A NAME="ERR_LINE_984"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  984:	        if(chartInstance-&gt;is_HMI_MENU_WAIT_ST != IN_HMI_MENU_WAIT_TEMP_TMR_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(984) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(984) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_1091"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  985:	          chartInstance-&gt;is_HMI_MENU_WAIT_ST =
+  986:	            (uint8_T)IN_HMI_MENU_WAIT_TEMP_TMR_ST;
+  987:	          hmi_menu_logic_start_timer(MENU_CORE_WAIT_TIMER,
+  988:	           chartInstance-&gt;l_menu_id_U8);
+  989:	        }
+  990:	      } else {
+  991:	        /* for MENU_CB_ACTION_ANIMATION|MENU_CB_ACTION_COMPLETED */
+  992:	        if(hmi_menu_logic_MenuIsOpen(chartInstance-&gt;l_menu_id_U8) == FALSE) {
+  993:	          switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+  994:	           case IN_HMI_MENU_WAIT_ACTIVE_ST:
+  995:	            switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+  996:	             case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+  997:	              /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+  998:	              hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+  999:	               MENU_CB_ACTION_WAIT);
+ 1000:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+ 1001:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1002:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1003:	              break;
+ 1004:	             case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+ 1005:	              /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1006:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1007:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1008:	              break;
+ 1009:	             default:
+ 1010:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1011:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1012:	              break;
+ 1013:	            }
+ 1014:	            /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+ 1015:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1016:	            break;
+ 1017:	           case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+ 1018:	            /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+ 1019:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1020:	            break;
+ 1021:	           default:
+ 1022:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1023:	            break;
+ 1024:	          }
+ 1025:	          /* Exit: HMI_MENU_WAIT_ST */
+ 1026:	          hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+ 1027:	           chartInstance-&gt;l_menu_id_U8);
+ 1028:	          /* Entry: HMI_MENU_INACTIVE_ST */
+ 1029:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_INACTIVE_ST;
+ 1030:	        } else {
+ 1031:	          switch(chartInstance-&gt;is_HMI_MENU_WAIT_ST) {
+ 1032:	           case IN_HMI_MENU_WAIT_ACTIVE_ST:
+ 1033:	            switch(chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST) {
+ 1034:	             case IN_HMI_MENU_WAIT_ANIM_RUNNING_ST:
+ 1035:	              /* Exit: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+ 1036:	              hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+ 1037:	               MENU_CB_ACTION_WAIT);
+</PRE>
+<A NAME="ERR_LINE_1038"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1038:	              chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)TRUE != 0);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(1038) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1039:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1040:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1041:	              break;
+ 1042:	             case IN_HMI_MENU_WAIT_FOR_ANIM_EXIT:
+ 1043:	              /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1044:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1045:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1046:	              break;
+ 1047:	             default:
+ 1048:	              chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1049:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1050:	              break;
+ 1051:	            }
+ 1052:	            /* Exit: HMI_MENU_WAIT_ACTIVE_ST */
+ 1053:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1054:	            break;
+ 1055:	           case IN_HMI_MENU_WAIT_TEMP_TMR_ST:
+ 1056:	            /* Exit: HMI_MENU_WAIT_TEMP_TMR_ST */
+ 1057:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1058:	            break;
+ 1059:	           default:
+ 1060:	            chartInstance-&gt;is_HMI_MENU_WAIT_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1061:	            break;
+ 1062:	          }
+ 1063:	          /* Exit: HMI_MENU_WAIT_ST */
+ 1064:	          hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+ 1065:	           chartInstance-&gt;l_menu_id_U8);
+ 1066:	          /* Entry: HMI_MENU_ACTIVE_ST */
+ 1067:	          chartInstance-&gt;is_HMI_MENU_LOGIC_ST = (uint8_T)IN_HMI_MENU_ACTIVE_ST;
+ 1068:	          chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+ 1069:	          chartInstance-&gt;fast_scroll_active_rel = ((boolean_T)FALSE != 0);
+ 1070:	        }
+ 1071:	      }
+ 1072:	    }
+ 1073:	  }
+ 1074:	}
+ 1075:	
+ 1076:	static void HMI_MENU_ANIM_ST(SFhmi_menu_core_01_chartInstanceStruct
+ 1077:	 *chartInstance)
+ 1078:	{
+ 1079:	  uint8_T b_previousEvent;
+ 1080:	  /* During: HMI_MENU_ANIM_ST */
+ 1081:	  if(chartInstance-&gt;is_active_HMI_MENU_ANIM_ST != 0) {
+ 1082:	    if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_CLOSE_EV) {
+ 1083:	      /* Exit: HMI_MENU_ANIM_ACTIVE_ST */
+ 1084:	      /* Exit: HMI_MENU_ANIM_INACTIVE_ST */
+ 1085:	      /* Entry: HMI_MENU_ANIM_INACTIVE_ST */
+ 1086:	      chartInstance-&gt;is_HMI_MENU_ANIM_ST = (uint8_T)IN_HMI_MENU_ANIM_INACTIVE_ST;
+ 1087:	      b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1088:	      _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_WAIT_ANIM_EXIT_EV;
+ 1089:	      /* During: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1090:	      if((chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST ==
+</PRE>
+<A NAME="ERR_LINE_1091"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1091:	        IN_HMI_MENU_WAIT_FOR_ANIM_EXIT) &amp;&amp; (_sfEvent_hmi_menu_core_01_model_ ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(1091) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_1117"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1092:	        event_HMI_MENU_WAIT_ANIM_EXIT_EV)) {
+ 1093:	        /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1094:	        /* Entry: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+ 1095:	        chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1096:	          (uint8_T)IN_HMI_MENU_WAIT_ANIM_RUNNING_ST;
+ 1097:	        hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+ 1098:	         chartInstance-&gt;l_menu_id_U8);
+ 1099:	        hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+ 1100:	         MENU_CB_ACTION_WAIT);
+ 1101:	      }
+ 1102:	      _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1103:	    } else {
+ 1104:	      switch(chartInstance-&gt;is_HMI_MENU_ANIM_ST) {
+ 1105:	       case IN_HMI_MENU_ANIM_ACTIVE_ST:
+ 1106:	        /* During: HMI_MENU_ANIM_ACTIVE_ST */
+ 1107:	        if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_ANIM_EXIT_EV) {
+ 1108:	          /* Exit: HMI_MENU_ANIM_ACTIVE_ST */
+ 1109:	          /* Entry: HMI_MENU_ANIM_INACTIVE_ST */
+ 1110:	          chartInstance-&gt;is_HMI_MENU_ANIM_ST =
+ 1111:	            (uint8_T)IN_HMI_MENU_ANIM_INACTIVE_ST;
+ 1112:	          b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1113:	          _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_WAIT_ANIM_EXIT_EV;
+ 1114:	          /* During: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1115:	          if((chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST ==
+ 1116:	            IN_HMI_MENU_WAIT_FOR_ANIM_EXIT) &amp;&amp; (_sfEvent_hmi_menu_core_01_model_
+</PRE>
+<A NAME="ERR_LINE_1117"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1117:	            ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(1117) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1118:	            event_HMI_MENU_WAIT_ANIM_EXIT_EV)) {
+ 1119:	            /* Exit: HMI_MENU_WAIT_FOR_ANIM_EXIT */
+ 1120:	            /* Entry: HMI_MENU_WAIT_ANIM_RUNNING_ST */
+ 1121:	            chartInstance-&gt;is_HMI_MENU_WAIT_ACTIVE_ST =
+ 1122:	              (uint8_T)IN_HMI_MENU_WAIT_ANIM_RUNNING_ST;
+ 1123:	            hmi_menu_logic_stop_timer(MENU_CORE_WAIT_TIMER,
+ 1124:	             chartInstance-&gt;l_menu_id_U8);
+ 1125:	            hmi_menu_logic_activate_animation(chartInstance-&gt;l_menu_id_U8,
+ 1126:	             MENU_CB_ACTION_WAIT);
+ 1127:	          }
+ 1128:	          _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1129:	        }
+ 1130:	        break;
+ 1131:	       case IN_HMI_MENU_ANIM_INACTIVE_ST:
+ 1132:	        /* During: HMI_MENU_ANIM_INACTIVE_ST */
+ 1133:	        /*  animation started by view manager and vm is in anim state */
+ 1134:	        if(_sfEvent_hmi_menu_core_01_model_ == event_HMI_MENU_ANIM_STARTED_EV) {
+ 1135:	          /* Exit: HMI_MENU_ANIM_INACTIVE_ST */
+ 1136:	          /* Entry: HMI_MENU_ANIM_ACTIVE_ST */
+ 1137:	          chartInstance-&gt;is_HMI_MENU_ANIM_ST =
+ 1138:	            (uint8_T)IN_HMI_MENU_ANIM_ACTIVE_ST;
+ 1139:	        }
+ 1140:	        break;
+ 1141:	       default:
+ 1142:	        chartInstance-&gt;is_HMI_MENU_ANIM_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+ 1143:	        break;
+ 1144:	      }
+ 1145:	    }
+ 1146:	  }
+ 1147:	}
+ 1148:	
+ 1149:	void hmi_menu_fast_scroll_inactive(SFhmi_menu_core_01_chartInstanceStruct
+ 1150:	 *chartInstance)
+ 1151:	{
+ 1152:	  uint8_T b_previousEvent;
+ 1153:	  /* Function Call: hmi_menu_fast_scroll_inactive */
+ 1154:	  if(chartInstance-&gt;is_HMI_MENU_FAST_SCROLL_ST ==
+ 1155:	   IN_HMI_MENU_FAST_SCROLL_ACTIVE_ST) {
+ 1156:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1157:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_FS_INACTIVE_EV;
+ 1158:	    hmi_menu_core_01_chart(chartInstance);
+ 1159:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1160:	    if(chartInstance-&gt;fast_scroll_active == TRUE) {
+ 1161:	      hmi_menu_logic_deactivate_animation(chartInstance-&gt;l_menu_id_U8,
+ 1162:	       MENU_CB_ACTION_FASTUP);
+ 1163:	      chartInstance-&gt;fast_scroll_active = ((boolean_T)FALSE != 0);
+ 1164:	    }
+ 1165:	  }
+ 1166:	}
+ 1167:	
+ 1168:	void hmi_menu_chart_menu_rebuild(SFhmi_menu_core_01_chartInstanceStruct
+ 1169:	 *chartInstance, uint16_T fl_menu_cb_output_U16)
+ 1170:	{
+ 1171:	  uint8_T b_previousEvent;
+ 1172:	  /* Function Call: hmi_menu_chart_menu_rebuild */
+ 1173:	  if(!(chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_INACTIVE_ST)) {
+ 1174:	    chartInstance-&gt;l_menu_action_output_U16 = fl_menu_cb_output_U16;
+ 1175:	    b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1176:	    _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_REBUILD_EV;
+ 1177:	    hmi_menu_core_01_chart(chartInstance);
+ 1178:	    _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1179:	  }
+ 1180:	}
+ 1181:	
+ 1182:	boolean_T hmi_menu_chart_is_anim_st(SFhmi_menu_core_01_chartInstanceStruct
+</PRE>
+<A NAME="ERR_LINE_1183"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1183:	 *chartInstance)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3673.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(1183) ++ WARNING ++: &lt;=5=(3673) The object addressed by the pointer parameter 'chartInstance' is not modified and so the pointer could be of type 'pointer to const'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1184:	{
+ 1185:	  /* Function Call: hmi_menu_chart_is_anim_st */
+ 1186:	  return chartInstance-&gt;is_HMI_MENU_ANIM_ST == IN_HMI_MENU_ANIM_ACTIVE_ST;
+ 1187:	}
+ 1188:	
+</PRE>
+<A NAME="ERR_LINE_1189"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1189:	uint8_T hmi_menu_chart_Btn_trigger(SFhmi_menu_core_01_chartInstanceStruct
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2889.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_menu_core_01_chart.c(1189) ++ WARNING ++: &lt;=5=(2889) This function has more than one 'return' path.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1190:	 *chartInstance, uint8_T p_menu_ID_U8, uint8_T
+ 1191:	 p_menu_btn_action_U8, uint8_T p_menu_state)
+ 1192:	{
+ 1193:	  boolean_T return_st;
+ 1194:	  uint8_T b_previousEvent;
+ 1195:	  /* Function Call: hmi_menu_chart_Btn_trigger */
+ 1196:	  if((chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_ACTIVE_ST) ||
+ 1197:	   (chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_SCROLL_ST)
+ 1198:	   || (chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST)) {
+ 1199:	    chartInstance-&gt;l_menu_action_U8 = p_menu_btn_action_U8;
+ 1200:	    chartInstance-&gt;l_menu_id_U8 = p_menu_ID_U8;
+ 1201:	    /* Function Call: hmi_menu_chart_check_MC_rel */
+ 1202:	    if((chartInstance-&gt;l_menu_action_U8 == MENU_ACTION_UP_RELEASE) ||
+ 1203:	     (chartInstance-&gt;l_menu_action_U8 == MENU_ACTION_DOWN_RELEASE) || (
+ 1204:	      chartInstance-&gt;l_menu_action_U8 == MENU_ACTION_LEFT_RELEASE) ||
+ 1205:	     (chartInstance-&gt;l_menu_action_U8 == MENU_ACTION_RIGHT_RELEASE)) {
+ 1206:	      return_st = ((boolean_T)TRUE != 0);
+ 1207:	    } else {
+ 1208:	      return_st = ((boolean_T)FALSE != 0);
+ 1209:	    }
+ 1210:	    if(((chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_SCROLL_ST) ||
+ 1211:	      (chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST))
+ 1212:	     &amp;&amp; (TRUE == return_st)) {
+ 1213:	      if((chartInstance-&gt;is_HMI_MENU_LOGIC_ST == IN_HMI_MENU_WAIT_ST) &amp;&amp;
+ 1214:	       (p_menu_state == MENU_STATE_FAST)) {
+ 1215:	        chartInstance-&gt;l_btn_rel_in_fast_scroll = ((boolean_T)TRUE != 0);
+ 1216:	      } else {
+ 1217:	        b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1218:	        _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_BTN_MC_RELEASE_EV;
+ 1219:	        hmi_menu_core_01_chart(chartInstance);
+ 1220:	        _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1221:	      }
+ 1222:	    } else {
+ 1223:	      b_previousEvent = _sfEvent_hmi_menu_core_01_model_;
+ 1224:	      _sfEvent_hmi_menu_core_01_model_ = event_HMI_MENU_BTN_ACTIONS_EV;
+ 1225:	      hmi_menu_core_01_chart(chartInstance);
+ 1226:	      _sfEvent_hmi_menu_core_01_model_ = b_previousEvent;
+ 1227:	    }
+ 1228:	    return (uint8_T)MENU_BTN_ABSORBED;
+ 1229:	  } else {
+ 1230:	    return (uint8_T)MENU_BTN_NONE;
+ 1231:	  }
+ 1232:	}
+ 1233:	
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_menu_core_01_chart.c (1233 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0316             39
+     6           0.0000              0
+     5           0.0032              4
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0349             43
+</PRE>
+
+</BODY></HTML>

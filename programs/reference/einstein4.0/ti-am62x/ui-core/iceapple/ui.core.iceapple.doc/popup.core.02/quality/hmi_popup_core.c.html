@@ -1,0 +1,2877 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_popup_core.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2010. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_popup_core.c
+   20:	**
+   21:	** Description:    Source file for the Popup Core
+   22:	**
+   23:	** Organization:   Driver info, Audio and MFD HMI Software Section,
+   24:	**                 Visteon
+   25:	**
+   26:	**============================================================================
+   27:	**
+   28:	**==========================================================================*/
+   29:	#define HMI_POPUP_CORE_C
+   30:	
+   31:	/*============================================================================
+   32:	** I N C L U D E   F I L E S
+   33:	**==========================================================================*/
+   34:	
+   35:	#include "hmi_popup_core.dat"
+   36:	
+   37:	/*============================================================================
+   38:	** I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S
+   39:	**==========================================================================*/
+   40:	#define  HMI_TMR_TIME_OUT_TYPE                   (0x01)
+   41:	#define  HMI_TMR_PROGRESS_TIMER_TYPE             (0x02)
+   42:	#define  HMI_TMR_KEY_PAD_MULTI_PRESS_TYPE        (0x03)
+   43:	#define  HMI_TMR_MINIMUM_TIMEOUT_TYPE            (0x04)
+   44:	#define  HMI_PROGRESS_POPUP_NO_TIMEOUT_COUNT     (255)
+   45:	#define  HMI_DECIMAL_NUM_BASE                    ((UINT8)10)
+   46:	#define  POPUP_ANIM_STATUS_MASK                 (0xF0)
+   47:	#define  POPUP_FOCUS_STATUS_MASK                 (LSH_LOST_FOCUS_STATUS|LSH_GOT_FOCUS_STATUS)
+   48:	#ifndef UNUSED_VAR 
+   49:	#define UNUSED_VAR(X)  do { if(0 == (X)){} } while(0) 
+   50:	#endif
+   51:	
+   52:	typedef struct
+   53:	{
+   54:	   POPUP_ID total_popup_count;
+   55:	   POPUP_ID popup_id;
+   56:	}POPUP_ACTIVE_DATA_TYPE;
+   57:	
+   58:	
+   59:	/*============================================================================
+   60:	** I N T E R N A L   F U N C T I O N   P R O T O T Y P E S
+   61:	**==========================================================================*/
+   62:	/*******************************************************************************
+   63:	PRIVATE_FUNCTIONS_PROTOTYPE() {}
+   64:	********************************************************************************/
+   65:	
+   66:	static POPUP_LAYER_TYPE  const * hmi_popup_core_get_popup_layer(POPUP_ID p_popup_id);
+   67:	static POPUP_ID hmi_popup_core_get_active_popup(POPUP_LAYER_TYPE  const *p_layer);
+   68:	static void hmi_popup_core_send_event_notification(POPUP_ID p_popup_id, POPUP_EVENTS p_evt);
+   69:	static UINT8 hmi_popup_core_close_popup(POPUP_ID p_popup_id, POPUP_EVENTS p_event
+   70:	#ifdef LSH_ANIMATION_SUPPORT_ENABLED
+   71:	,POPUP_ANIMATION_ID p_anim_id
+   72:	#endif
+   73:	);
+   74:	static UINT8 hmi_popup_core_deactivate(POPUP_ID_T p_popup_id, POPUP_EVENTS p_event
+   75:	#ifdef LSH_ANIMATION_SUPPORT_ENABLED
+   76:	,POPUP_ANIMATION_ID p_anim_id
+   77:	#endif
+   78:	);
+   79:	static UINT8 hmi_popup_core_activate(POPUP_LAYER_TYPE const *p_layer
+   80:	#ifdef LSH_ANIMATION_SUPPORT_ENABLED
+   81:	,POPUP_ANIMATION_ID p_anim_id
+   82:	#endif
+   83:	);
+   84:	static void hmi_popup_core_start_popup_timer(POPUP_ID p_popup_id);
+   85:	static void hmi_popup_core_start_popup_min_timer(POPUP_ID p_popup_id);
+   86:	static void hmi_popup_core_start_all_popup_timer(POPUP_ID p_popup_id);
+   87:	static void hmi_popup_core_stop_popup_timer(POPUP_ID p_popup_id);
+   88:	static void hmi_popup_core_stop_popup_min_timer(POPUP_ID p_popup_id);
+   89:	static void hmi_popup_core_stop_all_popup_timer(POPUP_ID p_popup_id);
+   90:	static BOOLEAN hmi_popup_core_add_to_queue(POPUP_ID p_popup_id, POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority);
+   91:	static BOOLEAN hmi_popup_core_remove_from_queue(POPUP_ID p_popup_id, POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority);
+   92:	static POPUP_ID hmi_popup_core_search_self_deactivate_pp_in_queue(POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority);
+   93:	static POPUP_ID hmi_popup_core_get_lastin_pp_in_queue(POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority);
+   94:	
+   95:	#ifdef POPUP_TYPE_PROGRESSBAR
+   96:	static BOOLEAN hmi_popup_core_increment_progressbar_counter(POPUP_ID p_popup_id);
+   97:	#endif
+   98:	#ifdef POPUP_TYPE_KEYPAD
+   99:	static UINT8 hmi_popup_keypad_btn_handler(POPUP_KEYPADENTRY_TYPE  const *p_keypad, UINT16 p_btn_id, POPUP_ID p_popup_id);
+  100:	static BOOLEAN hmi_popup_core_inc_keypadmultitimer_counter(POPUP_ID p_popup_id);
+  101:	static BOOLEAN hmi_popup_core_search_button_event(PP_BTN_EVENT_TYPE const *p_btn_ev_ptr, UINT16 p_btn_event);
+  102:	#endif
+  103:	static POPUP_ACTIVE_DATA_TYPE hmi_popup_core_find_active_popup_and_count(POPUP_ID p_start_index, POPUP_ID p_end_index);
+  104:	static void hmi_popup_core_disable_timer_status(POPUP_ID_T p_popup_id);
+  105:	static void hmi_popup_core_clear_min_deact_pndng(POPUP_ID_T p_popup_id);
+  106:	
+  107:	
+  108:	/*============================================================================
+  109:	** M E M O R Y   A L L O C A T I O N
+  110:	**==========================================================================*/
+  111:	static POPUP_ID l_active_popup_id[POPUP_MAX_LAYERS];
+  112:	#ifdef POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED
+  113:	static BOOLEAN  l_popup_status;
+  114:	#endif
+  115:	
+  116:	
+  117:	
+  118:	/*============================================================================
+  119:	** E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S
+  120:	**==========================================================================*/
+  121:	/*******************************************************************************
+  122:	PUBLIC_FUNCTIONS() {}
+  123:	********************************************************************************/
+  124:	
+  125:	/*============================================================================
+  126:	** Function Name    : hmi_popup_core_initialize
+  127:	** Visibility       : Global, Infterface to the Application
+  128:	** Description      : This function should be called to intialize the popup
+  129:	**                    core
+  130:	** Invocation       : Invoked by the Application
+  131:	** Inputs/Outputs   : -
+  132:	** Critical Section : No
+  133:	** Created          : 15 OCT, 2012 NKRISHN9
+  134:	** Updated          : 15 OCT, 2012 NKRISHN9
+  135:	**==========================================================================*/
+  136:	void hmi_popup_core_initialize(void)
+  137:	{
+  138:	  POPUP_ID_T fl_index;
+  139:	  POPUP_ID_T fl_group_index;
+  140:	  POPUP_ID_T fl_queue_index;
+  141:	  POPUP_ID_T fl_lay_index;
+  142:	  POPUP_LAYER_TYPE const * fl_layer;
+  143:	#ifdef POPUP_TYPE_KEYPAD
+  144:	  POPUP_KEYPADENTRY_TYPE const * l_keypad_entry_table_ptr;
+  145:	#endif
+  146:	#ifdef POPUP_TYPE_PROGRESSBAR
+  147:	  POPUP_PROGRESSBAR_TYPE const * l_progress_bar_table_ptr;
+  148:	#endif
+  149:	
+  150:	#ifdef POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED
+  151:	  l_popup_status=FALSE;
+  152:	#endif
+  153:	  for(fl_lay_index = (POPUP_ID_T)0; fl_lay_index &lt; POPUP_MAX_LAYERS ; fl_lay_index++)
+  154:	  {
+  155:	    l_active_popup_id[fl_lay_index]=L_POPUP_MAX_COUNT;
+  156:	    fl_layer = l_layer_table[fl_lay_index];
+  157:	    if(fl_layer-&gt;l_group_priority_table_ptr != NULL)
+  158:	    {
+  159:	      for(fl_group_index = (POPUP_ID_T)0; fl_group_index &lt;fl_layer-&gt;l_total_grp_priority_count ; fl_group_index++)
+  160:	      {
+  161:	        for(fl_queue_index=(POPUP_ID_T)0;fl_queue_index&lt;(fl_layer-&gt;l_group_priority_table_ptr[fl_group_index]-&gt;queue_size);fl_queue_index++)
+  162:	        {
+  163:	          fl_layer-&gt;l_group_priority_table_ptr[fl_group_index]-&gt;queue[fl_queue_index]=(POPUP_ID_T)L_POPUP_MAX_COUNT;
+  164:	        }
+  165:	      }
+  166:	    }
+  167:	  }
+  168:	#ifdef POPUP_TYPE_KEYPAD
+  169:	  l_keypad_entry_table_ptr=l_total_pp_type.l_keypad_entry_pp_table_ptr;
+  170:	  for(fl_index = (POPUP_ID_T)0; fl_index &lt;l_total_pp_type.keypad_count_U8 ; fl_index++)
+  171:	  {
+  172:	    l_keypad_entry_table_ptr[fl_index].l_entry_ptr[0]='\0';
+  173:	    *(l_keypad_entry_table_ptr[fl_index].l_multi_press_counter)=0;
+  174:	    *(l_keypad_entry_table_ptr[fl_index].l_curr_multi_press_btn)=0;
+  175:	    *(l_keypad_entry_table_ptr[fl_index].l_multi_timer_counter)=0;
+  176:	  }
+  177:	#endif
+  178:	  
+  179:	#ifdef POPUP_TYPE_PROGRESSBAR 
+  180:	  l_progress_bar_table_ptr=l_total_pp_type.l_progress_bar_pp_table_ptr;
+  181:	  for(fl_index = (POPUP_ID_T)0; fl_index &lt;l_total_pp_type.progress_bar_count_U8 ; fl_index++)
+  182:	  {
+  183:	    *(l_progress_bar_table_ptr[fl_index].l_progress_counter_U8)=0;
+  184:	  }
+  185:	#endif
+  186:	
+  187:	  for(fl_index = (POPUP_ID_T)0; fl_index &lt; ((L_POPUP_MAX_COUNT+7)/8); fl_index++)
+  188:	  {
+  189:	    l_pp_id_sts_bit_U8[fl_index]=(POPUP_ID_T)0;
+  190:	    l_pp_id_tmr_bit_U8[fl_index]=(POPUP_ID_T)0;
+  191:	    l_pp_id_lsh_sts_bit_U8[fl_index]=(POPUP_ID_T)0;
+  192:	    l_min_tmr_bit_U8_ptr[fl_index]=(POPUP_ID_T)0;
+  193:	  }
+  194:	}
+  195:	
+  196:	/*============================================================================
+  197:	** Function Name    : hmi_popup_core_get_popup_info
+  198:	** Visibility       : Global, Interface to the Application
+  199:	** Description      : function could be called to find popup information
+  200:	** Invocation       : Invoked by the Application
+  201:	** Inputs/Outputs   : p_layer_id - Enumeration of the layer id to be inspected
+  202:	**                    POPUP_INFO_DATA_TYPE - structure param ptr fill popup info
+  203:	** Critical Section : No
+  204:	** Created          : 15 OCT, 2012 NKRISHN9
+  205:	** Updated          : 20 JUN, 2013 NKRISHN9
+  206:	**==========================================================================*/
+  207:	void hmi_popup_core_get_popup_info(POPUP_INFO_DATA_TYPE * const p_info_data, POPUP_LAYER_ID p_layer_id)
+  208:	{
+  209:	  POPUP_LAYER_TYPE  const * fl_layer;
+  210:	  POPUP_ACTIVE_DATA_TYPE r_active;
+  211:	  POPUP_ID p_start_index;
+  212:	  POPUP_ID p_end_index;
+  213:	
+  214:	  if(p_layer_id &lt; (POPUP_LAYER_ID)POPUP_MAX_LAYERS)
+  215:	  {
+  216:	    fl_layer = l_layer_table[p_layer_id];
+  217:	    p_start_index=POPUP_LAYER_START_INDEX(fl_layer);
+  218:	    p_end_index=MAX_LAYER_POPUP_ID(fl_layer);
+  219:	    r_active=hmi_popup_core_find_active_popup_and_count(p_start_index,p_end_index);
+  220:	    /* The popup which is present in the lsh display of a popup layer is the active popup */
+  221:	    /* The count of a layer is a number of popups added to a popup layer by a application */
+  222:	    r_active.popup_id=l_active_popup_id[fl_layer-&gt;l_layer_index];
+  223:	  }
+  224:	  else
+  225:	  {
+  226:	    p_start_index=(POPUP_ID)0;
+  227:	    p_end_index=L_POPUP_MAX_COUNT;
+  228:	    /* The highest priority popup which is active among all layers of a popup */
+  229:	    /* The total popups active among all layer of a popup core which is added by application */
+  230:	    r_active=hmi_popup_core_find_active_popup_and_count(p_start_index,p_end_index);
+  231:	  }
+  232:	  p_info_data-&gt;active_popup_id=r_active.popup_id;
+  233:	  p_info_data-&gt;total_popup_count=r_active.total_popup_count;
+  234:	}
+  235:	
+  236:	/*============================================================================
+  237:	** Function Name    : hmi_popup_core_inspect_popup_active
+  238:	** Visibility       : Global, Interface to the Application
+  239:	** Description      : function could be called to find whether popup is active 
+  240:	**                    or not
+  241:	** Invocation       : Invoked by the Application
+  242:	** Inputs/Outputs   : p_popup_id - popup id to be inspected
+  243:	                      POPUP_CONTEXT_TYPE p_context_type 
+  244:	                      The popup id status is whether it is the input from app 
+  245:	                      or in display context(lsh context)i.e.the
+  246:	                      popup active in display for a corresponding popup layer.
+  247:	** Critical Section : No
+  248:	** Created          : 15 OCT, 2012 NKRISHN9
+  249:	** Updated          : 15 OCT, 2012 NKRISHN9
+  250:	**==========================================================================*/
+  251:	BOOLEAN hmi_popup_core_inspect_popup_active(POPUP_ID p_popup_id, POPUP_CONTEXT_TYPE p_context_type)
+  252:	{
+  253:	  UINT8 fl_return_BOOL = FALSE;
+  254:	  if((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+  255:	  {
+  256:	    if((POPUP_CONTEXT_TYPE)POPUP_CONTEXT_INPUT==p_context_type)
+  257:	    {
+  258:	      /* Return true if the popup is active (in popup app input context i.e. even just activated pp) */
+  259:	      if ((POPUP_ACTIVE(p_popup_id))&amp;&amp;(!MIN_TIMER_DEACTIVATE_PENDING(p_popup_id)))
+  260:	      {
+  261:	        fl_return_BOOL = TRUE;
+  262:	      }
+  263:	    }
+  264:	    else
+  265:	    {
+  266:	      /* Return true if the popup is active in lsh i.e.in display */
+  267:	      POPUP_LAYER_TYPE const * fl_layer;
+  268:	      fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+  269:	      if(fl_layer!=NULL)
+  270:	      {
+  271:	        if(l_active_popup_id[fl_layer-&gt;l_layer_index]==p_popup_id)
+  272:	       {
+  273:	         fl_return_BOOL = TRUE;
+  274:	       }
+  275:	      }
+  276:	    }
+  277:	  }
+  278:	  return(fl_return_BOOL);
+  279:	}
+  280:	
+  281:	/*============================================================================
+  282:	** Function Name    : hmi_popup_core_close_all_popup
+  283:	** Visibility       : Global, Interface to the Application
+  284:	** Description      : This function should be called to close all popup in a
+  285:	**                    layer or popup core(Max popup layer id)
+  286:	** Invocation       : Invoked by the Application
+  287:	** Inputs/Outputs   : p_layer_id - Layer id of popups to be closed.
+  288:	**                    POPUP_MAX_LAYERS  - For all popups of popupcore to close.
+  289:	** Critical Section : No
+  290:	** Created          : 30 JUL, 2012 NKRISHN9
+  291:	** Updated          : 30 JUL, 2013 nkrishn9
+  292:	**==========================================================================*/
+  293:	void hmi_popup_core_close_all_popup(POPUP_LAYER_ID p_layer_id)
+  294:	{
+  295:	  POPUP_ID_T fl_index, fl_end_index;
+  296:	  POPUP_LAYER_TYPE const * fl_layer;
+  297:	  POPUP_ACTIVE_DATA_TYPE fl_active;
+  298:	
+  299:	  if((POPUP_LAYER_ID)POPUP_MAX_LAYERS &gt; p_layer_id)
+  300:	  {
+  301:	    fl_layer = l_layer_table[p_layer_id];
+  302:	    fl_index = POPUP_LAYER_START_INDEX(fl_layer);
+  303:	    fl_end_index = MAX_LAYER_POPUP_ID(fl_layer);
+  304:	  }
+  305:	  else
+  306:	  {
+  307:	    fl_index = (POPUP_ID_T)0;
+  308:	    fl_end_index = (POPUP_ID_T)L_POPUP_MAX_COUNT;
+  309:	  }
+  310:	
+  311:	  fl_active = hmi_popup_core_find_active_popup_and_count((POPUP_ID)fl_index,(POPUP_ID)fl_end_index);
+  312:	  fl_index = fl_active.popup_id;
+  313:	
+  314:	  while((fl_index &lt; fl_end_index)&amp;&amp;(fl_active.total_popup_count!=(POPUP_ID)0))
+  315:	  {
+  316:	    (void)hmi_popup_core_deactivate_popup((POPUP_ID)fl_index
+  317:	                                    #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  318:	                                    , (POPUP_ANIMATION_ID)POPUP_ANIM_MAX_ID
+  319:	                                    #endif
+  320:	                                    );
+  321:	    /* Take care the minimum timer */
+  322:	    fl_active = hmi_popup_core_find_active_popup_and_count((POPUP_ID)(fl_index+1),(POPUP_ID)fl_end_index);
+  323:	    fl_index = fl_active.popup_id;
+  324:	  }
+  325:	}
+  326:	
+  327:	/*============================================================================
+  328:	** Function Name    : hmi_popup_core_activate_popup
+  329:	** Visibility       : Global, Interface to the Application
+  330:	** Description      : This function should be called to activate a particular
+  331:	**                    popup.
+  332:	** Invocation       : Invoked by the Application
+  333:	** Inputs/Outputs   : p_popup_id - Enumeration of the Popup to be activated
+  334:	**                    p_anim_id  - Animation ID to perform                     
+  335:	** Critical Section : No
+  336:	** Created          : 15 OCT, 2012 NKRISHN9
+  337:	** Updated          : 20 JUN, 2013 nkrishn9
+  338:	**==========================================================================*/
+  339:	UINT8 hmi_popup_core_activate_popup(POPUP_ID p_popup_id
+  340:	                                    #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  341:	                                    ,POPUP_ANIMATION_ID p_anim_id
+  342:	                                    #endif
+  343:	                                    )
+  344:	{
+  345:	  /* Currently, return data is to be send "none" as view manager. In future, it 
+  346:	  might be revisited as required */
+  347:	  UINT8 fl_return_U8 = LSH_STATUS_NONE;
+  348:	  
+  349:	  /* Is a Valid Popup id*/
+  350:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+  351:	  {
+  352:	    POPUP_ID fl_active_pp;
+  353:	    POPUP_ID_T fl_index;
+  354:	    POPUP_ID temp_low_prty_pp_start_index;
+  355:	    UINT8 fl_temp_flag;
+  356:	    POPUP_ID_ATTRIBUTE_T fl_popupid_grp_priorty;
+  357:	    POPUP_ID_T fl_max_layer_popup_id;
+  358:	    POPUP_LAYER_TYPE const * fl_layer;
+  359:	    
+  360:	    fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+  361:	    if(fl_layer!=NULL)
+  362:	    {
+  363:	      fl_active_pp = hmi_popup_core_get_active_popup(fl_layer);
+  364:	      fl_popupid_grp_priorty=GROUP_PRIORITY(p_popup_id);
+  365:	      fl_max_layer_popup_id=MAX_LAYER_POPUP_ID(fl_layer);
+  366:	
+  367:	      /* Is no pp is active(i.e. if no popup is active in a layer, then,  
+  368:	         highest popupid+1 is returned from active pp handler)  or  is new pp is the
+  369:	         highest/same active popup  or  is same group priority pp */
+  370:	      if ((fl_active_pp &gt;= (fl_max_layer_popup_id)) || (fl_active_pp &gt;= p_popup_id)\
+  371:	          ||((fl_popupid_grp_priorty== GROUP_PRIORITY(fl_active_pp))\
+  372:	              &amp;&amp;(fl_popupid_grp_priorty!=NO_GROUP_PRIORITY)))
+  373:	      {
+  374:	        /****************************************************************************
+  375:	        ** Stop the timer only if there is any low priority popup active, the API       **
+  376:	        ** hmi_popup_core_get_active_popup' would return the max popup layer id in the  **
+  377:	        ** layer if no popup is active in that layer.                                   **
+  378:	        *****************************************************************************/
+  379:	        if(fl_popupid_grp_priorty!=NO_GROUP_PRIORITY)
+  380:	        {
+  381:	          if(p_popup_id==fl_active_pp)
+  382:	          {
+  383:	            (void)hmi_popup_core_remove_from_queue(p_popup_id, fl_layer, fl_popupid_grp_priorty);
+  384:	            /* Just remove the new popup as no notification is required (and the popup will be added again) 
+  385:	               since, if the pp is in queue and activate the same pp might bring it to display. */
+  386:	          }
+  387:	          else
+  388:	          {
+  389:	            POPUP_ID temp_self_deactivate_pp;
+  390:	            /* The popup is not already the active popup. Now, search and remove if 
+  391:	               any popup with self deactivate config present in the queue */
+  392:	            temp_self_deactivate_pp=hmi_popup_core_search_self_deactivate_pp_in_queue(fl_layer, fl_popupid_grp_priorty);
+  393:	            if(temp_self_deactivate_pp!=(POPUP_ID)L_POPUP_MAX_COUNT)
+  394:	            {
+  395:	              (void)hmi_popup_core_remove_from_queue(temp_self_deactivate_pp, fl_layer,\
+  396:	              GROUP_PRIORITY(temp_self_deactivate_pp));
+  397:	              if(temp_self_deactivate_pp!=p_popup_id)
+  398:	              {
+  399:	                (void)hmi_popup_core_deactivate((POPUP_ID_T)temp_self_deactivate_pp, POPUP_CLOSED_ON_DEMAND_EVT
+  400:	                                                #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  401:	                                                , (POPUP_ANIMATION_ID)POPUP_ANIM_MAX_ID
+  402:	                                                #endif
+  403:	                                                );
+  404:	              }
+  405:	            }
+  406:	            if(POPUP_ACTIVE(p_popup_id))
+  407:	            {
+  408:	              (void)hmi_popup_core_remove_from_queue(p_popup_id, fl_layer, fl_popupid_grp_priorty);
+  409:	              /* Just remove the new popup as no notification is required (and the popup will be added again) 
+  410:	                 since, if the pp is in queue and activate the same pp might bring it to display. */
+  411:	            }
+  412:	          }
+  413:	          /* Add the popup to top of the queue even if popup is already in queue(which is removed above) */
+  414:	          (void)hmi_popup_core_add_to_queue(p_popup_id, fl_layer, fl_popupid_grp_priorty);
+  415:	          /* Search and deactivate all low priority pp which is configured as deactivate 
+  416:	           when high priority pp activated */
+  417:	
+  418:	          /* find the index of low priority pp */
+  419:	          /* if it is a group priority, the index is start of next group priority */
+  420:	          fl_temp_flag=(UINT8)0;
+  421:	          temp_low_prty_pp_start_index = (POPUP_ID)(p_popup_id+(POPUP_ID)1);
+  422:	          for(fl_index=(UINT8)(p_popup_id+(POPUP_ID_T)1);((fl_index &lt; (POPUP_ID_T)(fl_max_layer_popup_id))\
+  423:	                &amp;&amp;(fl_temp_flag==0));fl_index++)
+  424:	          {
+  425:	            if(fl_popupid_grp_priorty!=GROUP_PRIORITY(fl_index))
+  426:	            {
+  427:	              temp_low_prty_pp_start_index=(POPUP_ID)(fl_index);
+  428:	              fl_temp_flag=(UINT8)1;
+  429:	            }
+  430:	          }
+  431:	        }
+  432:	        else
+  433:	        {
+  434:	          /* if group priority is zero, the index of low priority pp is next popup  */
+  435:	          temp_low_prty_pp_start_index=(POPUP_ID)(p_popup_id+(POPUP_ID)1);
+  436:	        }
+  437:	
+  438:	        for(fl_index=temp_low_prty_pp_start_index;(fl_index &lt; (fl_max_layer_popup_id));fl_index++)
+  439:	        {
+  440:	          /* deactivate all low priority popup of a layer with config as deactivate and active status but not the same popup */
+  441:	          if((LOW_PRIORITY_PP_SELF_DEACTIVTION(fl_index))&amp;&amp;(POPUP_ACTIVE(fl_index))&amp;&amp;(p_popup_id!=fl_index))
+  442:	          {
+  443:	            /* Remove the popup from respective queue if it is a group priority pp */
+  444:	            if(GROUP_PRIORITY(fl_index)!=NO_GROUP_PRIORITY)
+  445:	            {
+  446:	              (void)hmi_popup_core_remove_from_queue((POPUP_ID)fl_index, fl_layer, GROUP_PRIORITY(fl_index));
+  447:	            }
+  448:	              if((POPUP_ID_T)fl_index &lt; L_POPUP_MAX_COUNT)
+  449:	              {
+  450:	                (void)hmi_popup_core_deactivate((POPUP_ID_T)fl_index, POPUP_CLOSED_ON_DEMAND_EVT
+  451:	                                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  452:	                                            , (POPUP_ANIMATION_ID)POPUP_ANIM_MAX_ID
+  453:	                                            #endif
+  454:	                                            );
+  455:	        }
+  456:	          }
+  457:	        }
+  458:	
+  459:	        if (fl_active_pp != fl_max_layer_popup_id)
+  460:	        {
+  461:	          /*check the popup is active, whether config is deactivated, new &amp; active pp is not same*/
+  462:	          if((POPUP_ACTIVE(fl_active_pp))&amp;&amp;(DEACTIVATE_ACTIVE_PP(fl_active_pp))\
+  463:	            &amp;&amp;(fl_active_pp!=p_popup_id))
+  464:	          {
+  465:	            if(GROUP_PRIORITY(fl_active_pp)!=NO_GROUP_PRIORITY)
+  466:	            {
+  467:	              BOOLEAN temp_remove_status;
+  468:	              POPUP_LAYER_TYPE const * fl_low_priority_pp_layer;
+  469:	 
+  470:	              fl_low_priority_pp_layer = hmi_popup_core_get_popup_layer(fl_active_pp);
+  471:	              if(fl_low_priority_pp_layer!=NULL)
+  472:	               {
+  473:	                temp_remove_status=hmi_popup_core_remove_from_queue(fl_active_pp, fl_low_priority_pp_layer,\
+  474:	                GROUP_PRIORITY(fl_active_pp));
+  475:	               if(FALSE != temp_remove_status)
+</PRE>
+<A NAME="ERR_LINE_476"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  476:	               {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(476) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_2318"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  477:	                (void)hmi_popup_core_deactivate((POPUP_ID_T)fl_active_pp, POPUP_CLOSED_ON_DEMAND_EVT
+  478:	                                                #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  479:	                                                , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM,fl_active_pp)
+  480:	                                                #endif
+  481:	                                                );
+  482:	              }
+  483:	             }
+  484:	            }
+  485:	            else
+  486:	            {
+  487:	              (void)hmi_popup_core_deactivate((POPUP_ID_T)fl_active_pp, POPUP_CLOSED_ON_DEMAND_EVT
+  488:	                                              #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  489:	                                              , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM,fl_active_pp)
+  490:	                                              #endif
+  491:	                                              );
+  492:	            }
+  493:	          }
+  494:	          /* just allow to expire its timer if its type is not restart */
+  495:	          if((TIMERTYPE_RESTART(fl_active_pp))&amp;&amp;(fl_active_pp!=p_popup_id))
+  496:	          {
+  497:	            hmi_popup_core_stop_popup_timer(fl_active_pp);
+  498:	            hmi_popup_core_disable_timer_status((POPUP_ID_T)p_popup_id);
+  499:	          }
+  500:	        }
+  501:	
+  502:	#if (POPUP_IGNORE_MIN_TIME_ON_HIGH_PRIO_POPUP!=1)
+  503:	        /* Check for minimmum timer status and ignore if it is not configured i.e. POPUP_MAX_TMR */
+  504:	        if(((fl_layer-&gt;l_min_tmr_id) == POPUP_MAX_TIMER)\
+  505:	            ||(HMI_POPUP_CHECK_TIMER(fl_layer-&gt;l_min_tmr_id) != POPUP_TMR_RUNNING))
+  506:	#endif
+  507:	        {
+  508:	          #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  509:	          UINT8 p_anim_remove_id;
+</PRE>
+<A NAME="ERR_LINE_510"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  510:	          p_anim_remove_id=POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM,p_popup_id);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(510) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  511:	          if(LOGIC_STATE_ID(fl_active_pp)==LOGIC_STATE_ID(p_popup_id))
+  512:	          {
+  513:	            /* The animation needs to block if already active and new popup has same screen id */
+  514:	            p_anim_id=(POPUP_ANIMATION_ID)POPUP_ANIM_MAX_ID;
+  515:	            p_anim_remove_id=(POPUP_ANIMATION_ID)POPUP_ANIM_MAX_ID;
+  516:	          }
+  517:	          else
+  518:	          {
+  519:	            p_anim_remove_id=POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM,p_popup_id);
+  520:	          }
+  521:	          #endif
+  522:	
+  523:	          hmi_popup_core_stop_popup_min_timer(fl_active_pp);
+  524:	          /* Remove the popup from LSH, it will be added when new popup is closed */
+  525:	          if((fl_active_pp&lt;(fl_max_layer_popup_id))&amp;&amp;((fl_active_pp!=p_popup_id)))
+  526:	          {
+  527:	            #ifdef LSH_APP_REM_HANDLER  
+  528:	              (void)POPUP_LSH_REM_STATE_EXT(LOGIC_STATE_ID(fl_active_pp), p_anim_remove_id, (UINT8)fl_active_pp, (POPUP_LAYER_ID)fl_layer-&gt;l_layer_index);
+  529:	            #else
+  530:	            (void)POPUP_LSH_REM_STATE_EXT(LOGIC_STATE_ID(fl_active_pp), p_anim_remove_id, (UINT8)fl_active_pp);
+  531:	            #endif
+  532:	          }
+  533:	
+  534:	
+  535:	          #ifdef LSH_APP_ADD_HANDLER
+  536:	          fl_return_U8 = POPUP_LSH_ADD_STATE_EXT(LOGIC_STATE_ID(p_popup_id), p_anim_id, (UINT8)p_popup_id, (POPUP_LAYER_ID)fl_layer-&gt;l_layer_index);
+  537:	          #else
+  538:	            fl_return_U8 = POPUP_LSH_ADD_STATE_EXT(LOGIC_STATE_ID(p_popup_id), p_anim_id, (UINT8)p_popup_id);
+  539:	          #endif
+  540:	
+  541:	#ifdef POPUP_TYPE_PROGRESSBAR
+  542:	          if(fl_active_pp!=p_popup_id)
+  543:	          {
+  544:	            if(POPUP_TYPE(p_popup_id) == POPUP_PROGRESS)
+  545:	            {
+  546:	              PROGRESSBAR_PP_INIT_CURRENTCOUNT(p_popup_id);
+  547:	            }
+  548:	          }
+  549:	#endif
+  550:	        }
+  551:	        /* Mark the popup to be active */
+  552:	        ACTIVATE_POPUP(p_popup_id);
+  553:	        ACTIVATE_LSH_POPUP(p_popup_id);
+  554:	        /* Mark the timer status 
+  555:	           So, that it can be started when current popup minimum timer expires */
+  556:	        if((lc_popup_config_table[p_popup_id].layer_timeout != 0)
+  557:	        #ifdef POPUP_TYPE_KEYPAD
+  558:	        ||((0!=KEYPAD_PP_MULTIPRESS_TIMEOUT(p_popup_id))&amp;&amp;(POPUP_TYPE(p_popup_id)==POPUP_KEYPAD))
+  559:	        #endif
+  560:	        )
+  561:	        {
+  562:	          if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+  563:	          {
+  564:	            ENABLE_TIMER_STATUS(p_popup_id);
+  565:	            /* Start the Timer for the requested popup if its
+  566:	             * timer type is allow to expire */
+  567:	            if(lc_popup_config_table[p_popup_id].timer==ALLOW_TO_EXPIRE)
+  568:	            {
+  569:	              hmi_popup_core_start_popup_timer(p_popup_id);
+  570:	            }
+  571:	          }
+  572:	        }
+  573:	      }
+  574:	      else
+  575:	      {
+  576:	        if(!LOW_PRIORITY_PP_SELF_DEACTIVTION(p_popup_id))
+  577:	        {
+  578:	          /* Mark the timer status 
+  579:	             So, that it can be started when it priority comes */
+  580:	          if(lc_popup_config_table[p_popup_id].layer_timeout != 0)
+  581:	          {
+  582:	            if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+  583:	            {
+  584:	              ENABLE_TIMER_STATUS(p_popup_id);
+  585:	            }
+  586:	          }
+  587:	          /* Start the Timer for the requested low priority popup if its
+  588:	          * timer type is allow to expiare */
+  589:	          if(lc_popup_config_table[p_popup_id].timer==ALLOW_TO_EXPIRE)
+  590:	          {
+  591:	            hmi_popup_core_start_popup_timer(p_popup_id);
+  592:	          }
+  593:	          if(fl_popupid_grp_priorty!=NO_GROUP_PRIORITY)
+  594:	          {
+  595:	            (void)hmi_popup_core_add_to_queue(p_popup_id, fl_layer, fl_popupid_grp_priorty);
+  596:	          }
+  597:	          /* Mark the Popup to be active */
+  598:	          ACTIVATE_POPUP(p_popup_id);
+  599:	          #ifdef POPUP_TYPE_PROGRESSBAR
+  600:	          if(POPUP_TYPE(p_popup_id) == POPUP_PROGRESS)
+  601:	          {
+  602:	            PROGRESSBAR_PP_INIT_CURRENTCOUNT(p_popup_id);
+  603:	          }
+  604:	          #endif
+  605:	          ACTIVATE_LSH_POPUP(p_popup_id);
+  606:	        }
+  607:	      }
+  608:	   }
+  609:	  }
+  610:	  return(fl_return_U8);
+  611:	}
+  612:	
+  613:	/*============================================================================
+  614:	** Function Name    : hmi_popup_core_deativate_popup
+  615:	** Visibility       : Global, Interface to the Application
+  616:	** Description      : This function should be called to deactivate a particular
+  617:	**                    popup.
+  618:	** Invocation       : Invoked by the Application
+  619:	** Inputs/Outputs   : p_popup_id - Enumeration of the Popup to be deactivated
+  620:	**                    p_anim_id  - Animation ID to perform                     
+  621:	** Critical Section : No
+  622:	** Created          : 15 OCT, 2012 NKRISHN9
+  623:	** Updated          : 20 JUN, 2013 nkrishn9
+  624:	**==========================================================================*/
+  625:	UINT8 hmi_popup_core_deactivate_popup(POPUP_ID p_popup_id
+  626:	                                      #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  627:	                                      ,POPUP_ANIMATION_ID p_anim_id
+  628:	                                      #endif
+  629:	                                      )
+  630:	{
+  631:	  UINT8 fl_return_U8;
+  632:	  fl_return_U8 = LSH_STATUS_NONE;
+  633:	  
+  634:	  /* Is valid popup */
+  635:	  if((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+  636:	  {
+  637:	    POPUP_LAYER_TYPE const * fl_layer; 
+  638:	    UINT8 temp_timer_status;
+  639:	    POPUP_ID fl_active_pp;
+  640:	     
+  641:	    /* Identify the layer to which this popup belongs to
+  642:	     * and set the corresponding status bit of the popup */
+  643:	    fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+  644:	    if(fl_layer!=NULL)
+  645:	    {
+  646:	    fl_active_pp=hmi_popup_core_get_active_popup(fl_layer);
+  647:	    /* Check for Minimum Timeout Expiry */
+  648:	    if(fl_active_pp != (MAX_LAYER_POPUP_ID(fl_layer)))
+  649:	    {
+  650:	      if((p_popup_id != l_active_popup_id[fl_layer-&gt;l_layer_index])||(lc_popup_config_table[p_popup_id].min_timeout == 0))
+  651:	      {
+  652:	        /* Minimum Timeout timer is expired , so deactivate the Popup */
+  653:	        fl_return_U8 = hmi_popup_core_close_popup(p_popup_id, POPUP_CLOSED_ON_DEMAND_EVT
+  654:	                                                  #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  655:	                                                  , p_anim_id
+  656:	                                                  #endif
+  657:	                                                  );
+  658:	      }
+  659:	      else
+  660:	      {
+  661:	        temp_timer_status=HMI_POPUP_CHECK_TIMER(fl_layer-&gt;l_min_tmr_id);
+  662:	        if(temp_timer_status != POPUP_TMR_RUNNING)
+  663:	        {
+  664:	          fl_return_U8 = hmi_popup_core_close_popup(p_popup_id, POPUP_CLOSED_ON_DEMAND_EVT
+  665:	                                                    #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  666:	                                                    , p_anim_id
+  667:	                                                    #endif
+  668:	                                                    );
+  669:	        }
+  670:	        else
+  671:	        {
+  672:	          SET_MIN_TIMER_DEACTIVATE_PENDING(p_popup_id);
+  673:	        }
+  674:	      }
+  675:	    }
+  676:	    }
+  677:	  }
+  678:	  return(fl_return_U8);
+  679:	}
+  680:	
+  681:	/*============================================================================
+  682:	** Function Name    : hmi_popup_core_forced_deactivate_popup
+  683:	** Visibility       : Global, Interface to the Application
+  684:	** Description      : This function should be called to deactivate a particular
+  685:	**                    popup even with in minimum timer active.
+  686:	** Invocation       : Invoked by the Application
+  687:	** Inputs/Outputs   : p_popup_id - Enumeration of the Popup to be deactivated
+  688:	**                    p_anim_id  - Animation ID to perform                     
+  689:	** Critical Section : No
+  690:	** Created          : 15 OCT, 2012 NKRISHN9
+  691:	** Updated          : 20 JUN, 2013 nkrishn9
+  692:	**==========================================================================*/
+  693:	UINT8 hmi_popup_core_forced_deactivate_popup(POPUP_ID p_popup_id
+  694:	                                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  695:	                                            ,POPUP_ANIMATION_ID p_anim_id
+  696:	                                            #endif
+  697:	                                            )
+  698:	{
+  699:	  UINT8 fl_return_U8;
+  700:	  fl_return_U8 = LSH_INVALID_STATUS;
+  701:	
+  702:	  /* Is valid popup */
+  703:	  if((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+  704:	  {
+  705:	    fl_return_U8 = hmi_popup_core_close_popup(p_popup_id, POPUP_CLOSED_ON_DEMAND_EVT
+  706:	                                              #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  707:	                                              , p_anim_id
+  708:	                                              #endif
+  709:	                                              );
+  710:	  }
+  711:	  return(fl_return_U8);
+  712:	}
+  713:	/*============================================================================
+  714:	** Function Name    : hmi_popup_core_rx_button_handler
+  715:	** Visibility       : Global, Interface to the View state manager
+  716:	** Description      : Function should be called when a btn event is receive
+  717:	**                    while Popup is active.
+  718:	** Invocation       : Invoked by the View State Manager
+  719:	** Inputs/Outputs   : p_button_id_U16 - Button ID
+  720:	**                    p_layer_id 
+  721:	**                    p_logic_state_U8,
+  722:	** Critical Section : No
+  723:	** Created          : 15 OCT, 2012 NKRISHN9
+  724:	** Updated          : 31 JUL, 2013 NKRISHN9
+  725:	**==========================================================================*/
+  726:	UINT8 hmi_popup_core_rx_button_handler(POPUP_LAYER_ID p_layer_id, LSH_EVENT_HANDLER_STATUS_T *p_event_hndl_status_SP)
+  727:	{
+  728:	  POPUP_LAYER_TYPE const *fl_layer;
+  729:	  POPUP_ID fl_active_pp;
+  730:	  UINT8 fl_return_U8 = LSH_STATUS_NONE;
+  731:	#if defined(POPUP_TYPE_KEYPAD) || defined(POPUP_TYPE_ACK)
+  732:	  UINT16 fl_button_command_U16;
+  733:	#endif
+  734:	#ifdef POPUP_TYPE_ACK
+  735:	  UINT8 fl_count_index;
+  736:	  UINT8 fl_max_count_u8;
+  737:	  BOOLEAN fl_match_found;
+  738:	  UINT16 const * fl_event_ptr;
+  739:	  ACK_EVENT_TYPE const *fl_ackevent_ptr;
+  740:	#endif
+  741:	
+  742:	  /* Get the Layer Information from the Raw Popup ID */
+  743:	  fl_layer = l_layer_table[p_layer_id];
+  744:	  fl_active_pp = l_active_popup_id[fl_layer-&gt;l_layer_index];
+  745:	#if defined(POPUP_TYPE_KEYPAD) || defined(POPUP_TYPE_ACK)
+  746:	  fl_button_command_U16 = p_event_hndl_status_SP-&gt;button_command &amp; (~(LSH_ANIM_MASK));
+  747:	#endif
+  748:	
+  749:	  if(LOGIC_STATE_ID(fl_active_pp)==p_event_hndl_status_SP-&gt;logic_state_id)
+  750:	  {
+  751:	    if(POUP_EVENT_HANDLER(fl_active_pp) != LSH_NULL_EVENT_HANDLER)
+  752:	    {
+  753:	      /* Pass the Button Event to the respective handler function */
+  754:	      fl_return_U8 = POUP_EVENT_HANDLER(fl_active_pp)(p_event_hndl_status_SP);
+  755:	    }
+  756:	  }
+  757:	
+  758:	#if defined(POPUP_TYPE_KEYPAD) || defined(POPUP_TYPE_ACK)
+  759:	  if(((fl_return_U8 &amp; POPUP_BTN_ABSORBED) != POPUP_BTN_ABSORBED) &amp;&amp;\
+  760:	     ((fl_return_U8 &amp; POPUP_BTN_ACTION) != POPUP_BTN_ACTION)&amp;&amp;\
+  761:	     ((fl_return_U8 &amp; POPUP_BTN_BLOCK) != POPUP_BTN_BLOCK))
+  762:	  {
+  763:	
+  764:	    switch(POPUP_TYPE(fl_active_pp))
+  765:	    {
+  766:	#ifdef POPUP_TYPE_KEYPAD
+  767:	    case POPUP_KEYPAD:
+  768:	      /* The Button is not processed by the Application */
+  769:	      fl_return_U8 = hmi_popup_keypad_btn_handler( KEYPAD_PP_TBL_PTR(fl_active_pp),
+  770:	      fl_button_command_U16, fl_active_pp);
+  771:	      break;
+  772:	#endif
+  773:	
+  774:	#ifdef POPUP_TYPE_ACK
+  775:	    case POPUP_ACK:
+  776:	      /* The Button is not processed by the Application */
+  777:	      fl_ackevent_ptr=ACK_BTN_EVENT_PTR(fl_active_pp);
+  778:	      fl_max_count_u8=ACK_BTN_COUNT(fl_active_pp);
+  779:	      fl_match_found=FALSE;
+  780:	      for(fl_count_index=0;((fl_count_index&lt;fl_max_count_u8)&amp;&amp;(fl_match_found==FALSE));\
+  781:	          fl_count_index++)
+  782:	      {
+  783:	        /* Processing the acknowledge buttons*/
+  784:	        if(((fl_ackevent_ptr[fl_count_index].l_btn_event_U16)==fl_button_command_U16))
+  785:	        {
+  786:	          fl_match_found=TRUE;
+  787:	          if(ACK_BTN_TYPE(fl_active_pp,fl_count_index)==PASSED)
+  788:	          {
+  789:	            fl_return_U8=POPUP_BTN_NONE;
+  790:	          }
+  791:	          else
+  792:	          {
+  793:	            fl_return_U8=POPUP_BTN_ABSORBED;
+  794:	          }
+  795:	          (void)hmi_popup_core_close_popup(fl_active_pp, POPUP_CLOSED_ON_ACK_EVT
+  796:	                                          #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+  797:	                                          , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_ACK_ANIM,fl_active_pp)
+  798:	                                          #endif
+  799:	                                          );          
+  800:	        }
+  801:	      }
+  802:	
+  803:	      fl_event_ptr=NACK_BTN_EVENT_PTR(fl_active_pp);
+  804:	      fl_max_count_u8=NACK_BTN_COUNT(fl_active_pp);
+  805:	      for(fl_count_index=0;((fl_count_index&lt;fl_max_count_u8)&amp;&amp;(fl_match_found==FALSE));\
+  806:	      fl_count_index++)
+  807:	      {
+  808:	        /* Processing the not acknowledge buttons*/
+  809:	        if(((fl_event_ptr[fl_count_index])==fl_button_command_U16))
+  810:	        {
+  811:	          fl_match_found=TRUE;
+  812:	          if(NACK_BTN_TYPE(fl_active_pp)==PASSED)
+  813:	          {
+  814:	            fl_return_U8=POPUP_BTN_NONE;
+  815:	          }
+  816:	          else
+  817:	          {
+  818:	            fl_return_U8=POPUP_BTN_ABSORBED;
+  819:	          }
+  820:	        }
+  821:	      }
+  822:	
+  823:	      if(fl_match_found==FALSE)
+  824:	      {
+  825:	        /* if not processed above then */
+  826:	        if(NACK_BTN_TYPE(fl_active_pp)==PASSED)
+  827:	        {
+  828:	          fl_return_U8=LSH_STATUS_ABSORBED;
+  829:	        }
+  830:	        else
+  831:	        {
+  832:	          fl_return_U8=LSH_STATUS_NONE;
+  833:	        }
+  834:	      }
+  835:	      break;
+  836:	#endif
+  837:	    default:
+  838:	      break;
+  839:	    }
+  840:	  }
+  841:	#endif
+  842:	
+  843:	  if(((fl_return_U8 &amp; (POPUP_BTN_ABSORBED)) ==(POPUP_BTN_ABSORBED))\
+  844:	     ||((fl_return_U8 &amp; (POPUP_BTN_ACTION)) ==(POPUP_BTN_ACTION)))
+  845:	  {
+  846:	    /* The button event has been processed and hence
+  847:	     * restart the timeout timer */
+  848:	    if(lc_popup_config_table[fl_active_pp].layer_timeout != 0)
+  849:	    {
+  850:	     /* Start the timer only if the status is set. Do not start the timer
+  851:	      * if the status is clear as Application might want to hold the
+  852:	      * timer. Wait for the start of the timer until notified by the app */
+  853:	      if(IS_TIMER_STATUS_ENABLE(fl_active_pp))
+  854:	      {
+  855:	          hmi_popup_core_start_popup_timer(fl_active_pp);
+  856:	          if(POPUP_TYPE(fl_active_pp)==POPUP_KEYPAD)
+  857:	          {
+  858:	            #ifdef POPUP_TYPE_KEYPAD
+  859:	            /* The popup timer is restarted so, restart the 
+  860:	            timer counter also to extend the popup display timer */
+  861:	            *(l_total_pp_type.l_keypad_entry_pp_table_ptr[POPUP_ID_INDEX(fl_active_pp)].l_multi_timer_counter)=0;
+  862:	            #endif
+  863:	          }
+  864:	          else if(POPUP_TYPE(fl_active_pp)==POPUP_PROGRESS)
+  865:	          {
+  866:	            #ifdef POPUP_TYPE_PROGRESSBAR
+  867:	            PROGRESSBAR_PP_INIT_CURRENTCOUNT(fl_active_pp);
+  868:	            #endif
+  869:	          }
+  870:	          else
+  871:	          {
+  872:	            /* Do nothing */
+  873:	          }
+  874:	       }
+  875:	    }
+  876:	    if((fl_return_U8 &amp; (POPUP_BTN_ABSORBED))==(POPUP_BTN_ABSORBED))
+  877:	    {
+  878:	      fl_return_U8 =POPUP_BTN_ABSORBED;
+  879:	    }
+  880:	    else
+  881:	    {
+  882:	      fl_return_U8 =POPUP_BTN_NONE;
+  883:	    }
+  884:	  }
+  885:	  else if((fl_return_U8 &amp; (POPUP_BTN_BLOCK)) ==(POPUP_BTN_BLOCK))
+  886:	  {
+  887:	    /* Return the status as absorbed outside to process by lsh. POPUP BTN BLOCK is a internal state
+  888:	       to avoid popup layer timer restart as above */
+  889:	    fl_return_U8 = LSH_STATUS_ABSORBED;
+  890:	  }
+  891:	  else
+  892:	  {
+  893:	    /*Do Nothing*/
+  894:	  }
+  895:	  return(fl_return_U8);
+  896:	}
+  897:	
+  898:	/*============================================================================
+  899:	** Function Name    : hmi_popup_core_focus_handler
+  900:	** Visibility       : Global, Interface to the View state manager
+  901:	** Description      : This function should be called whenever the popup gains
+  902:	**                    or looses focus
+  903:	** Invocation       : Invoked by the view state manager
+  904:	** Inputs/Outputs   : p_layer, p_logic_state_U8, p_focus_U8
+  905:	** Critical Section : No
+  906:	** Created          : 15 OCT, 2012 NKRISHN9
+  907:	** Updated          : 15 OCT, 2012 NKRISHN9
+  908:	**==========================================================================*/
+  909:	void hmi_popup_core_focus_handler(POPUP_LAYER_ID p_layer, LSH_FOCUS_HANDLER_STATUS_T  *p_focus_hndl_status_SP)
+  910:	{
+  911:	  POPUP_ID fl_active_pp;
+  912:	  POPUP_LAYER_TYPE const *fl_layer;
+  913:	  UINT8 fl_focus_status_U8;
+  914:	
+  915:	  fl_layer = l_layer_table[p_layer];
+  916:	  fl_active_pp = hmi_popup_core_get_active_popup(fl_layer);
+  917:	
+  918:	  if(((UINT8)(POPUP_FOCUS_STATUS_MASK) &amp; p_focus_hndl_status_SP-&gt;focus_status)!=(UINT8)0)
+  919:	  {
+  920:	    #ifdef POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED
+  921:	      /* The popup core (whole) state as ACTIVE or INACTIVE is reported here */
+  922:	      if(l_total_pp_type.pp_state_handler_ptr!=NULL)
+  923:	      {
+  924:	        POPUP_ACTIVE_DATA_TYPE fl_active;
+  925:	        fl_active = hmi_popup_core_find_active_popup_and_count((POPUP_ID)0, (POPUP_ID)L_POPUP_MAX_COUNT);
+  926:	        /* The flag status helps to report only on state change as either active to inactive or vice-versa */
+  927:	        if((l_popup_status==TRUE)&amp;&amp;(0==fl_active.total_popup_count))
+  928:	        {
+  929:	          /*no more popup is active whole popup core */
+  930:	          l_total_pp_type.pp_state_handler_ptr(POPUP_STATE_INACTIVE);
+  931:	          l_popup_status=FALSE;
+  932:	        }
+  933:	        else if((l_popup_status==FALSE)&amp;&amp;(1&lt;=fl_active.total_popup_count))
+  934:	        {
+  935:	          /*one or more popup is active first time */
+  936:	          l_total_pp_type.pp_state_handler_ptr(POPUP_STATE_ACTIVE);
+  937:	          l_popup_status=TRUE;
+  938:	        }
+  939:	        else
+  940:	        {}
+  941:	      }
+  942:	    #endif
+  943:	    /* The popup status on lsh call back (focus handler) */
+  944:	    if((UINT8)0==((UINT8)(LSH_DEACTIVATED_STATUS) &amp; p_focus_hndl_status_SP-&gt;focus_status))
+  945:	    {
+  946:	      /* This popup is added in lsh display
+  947:	       * The timer for this popup should be started only if the
+  948:	       * timer status is active, otherwise the timer will be started
+  949:	       * when the application request for start of the timer */
+  950:	      if((l_active_popup_id[fl_layer-&gt;l_layer_index]!=(POPUP_ID)p_focus_hndl_status_SP-&gt;client_id) || 
+  951:	         (((UINT8)(LSH_GOT_FOCUS_STATUS) &amp; p_focus_hndl_status_SP-&gt;focus_status) != (UINT8)0))
+  952:	      {
+  953:	        if((lc_popup_config_table[p_focus_hndl_status_SP-&gt;client_id].timer!=ALLOW_TO_EXPIRE) &amp;&amp; 
+  954:	           (IS_TIMER_STATUS_ENABLE((POPUP_ID)p_focus_hndl_status_SP-&gt;client_id)))
+  955:	        {
+  956:	          hmi_popup_core_start_all_popup_timer((POPUP_ID)p_focus_hndl_status_SP-&gt;client_id);
+  957:	        }
+  958:	        else
+  959:	        {
+  960:	          hmi_popup_core_start_popup_min_timer((POPUP_ID)p_focus_hndl_status_SP-&gt;client_id);
+  961:	        }
+  962:	      }
+  963:	      l_active_popup_id[fl_layer-&gt;l_layer_index]=(POPUP_ID)p_focus_hndl_status_SP-&gt;client_id;
+  964:	    }
+  965:	    else
+  966:	    {
+  967:	      if((fl_active_pp&gt;=(MAX_LAYER_POPUP_ID(fl_layer))))
+  968:	      {
+  969:	        l_active_popup_id[fl_layer-&gt;l_layer_index]=(POPUP_ID)L_POPUP_MAX_COUNT;
+  970:	      }
+  971:	      DEACTIVATE_LSH_POPUP(p_focus_hndl_status_SP-&gt;client_id);
+  972:	    }
+  973:	  }
+  974:	
+  975:	  /* LOW PRIORITY POPUP FOCUS Manipulation Cases                           **
+  976:	  ** 1. LSH does not differentiate between multiple popup sharing the      **
+  977:	  ** same screen ID.So there is a possiblity that LSH will route GOT FOCUS **
+  978:	  ** Status through anim complete cb, though the popup is not the highest  **
+  979:	  ** active popup in the given popup layer.                                **
+  980:	  ** 2. when a high priopopup screen is added for same LSH priority, then  **
+  981:	  ** LSH deactivates the low priopopup screen, though the popup is active  **
+  982:	  ** in popup stack.                                                       **
+  983:	  **          LOWPRIORITY POPUP FOCUS MANIPULATION STRATEGY                **
+  984:	  ** If the popup is active in the popup layer with low priority           **
+  985:	  ** then LSH_LOST_FOCUS_STATUS is routed, If the popup is not active in   **
+  986:	  ** the popup Layer, the LSH_DEACTIVATED_STATUS is routed to Application  **
+  987:	  ** ANIMATION STATUS is not modified. it is routed as it is from LSH      */
+  988:	
+  989:	  /* if the popup is not active in popup stack, then it will be reported as deactivate 
+  990:	     otherwise lost focus  */
+  991:	  if(fl_active_pp!=p_focus_hndl_status_SP-&gt;client_id)
+  992:	  {
+  993:	    fl_focus_status_U8 = (p_focus_hndl_status_SP-&gt;focus_status &amp; (UINT8)POPUP_ANIM_STATUS_MASK);
+  994:	
+  995:	    if (POPUP_ACTIVE(p_focus_hndl_status_SP-&gt;client_id))
+  996:	    {
+  997:	      /* The popup is active in popuplayer and is not the highest priority one */
+  998:	      p_focus_hndl_status_SP-&gt;focus_status = (fl_focus_status_U8 | LSH_LOST_FOCUS_STATUS);
+  999:	    }
+ 1000:	    else
+ 1001:	    {
+ 1002:	      /* The popup is no more active in popuplayer */
+ 1003:	      p_focus_hndl_status_SP-&gt;focus_status = (fl_focus_status_U8 | LSH_DEACTIVATED_STATUS);
+ 1004:	    }
+ 1005:	  }
+ 1006:	
+ 1007:	  /*  All focus status of the logic state which are added or removed by popup to 
+ 1008:	      lsh will be informed by lsh itself. The remaining popup which is maintained
+ 1009:	      by popup core will be informed to app during popup core task execution */
+ 1010:	  if((p_focus_hndl_status_SP-&gt;client_id &lt; L_POPUP_MAX_COUNT) &amp;&amp; (POUP_FOCUS_HANDLER(p_focus_hndl_status_SP-&gt;client_id) != LSH_NULL_FOCUS_HANDLER))
+ 1011:	  {
+ 1012:	    /* Call the Popup application Focus handler */
+ 1013:	    POUP_FOCUS_HANDLER(p_focus_hndl_status_SP-&gt;client_id)( p_focus_hndl_status_SP);
+ 1014:	  }
+ 1015:	}
+ 1016:	
+ 1017:	
+ 1018:	/*============================================================================
+ 1019:	** Function Name    : hmi_popup_core_presentation_handler
+ 1020:	** Visibility       : Global, Interface to the View state manager
+ 1021:	** Description      : This function should be called to display/ update a
+ 1022:	**                    popup in the display.
+ 1023:	** Invocation       : Invoked by the View state manager
+ 1024:	** Inputs/Outputs   : p_layer, p_logic_state_U8
+ 1025:	**                    p_status_U8
+ 1026:	** Critical Section : No
+ 1027:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1028:	** Updated          : 20 JUN, 2013 NKRISHN9
+ 1029:	**==========================================================================*/
+ 1030:	void hmi_popup_core_presentation_handler(POPUP_LAYER_ID p_layer, LSH_PRESN_HANDLER_STATUS_T *p_presn_hndl_status_SP)
+ 1031:	{
+ 1032:	  POPUP_LAYER_TYPE const *fl_layer;
+ 1033:	  POPUP_ID fl_active_pp;
+ 1034:	  
+ 1035:	  fl_layer = l_layer_table[p_layer];
+ 1036:	
+ 1037:	  /* The active popup will be updated only during a popup added to LSH. So, the previous presentation
+ 1038:	     deactivation will be send only after minimum time expire. The other pp are not at all added to 
+ 1039:	     LSH, so deactivation is not required other than active popup */
+ 1040:	
+ 1041:	  /* The active popup will be updated when LSH informs through focus status. 
+ 1042:	     The other pp are not at all added to LSH, so deactivation is not required other than active popup */
+ 1043:	
+ 1044:	  fl_active_pp = (POPUP_ID)p_presn_hndl_status_SP-&gt;client_id;
+ 1045:	  
+ 1046:	
+ 1047:	  /* There is popup active in this layer */
+ 1048:	  if(fl_active_pp &lt; (MAX_LAYER_POPUP_ID(fl_layer)))
+ 1049:	  {
+ 1050:	    if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; fl_active_pp)
+ 1051:	    {
+ 1052:	      if(POUP_PRESENT_HANDLER(fl_active_pp) != LSH_NULL_PRESN_HANDLER)
+ 1053:	      {
+ 1054:	        POUP_PRESENT_HANDLER(fl_active_pp)(p_presn_hndl_status_SP);
+ 1055:	      }
+ 1056:	    }
+ 1057:	  }
+ 1058:	}
+ 1059:	/*============================================================================
+ 1060:	** Function Name    : hmi_popup_core_remap_button_events
+ 1061:	** Visibility       : Global, Interface to the Timer Module
+ 1062:	** Description      : Re map button events
+ 1063:	** Invocation       : Invoked by the Popup Core
+ 1064:	** Inputs/Outputs   : p_button_id_U16
+ 1065:	**                    p_popup_id
+ 1066:	** Critical Section : No
+ 1067:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1068:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1069:	**==========================================================================*/
+ 1070:	void hmi_popup_core_remap_button_events(UINT16 p_button_id_U16, POPUP_ID p_popup_id )
+ 1071:	{
+ 1072:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+ 1073:	  {
+ 1074:	    hmi_lsh_remap_button_events_ext(p_button_id_U16, LOGIC_STATE_ID(p_popup_id), (UINT8)p_popup_id);
+ 1075:	  }
+ 1076:	}
+ 1077:	/*============================================================================
+ 1078:	** Function Name    : hmi_popup_core_timeout_callback
+ 1079:	** Visibility       : Global, Interface to the Timer Module
+ 1080:	** Description      : Call Back Function for the TImer Expired Notification
+ 1081:	** Invocation       : Invoked by the Popup Core
+ 1082:	** Inputs/Outputs   : p_timer_id     - Index to the Timer
+ 1083:	**                    p_event - MSB 8 Bit - type of the Timer
+ 1084:	** Critical Section : No
+ 1085:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1086:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1087:	**==========================================================================*/
+ 1088:	
+ 1089:	void hmi_popup_core_timeout_callback(UINT16 p_timer_id, UINT16 p_event)
+ 1090:	{
+ 1091:	  UINT8 fl_tmr_type_U8;
+ 1092:	  POPUP_ID fl_popup_id;
+ 1093:	  
+ 1094:	  fl_tmr_type_U8 = (UINT8)((p_event &amp; (UINT16)0xFF00) &gt;&gt; (UINT16)8);
+ 1095:	  fl_popup_id = (POPUP_ID)(p_event &amp; 0x00FF);
+ 1096:	
+ 1097:	  /* Is a Valid Popup id*/
+ 1098:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; fl_popup_id)
+ 1099:	  {
+ 1100:	    POPUP_LAYER_TYPE  const * fl_layer;
+ 1101:	    POPUP_ID_ATTRIBUTE_T fl_popup_id_type;
+ 1102:	    
+ 1103:	    fl_layer = hmi_popup_core_get_popup_layer(fl_popup_id);
+ 1104:	    if(fl_layer!=NULL)
+ 1105:	    {
+ 1106:	     fl_popup_id_type = POPUP_TYPE(fl_popup_id);
+ 1107:	
+ 1108:	     if(fl_popup_id &lt; (MAX_LAYER_POPUP_ID(fl_layer)))
+ 1109:	     {
+ 1110:	       switch(fl_tmr_type_U8)
+ 1111:	       {
+ 1112:	       case HMI_TMR_TIME_OUT_TYPE:
+ 1113:	        if(POPUP_PROGRESS==fl_popup_id_type)
+ 1114:	        {
+ 1115:	           #ifdef POPUP_TYPE_PROGRESSBAR
+ 1116:	           if(FALSE==hmi_popup_core_increment_progressbar_counter(fl_popup_id))
+ 1117:	           {
+ 1118:	              (void)hmi_popup_core_close_popup(fl_popup_id, POPUP_CLOSED_ON_TIMEOUT_EVT
+ 1119:	                                              #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1120:	                                              ,POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_PROG_TIMEOUT_ANIM,fl_popup_id)
+ 1121:	                                              #endif
+ 1122:	                                              );
+ 1123:	           }
+ 1124:	           #endif
+ 1125:	        }
+ 1126:	        else if(POPUP_KEYPAD==fl_popup_id_type)
+ 1127:	        {
+ 1128:	          #ifdef POPUP_TYPE_KEYPAD
+ 1129:	          if(FALSE==hmi_popup_core_inc_keypadmultitimer_counter(fl_popup_id))
+ 1130:	          {
+ 1131:	            (void)hmi_popup_core_close_popup(fl_popup_id, POPUP_CLOSED_ON_TIMEOUT_EVT
+ 1132:	                                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1133:	                                            , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_TIMEOUT_ANIM,fl_popup_id)
+ 1134:	                                            #endif
+ 1135:	                                            );
+ 1136:	          }
+ 1137:	          #endif
+ 1138:	        }
+ 1139:	        else
+ 1140:	        {
+ 1141:	          /* Popup Timer has expired, Remove the Popup */
+ 1142:	          (void)hmi_popup_core_close_popup(fl_popup_id, POPUP_CLOSED_ON_TIMEOUT_EVT
+ 1143:	                                          #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1144:	                                          , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_TIMEOUT_ANIM,fl_popup_id)
+ 1145:	                                          #endif
+ 1146:	                                          ); 
+ 1147:	        }
+ 1148:	      break;
+ 1149:	
+ 1150:	      case HMI_TMR_MINIMUM_TIMEOUT_TYPE:
+ 1151:	        /* Minimum timeout timer is expired. Check if there are any DeActivation Status */
+ 1152:	        if (fl_layer-&gt;l_min_tmr_id != HMI_NO_OF_TIMERS)
+ 1153:	        {
+ 1154:	          if (POPUP_MINIMUM_TIME(fl_popup_id) != 0)
+ 1155:	          {
+ 1156:	            hmi_popup_core_send_event_notification((POPUP_ID)fl_popup_id, POPUP_MIN_TIME_EXPIRE_EVT);
+ 1157:	            if(MIN_TIMER_DEACTIVATE_PENDING(fl_popup_id))
+ 1158:	            {
+ 1159:	              /* This popup was deactivate before its minimum timeout */
+ 1160:	              (void)hmi_popup_core_close_popup(fl_popup_id, POPUP_CLOSED_ON_DEMAND_EVT
+ 1161:	                                              #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1162:	                                              , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_MINTIMEOUT_ANIM,fl_popup_id)
+ 1163:	                                              #endif
+ 1164:	                                              );
+ 1165:	              hmi_popup_core_clear_min_deact_pndng((POPUP_ID_T)fl_popup_id);
+ 1166:	            }
+ 1167:	          }
+ 1168:	        }
+ 1169:	        break;
+ 1170:	
+ 1171:	      default:
+ 1172:	        break;
+ 1173:	      }
+ 1174:	     }
+ 1175:	    }
+ 1176:	  }
+ 1177:	  UNUSED_VAR(p_timer_id);
+ 1178:	}
+ 1179:	/*============================================================================
+ 1180:	** Function Name    : hmi_popup_core_start_timer()
+ 1181:	** Visibility       : Global, Interface to the Popup Core Application
+ 1182:	** Description      : This function is used to start popup timer
+ 1183:	** Invocation       : Invoked by the Popup Core Application
+ 1184:	** Inputs/Outputs   : p_popup_id     - 
+ 1185:	** Critical Section : No
+ 1186:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1187:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1188:	**==========================================================================*/
+ 1189:	BOOLEAN hmi_popup_core_start_timer(POPUP_ID p_popup_id)
+ 1190:	{
+ 1191:	  UINT8 fl_return_BOOL = FALSE;
+ 1192:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+ 1193:	  {
+ 1194:	    if(lc_popup_config_table[p_popup_id].layer_timeout != 0)
+ 1195:	    {
+ 1196:	      if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+ 1197:	      {
+ 1198:	        POPUP_LAYER_TYPE const * fl_layer;
+ 1199:	        fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1200:	        /* Enable the timer status only if it is already activated by application */
+ 1201:	        if(fl_layer!=NULL)
+ 1202:	        {
+ 1203:	          if(POPUP_ACTIVE(p_popup_id))
+ 1204:	          {
+ 1205:	            ENABLE_TIMER_STATUS(p_popup_id);
+ 1206:	            /* Start the timer only if it is in lsh display. Otherwise, the timer will 
+ 1207:	            be started when it get focus */
+ 1208:	            if(l_active_popup_id[fl_layer-&gt;l_layer_index]==p_popup_id)
+ 1209:	            {
+ 1210:	               hmi_popup_core_start_all_popup_timer(p_popup_id);
+ 1211:	            }
+ 1212:	          }
+ 1213:	            fl_return_BOOL = TRUE;
+ 1214:	        }
+ 1215:	      }
+ 1216:	    }
+ 1217:	  }
+ 1218:	  return(fl_return_BOOL);
+ 1219:	}
+ 1220:	/*============================================================================
+ 1221:	** Function Name    : hmi_popup_core_stop_timer()
+ 1222:	** Visibility       : Global, Interface to the Popup Core Application
+ 1223:	** Description      : This function is used to stop popup timer
+ 1224:	** Invocation       : Invoked by the Popup Core Application
+ 1225:	** Inputs/Outputs   : p_popup_id     - Popup Id of a Key pad entry Popup
+ 1226:	** Critical Section : No
+ 1227:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1228:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1229:	**==========================================================================*/
+ 1230:	BOOLEAN hmi_popup_core_stop_timer(POPUP_ID p_popup_id)
+ 1231:	{
+ 1232:	  UINT8 fl_return_BOOL = FALSE;
+ 1233:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+ 1234:	  {
+ 1235:	    if(lc_popup_config_table[p_popup_id].layer_timeout != 0)
+ 1236:	    {
+ 1237:	      if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+ 1238:	      {
+ 1239:	        POPUP_LAYER_TYPE const * fl_layer;
+ 1240:	        fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1241:	
+ 1242:	        if(fl_layer!=NULL)
+ 1243:	        {
+ 1244:	         if(l_active_popup_id[fl_layer-&gt;l_layer_index]==p_popup_id)
+ 1245:	         {
+ 1246:	           hmi_popup_core_stop_all_popup_timer(p_popup_id);
+ 1247:	         }
+ 1248:	         hmi_popup_core_disable_timer_status((POPUP_ID_T)p_popup_id);
+ 1249:	         fl_return_BOOL = TRUE;
+ 1250:	        }
+ 1251:	      }
+ 1252:	    }
+ 1253:	  }
+ 1254:	  return(fl_return_BOOL);
+ 1255:	}
+ 1256:	
+ 1257:	#ifdef POPUP_TYPE_KEYPAD
+ 1258:	/*============================================================================
+ 1259:	** Function Name    : hmi_popup_core_get_keypad_content()
+ 1260:	** Visibility       : Global, Interface to the Popup Core Application
+ 1261:	** Description      : This function is used to stop popup timer
+ 1262:	** Invocation       : Invoked by the Popup Core Application
+ 1263:	** Inputs/Outputs   : p_popup_id     - Popup Id of a Key pad entry Popup
+ 1264:	** Critical Section : No
+ 1265:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1266:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1267:	**==========================================================================*/
+ 1268:	UINT8 hmi_popup_core_get_keypad_content(POPUP_KEYPAD_CONTENT_TYPE *const p_keypad_content)
+ 1269:	{
+ 1270:	  UINT8 fl_return_U8 = 0;
+ 1271:	  POPUP_KEYPADENTRY_TYPE  const *fl_keypad_pp;
+</PRE>
+<A NAME="ERR_LINE_1272"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1272:	  UINT8 fl_src_len_U8 = 0;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1272) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1273"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1273"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1273:	  UINT8 fl_des_len_U8 = 0;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1273) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1274"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1274"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1274:	  HMI_CHAR *fl_src =  NULL;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1274) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1335"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1275:	
+ 1276:	  /* Is valid popup */
+ 1277:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_keypad_content-&gt;popup_id)
+ 1278:	  {
+ 1279:	    if (POPUP_KEYPAD == POPUP_TYPE(p_keypad_content-&gt;popup_id))
+ 1280:	    {
+ 1281:	      fl_keypad_pp = KEYPAD_PP_TBL_PTR(p_keypad_content-&gt;popup_id);
+ 1282:	      fl_src = fl_keypad_pp-&gt;l_entry_ptr;
+ 1283:	      fl_des_len_U8 = p_keypad_content-&gt;len_U8;
+ 1284:	      fl_src_len_U8=0;
+ 1285:	      /* find the length of src string */
+ 1286:	      while ((*(fl_src) != '\0')&amp;&amp;(fl_src_len_U8 &lt; (fl_keypad_pp-&gt;l_max_char_U8)))
+ 1287:	      {
+ 1288:	        fl_src_len_U8++;
+ 1289:	        fl_src++;
+ 1290:	      }
+ 1291:	
+ 1292:	      /* Copy the content */
+ 1293:	      if (fl_src_len_U8 &lt;= fl_des_len_U8)
+ 1294:	      {
+ 1295:	      /* There is enough space to copy */
+ 1296:	        UINT8 t_counter;
+ 1297:	        fl_src=fl_keypad_pp-&gt;l_entry_ptr;
+ 1298:	
+ 1299:	        t_counter = 0;
+ 1300:	        while((fl_src[t_counter] != '\0') &amp;&amp; (t_counter &lt; fl_src_len_U8))
+ 1301:	        {
+ 1302:	          p_keypad_content-&gt;entry[t_counter] = fl_src[t_counter];
+ 1303:	          t_counter++;
+ 1304:	        }
+ 1305:	        /* Now load the Null Character L\0 T the end of the string */
+ 1306:	        p_keypad_content-&gt;entry[t_counter] = '\0';
+ 1307:	        fl_return_U8 = t_counter;
+ 1308:	      }
+ 1309:	      else
+ 1310:	      {
+ 1311:	        /* There is not enough space to copy all the items to the
+ 1312:	        * desitination and als we cannot copy the partial items
+ 1313:	        * that would fit in the destination */
+ 1314:	      }
+ 1315:	    }
+ 1316:	  }
+ 1317:	    return(fl_return_U8);
+ 1318:	}
+ 1319:	
+ 1320:	/*============================================================================
+ 1321:	** Function Name    : hmi_popup_core_set_keypad_content()
+ 1322:	** Visibility       : Global, Interface to the Popup Core Application
+ 1323:	** Description      : This function is used to stop popup timer
+ 1324:	** Invocation       : Invoked by the Popup Core Application
+ 1325:	** Inputs/Outputs   : p_popup     - Popup Id of a Key pad entry Popup
+ 1326:	** Critical Section : No
+ 1327:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1328:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1329:	**==========================================================================*/
+ 1330:	UINT8 hmi_popup_core_set_keypad_content(POPUP_KEYPAD_CONTENT_TYPE const * const p_keypad_content)
+ 1331:	{
+ 1332:	  UINT8 fl_return_U8 = 0;
+ 1333:	  POPUP_KEYPADENTRY_TYPE  const *fl_keypad_pp;
+ 1334:	  UINT8 fl_src_len_U8 = 0;
+</PRE>
+<A NAME="ERR_LINE_1335"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1335:	  UINT8 fl_des_len_U8 = 0;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1335) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1336"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1336"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1336:	  HMI_CHAR *fl_src =  NULL;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1336) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_1337"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1337"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1337:	  HMI_CHAR *fl_dest = NULL;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1337) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_2219"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1338:	
+ 1339:	  /* Is valid popup */
+ 1340:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_keypad_content-&gt;popup_id)
+ 1341:	  {
+ 1342:	    if (POPUP_KEYPAD == POPUP_TYPE(p_keypad_content-&gt;popup_id))
+ 1343:	    {
+ 1344:	      fl_keypad_pp = KEYPAD_PP_TBL_PTR(p_keypad_content-&gt;popup_id);
+ 1345:	      fl_src = p_keypad_content-&gt;entry;
+ 1346:	      fl_dest = fl_keypad_pp-&gt;l_entry_ptr;
+ 1347:	
+ 1348:	      fl_des_len_U8 = (p_keypad_content-&gt;len_U8);
+ 1349:	      /* find the length of src string */
+ 1350:	      while ((*(fl_src) != '\0')&amp;&amp;(fl_src_len_U8 &lt; (fl_keypad_pp-&gt;l_max_char_U8)))
+ 1351:	      {
+ 1352:	        fl_src_len_U8++;
+ 1353:	        fl_src++;
+ 1354:	      }
+ 1355:	
+ 1356:	      fl_src = p_keypad_content-&gt;entry;
+ 1357:	      /* Copy the content */
+ 1358:	      if ((fl_src_len_U8 &lt;= fl_des_len_U8) &amp;&amp; (fl_dest != NULL))
+ 1359:	      {
+ 1360:	      /* There is enough space to copy */
+ 1361:	        UINT8 t_counter;
+ 1362:	
+ 1363:	        t_counter = 0;
+ 1364:	        while((fl_src[t_counter] != '\0') &amp;&amp;
+ 1365:	             ((t_counter &lt; fl_src_len_U8) || (fl_src_len_U8 == 0)))
+ 1366:	        {
+ 1367:	          fl_dest[t_counter] = fl_src[t_counter];
+ 1368:	          t_counter++;
+ 1369:	        }
+ 1370:	        /* Now load the Null Character L\0 T the end of the string */
+ 1371:	        fl_dest[t_counter] = '\0';
+ 1372:	        fl_return_U8 = t_counter;
+ 1373:	      }
+ 1374:	      else
+ 1375:	      {
+ 1376:	        /*Space not available to copy the source string, so don't copy*/
+ 1377:	      }
+ 1378:	    }
+ 1379:	  }
+ 1380:	    return(fl_return_U8);
+ 1381:	}
+ 1382:	
+ 1383:	/*============================================================================
+ 1384:	** Function Name    : hmi_popup_core_set_keypad_entry()
+ 1385:	** Visibility       : Global, Interface to the Popup Core Application
+ 1386:	** Description      : This function is used to stop popup timer
+ 1387:	** Invocation       : Invoked by the Popup Core Application
+ 1388:	** Inputs/Outputs   : p_popup     - Popup Id of a Key pad entry Popup
+ 1389:	** Critical Section : No
+ 1390:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1391:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1392:	**==========================================================================*/
+ 1393:	void hmi_popup_core_set_keypad_entry(POPUP_KEYPAD_SET_TYPE const * const p_keypad_set)
+ 1394:	{
+ 1395:	  POPUP_KEYPADENTRY_TYPE  const *fl_keypad_pp;
+ 1396:	
+ 1397:	  /* Is valid popup */
+ 1398:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_keypad_set-&gt;popup_id)
+ 1399:	  {
+ 1400:	    if (POPUP_KEYPAD == POPUP_TYPE(p_keypad_set-&gt;popup_id))
+ 1401:	    {
+ 1402:	      fl_keypad_pp = KEYPAD_PP_TBL_PTR(p_keypad_set-&gt;popup_id);
+ 1403:	
+ 1404:	      /* Intialize the Key Pad Entry */
+ 1405:	      *fl_keypad_pp-&gt;l_entry_ptr = 0;
+ 1406:	
+ 1407:	      /* Process the Button Handler */
+ 1408:	      /* The button data needs to be processed just when keypad popup starts. ex cd track num 
+ 1409:	         Here, press and release is sent for the corresponding button for consistent with 
+ 1410:	         normal event handler */
+ 1411:	      (void)hmi_popup_keypad_btn_handler(fl_keypad_pp, LSH_GET_COMMAND (p_keypad_set-&gt;btn_id, p_keypad_set-&gt;btn_state), p_keypad_set-&gt;popup_id);
+</PRE>
+<A NAME="ERR_LINE_1412"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1412:	      (void)hmi_popup_keypad_btn_handler(fl_keypad_pp, LSH_GET_COMMAND (p_keypad_set-&gt;btn_id, LSH_BUTTON_INACTIVE_STATE), p_keypad_set-&gt;popup_id);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2985.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1412) ++ WARNING ++: &lt;=7=(2985) This operation is redundant. The value of the result is always that of the left-hand operand.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1413:	    }
+ 1414:	  }
+ 1415:	}
+ 1416:	#endif
+ 1417:	
+ 1418:	#ifdef POPUP_TYPE_PROGRESSBAR
+ 1419:	/*============================================================================
+ 1420:	** Function Name    : hmi_popup_core_get_progress_bar_counter()
+ 1421:	** Visibility       : Global, Interface to the Popup Core Application
+ 1422:	** Description      : This function is used to get popup progress bar counter 
+ 1423:	** Invocation       : Invoked by the Popup Core Application
+ 1424:	** Inputs/Outputs   : p_progress/ true/false to set or not
+ 1425:	** Critical Section : No
+ 1426:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1427:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1428:	**==========================================================================*/
+ 1429:	BOOLEAN hmi_popup_core_get_progress_bar_counter(POPUP_PROGRESS_COUNT_TYPE *p_progress)
+ 1430:	{
+ 1431:	  BOOLEAN r_progress_bar_status;
+ 1432:	  r_progress_bar_status=FALSE;
+ 1433:	  if((POPUP_ACTIVE(p_progress-&gt;popup_id))&amp;&amp;(POPUP_TYPE(p_progress-&gt;popup_id)==POPUP_PROGRESS))
+ 1434:	  {
+ 1435:	    *(p_progress-&gt;cnt_ptr_U8)=PROGRESSBAR_PP_CURRENTCOUNT(p_progress-&gt;popup_id);
+ 1436:	    r_progress_bar_status=TRUE;
+ 1437:	  }
+ 1438:	  return(r_progress_bar_status);
+ 1439:	}
+ 1440:	
+ 1441:	/*============================================================================
+ 1442:	** Function Name    : hmi_popup_core_set_progress_bar_counter()
+ 1443:	** Visibility       : Global, Interface to the Popup Core Application
+ 1444:	** Description      : This function is used to set progress bar counter
+ 1445:	** Invocation       : This function is used to set popup progress bar counter 
+ 1446:	** Inputs/Outputs   : p_progress/ true/false to set or not
+ 1447:	** Critical Section : No
+ 1448:	** Created          : 20 JUN, 2013 NKRISHN9
+ 1449:	** Updated          : 20 JUN, 2013 NKRISHN9
+ 1450:	**==========================================================================*/
+ 1451:	BOOLEAN hmi_popup_core_set_progress_bar_counter(POPUP_PROGRESS_COUNT_TYPE const * const p_progress)
+ 1452:	{
+ 1453:	  BOOLEAN r_progress_bar_status;
+ 1454:	  r_progress_bar_status=FALSE;
+ 1455:	  if((POPUP_ACTIVE(p_progress-&gt;popup_id))&amp;&amp;(POPUP_TYPE(p_progress-&gt;popup_id)==POPUP_PROGRESS))
+ 1456:	  {
+ 1457:	    PROGRESSBAR_PP_CURRENTCOUNT(p_progress-&gt;popup_id)=*(p_progress-&gt;cnt_ptr_U8);
+ 1458:	    r_progress_bar_status=TRUE;
+ 1459:	  }
+ 1460:	  return(r_progress_bar_status);
+ 1461:	}
+ 1462:	#endif
+ 1463:	
+ 1464:	/*============================================================================
+ 1465:	** Function Name    : hmi_popup_core_task
+ 1466:	** Visibility       : Local
+ 1467:	** Description      : This function should be called to execute the
+ 1468:	**                    Presentation and focus handlers
+ 1469:	** Invocation       : Invoked by the application 
+ 1470:	** Inputs/Outputs   : No
+ 1471:	** Critical Section : No
+ 1472:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1473:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1474:	**==========================================================================*/
+ 1475:	void hmi_popup_core_task(void)
+ 1476:	{
+ 1477:	  UINT8 fl_index;
+ 1478:	  UINT8 fl_index1;
+ 1479:	  UINT16 fl_index2;
+ 1480:	  LSH_FOCUS_HANDLER_STATUS_T  fl_focus_hndl_status_S;
+ 1481:	  
+ 1482:	  /* The focus status needs to give for the popups which are not added/ removed to lsh */
+ 1483:	  /* The focus id will be same as the logic state id of the popup */
+ 1484:	  for(fl_index = (UINT8)0; fl_index &lt; ((L_POPUP_MAX_COUNT+7)/8); fl_index++)
+ 1485:	  {
+ 1486:	    if(l_pp_id_sts_bit_U8[fl_index]!=l_pp_id_lsh_sts_bit_U8[fl_index])
+ 1487:	    {
+ 1488:	      for(fl_index1 = (UINT8)0; fl_index1 &lt; 8; fl_index1++)
+ 1489:	      {
+ 1490:	        POPUP_LAYER_TYPE const * fl_layer;
+ 1491:	        fl_layer = hmi_popup_core_get_popup_layer((POPUP_ID)((fl_index*8)+fl_index1));
+ 1492:	        fl_index2 = (fl_index*8)+fl_index1;
+ 1493:	        if(fl_layer!=NULL)
+ 1494:	        {
+ 1495:	         if(fl_index2 &lt; L_POPUP_MAX_COUNT)
+ 1496:	         {
+ 1497:	          if((POPUP_ACTIVE(fl_index2)==0)&amp;&amp;(POPUP_ACTIVE_LSH(fl_index2)!=0)\
+ 1498:	          &amp;&amp;(l_active_popup_id[fl_layer-&gt;l_layer_index]!=(fl_index2)))
+ 1499:	          {
+ 1500:	            /* For all the popup which are deactivated by popup core selfly, the deactivated status is 
+ 1501:	            updated to application */
+ 1502:	            fl_focus_hndl_status_S.logic_state_id = LOGIC_STATE_ID(fl_index2);
+ 1503:	            fl_focus_hndl_status_S.focus_status   = (LSH_DEACTIVATED_STATUS|LSH_LOST_FOCUS_STATUS);
+ 1504:	            fl_focus_hndl_status_S.focus_id  = LOGIC_STATE_ID(fl_index2);
+ 1505:	            if(POUP_FOCUS_HANDLER(fl_index2) != LSH_NULL_FOCUS_HANDLER)
+ 1506:	            {
+ 1507:	              POUP_FOCUS_HANDLER(fl_index2)( &amp;fl_focus_hndl_status_S);
+ 1508:	            }
+ 1509:	          }
+ 1510:	          /* The popup which are in popup core stack(not updated to lsh) of each layer need not informed 
+ 1511:	          its lost status, since it is not yet in display(updated to lsh). Even lsh will report its lost 
+ 1512:	          or gain status only after the screen comes to display (i.e. not when previous screen animation
+ 1513:	          completion waiting time) */
+ 1514:	        }
+ 1515:	       }
+ 1516:	      }
+ 1517:	      l_pp_id_lsh_sts_bit_U8[fl_index]=l_pp_id_sts_bit_U8[fl_index];
+ 1518:	    }
+ 1519:	  }
+ 1520:	}
+ 1521:	
+ 1522:	/*******************************************************************************
+ 1523:	PRIVATE_FUNCTIONS() {}
+ 1524:	********************************************************************************/
+ 1525:	
+ 1526:	
+ 1527:	/*============================================================================
+ 1528:	** Function Name    : hmi_popup_core_close_popup
+ 1529:	** Visibility       : Internal Interface
+ 1530:	** Description      : This function closes the current popup and activates the next
+ 1531:	**                    priority one if any
+ 1532:	** Invocation       : Invoked by the Popup Core
+ 1533:	** Inputs/Outputs   : p_layer_pp_id - Index to the Popup Layer
+ 1534:	**                    p_event - Event to close the popup
+ 1535:	**                    POPUP_ANIMATION_ID p_anim_id
+ 1536:	** Critical Section : No
+ 1537:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1538:	** Updated          : 20 JUN, 2013 nkrishn9
+ 1539:	**==========================================================================*/
+ 1540:	static UINT8 hmi_popup_core_close_popup(POPUP_ID p_popup_id, POPUP_EVENTS p_event
+ 1541:	                                        #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1542:	                                        ,POPUP_ANIMATION_ID p_anim_id
+ 1543:	                                        #endif
+ 1544:	                                        )
+ 1545:	{
+ 1546:	  UINT8 fl_return_U8 = LSH_INVALID_STATUS;
+ 1547:	  POPUP_LAYER_TYPE const * fl_layer;
+ 1548:	  POPUP_ID fl_active_pp;
+ 1549:	  POPUP_ID fl_temp_active_pp;
+ 1550:	  fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1551:	  if(fl_layer!=NULL)
+ 1552:	  {
+ 1553:	   fl_temp_active_pp = hmi_popup_core_get_active_popup(fl_layer);
+ 1554:	  
+ 1555:	  /* Check whether the popup to deactivate is active */
+ 1556:	  if (POPUP_ACTIVE(p_popup_id))
+ 1557:	  {
+ 1558:	    if(VALID_GROUP_PRIORITY(p_popup_id,fl_layer))
+ 1559:	    {
+ 1560:	      if(GROUP_PRIORITY(p_popup_id)!=NO_GROUP_PRIORITY)
+ 1561:	      {
+ 1562:	        (void)hmi_popup_core_remove_from_queue(p_popup_id, fl_layer, GROUP_PRIORITY(p_popup_id));
+ 1563:	      }
+ 1564:	    }
+ 1565:	    fl_return_U8=hmi_popup_core_deactivate((POPUP_ID_T)p_popup_id, p_event
+ 1566:	                                            #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1567:	                                            , p_anim_id
+ 1568:	                                            #endif
+ 1569:	                                            );
+ 1570:	    hmi_popup_core_disable_timer_status((POPUP_ID_T)p_popup_id);
+ 1571:	
+ 1572:	    /* Do not stop the timer if it is not active popup and allow to expire type */
+ 1573:	    if((TIMERTYPE_ALLOWTO_EXPIRE(p_popup_id))||(fl_temp_active_pp==p_popup_id))
+ 1574:	    {
+ 1575:	      hmi_popup_core_stop_all_popup_timer(p_popup_id);
+ 1576:	      hmi_popup_core_clear_min_deact_pndng((POPUP_ID_T)p_popup_id);
+ 1577:	    }
+ 1578:	
+ 1579:	    /* while deactivating a low prio pp do not add the high prio popup again */
+ 1580:	    fl_active_pp = hmi_popup_core_get_active_popup(fl_layer);
+ 1581:	    if(fl_active_pp!=fl_temp_active_pp)
+ 1582:	    {
+ 1583:	      #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1584:	      if(p_anim_id==POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_TIMEOUT_ANIM,fl_active_pp))
+ 1585:	      {
+ 1586:	            p_anim_id=POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_ADD_TIMEOUT_ANIM,fl_active_pp);
+ 1587:	      }
+</PRE>
+<A NAME="ERR_LINE_1588"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1588:	      else if(p_anim_id==POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_REMOVE_MINTIMEOUT_ANIM,fl_active_pp))
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2992.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1588) ++ WARNING ++: &lt;=7=(2992) The value of this 'if' controlling expression is always 'false'.</A></B>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2996.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1588) ++ WARNING ++: &lt;=7=(2996) The result of this logical operation is always 'false'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1589:	      {
+</PRE>
+<A NAME="ERR_LINE_1590"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1590:	            p_anim_id=POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_POPUP_ADD_MINTIME_ANIM,fl_active_pp);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2880.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(1590) ++ WARNING ++: &lt;=7=(2880) This code is unreachable.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1591:	      }
+ 1592:	      else
+ 1593:	      {
+ 1594:	            p_anim_id=POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_DEFAULT_POPUP_ADD_ANIM,fl_active_pp);
+ 1595:	      }
+ 1596:	      #endif
+ 1597:	      (void)hmi_popup_core_activate(fl_layer
+ 1598:	                                    #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1599:	                                    , p_anim_id
+ 1600:	                                    #endif
+ 1601:	                                    );
+ 1602:	    }
+ 1603:	   }
+ 1604:	  }
+ 1605:	  return(fl_return_U8);
+ 1606:	}
+ 1607:	
+ 1608:	/*============================================================================
+ 1609:	** Function Name    : hmi_popup_core_deactivate
+ 1610:	** Visibility       : Internal Interface
+ 1611:	** Description      : This function deactivate popup 
+ 1612:	** Invocation       : Invoked by the Popup Core
+ 1613:	** Inputs/Outputs   : p_popup_id - Index to the Popup id
+ 1614:	**                    p_event - Event to close the popup
+ 1615:	**                    POPUP_ANIMATION_ID p_anim_id
+ 1616:	** Critical Section : No
+ 1617:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1618:	** Updated          : 20 JUN, 2013 nkrishn9
+ 1619:	**==========================================================================*/
+ 1620:	static UINT8 hmi_popup_core_deactivate(POPUP_ID_T p_popup_id, POPUP_EVENTS p_event
+ 1621:	                                        #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1622:	                                        , POPUP_ANIMATION_ID p_anim_id
+ 1623:	                                        #endif
+ 1624:	                                        )
+ 1625:	{
+ 1626:	  UINT8 fl_return_U8;
+ 1627:	
+ 1628:	  #ifdef LSH_APP_REM_HANDLER
+ 1629:	    POPUP_LAYER_TYPE const * fl_layer;
+ 1630:	    fl_layer = hmi_popup_core_get_popup_layer((POPUP_ID)p_popup_id);
+ 1631:	    fl_return_U8 = POPUP_LSH_REM_STATE_EXT(LOGIC_STATE_ID(p_popup_id), p_anim_id, (UINT8)p_popup_id, (POPUP_LAYER_ID)fl_layer-&gt;l_layer_index);
+ 1632:	  #else
+ 1633:	    fl_return_U8 = POPUP_LSH_REM_STATE_EXT(LOGIC_STATE_ID(p_popup_id), p_anim_id, (UINT8)p_popup_id);
+ 1634:	  #endif
+ 1635:	
+ 1636:	  /* Clear the activation status bit of the corresponding popup if the popup is de-activated */
+ 1637:	  DEACTIVATE_POPUP(p_popup_id);
+ 1638:	#ifdef POPUP_TYPE_KEYPAD
+ 1639:	  if(POPUP_TYPE(p_popup_id) == POPUP_KEYPAD)
+ 1640:	  {
+ 1641:	    *(l_total_pp_type.l_keypad_entry_pp_table_ptr[POPUP_ID_INDEX(p_popup_id)].l_curr_multi_press_btn)=0;
+ 1642:	  }
+ 1643:	#endif
+ 1644:	  hmi_popup_core_send_event_notification((POPUP_ID)p_popup_id, p_event);
+ 1645:	
+ 1646:	  return(fl_return_U8);
+ 1647:	}
+ 1648:	
+ 1649:	/*============================================================================
+ 1650:	** Function Name    : hmi_popup_core_activate
+ 1651:	** Visibility       : Internal Interface
+ 1652:	** Description      : This function activates the popup
+ 1653:	** Invocation       : Invoked by the Popup Core
+ 1654:	** Inputs/Outputs   : p_layer - Popup Layer pointer
+ 1655:	**                    POPUP_ANIMATION_ID p_anim_id
+ 1656:	** Critical Section : No
+ 1657:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1658:	** Updated          : 20 JUN, 2013 nkrishn9
+ 1659:	**==========================================================================*/
+ 1660:	static UINT8 hmi_popup_core_activate(POPUP_LAYER_TYPE const *p_layer
+ 1661:	                                    #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 1662:	                                    ,POPUP_ANIMATION_ID p_anim_id
+ 1663:	                                    #endif
+ 1664:	                                    )
+ 1665:	{
+ 1666:	  UINT8 fl_return_U8 = LSH_INVALID_STATUS;
+ 1667:	  POPUP_ID fl_active_pp;
+ 1668:	  #ifdef LSH_APP_ADD_HANDLER
+ 1669:	  POPUP_LAYER_TYPE const * fl_layer;
+ 1670:	  #endif
+ 1671:	
+ 1672:	  /* Check if it has any popup to be displayed */
+ 1673:	  fl_active_pp = hmi_popup_core_get_active_popup(p_layer);
+ 1674:	
+ 1675:	  if (fl_active_pp != (MAX_LAYER_POPUP_ID(p_layer)))
+ 1676:	  {
+ 1677:	    if(VALID_GROUP_PRIORITY(fl_active_pp, p_layer))
+ 1678:	    {
+ 1679:	      if(GROUP_PRIORITY(fl_active_pp)!=NO_GROUP_PRIORITY)
+ 1680:	      {
+ 1681:	        fl_active_pp=hmi_popup_core_get_lastin_pp_in_queue(p_layer, GROUP_PRIORITY(fl_active_pp));
+ 1682:	      }
+ 1683:	    }
+ 1684:	
+ 1685:	    /****************************************************************************
+ 1686:	    ** When Invalid animation ID is passed, The screen ID is not queued to the **
+ 1687:	    ** LSH. Due to which there are inconsistencies when multiple popup's with  **
+ 1688:	    ** same screen ID's were builded.                                          **
+ 1689:	    *****************************************************************************/
+ 1690:	    #ifdef LSH_APP_ADD_HANDLER
+ 1691:	    fl_layer = hmi_popup_core_get_popup_layer(fl_active_pp);
+ 1692:	    fl_return_U8 = POPUP_LSH_ADD_STATE_EXT(LOGIC_STATE_ID(fl_active_pp), p_anim_id, (UINT8)fl_active_pp, (POPUP_LAYER_ID)fl_layer-&gt;l_layer_index);
+ 1693:	    #else
+ 1694:	    if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; fl_active_pp)
+ 1695:	    {
+ 1696:	      fl_return_U8 = POPUP_LSH_ADD_STATE_EXT(LOGIC_STATE_ID(fl_active_pp), p_anim_id, (UINT8)fl_active_pp);
+ 1697:	    }
+ 1698:	    #endif
+ 1699:	
+ 1700:	  }
+ 1701:	
+ 1702:	  return(fl_return_U8);
+ 1703:	}
+ 1704:	
+ 1705:	/*============================================================================
+ 1706:	** Function Name    : hmi_popup_core_get_popup_layer
+ 1707:	** Visibility       : Local, Interface to the Popup Core
+ 1708:	** Description      : This Function returns pointer to the layer for a give
+ 1709:	**                    Raw Popup ID
+ 1710:	** Invocation       : Invoked by the Popup Core
+ 1711:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1712:	**                    POPUP_LAYER_TYPE - Pointer to the Layer
+ 1713:	** Critical Section : No
+ 1714:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1715:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1716:	**==========================================================================*/
+ 1717:	static POPUP_LAYER_TYPE  const * hmi_popup_core_get_popup_layer(POPUP_ID p_popup_id)
+ 1718:	{
+ 1719:	  UINT8 fl_layer_index_U8;
+ 1720:	  POPUP_LAYER_TYPE  const * fl_layer = NULL;
+ 1721:	  UINT16 fl_pp_count_U16  = 0;
+ 1722:	
+ 1723:	  for(fl_layer_index_U8 = 0; (fl_layer_index_U8 &lt; POPUP_MAX_LAYERS); fl_layer_index_U8++ )
+ 1724:	  {
+ 1725:	     fl_pp_count_U16 += l_layer_table[fl_layer_index_U8]-&gt;l_total_pp_count;
+ 1726:	     if( p_popup_id &lt; fl_pp_count_U16 )
+ 1727:	     {
+ 1728:	      /* Popup layer table is identified */
+ 1729:	      fl_layer =  l_layer_table[fl_layer_index_U8];
+ 1730:	      break;
+ 1731:	     }
+ 1732:	  }
+ 1733:	  return(fl_layer);
+ 1734:	}
+ 1735:	/*============================================================================
+ 1736:	** Function Name    : hmi_popup_core_get_active_popup
+ 1737:	** Visibility       : Local, Interface to the Popup Core
+ 1738:	** Description      : This Function returns the active popup (High Priority) in
+ 1739:	**                    a given layer
+ 1740:	** Invocation       : invoked by the Popup Core
+ 1741:	** Inputs/Outputs   : p_layer     - pointer to a Layer
+ 1742:	**                    Output: High prio/ active popup
+ 1743:	** Critical Section : No
+ 1744:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1745:	** Updated          : 20 JUN, 2013 NKRISHN9
+ 1746:	**==========================================================================*/
+ 1747:	static POPUP_ID hmi_popup_core_get_active_popup(POPUP_LAYER_TYPE const *p_layer)
+ 1748:	{
+ 1749:	  POPUP_ID_T fl_index;
+ 1750:	  POPUP_ID fl_return;
+ 1751:	
+ 1752:	  UINT8 fl_stop_U8 = (UINT8)0;
+ 1753:	
+ 1754:	  fl_return = (POPUP_ID)(MAX_LAYER_POPUP_ID(p_layer));
+ 1755:	
+ 1756:	  for (fl_index = POPUP_LAYER_START_INDEX(p_layer); 
+ 1757:	    (fl_index &lt;  (MAX_LAYER_POPUP_ID(p_layer)))&amp;&amp;(fl_stop_U8 == 0);  fl_index++)
+ 1758:	  {
+ 1759:	    if (POPUP_ACTIVE(fl_index))
+ 1760:	    {
+ 1761:	      fl_return = (POPUP_ID)fl_index;
+ 1762:	      if(GROUP_PRIORITY(fl_return)!=NO_GROUP_PRIORITY)
+ 1763:	      {
+ 1764:	        fl_return=hmi_popup_core_get_lastin_pp_in_queue(p_layer,GROUP_PRIORITY(fl_return));
+ 1765:	      }
+ 1766:	      fl_stop_U8 = (UINT8)1;
+ 1767:	    }
+ 1768:	  }
+ 1769:	
+ 1770:	  return(fl_return);
+ 1771:	}
+ 1772:	/*============================================================================
+ 1773:	** Function Name    : hmi_popup_core_start_popup_timer  
+ 1774:	** Visibility       : Local, Interface to the Popup Core
+ 1775:	** Description      : This Function Starts the relevant Popup Timers
+ 1776:	** Invocation       : Invoked by the Popup Core
+ 1777:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1778:	** Critical Section : No
+ 1779:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1780:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1781:	**==========================================================================*/
+ 1782:	static void hmi_popup_core_start_popup_timer(POPUP_ID p_popup_id)
+ 1783:	{
+ 1784:	  if(p_popup_id&lt; (POPUP_ID)L_POPUP_MAX_COUNT)
+ 1785:	  {
+ 1786:	    if(POPUP_KEYPAD!=POPUP_TYPE(p_popup_id))
+ 1787:	    {
+ 1788:	      if(lc_popup_config_table[p_popup_id].layer_timeout != 0)
+ 1789:	      {
+ 1790:	        if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+ 1791:	        {
+ 1792:	          HMI_POPUP_START_TIMER((TIMER_ID_TYPE)lc_popup_config_table[p_popup_id].timerid,lc_popup_config_table[p_popup_id].layer_timeout,((UINT16)(HMI_TMR_TIME_OUT_TYPE &lt;&lt; 8) | (UINT16)p_popup_id));
+ 1793:	        }
+ 1794:	      }
+ 1795:	    }
+ 1796:	    else
+ 1797:	    {
+ 1798:	#ifdef POPUP_TYPE_KEYPAD    
+ 1799:	      if((lc_popup_config_table[p_popup_id].layer_timeout != 0)||(0!=KEYPAD_PP_MULTIPRESS_TIMEOUT(p_popup_id)))
+ 1800:	      {
+ 1801:	        if(lc_popup_config_table[p_popup_id].timerid&lt;POPUP_MAX_TIMER)
+ 1802:	        {
+ 1803:	          UINT16 fl_timeout;
+ 1804:	          fl_timeout=KEYPAD_PP_MULTIPRESS_TIMEOUT(p_popup_id);
+ 1805:	
+ 1806:	          /* if the multipress timeout is zero, then start with layer timer */
+ 1807:	          if(0==fl_timeout)
+ 1808:	          {
+ 1809:	            fl_timeout=lc_popup_config_table[p_popup_id].layer_timeout;
+ 1810:	          }
+ 1811:	          HMI_POPUP_START_TIMER((TIMER_ID_TYPE)lc_popup_config_table[p_popup_id].timerid, fl_timeout, ((UINT16)(HMI_TMR_TIME_OUT_TYPE &lt;&lt; 8) | (UINT16)p_popup_id));
+ 1812:	        }
+ 1813:	      }
+ 1814:	#endif
+ 1815:	    }
+ 1816:	  }
+ 1817:	}
+ 1818:	
+ 1819:	/*============================================================================
+ 1820:	** Function Name    : hmi_popup_core_stop_timer()
+ 1821:	** Visibility       : Global, Interface to the Popup Core Application
+ 1822:	** Description      : This function is used to start min popup timer
+ 1823:	** Invocation       : Invoked by the Popup Core Application
+ 1824:	** Inputs/Outputs   : p_popup     - Popup Id of a min timer to start
+ 1825:	** Critical Section : No
+ 1826:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1827:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1828:	**==========================================================================*/
+ 1829:	static void hmi_popup_core_start_popup_min_timer(POPUP_ID p_popup_id)
+ 1830:	{
+ 1831:	  /*Start the Minimum timeout timer only if popup id is less than max count*/
+ 1832:	  if(p_popup_id&lt; (POPUP_ID)L_POPUP_MAX_COUNT)
+ 1833:	  {
+ 1834:	    /* Do not start the timer if the timeout time is 0 */
+ 1835:	    if(lc_popup_config_table[p_popup_id].min_timeout != 0)
+ 1836:	    {
+ 1837:	      POPUP_LAYER_TYPE const * fl_layer;
+ 1838:	      fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1839:	      if(fl_layer!=NULL)
+ 1840:	      {
+ 1841:	       if((fl_layer-&gt;l_min_tmr_id)&lt;POPUP_MAX_TIMER)
+ 1842:	       {
+ 1843:	        HMI_POPUP_START_TIMER(fl_layer-&gt;l_min_tmr_id, lc_popup_config_table[p_popup_id].min_timeout,
+ 1844:	        (UINT16)((UINT16)(HMI_TMR_MINIMUM_TIMEOUT_TYPE &lt;&lt; 8)| (UINT16)p_popup_id));
+ 1845:	       }
+ 1846:	      }
+ 1847:	    }
+ 1848:	  }
+ 1849:	}
+ 1850:	
+ 1851:	/*============================================================================
+ 1852:	** Function Name    : hmi_popup_core_start_all_popup_timer
+ 1853:	** Visibility       : Local, Interface to the Popup Core
+ 1854:	** Description      : This Function Starts the relevant all popup Timers
+ 1855:	** Invocation       : Invoked by the Popup Core
+ 1856:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1857:	** Critical Section : No
+ 1858:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1859:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1860:	**==========================================================================*/
+ 1861:	static void hmi_popup_core_start_all_popup_timer(POPUP_ID p_popup_id)
+ 1862:	{
+ 1863:	  hmi_popup_core_start_popup_timer(p_popup_id);
+ 1864:	  hmi_popup_core_start_popup_min_timer(p_popup_id);
+ 1865:	}
+ 1866:	
+ 1867:	/*============================================================================
+ 1868:	** Function Name    : hmi_popup_core_stop_popup_timer
+ 1869:	** Visibility       : Local, Interface to the Popup Core
+ 1870:	** Description      : This Function stops the relevant popup timers
+ 1871:	** Invocation       : Invoked by the Popup Core
+ 1872:	
+ 1873:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1874:	** Critical Section : No
+ 1875:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1876:	** Updated          : 20 JUN, 2013 NKRISHN9
+ 1877:	**==========================================================================*/
+ 1878:	static void hmi_popup_core_stop_popup_timer(POPUP_ID p_popup_id)
+ 1879:	{
+ 1880:	  if(p_popup_id&lt; (POPUP_ID)L_POPUP_MAX_COUNT)
+ 1881:	  {
+ 1882:	    TIMER_ID_TYPE temp_timer_id;
+ 1883:	
+ 1884:	    temp_timer_id=(TIMER_ID_TYPE)lc_popup_config_table[p_popup_id].timerid;
+ 1885:	
+ 1886:	    if(temp_timer_id&lt;POPUP_MAX_TIMER)
+ 1887:	    {
+ 1888:	      HMI_POPUP_STOP_TIMER(temp_timer_id);
+ 1889:	    }
+ 1890:	  }
+ 1891:	}
+ 1892:	/*============================================================================
+ 1893:	** Function Name    : hmi_popup_core_stop_popup_min_timer
+ 1894:	** Visibility       : Local, Interface to the Popup Core
+ 1895:	** Description      : This Function stops the relevant popup timers
+ 1896:	** Invocation       : Invoked by the Popup Core
+ 1897:	
+ 1898:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1899:	** Critical Section : No
+ 1900:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1901:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1902:	**==========================================================================*/
+ 1903:	static void hmi_popup_core_stop_popup_min_timer(POPUP_ID p_popup_id)
+ 1904:	{
+ 1905:	  if(p_popup_id&lt; (POPUP_ID)L_POPUP_MAX_COUNT)
+ 1906:	  {
+ 1907:	    POPUP_LAYER_TYPE const * fl_layer;
+ 1908:	    TIMER_ID_TYPE temp_min_timer_id;
+ 1909:	    fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1910:	    if(fl_layer!=NULL)
+ 1911:	    {
+ 1912:	     temp_min_timer_id=fl_layer-&gt;l_min_tmr_id;
+ 1913:	     if(temp_min_timer_id&lt;POPUP_MAX_TIMER)
+ 1914:	     {
+ 1915:	       HMI_POPUP_STOP_TIMER(temp_min_timer_id);
+ 1916:	     }
+ 1917:	    }
+ 1918:	  }
+ 1919:	}
+ 1920:	
+ 1921:	/*============================================================================
+ 1922:	** Function Name    : hmi_popup_core_stop_all_popup_timer
+ 1923:	** Visibility       : Local, Interface to the Popup Core
+ 1924:	** Description      : This Function stops the relevant popup timers
+ 1925:	** Invocation       : Invoked by the Popup Core
+ 1926:	
+ 1927:	** Inputs/Outputs   : p_popup_id - Popup ID
+ 1928:	** Critical Section : No
+ 1929:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1930:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1931:	**==========================================================================*/
+ 1932:	static void hmi_popup_core_stop_all_popup_timer(POPUP_ID p_popup_id)
+ 1933:	{
+ 1934:	  if(p_popup_id&lt; (POPUP_ID)L_POPUP_MAX_COUNT)
+ 1935:	  {
+ 1936:	    POPUP_LAYER_TYPE const * fl_layer;
+ 1937:	    TIMER_ID_TYPE temp_timer_id;
+ 1938:	    TIMER_ID_TYPE temp_min_timer_id;
+ 1939:	
+ 1940:	    fl_layer = hmi_popup_core_get_popup_layer(p_popup_id);
+ 1941:	    if(fl_layer!=NULL)
+ 1942:	    {
+ 1943:	     temp_timer_id=(TIMER_ID_TYPE)lc_popup_config_table[p_popup_id].timerid;
+ 1944:	     temp_min_timer_id=fl_layer-&gt;l_min_tmr_id;
+ 1945:	
+ 1946:	
+ 1947:	     if(temp_timer_id&lt;POPUP_MAX_TIMER)
+ 1948:	     {
+ 1949:	       HMI_POPUP_STOP_TIMER(temp_timer_id);
+ 1950:	     }
+ 1951:	
+ 1952:	     if(temp_min_timer_id&lt;POPUP_MAX_TIMER)
+ 1953:	     {
+ 1954:	       HMI_POPUP_STOP_TIMER(temp_min_timer_id);
+ 1955:	     }
+ 1956:	    }
+ 1957:	  }
+ 1958:	}
+ 1959:	/*============================================================================
+ 1960:	** Function Name    : hmi_popup_core_send_event_notification
+ 1961:	** Visibility       : Local, Interface to the Popup Core
+ 1962:	** Description      : Closure or event notification to popup application
+ 1963:	** Invocation       : Invoked by the Popup Core
+ 1964:	** Inputs/Outputs   : p_popup_id, p_evt
+ 1965:	** Critical Section : No
+ 1966:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1967:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1968:	**==========================================================================*/
+ 1969:	static void hmi_popup_core_send_event_notification(POPUP_ID p_popup_id, POPUP_EVENTS p_evt)
+ 1970:	{
+ 1971:	  if(POUP_CORE_HANDLER(p_popup_id)!=POPUP_EVENT_HANDLER_NULL)
+ 1972:	  {
+ 1973:	    POUP_CORE_HANDLER(p_popup_id)(p_evt);
+ 1974:	  }
+ 1975:	}
+ 1976:	
+ 1977:	/*============================================================================
+ 1978:	** Function Name    : hmi_popup_core_add_to_queue
+ 1979:	** Visibility       : Local, Interface to the Popup Core
+ 1980:	** Description      : add the popup to respective group priority queue of a layer
+ 1981:	** Invocation       : Invoked by the Popup Core
+ 1982:	** Inputs/Outputs   : Inputs p_popup_id,p_layer, p_group_priority
+ 1983:	**                  : output: true or false to say whether added
+ 1984:	** Critical Section : No
+ 1985:	** Created          : 15 OCT, 2012 NKRISHN9
+ 1986:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 1987:	**==========================================================================*/
+ 1988:	static BOOLEAN hmi_popup_core_add_to_queue(POPUP_ID p_popup_id, POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority)
+ 1989:	{
+ 1990:	  POPUP_ID_T fl_index;
+ 1991:	  BOOLEAN fl_flag;
+ 1992:	  fl_flag=FALSE;
+ 1993:	
+ 1994:	  /* Check it is a valid popup and group priority of a layer*/
+ 1995:	  if(((MAX_LAYER_POPUP_ID(p_layer)) &gt; p_popup_id) &amp;&amp; VALID_GROUP_PRIORITY(p_popup_id, p_layer))
+ 1996:	  {
+ 1997:	    p_group_priority=p_group_priority-1;
+ 1998:	    /* move the popup from end of the queue to top to create a space to add a popup */
+ 1999:	    for(fl_index=((p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue_size)-1);fl_index&gt;0;fl_index--)
+ 2000:	    {
+ 2001:	      p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue[fl_index]=p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue[fl_index-1];
+ 2002:	    }
+ 2003:	    /* Add the popup to start of the array */
+ 2004:	    p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue[fl_index]=(POPUP_ID_T)p_popup_id;
+ 2005:	    fl_flag=TRUE;
+ 2006:	  }
+ 2007:	
+ 2008:	  return(fl_flag);
+ 2009:	}
+ 2010:	
+ 2011:	/*============================================================================
+ 2012:	** Function Name    : hmi_popup_core_remove_from_queue
+ 2013:	** Visibility       : Local, Interface to the Popup Core
+ 2014:	** Description      : remove the popup to respective group priority queue of a layer
+ 2015:	** Invocation       : Invoked by the Popup Core
+ 2016:	** Inputs/Outputs   : p_popup_id,p_layer, p_group_priority
+ 2017:	**                  : output: true or false to say whether removed
+ 2018:	** Critical Section : No
+ 2019:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2020:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2021:	**==========================================================================*/
+ 2022:	static BOOLEAN hmi_popup_core_remove_from_queue(POPUP_ID p_popup_id, POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority)
+ 2023:	{
+ 2024:	  POPUP_ID_T fl_index;
+ 2025:	  POPUP_ID_T *temp_grp_pp_id_ptr;
+ 2026:	  POPUP_ID_T temp_queue_size;
+ 2027:	
+ 2028:	  BOOLEAN fl_flag;
+ 2029:	  fl_flag=FALSE;
+ 2030:	
+ 2031:	
+ 2032:	  if ((POPUP_ID)L_POPUP_MAX_COUNT &gt; p_popup_id)
+ 2033:	  {
+ 2034:	    p_group_priority=p_group_priority-1;
+ 2035:	    temp_grp_pp_id_ptr=p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue;
+ 2036:	    temp_queue_size=p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue_size;
+ 2037:	
+ 2038:	    for(fl_index=0;((fl_index&lt;(temp_queue_size-1))\
+ 2039:	                      &amp;&amp;(temp_grp_pp_id_ptr[fl_index]!=L_POPUP_MAX_COUNT));fl_index++)
+ 2040:	    {
+ 2041:	      if((temp_grp_pp_id_ptr[fl_index]==p_popup_id)||(fl_flag!=FALSE))
+ 2042:	      {
+ 2043:	        temp_grp_pp_id_ptr[fl_index]=temp_grp_pp_id_ptr[fl_index+1];
+ 2044:	        fl_flag=TRUE;
+ 2045:	      }
+ 2046:	    }
+ 2047:	
+ 2048:	    if(fl_flag!=FALSE)
+ 2049:	    {
+ 2050:	      temp_grp_pp_id_ptr[temp_queue_size-1]=L_POPUP_MAX_COUNT;
+ 2051:	    }
+ 2052:	  }
+ 2053:	  return(fl_flag);
+ 2054:	}
+ 2055:	
+ 2056:	/*============================================================================
+ 2057:	** Function Name    : hmi_popup_core_get_lastin_pp_in_queue
+ 2058:	** Visibility       : Local, Interface to the Popup Core
+ 2059:	** Description      : get the popup from respective group priority queue of a layer
+ 2060:	** Invocation       : Invoked by the Popup Core
+ 2061:	** Inputs/Outputs   : p_layer, p_group_priority
+ 2062:	**                  : output: popup id 
+ 2063:	** Critical Section : No
+ 2064:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2065:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2066:	**==========================================================================*/
+ 2067:	static POPUP_ID hmi_popup_core_get_lastin_pp_in_queue(POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority)
+ 2068:	{
+ 2069:	  POPUP_ID return_popup_id;
+ 2070:	  return_popup_id = L_POPUP_MAX_COUNT;
+ 2071:	
+ 2072:	  p_group_priority = p_group_priority-1;
+ 2073:	  if(p_group_priority &lt; p_layer-&gt;l_total_grp_priority_count)
+ 2074:	  {
+ 2075:	    return_popup_id = (POPUP_ID)p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue[0];
+ 2076:	  }
+ 2077:	  return(return_popup_id);
+ 2078:	}
+ 2079:	
+ 2080:	/*============================================================================
+ 2081:	** Function Name    : hmi_popup_core_search_remove_slfdeacti_pp_in_queue
+ 2082:	** Visibility       : Local, Interface to the Popup Core
+ 2083:	** Description      : get the popup from respective group priority queue of a layer
+ 2084:	** Invocation       : Invoked by the Popup Core
+ 2085:	** Inputs/Outputs   : p_layer, p_group_priority
+ 2086:	**                  : output: popup id 
+ 2087:	** Critical Section : No
+ 2088:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2089:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2090:	**==========================================================================*/
+ 2091:	static POPUP_ID hmi_popup_core_search_self_deactivate_pp_in_queue(POPUP_LAYER_TYPE const *p_layer, UINT8 p_group_priority)
+ 2092:	{
+ 2093:	  UINT8 fl_index;
+ 2094:	  BOOLEAN fl_flag;
+ 2095:	  POPUP_ID return_pp_id;
+ 2096:	  POPUP_ID_T temp_self_deact_pp_id;
+ 2097:	
+ 2098:	  fl_flag=FALSE;
+ 2099:	  return_pp_id=L_POPUP_MAX_COUNT;
+ 2100:	
+ 2101:	  if(p_group_priority&lt;=LAST_GROUP_PRIORITY)
+ 2102:	  {
+ 2103:	    p_group_priority=p_group_priority-1;
+ 2104:	
+ 2105:	    for(fl_index=0;((fl_index&lt;p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue_size)&amp;&amp;(fl_flag==FALSE));fl_index++)
+ 2106:	    {
+ 2107:	      temp_self_deact_pp_id=p_layer-&gt;l_group_priority_table_ptr[p_group_priority]-&gt;queue[fl_index];
+ 2108:	      if(temp_self_deact_pp_id!=L_POPUP_MAX_COUNT)
+ 2109:	      {
+ 2110:	        if(POPUP_SELF_DEACTIVTION(temp_self_deact_pp_id))
+ 2111:	        {
+ 2112:	          return_pp_id=(POPUP_ID)temp_self_deact_pp_id;
+ 2113:	          fl_flag=TRUE;
+ 2114:	        }
+ 2115:	      }
+ 2116:	    }
+ 2117:	  }
+ 2118:	  return(return_pp_id);
+ 2119:	}
+ 2120:	
+ 2121:	/*============================================================================
+ 2122:	** Function Name    : hmi_popup_core_get_activepp_and_count_of_all_layer
+ 2123:	** Visibility       : Global, Interface to the Application
+ 2124:	** Description      : function could be called to find an active and total
+ 2125:	**                    pp active in all layer. Both will be L_POPUP_MAX_COUNT,
+ 2126:	**                    if no popup is active.
+ 2127:	** Invocation       : Invoked by the Application
+ 2128:	** Inputs/Outputs   : POPUP_ACTIVE_DATA_TYPE - structure return active pp and total 
+ 2129:	**                    count of layer
+ 2130:	** Critical Section : No
+ 2131:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2132:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2133:	**==========================================================================*/
+ 2134:	static POPUP_ACTIVE_DATA_TYPE hmi_popup_core_find_active_popup_and_count(POPUP_ID p_start_index, POPUP_ID p_end_index)
+ 2135:	{
+ 2136:	  POPUP_ACTIVE_DATA_TYPE r_active;
+ 2137:	  POPUP_ID_T fl_index;
+ 2138:	  UINT8 fl_stop_U8 = (UINT8)0;
+ 2139:	  r_active.total_popup_count  = (POPUP_ID)0;
+ 2140:	  r_active.popup_id = (POPUP_ID)0;
+ 2141:	  
+ 2142:	  for (fl_index = p_start_index; 
+ 2143:	    (fl_index &lt; p_end_index); fl_index++)
+ 2144:	  {
+ 2145:	    if ((POPUP_ACTIVE(fl_index))&amp;&amp;(!MIN_TIMER_DEACTIVATE_PENDING(fl_index)))
+ 2146:	    {
+ 2147:	      if(fl_stop_U8 ==0)
+ 2148:	      {
+ 2149:	        r_active.popup_id = (POPUP_ID)fl_index;
+ 2150:	        if(GROUP_PRIORITY(r_active.popup_id)!=NO_GROUP_PRIORITY)
+ 2151:	        {
+ 2152:	          POPUP_LAYER_TYPE const * fl_layer;
+ 2153:	          fl_layer = hmi_popup_core_get_popup_layer(r_active.popup_id);
+ 2154:	          if(fl_layer!=NULL)
+ 2155:	          {
+ 2156:	            r_active.popup_id=hmi_popup_core_get_lastin_pp_in_queue(fl_layer,GROUP_PRIORITY(r_active.popup_id));
+ 2157:	          }
+ 2158:	        }
+ 2159:	        fl_stop_U8 = (UINT8)1;
+ 2160:	      }
+ 2161:	      r_active.total_popup_count++;
+ 2162:	    }
+ 2163:	  }
+ 2164:	  return(r_active);
+ 2165:	}
+ 2166:	
+ 2167:	#ifdef POPUP_TYPE_PROGRESSBAR
+ 2168:	/*============================================================================
+ 2169:	** Function Name    : hmi_popup_core_increment_progressbar_counter
+ 2170:	** Visibility       : Global, Interface to the Application
+ 2171:	** Description      : function to provide progress bar status
+ 2172:	** Invocation       : Invoked by the timer call back
+ 2173:	** Inputs/Outputs   : p_popup_id, r_progress_status of a popup.
+ 2174:	**                    
+ 2175:	** Critical Section : No
+ 2176:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2177:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2178:	**==========================================================================*/
+ 2179:	static BOOLEAN hmi_popup_core_increment_progressbar_counter(POPUP_ID p_popup_id)
+ 2180:	{
+ 2181:	  BOOLEAN r_progress_status;
+ 2182:	  r_progress_status=FALSE;
+ 2183:	  
+ 2184:	  /* If no timeout progress bar pop up then counter value will be 255, so timer restarted when max count reached */
+ 2185:	  if((!PROGRESSBAR_PP_CNTR_REACH_MAXCNT(p_popup_id)) || (PROGRESSBAR_PP_MAXCOUNT(p_popup_id) == HMI_PROGRESS_POPUP_NO_TIMEOUT_COUNT  ))
+ 2186:	  {
+ 2187:	    PROGRESSBAR_PP_INC_COUNT(p_popup_id);
+ 2188:	    hmi_popup_core_send_event_notification(p_popup_id, POPUP_PROGRESS_BAR_INC_EVT);
+ 2189:	    hmi_popup_core_start_popup_timer(p_popup_id);
+ 2190:	    r_progress_status=TRUE;
+ 2191:	  }
+ 2192:	  return(r_progress_status);
+ 2193:	}
+ 2194:	#endif
+ 2195:	
+ 2196:	#ifdef POPUP_TYPE_KEYPAD
+ 2197:	/*============================================================================
+ 2198:	** Function Name    : hmi_popup_keypad_btn_handler
+ 2199:	** Visibility       : Local, Interface to the Popup Core
+ 2200:	** Description      : This Function returns the pointer to the Timer for a Popup
+ 2201:	** Invocation       : Invoked by the Popup Core
+ 2202:	** Inputs/Outputs   : p_keypad     - pointer to a Key Pad Popup
+ 2203:	**                    p_btn_id - Button ID
+ 2204:	**                    p_pp_id - Popup ID
+ 2205:	**                    Output: Status of the consumption of the button evt
+ 2206:	** Critical Section : No
+ 2207:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2208:	** Updated          : 20 JUN, 2013 NKRISHN9
+ 2209:	**==========================================================================*/
+ 2210:	static UINT8 hmi_popup_keypad_btn_handler(POPUP_KEYPADENTRY_TYPE  const *p_keypad, UINT16 p_btn_id, POPUP_ID p_popup_id)
+ 2211:	{
+ 2212:	    
+ 2213:	  UINT8 fl_index_U8;
+ 2214:	  KEYPAD_CONFIG_TYPE const * fl_config;
+ 2215:	  HMI_CHAR *fl_char;
+ 2216:	  KEYPAD_EVENT_TYPE const * fl_keypad_evt;
+ 2217:	  UINT8 fl_return = LSH_STATUS_NONE;
+ 2218:	  UINT8 fl_str_len = 0;
+</PRE>
+<A NAME="ERR_LINE_2219"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2219:	  BOOLEAN fl_status_BOOL = FALSE;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2219) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_2220"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_2220"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2220:	  UINT16 fl_timeout_U16 = 0;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2220) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_2455"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2221:	
+ 2222:	  /* The Press and hold button alone needs to handle. Other button needs to ignore.
+ 2223:	     if current multibutton status is inactive(released), the next button is press or hold
+ 2224:	     Also, check that the new is button is not release button */
+ 2225:	  if((LSH_GET_STATUS( *(p_keypad-&gt;l_curr_multi_press_btn))==LSH_BUTTON_INACTIVE_STATE)&amp;&amp;\
+ 2226:	    (LSH_GET_STATUS(p_btn_id)!=LSH_BUTTON_INACTIVE_STATE))
+ 2227:	  {
+ 2228:	    fl_config = p_keypad-&gt;config_type;
+ 2229:	    if (FALSE!=hmi_popup_core_search_button_event(p_keypad-&gt;l_ok_event, p_btn_id))
+ 2230:	    {
+ 2231:	      (void)hmi_popup_core_close_popup(p_popup_id, POPUP_CLOSED_ON_OK_EVT
+ 2232:	                                        #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 2233:	                                        ,POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_DEFAULT_POPUP_CLOSE_ANIM,p_popup_id)
+ 2234:	                                        #endif
+ 2235:	                                        );
+ 2236:	      fl_return = LSH_STATUS_ABSORBED;
+ 2237:	      p_btn_id=0;
+ 2238:	    }
+ 2239:	    else if(FALSE!=hmi_popup_core_search_button_event(p_keypad-&gt;l_delete_event, p_btn_id))
+ 2240:	    {
+ 2241:	      /* Remove the Last Character from the display and delete */
+ 2242:	      fl_char = p_keypad-&gt;l_entry_ptr;
+ 2243:	
+ 2244:	      while ((*fl_char != 0)&amp;&amp;((fl_str_len &lt; (p_keypad-&gt;l_max_char_U8))))
+ 2245:	      {
+ 2246:	        fl_str_len++;  fl_char++;
+ 2247:	      }
+ 2248:	
+ 2249:	      if (fl_str_len &gt; 0)
+ 2250:	      {
+ 2251:	        /* Clear only if the user has entered some values */
+ 2252:	        fl_char--;  *fl_char = 0;
+ 2253:	      }
+ 2254:	      fl_return = LSH_STATUS_ABSORBED;
+ 2255:	    }
+ 2256:	    else if(FALSE!=hmi_popup_core_search_button_event(p_keypad-&gt;l_clear_event, p_btn_id))
+ 2257:	    {
+ 2258:	      /* Clear all the items in the entry */
+ 2259:	      fl_char = p_keypad-&gt;l_entry_ptr;
+ 2260:	      *fl_char = 0;
+ 2261:	      fl_return = LSH_STATUS_ABSORBED;
+ 2262:	    }
+ 2263:	    else if(FALSE!=hmi_popup_core_search_button_event(p_keypad-&gt;l_cancel_event, p_btn_id))
+ 2264:	    {
+ 2265:	      /* Close the Popup with the cancel event notification to the application */
+ 2266:	      (void)hmi_popup_core_close_popup(p_popup_id, POPUP_CLOSED_ON_CANCEL_EVT
+ 2267:	                                        #ifdef LSH_ANIMATION_SUPPORT_ENABLED
+ 2268:	                                        , POPUP_APP_DEFINED_ANIM_FUNCTION((UINT8)HMI_DEFAULT_POPUP_CLOSE_ANIM,p_popup_id)
+ 2269:	                                        #endif
+ 2270:	                                        );
+ 2271:	      fl_return = LSH_STATUS_ABSORBED;
+ 2272:	      p_btn_id=0;
+ 2273:	    }
+ 2274:	    else
+ 2275:	    {
+ 2276:	      /* Handle for other Button Press/hold */
+ 2277:	
+ 2278:	      /* Search for the Button Press in the Key Pad Config Table */
+ 2279:	      fl_keypad_evt = fl_config-&gt;l_keypad_evt_ptr;
+ 2280:	      for (fl_index_U8 = 0; ((fl_index_U8 &lt; fl_config-&gt;l_btn_count_U8)
+ 2281:	      &amp;&amp; (fl_return == LSH_STATUS_NONE)); fl_index_U8++)
+ 2282:	      {
+ 2283:	        if (fl_keypad_evt-&gt;l_btn_event_U16 == p_btn_id)
+ 2284:	        {
+ 2285:	          /* Button Found */
+ 2286:	
+ 2287:	          /* Find the current entry length and pointer entry */
+ 2288:	          fl_str_len = 0;   fl_char = p_keypad-&gt;l_entry_ptr;
+ 2289:	          while ((*fl_char != 0) &amp;&amp; (fl_str_len &lt; p_keypad-&gt;l_max_char_U8))
+ 2290:	          {
+ 2291:	            fl_str_len++;   fl_char++;
+ 2292:	          }
+ 2293:	
+ 2294:	          /*  Check for the Multiple Press if configured. Multiple press is sensed 
+ 2295:	              only if previous and current button are same. Otherwise, exit the multi press mode */
+ 2296:	          if (p_keypad-&gt;pp_entry_type != NUMERIC_ENTRY)
+ 2297:	          {
+ 2298:	            if (LSH_GET_ID(*(p_keypad-&gt;l_curr_multi_press_btn)) != LSH_GET_ID(p_btn_id))
+ 2299:	            {
+ 2300:	              /* Previous &amp; Current button pressed are not the same
+ 2301:	               * Exit the Muti press mode */
+ 2302:	              *(p_keypad-&gt;l_multi_press_counter) = 0;
+ 2303:	            }
+ 2304:	          }
+ 2305:	          else
+ 2306:	          {
+ 2307:	            *(p_keypad-&gt;l_multi_press_counter) = 0;
+ 2308:	            *(p_keypad-&gt;l_multi_timer_counter)=0;
+ 2309:	          }
+ 2310:	
+ 2311:	          if (p_keypad-&gt;pp_entry_type != NUMERIC_ENTRY)
+ 2312:	          {
+ 2313:	            if ((*(p_keypad-&gt;l_multi_press_counter) != 0))
+ 2314:	            {
+ 2315:	              /* This is the multiple button press,
+ 2316:	              * remove the last item from the string */
+ 2317:	
+</PRE>
+<A NAME="ERR_LINE_2318"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2318:	              if (fl_str_len != 0)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2318) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_2350"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2319:	              {
+ 2320:	                fl_char = &amp;p_keypad-&gt;l_entry_ptr[(fl_str_len - 1)];
+ 2321:	                fl_str_len --;
+ 2322:	              }
+ 2323:	              *fl_char = 0;
+ 2324:	            }
+ 2325:	          }
+ 2326:	
+ 2327:	          if (fl_str_len  &lt; p_keypad-&gt;l_max_char_U8)
+ 2328:	          {
+ 2329:	            fl_char = &amp;p_keypad-&gt;l_entry_ptr[fl_str_len];
+ 2330:	
+ 2331:	            /* Increment the Counter */
+ 2332:	            if (p_keypad-&gt;pp_entry_type != NUMERIC_ENTRY)
+ 2333:	            {
+ 2334:	              (*p_keypad-&gt;l_multi_press_counter)++;
+ 2335:	
+ 2336:	              /************************************************************************************
+ 2337:	              ** The value of fl_char is updated with reference to the multi press counter value.**
+ 2338:	              ** When the same key is pressed the value of multi press counter is incremented by **
+ 2339:	              ** ONE without checking the boundary condition for that button press. For example  **
+ 2340:	              ** if ButtonID_1 is pressed continously the value should be 'a'-&gt;'b'-&gt;'c'-&gt;'2'and  **
+ 2341:	              ** then back to 'a' again. But in our case we were incrementing the counter value  **
+ 2342:	              ** without checking the boundary condition, due to which we were showing adjacent  **
+ 2343:	              ** values like 'a'-&gt;'b'-&gt;'c'-&gt;'d'-&gt;'2'-&gt;'d'-&gt;'e'-&gt;.... To avoid this now we are    **
+ 2344:	              ** checking for two boundary conditions, First one is whether multi press counter  **
+ 2345:	              ** has reached MAX value, Second one is whether value stored in fl_char is 0. So   **
+ 2346:	              ** once the above said boundary conditions is reached we would set the counter     **
+ 2347:	              ** value to 1 and updated the fl_char value to first press in the char array table.**
+ 2348:	              ************************************************************************************/
+ 2349:	
+</PRE>
+<A NAME="ERR_LINE_2350"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2350:	              if ((*p_keypad-&gt;l_multi_press_counter) &gt; fl_keypad_evt-&gt;l_char_count_U8)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2350) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B><A HREF="#ERR_LINE_2379"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2351:	              {
+ 2352:	                (*p_keypad-&gt;l_multi_press_counter) = 1;
+ 2353:	              }
+ 2354:	
+ 2355:	              *fl_char = fl_keypad_evt-&gt;l_char_array[(*p_keypad-&gt;l_multi_press_counter) - 1];
+ 2356:	            }
+ 2357:	            else
+ 2358:	            {
+ 2359:	              /* Numeric mode will always have only one item to append */
+ 2360:	              (*p_keypad-&gt;l_multi_press_counter) = 0;
+ 2361:	              *fl_char = fl_keypad_evt-&gt;l_char_array[(*p_keypad-&gt;l_multi_press_counter)];
+ 2362:	            }
+ 2363:	
+ 2364:	            fl_char++;
+ 2365:	            *fl_char = 0;
+ 2366:	
+ 2367:	            hmi_popup_core_start_popup_timer(p_popup_id);
+ 2368:	
+ 2369:	            fl_return = LSH_STATUS_ABSORBED;
+ 2370:	
+ 2371:	            /************************************************************************************
+ 2372:	            ** Validation has to be performed only if the popup is of type NUMRIC_ENTRY. So    **
+ 2373:	            ** modified the IF condition, at the same time multi press timer should be started **
+ 2374:	            ** only for non NUMRIC_ENTRY type popup's, so moved that part of the code above.   **
+ 2375:	            ************************************************************************************/
+ 2376:	            if (NUMERIC_ENTRY == p_keypad-&gt;pp_entry_type)
+ 2377:	            {
+ 2378:	              /* Validate the Button Press, by the application Validation Handler */
+</PRE>
+<A NAME="ERR_LINE_2379"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2379:	              if (p_keypad-&gt;pp_validation_handler_ptr != POPUP_VALIDATE_HANDLER_NULL)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2379) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2380:	              {
+ 2381:	                POPUP_KEYPAD_CONTENT_TYPE fl_keypad_content;
+ 2382:	                fl_keypad_content.entry=p_keypad-&gt;l_entry_ptr;
+ 2383:	                fl_keypad_content.popup_id=p_popup_id;
+ 2384:	                fl_keypad_content.len_U8=p_keypad-&gt;l_max_char_U8;
+ 2385:	
+ 2386:	                fl_status_BOOL = p_keypad-&gt;pp_validation_handler_ptr(&amp;fl_keypad_content);
+ 2387:	
+ 2388:	                if (FALSE == fl_status_BOOL)
+ 2389:	                {
+ 2390:	                    /* The validation has failed, do not close the popup immediately */
+ 2391:	                    /* start a minimum timeout time and then close the popup   */
+ 2392:	                    fl_timeout_U16 = lc_popup_config_table[p_popup_id].min_timeout;
+ 2393:	
+ 2394:	                    /* Validation has failed, so block the button events so that
+ 2395:	                    * the timeout timer will not be started in the RX button handler
+ 2396:	                    * */
+ 2397:	                    fl_return = POPUP_BTN_BLOCK;
+ 2398:	                }
+ 2399:	                else
+ 2400:	                {
+ 2401:	                    fl_timeout_U16 = lc_popup_config_table[p_popup_id].layer_timeout;
+ 2402:	                }
+ 2403:	              }
+ 2404:	              /***************************************************************************
+ 2405:	              ** The timeout value should be defined if the validation handler is NULL. **
+ 2406:	              ** If the timeout value is not defined it would take the default value,   **
+ 2407:	              ** which is 0, so the popup would timeout immediately. Hence set the      **
+ 2408:	              ** timeout value to the timeout value of the popup.                       **
+ 2409:	              ***************************************************************************/
+ 2410:	              else
+ 2411:	              {
+ 2412:	                fl_timeout_U16 = lc_popup_config_table[p_popup_id].layer_timeout;
+ 2413:	              }
+ 2414:	            }
+ 2415:	            else
+ 2416:	            {
+ 2417:	              fl_timeout_U16 = p_keypad-&gt;l_multi_press_timeout;
+ 2418:	            }
+ 2419:	
+ 2420:	            if ((lc_popup_config_table[p_popup_id].layer_timeout != 0)||(p_keypad-&gt;l_multi_press_timeout!=0))
+ 2421:	            {
+ 2422:	              HMI_POPUP_START_TIMER((TIMER_ID_TYPE)lc_popup_config_table[p_popup_id].timerid,fl_timeout_U16, ((UINT16)(HMI_TMR_TIME_OUT_TYPE &lt;&lt; 8) | (UINT16)p_popup_id));
+ 2423:	            }
+ 2424:	          } /* Check for Max Char Length */
+ 2425:	          else
+ 2426:	          {
+ 2427:	            /* Absorb the button. Make sure that timers are not started  */
+ 2428:	            fl_return = POPUP_BTN_BLOCK;
+ 2429:	          }
+ 2430:	        } /* Check for valid Button Press */
+ 2431:	
+ 2432:	        fl_keypad_evt++;
+ 2433:	      }
+ 2434:	    }
+ 2435:	  }
+ 2436:	  *(p_keypad-&gt;l_curr_multi_press_btn) = p_btn_id;;
+ 2437:	  return (fl_return);
+ 2438:	}
+ 2439:	
+ 2440:	/*============================================================================
+ 2441:	** Function Name    : hmi_popup_core_inc_keypadmultitimer_counter
+ 2442:	** Visibility       : Local, Interface to the Popup Core
+ 2443:	** Description      : This Function returns the status of keypad pp multi 
+ 2444:	**                    pres inc status
+ 2445:	** Invocation       : Invoked by the Popup Core
+ 2446:	** Inputs/Outputs   : 
+ 2447:	**                    p_popup_id - Popup ID
+ 2448:	**                    Output: Status of the  keypad pp multi timer inc status
+ 2449:	** Critical Section : No
+ 2450:	** Created          : 15 OCT, 2012 NKRISHN9
+ 2451:	** Updated          : 15 OCT, 2012 NKRISHN9
+ 2452:	**==========================================================================*/
+ 2453:	static BOOLEAN hmi_popup_core_inc_keypadmultitimer_counter(POPUP_ID p_popup_id)
+ 2454:	{
+</PRE>
+<A NAME="ERR_LINE_2455"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2455:	  BOOLEAN r_ret_status=FALSE;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_popup_core.c(2455) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 2456:	  POPUP_KEYPADENTRY_TYPE  const *fl_keypad_pp;
+ 2457:	  fl_keypad_pp= KEYPAD_PP_TBL_PTR(p_popup_id);
+ 2458:	
+ 2459:	  /*if the layer timeout is zero, then the popup is not an time out one
+ 2460:	    The time count will keep on increase  
+ 2461:	    Layer timer x multipress 0 close the popup here. since, already layer time is complete 
+ 2462:	    Layer timer 0 multipress x Popup should not close on timer expires 
+ 2463:	    Layer timer 0 multipress 0 The popup timer is filtered at start timer itself */
+ 2464:	
+ 2465:	  if(((KEYPAD_PP_MULTIPRESS_TIMEOUT(p_popup_id)==0)&amp;&amp;
+ 2466:	     (lc_popup_config_table[p_popup_id].layer_timeout!=0))||
+ 2467:	     (((*(fl_keypad_pp-&gt;l_multi_timer_counter))&gt;=(KEYPAD_PP_MAXTIMECOUNT(p_popup_id)))&amp;&amp;
+ 2468:	     (lc_popup_config_table[p_popup_id].layer_timeout!=0)))
+ 2469:	  {
+ 2470:	    r_ret_status=FALSE;
+ 2471:	    *(fl_keypad_pp-&gt;l_multi_timer_counter)=0;
+ 2472:	  }
+ 2473:	  else
+ 2474:	  {
+ 2475:	    *(fl_keypad_pp-&gt;l_curr_multi_press_btn)=0;
+ 2476:	    *(fl_keypad_pp-&gt;l_multi_press_counter)=0;
+ 2477:	    (*(fl_keypad_pp-&gt;l_multi_timer_counter))++;
+ 2478:	    hmi_popup_core_start_popup_timer(p_popup_id);
+ 2479:	    r_ret_status=TRUE;
+ 2480:	  }
+ 2481:	  return(r_ret_status);
+ 2482:	}
+ 2483:	/*============================================================================
+ 2484:	** Function Name    : hmi_popup_core_search_button_event
+ 2485:	** Visibility       : Local, Interface to the Popup Core
+ 2486:	** Description      : find if any popup btn event is matching
+ 2487:	** Invocation       : Invoked by the Popup Core
+ 2488:	** Inputs/Outputs   : 
+ 2489:	**                    PP_BTN_EVENT_TYPE - p_btn_ev_ptr, button event
+ 2490:	**                    Output: true or false ( match found or not )
+ 2491:	** Critical Section : No
+ 2492:	** Created          : 12 MAR, 2013 NKRISHN9
+ 2493:	** Updated          : 12 MAR, 2013 NKRISHN9
+ 2494:	**==========================================================================*/
+ 2495:	static BOOLEAN hmi_popup_core_search_button_event(PP_BTN_EVENT_TYPE const *p_btn_ev_ptr, UINT16 p_btn_event)
+ 2496:	{
+ 2497:	  UINT8 temp_btn_count;
+ 2498:	  BOOLEAN return_status;
+ 2499:	
+ 2500:	  temp_btn_count=p_btn_ev_ptr-&gt;l_btn_count_U8;
+ 2501:	  return_status=FALSE;
+ 2502:	
+ 2503:	  while(temp_btn_count&gt;0)
+ 2504:	  {
+ 2505:	    if(p_btn_ev_ptr-&gt;l_btn_keypad_evt_U16[temp_btn_count-1]==p_btn_event)
+ 2506:	    {
+ 2507:	      return_status=TRUE;
+ 2508:	    }
+ 2509:	    temp_btn_count--;
+ 2510:	  }
+ 2511:	  return(return_status);
+ 2512:	}
+ 2513:	#endif
+ 2514:	
+ 2515:	/*============================================================================
+ 2516:	** Function Name    : hmi_popup_core_disable_timer_status
+ 2517:	** Visibility       : Local, Interface to the Popup Core
+ 2518:	** Description      : Disable the timer status
+ 2519:	** Invocation       : Invoked by the Popup Core
+ 2520:	** Inputs/Outputs   : disable timer status
+ 2521:	**                    
+ 2522:	**                    
+ 2523:	** Critical Section : No
+ 2524:	** Created          : 12 MAR, 2013 NKRISHN9
+ 2525:	** Updated          : 12 MAR, 2013 NKRISHN9
+ 2526:	**==========================================================================*/
+ 2527:	static void hmi_popup_core_disable_timer_status(POPUP_ID_T p_popup_id)
+ 2528:	{
+ 2529:	  DISABLE_TIMER_STATUS(p_popup_id);
+ 2530:	}
+ 2531:	/*============================================================================
+ 2532:	** Function Name    : hmi_popup_core_clear_min_deact_pndng
+ 2533:	** Visibility       : Local, Interface to the Popup Core
+ 2534:	** Description      : Deactivate min timer pending
+ 2535:	** Invocation       : Invoked by the Popup Core
+ 2536:	** Inputs/Outputs   : disable timer status
+ 2537:	**                    
+ 2538:	**                    
+ 2539:	** Critical Section : No
+ 2540:	** Created          : 12 MAR, 2013 NKRISHN9
+ 2541:	** Updated          : 12 MAR, 2013 NKRISHN9
+ 2542:	**==========================================================================*/
+ 2543:	static void hmi_popup_core_clear_min_deact_pndng(POPUP_ID_T p_popup_id)
+ 2544:	{
+ 2545:	  CLEAR_MIN_TIMER_DEACTIVATE_PENDING(p_popup_id);
+ 2546:	}
+ 2547:	
+ 2548:	
+ 2549:	/*============================================================================
+ 2550:	**
+ 2551:	**============================================================================
+ 2552:	** Core    R E V I S I O N    N O T E S
+ 2553:	**============================================================================
+ 2554:	**
+ 2555:	** For each change to this file, be sure to record:
+ 2556:	** 1.  Who made the change and when the change was made.
+ 2557:	** 2.  Why the change was made and the intended result.
+ 2558:	**
+ 2559:	** Core Rev #                Date         By
+ 2560:	** Core Rev X.X             dd-mon-yy     CDSID
+ 2561:	**==========================================================================
+ 2562:	** CMS Rev 1.26            26-Aug-16   adevi
+ 2563:	** RTC 681202 - CGEA Popup issue while same popup is retriggered when it gets timed out.
+ 2564:	**
+ 2565:	** CMS Rev 1.25            03-Jun-16   vgajji
+ 2566:	** RTC 594029 - Coverity warning fix for TURING
+ 2567:	**
+ 2568:	** CMS Rev 1.24            10-Oct-15   aperumal
+ 2569:	** RTC 441519 - Coverity warning fix for Hyundai AE
+ 2570:	**
+ 2571:	** CMS Rev 1.23            9-Jul-15   adevi
+ 2572:	** RTC 374473 - QAC 8.1.2 fixes.  Ref program HONDA THAA
+ 2573:	**==========================================================================
+ 2574:	** CMS Rev 1.22            28-May-15   kkubendi
+ 2575:	** PR Comments 81896 - Removed macro POPUP_APP_DEFINED_ANIM_FUNCTION_ENABLED
+ 2576:	**==========================================================================
+ 2577:	** CMS Rev 1.21            24-Mar-15   kkubendi
+ 2578:	** RTC ID:302209 - Introduced macros POPUP_APP_DEFINED_ANIM_FUNCTION_ENABLED
+ 2579:	**              and POPUP_APP_DEFINED_ANIM_FUNCTION.
+ 2580:	**==========================================================================
+ 2581:	** CMS Rev 1.20            18-Feb-15   adevi
+ 2582:	** RTC 291139 - The minimum timeout timer for a given popup was not getting 
+ 2583:	** started when layer timeout is configured as 0.In hmi_popup_core_focus_handler
+ 2584:	** IS_TIMER_STATUS_ENABLE check is done only for layer timeout.  Min timeout
+ 2585:	** the is started without checking the timer status.  
+ 2586:	**==========================================================================
+ 2587:	** CMS Rev 1.19            6-Feb-15   arajase2
+ 2588:	** Fixed QAC 8.1.2 Warnings.
+ 2589:	** 
+ 2590:	**===========================================================================
+ 2591:	
+ 2592:	**==========================================================================
+ 2593:	** CMS Rev 1.18            2-Feb-15   adevi
+ 2594:	** Compilation error resolved in hmi_popup_core_activate function. 
+ 2595:	**===========================================================================
+ 2596:	
+ 2597:	**==========================================================================
+ 2598:	** CMS Rev 1.17            15-Dec-14   adevi
+ 2599:	** Few Compiler warnings resolved by adding check LSH_ANIMATION_SUPPORT_ENABLED.
+ 2600:	**===========================================================================
+ 2601:	
+ 2602:	**==========================================================================
+ 2603:	** CMS Rev 1.16            01-Sep-14   adevi
+ 2604:	** Few Compiler warnings resolved.
+ 2605:	**===========================================================================
+ 2606:	
+ 2607:	**==========================================================================
+ 2608:	** CMS Rev 1.15            10-Apr-14   adevi
+ 2609:	** Removed hmi_app_popup_focus_st_update_handler function invocation since
+ 2610:	** this will be handled in view manager.  Progress bar timer restarted for 
+ 2611:	** no time out progress type pop up.
+ 2612:	**===========================================================================
+ 2613:	
+ 2614:	**==========================================================================
+ 2615:	** CMS Rev 1.14            08-Apr-14   adevi
+ 2616:	** Line fl_return_U8 value assigned to zero removed.
+ 2617:	** Above change done in hmi_popup_core_deactivate_popup function.
+ 2618:	**===========================================================================
+ 2619:	
+ 2620:	**==========================================================================
+ 2621:	** CMS Rev 1.13            02-Apr-14   adevi
+ 2622:	** Review comments for Bug ID 95 fixed. Ref PR Id 74658.
+ 2623:	** hmi_popup_core_execute_presentation function removed.
+ 2624:	**===========================================================================
+ 2625:	
+ 2626:	**==========================================================================
+ 2627:	** CMS Rev 1.12            02-Apr-14   adevi
+ 2628:	** Bug ID 178 fixed. hmi_lsh_remap_button_events_ext invoked instead of
+ 2629:	** hmi_lsh_remap_button_events function call.  Client Id is passed.
+ 2630:	**===========================================================================
+ 2631:	
+ 2632:	**==========================================================================
+ 2633:	** CMS Rev 1.11            31-Mar-14   adevi
+ 2634:	** Bug ID 164 review comments fixed.  PR Id 74821.  Layer ID alone passed in
+ 2635:	** POPUP_LSH_ADD_STATE_EXT and POPUP_LSH_REM_STATE_EXT.
+ 2636:	**===========================================================================
+ 2637:	
+ 2638:	**==========================================================================
+ 2639:	** CMS Rev 1.10            28-Mar-14   adevi
+ 2640:	** Bug ID 164 fixed. Renamed LSH_ADD_STATE_EXT to POPUP_LSH_ADD_STATE_EXT.
+ 2641:	** POPUP_LSH_ADD_STATE_EXT will be defined in dat file.  If application
+ 2642:	** handler is configured then application handler will be invoked else
+ 2643:	** LSH_ADD_STATE_EXT will be invoked.
+ 2644:	**===========================================================================
+ 2645:	
+ 2646:	**==========================================================================
+ 2647:	** CMS Rev 1.9            25-Mar-14   adevi
+ 2648:	** Bug ID 44 fixed. Removed l_prev_active_popup_id array.
+ 2649:	** hmi_popup_core_presentation_handler modified to invoke presentation directly.
+ 2650:	**===========================================================================
+ 2651:	
+ 2652:	**==========================================================================
+ 2653:	** CMS Rev 1.8            12-Mar-14   adevi
+ 2654:	** Peer review comments of ID 74049 fixed. Replaced switch with if statements.
+ 2655:	**===========================================================================
+ 2656:	
+ 2657:	**===========================================================================
+ 2658:	** CMS Rev 1.7            08-Jan-14   adevi
+ 2659:	** Introduced three compiler switches POPUP_TYPE_KEYPAD, POPUP_TYPE_PROGRESSBAR
+ 2660:	** and POPUP_TYPE_ACK to isolate the code based on the pop up types configured.
+ 2661:	**===========================================================================
+ 2662:	
+ 2663:	**===========================================================================
+ 2664:	** CMS Rev 1.6            16-Oct-13    ksindhuj
+ 2665:	** RTC 83857 focus status update interface added in 
+ 2666:	** hmi_popup_core_focus_handler 
+ 2667:	**==========================================================================
+ 2668:	
+ 2669:	**===========================================================================
+ 2670:	** CMS Rev 1.5    31-Jul-13    nkrishn9
+ 2671:	   CR: close all popup support
+ 2672:	       Anim mask handling in button commands
+ 2673:	       Minimum timer expire event
+ 2674:	**===========================================================================
+ 2675:	
+ 2676:	**===========================================================================
+ 2677:	** CMS Rev 1.4    26-Jun-13    nkrishn9
+ 2678:	** DF: Peer review comments
+ 2679:	       Unit testing defect
+ 2680:	   CR: View manager interface changed to macro
+ 2681:	       Animation id is independent of animation core
+ 2682:	       Progress bar set interface
+ 2683:	       LSH_ACTION is supported in rx_handler
+ 2684:	**===========================================================================
+ 2685:	
+ 2686:	**===========================================================================
+ 2687:	** CMS Rev 1.3      12-Jun-13     VMUTHUSU
+ 2688:	** IGDT Migration activities
+ 2689:	** Remove
+ 2690:	**  ==&gt; hmi_animation01_core.h file inclusion
+ 2691:	**===========================================================================
+ 2692:	
+ 2693:	**===========================================================================
+ 2694:	** CMS Rev 1.2      28-May-13    nkrishn9
+ 2695:	** CR: Whenever progress bar count is increased, the popup core will send an
+ 2696:	       event through the popup event handler with event as follows
+ 2697:	       POPUP_PROGRESS_BAR_INC_EVT
+ 2698:	       Unit testing defect fix
+ 2699:	**===========================================================================
+ 2700:	
+ 2701:	**===========================================================================
+ 2702:	** CMS Rev 1.1      14-Mar-13    nkrishn9
+ 2703:	** Support keypad events and qac fix
+ 2704:	**===========================================================================
+ 2705:	
+ 2706:	**===========================================================================
+ 2707:	** CMS Rev 1.0      21-Dec-12    nkrishn9
+ 2708:	** Support of all the popups like ack, keypad, progress and info
+ 2709:	** along with audio requirements with group priority.
+ 2710:	**===========================================================================
+ 2711:	
+ 2712:	**===========================================================================
+ 2713:	** CMS Rev initial      15-Jun-11    nkrishn9
+ 2714:	** Initial version of popup core o2
+ 2715:	**
+ 2716:	**==========================================================================*/
+ 2717:	/* end of file =============================================================*/
+ 2718:	
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_popup_core.c (2718 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0052             14
+     6           0.0015              4
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0066             18
+</PRE>
+
+</BODY></HTML>

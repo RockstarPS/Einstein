@@ -1,0 +1,2361 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_gfx_anim_engine.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2011. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_gfx_mgr02.c
+   20:	**
+   21:	** Description:    Main graphics manager 02 logic implementation module
+   22:	**                 Manages the display building operations.
+   23:	**
+   24:	** Organization:   Driver Information Software Section,
+   25:	**                 Visteon
+   26:	**
+   27:	**============================================================================
+   28:	**
+   29:	**==========================================================================*/
+   30:	#define HMI_GFX_ANIM_ENGINE_C
+   31:	
+   32:	/*============================================================================
+   33:	** I N C L U D E   F I L E S
+   34:	**==========================================================================*/
+   35:	#include "hmi_gfx_anim_engine.h"
+   36:	#include "hmi_gfx_anim_engine.cfg"
+   37:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+   38:	#include &lt;math.h&gt;
+   39:	#endif
+   40:	#ifdef GFX_ANIM_DEBUG
+   41:	#include &lt;stdio.h&gt;
+   42:	#endif
+   43:	#include "string.h"
+   44:	
+   45:	#ifdef  __cplusplus
+   46:	extern "C" {
+   47:	#endif
+   48:	
+   49:	/*============================================================================
+   50:	** I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S
+   51:	**==========================================================================*/
+   52:	
+   53:	#define GFX_ANIM_ARGB(a, r, g, b)     ((((UINT32)(a))&lt;&lt;24) | (((UINT32)(r))&lt;&lt;16) | (((UINT32)(g))&lt;&lt;8) | ((UINT32)(b)))
+   54:	#define GFX_ANIM_SCLAMP(val, min, max) (((val)&gt;(max))?(max):(((val)&lt;(min))?(min):(val)))
+   55:	#define GFX_ANIM_UCLAMP(val, max)      (((val)&gt;(max))?(max):(val))
+   56:	
+   57:	#define GFX_ANIM_DIR_FORWARD   ((UINT32)0)
+   58:	#define GFX_ANIM_DIR_BACKWORD  ((UINT32)1)
+   59:	
+   60:	#define GFX_ANIM_MAX_U8 0xFF
+   61:	#ifndef UNUSED_VAR 
+   62:	#define UNUSED_VAR(X)  do { if((UINT32)0 == (X)){} } while(0) 
+   63:	#endif
+   64:	
+   65:	#if defined(GFX_NUM_SINE_UP_ANIMATIONS) || defined(GFX_NUM_SINE_DOWN_ANIMATIONS) || defined(GFX_NUM_LOG_UP_ANIMATIONS) || defined(GFX_NUM_LOG_DOWN_ANIMATIONS)
+   66:	#define GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES 19u
+   67:	#endif
+   68:	#if defined(GFX_NUM_SINE_UPDOWN_ANIMATIONS) || defined(GFX_NUM_SINE_DOWNUP_ANIMATIONS) || defined(GFX_NUM_LOG_UPDOWN_ANIMATIONS) || defined(GFX_NUM_LOG_DOWNUP_ANIMATIONS)
+   69:	#define GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES 37u
+   70:	#endif 
+</PRE>
+<A NAME="ERR_LINE_71"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   71:	#define GFX_ANIM_TABLE_SCALE_FACTOR(X)  ((UINT32)(((UINT32)10000)/((UINT32)X)))
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3410.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(71) ++ WARNING ++: &lt;=7=(3410) Macro parameter not enclosed in ().</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_72"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   72:	typedef struct
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0635.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(72) ++ WARNING ++: &lt;=7=(0635) [E] Bit-fields in this struct/union have been declared with types other than int, signed int or unsigned int.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   73:	{
+   74:	   GFX_UINT  dir        :1;
+   75:	   GFX_UINT  start      :1;
+   76:	   GFX_UINT  end_reached:1;
+   77:	   GFX_UINT  state      :2;
+   78:	#if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+   79:	   /* 
+   80:	   ** This puts a limitation that there can be a maximum of 127
+   81:	   ** frames only when a goto is used inside an animation
+   82:	   */
+   83:	   SINT8  goto_frame_cnt; 
+   84:	#endif
+   85:	}GFX_ANIM_FLAGS_T;
+   86:	
+   87:	typedef struct
+   88:	{
+   89:	   UINT32                       anim_id;
+   90:	   UINT32                       end_reached; 
+   91:	   GFX_ANIM_DEF_T const       * def_sp;
+   92:	   GFX_ANIM_FRAME_DEF_T const * frames_sp;
+   93:	   GFX_ANIM_TYPES_DEF_T const * types_sp;
+   94:	   UINT32                       timer_U32;
+   95:	   UINT32                       prev_elap_time_U32;
+   96:	}GFX_ANIM_CONTROL_T;
+   97:	
+   98:	typedef void (* GFX_ANIM_HANDLER_CB)(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);
+   99:	
+  100:	/*============================================================================
+  101:	** I N T E R N A L   F U N C T I O N   P R O T O T Y P E S
+  102:	**==========================================================================*/
+  103:	
+  104:	#if GFX_NUM_ANIMATIONS &gt; 0
+  105:	static UINT32 hmi_gfx_anim_engine_run(GFX_ANIM_CONTROL_T * p_anim_ctrl_SP);
+  106:	static void   hmi_gfx_anim_engine_stop(UINT32 p_anim_id);
+  107:	#if defined GFX_NUM_LINEAR_ANIMATIONS
+  108:	static UINT32 hmi_gfx_anim_engine_linear_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  109:	#endif
+  110:	#if defined GFX_NUM_SINE_UP_ANIMATIONS
+  111:	static UINT32 hmi_gfx_anim_engine_sine_up_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  112:	#endif
+  113:	#if defined GFX_NUM_SINE_DOWN_ANIMATIONS
+  114:	static UINT32 hmi_gfx_anim_engine_sine_down_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  115:	#endif
+  116:	#if defined GFX_NUM_SINE_UPDOWN_ANIMATIONS
+  117:	static UINT32 hmi_gfx_anim_engine_sine_updown_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  118:	#endif
+  119:	#if defined GFX_NUM_SINE_DOWNUP_ANIMATIONS
+  120:	static UINT32 hmi_gfx_anim_engine_sine_downup_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  121:	#endif
+  122:	#if defined GFX_NUM_LOG_UP_ANIMATIONS
+  123:	static UINT32 hmi_gfx_anim_engine_log_up_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  124:	#endif
+  125:	#if defined GFX_NUM_LOG_DOWN_ANIMATIONS
+  126:	static UINT32 hmi_gfx_anim_engine_log_down_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  127:	#endif
+  128:	#if defined GFX_NUM_LOG_UPDOWN_ANIMATIONS
+  129:	static UINT32 hmi_gfx_anim_engine_log_updown_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  130:	#endif
+  131:	#if defined GFX_NUM_LOG_DOWNUP_ANIMATIONS 
+  132:	static UINT32 hmi_gfx_anim_engine_log_downup_interpolate(UINT32 p_cur_step, UINT32 p_max_step);
+  133:	#endif
+  134:	#if defined GFX_NON_LINEAR_INTERPOLATIONS
+  135:	static UINT32 hmi_gfx_anim_engine_table_interpolate(UINT16 const * p_table_U16AP, 
+  136:	                                                    UINT32         p_table_max_index, 
+  137:	                                                    UINT32         p_table_scale_factor, 
+  138:	                                                    UINT32         p_percentage_in);
+  139:	#endif
+  140:	#if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+  141:	static void hmi_gfx_anim_engine_set_frame(GFX_ANIM_CONTROL_T const * p_anim_ctrl_SP, UINT32 p_frame);
+  142:	#endif
+  143:	static void hmi_gfx_anim_engine_next_frame(GFX_ANIM_CONTROL_T const * p_anim_ctrl_SP);
+  144:	
+  145:	static SINT32 hmi_gfx_anim_engine_find_idelta(SINT32 p_start_val, SINT32 p_end_val, UINT32 p_percentage);
+  146:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+  147:	static GFX_FLOAT  hmi_gfx_anim_engine_find_fdelta(GFX_FLOAT p_start_val, GFX_FLOAT p_end_val, UINT32 p_percentage);
+  148:	#endif
+  149:	static void hmi_gfx_anim_engine_alpha(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);   
+  150:	static void hmi_gfx_anim_engine_area(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);    
+  151:	static void hmi_gfx_anim_engine_wd_ht(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);   
+  152:	static void hmi_gfx_anim_engine_color(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);   
+  153:	static void hmi_gfx_anim_engine_data(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);    
+  154:	static void hmi_gfx_anim_engine_mal(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);     
+  155:	static void hmi_gfx_anim_engine_map(GFX_ANIM_TYPES_DEF_T  const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);     
+  156:	static void hmi_gfx_anim_engine_screen(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);  
+  157:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+  158:	static void hmi_gfx_anim_engine_rotate(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);  
+  159:	static void hmi_gfx_anim_engine_scale(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);   
+  160:	static void hmi_gfx_anim_engine_transform(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per);
+  161:	#endif
+  162:	#ifdef GFX_DYN_DATA_ANIMATIONS
+  163:	static UINT32 hmi_gfx_anim_engine_calculate_dduration(GFX_ANIM_CONTROL_T * p_anim_ctrl_SP, UINT32 p_anim_duration);
+  164:	#endif
+  165:	#endif /* #if GFX_NUM_ANIMATIONS &gt; 0 */
+  166:	
+  167:	/*============================================================================
+  168:	** M E M O R Y   A L L O C A T I O N
+  169:	**==========================================================================*/
+  170:	
+  171:	#if GFX_NUM_ANIMATIONS &gt; 0
+  172:	#include "hmi_gfx_anim_engine_data.rom"
+  173:	
+  174:	static UINT32 l_anim_timer_cur_U32;
+  175:	static UINT32 l_anim_timer_pre_U32;
+  176:	
+  177:	static UINT32           l_current_anim_id_U32 = GFX_NUM_ANIMATIONS;
+  178:	static UINT32           l_anim_time_elapsed_U32A[GFX_NUM_ANIMATIONS];
+  179:	static UINT16           l_anim_client_id_U16A[GFX_NUM_ANIMATIONS];
+  180:	static UINT8            l_anim_frame_U8A[GFX_NUM_ANIMATIONS];
+  181:	static GFX_ANIM_FLAGS_T l_anim_flags_SA[GFX_NUM_ANIMATIONS];
+  182:	#if defined(GFX_ANIM_DLAYOUT_ENABLED)
+  183:	static UINT8 l_selected_anim_layout_U8;
+  184:	#endif
+  185:	
+  186:	static GFX_ANIM_HANDLER_CB const lc_anim_handler_FPA[ANIM_NUM_TYPES] = 
+  187:	{
+  188:	   hmi_gfx_anim_engine_alpha,     /* ANIM_TYPE_ALPHA     */
+  189:	   hmi_gfx_anim_engine_area,      /* ANIM_TYPE_AREA      */
+  190:	   hmi_gfx_anim_engine_wd_ht,     /* ANIM_TYPE_WD_HT     */
+  191:	   hmi_gfx_anim_engine_color,     /* ANIM_TYPE_COLOR     */
+  192:	   hmi_gfx_anim_engine_data,      /* ANIM_TYPE_DATA      */
+  193:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_GO_TO     */
+  194:	   hmi_gfx_anim_engine_mal,       /* ANIM_TYPE_MAL       */
+  195:	   hmi_gfx_anim_engine_map,       /* ANIM_TYPE_MAP       */
+  196:	   hmi_gfx_anim_engine_screen,    /* ANIM_TYPE_SCREEN    */
+  197:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_SCROLL_UP */
+  198:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_SCROLL_DN */
+  199:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+  200:	   hmi_gfx_anim_engine_rotate,    /* ANIM_TYPE_ROTATE    */
+  201:	   hmi_gfx_anim_engine_scale,     /* ANIM_TYPE_SCALE     */
+  202:	   hmi_gfx_anim_engine_transform  /* ANIM_TYPE_TRANSFORM */
+  203:	#else
+  204:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_ROTATE    */
+  205:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_SCALE     */
+  206:	   GFX_ANIM_NULL_HANDLER,         /* ANIM_TYPE_TRANSFORM */
+  207:	#endif
+  208:	};
+  209:	#define GFX_ANIM_HANDLER_TABLE_ENTRIES ((UINT8)(sizeof(lc_anim_handler_FPA)/sizeof(GFX_ANIM_HANDLER_CB)))
+  210:	
+  211:	#if defined GFX_NUM_SINE_UP_ANIMATIONS
+  212:	static UINT16 const lc_anim_sineup_table[GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES]   = {0,87,173,258,342,422,500,573,642,707,766,819,866,906,939,965,984,996,1000};
+  213:	#endif
+  214:	#if defined GFX_NUM_SINE_DOWN_ANIMATIONS
+  215:	static UINT16 const lc_anim_sinedn_table[GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES]   = {0, 4, 16, 35, 61, 94,134,181,234,293,358,427,500,578,658,742,827,913,1000};
+  216:	#endif
+  217:	#if defined GFX_NUM_SINE_UPDOWN_ANIMATIONS
+  218:	static UINT16 const lc_anim_sineupdn_table[GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES] = {0,43, 86,129,171,211,250,286,321,353,383,409,433,453,469,482,492,498, 500,502,508,517,530,547,567,590,617,646,679,713,750,789,829,871,913,956,1000};
+  219:	#endif
+  220:	#if defined GFX_NUM_SINE_DOWNUP_ANIMATIONS
+  221:	static UINT16 const lc_anim_sinednup_table[GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES] = {0, 2,  8, 17, 30, 47, 67, 90,117,146,179,213,250,289,329,371,413,456, 500,543,586,629,671,711,750,786,821,853,883,909,933,953,969,982,992,998,1000};
+  222:	#endif
+  223:	#if defined GFX_NUM_LOG_UP_ANIMATIONS
+  224:	static UINT16 const lc_anim_logup_table[GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES]    = {0,23,46,71,97,125,155,188,222,260,302,347,398,456,523,603,699,824,1000};
+  225:	#endif
+  226:	#if defined GFX_NUM_LOG_DOWN_ANIMATIONS
+  227:	static UINT16 const lc_anim_logdn_table[GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES]    = {0,176,301,397,477,544,602,653,698,740,778,812,845,875,903,929,954,977,1000};
+  228:	#endif
+  229:	#if defined GFX_NUM_LOG_UPDOWN_ANIMATIONS
+  230:	static UINT16 const lc_anim_logupdn_table[GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES]  = {0,11,23,35,48,62,77,94,111,130,151,173,199,228,261,301,349,412,500,588,650,698,738,772,801,826,849,870,889,906,922,937,951,964,977,988,1000};
+  231:	#endif
+  232:	#if defined GFX_NUM_LOG_DOWNUP_ANIMATIONS 
+  233:	static UINT16 const lc_anim_logdnup_table[GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES]  = {0,88,150,198,238,272,301,326,349,370,389,406,422,437,451,464,477,488,500,511,523,535,548,562,577,594,611,630,651,673,699,728,761,801,849,912,1000};
+  234:	#endif
+  235:	#endif /* #if GFX_NUM_ANIMATIONS &gt; 0 */
+  236:	
+  237:	/*============================================================================
+  238:	** E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S
+  239:	**==========================================================================*/
+  240:	
+  241:	#if GFX_NUM_ANIMATIONS &gt; 0
+  242:	/*============================================================================
+  243:	** Function Name:    hmi_gfx_anim_engine_init
+  244:	** Visibility:       global
+  245:	** Description:      initializes the anim engine. 
+  246:	** Invocation:       By apps
+  247:	** Inputs/Outputs:   Set all animations to stopped. Sets anim timer to 0
+  248:	** Critical Section: None.
+  249:	** Created:          27-Nov-2012 by EMANOJ1
+  250:	** Updated:          27-Nov-2012 by EMANOJ1
+  251:	**==========================================================================*/
+  252:	void hmi_gfx_anim_engine_init(void)
+  253:	{
+  254:	   (void)memset(&amp;l_anim_time_elapsed_U32A[0],    0, sizeof(l_anim_time_elapsed_U32A));
+  255:	   (void)memset(&amp;l_anim_flags_SA[0],             0, sizeof(l_anim_flags_SA));
+  256:	   (void)memset(&amp;l_anim_client_id_U16A[0],       0, sizeof(l_anim_client_id_U16A));
+  257:	   (void)memset(&amp;l_anim_frame_U8A[0],            0, sizeof(l_anim_frame_U8A));
+  258:	   l_anim_timer_cur_U32 = (UINT32)0;
+  259:	   l_anim_timer_pre_U32 = (UINT32)0;
+  260:	   l_current_anim_id_U32 = (UINT32)GFX_NUM_ANIMATIONS; 
+  261:	   #if defined(GFX_ANIM_DLAYOUT_ENABLED)
+  262:	    l_selected_anim_layout_U8=0;
+  263:	   #endif
+  264:	}
+  265:	
+  266:	/*============================================================================
+  267:	** Function Name:    hmi_gfx_anim_engine_tick
+  268:	** Visibility:       global
+  269:	** Description:      increments the anim timer. 
+  270:	** Invocation:       By apps from vsync ISR or by software timer at 
+  271:	**                   (GFX_BASE_ANIM_RATE_MSEC/GFX_BASE_ANIM_RATE_SCALE) mSec 
+  272:	**                   rate 
+  273:	** Inputs/Outputs:   increments the timer
+  274:	** Critical Section: None.
+  275:	** Created:          27-Nov-2012 by EMANOJ1
+  276:	** Updated:          27-Nov-2012 by EMANOJ1
+  277:	**==========================================================================*/
+  278:	void hmi_gfx_anim_engine_tick(void)
+  279:	{
+  280:	   l_anim_timer_cur_U32 += (UINT32)GFX_BASE_ANIM_RATE_MSEC;
+  281:	}
+  282:	
+  283:	/*============================================================================
+  284:	** Function Name:    hmi_gfx_anim_command
+  285:	** Visibility:       global
+  286:	** Description:      Issues a command to the animation engine to control the
+  287:	**                   animation
+  288:	** Invocation:       By Application
+  289:	** Inputs/Outputs:   In : Control paramters
+  290:	**                        p_client_id  - Client id to be associated with the anim
+  291:	**                        p_anim_id    - Animation Id
+  292:	**                        p_param_flag - Command flags. See header file for 
+  293:	**                                       detaled information.
+  294:	**                   Out : GFX_ANIM_STATE_FAULT - request is invalid and
+  295:	**                         therefor request ignored. Animation is not started
+  296:	**                         If the requested is accepted the cur state of the 
+  297:	**                         animation is returned. The current state can be 
+  298:	**                         GFX_ANIM_STATE_STOPPED - if stopped
+  299:	**                         GFX_ANIM_STATE_RUNNING - if running
+  300:	**                         GFX_ANIM_STATE_PAUSED  - if paused
+  301:	** Critical Section: None.
+  302:	** Created:          27-Nov-2012 by EMANOJ1
+  303:	** Updated:          27-Nov-2012 by EMANOJ1
+  304:	**==========================================================================*/
+  305:	UINT32 hmi_gfx_anim_command(UINT32 p_client_id, UINT32 p_anim_id, UINT32 p_param_flag)
+  306:	{
+  307:	   UINT32                     * fl_anim_telapsed_U32AP;
+  308:	   GFX_ANIM_FLAGS_T           * fl_anim_flags_SAP;
+  309:	   UINT16                     * fl_anim_client_id_U16AP;
+  310:	   UINT8                      * fl_anim_frame_U8AP;
+  311:	   GFX_ANIM_DEF_T       const * fl_anim_def_SP;
+  312:	   GFX_ANIM_FRAME_DEF_T const * fl_frames_SP;
+  313:	   UINT32                       fl_status = GFX_ANIM_STATE_FAULT;
+  314:	
+  315:	   if(p_anim_id &lt; (UINT32)GFX_NUM_ANIMATIONS)
+  316:	   {
+  317:	      fl_anim_telapsed_U32AP   = &amp;l_anim_time_elapsed_U32A[p_anim_id];
+  318:	      fl_anim_flags_SAP        = &amp;l_anim_flags_SA[p_anim_id];
+  319:	      fl_anim_client_id_U16AP  = &amp;l_anim_client_id_U16A[p_anim_id];
+  320:	      fl_anim_frame_U8AP       = &amp;l_anim_frame_U8A[p_anim_id];
+  321:	      fl_anim_def_SP           = &amp;lc_animation_table_S[p_anim_id];
+  322:	
+  323:	      if(fl_anim_def_SP-&gt;num_frames &gt; (UINT32)0)
+  324:	      {
+  325:	         if(fl_anim_flags_SAP-&gt;state == GFX_ANIM_STATE_RUNNING)
+  326:	         {
+  327:	            /*
+  328:	            ** Animation is already in running state.
+  329:	            ** So if Stop flag set =&gt; Stop animation
+  330:	            ** If pause flag set   =&gt; Pause animation
+  331:	            */
+  332:	            if((((UINT8)p_param_flag) &amp; GFX_ANIM_STOP) == GFX_ANIM_STOP)
+  333:	            {
+  334:	               fl_anim_flags_SAP-&gt;state = GFX_ANIM_STATE_STOPPED;
+  335:	               fl_anim_flags_SAP-&gt;dir   = GFX_ANIM_DIR_FORWARD;
+  336:	               *fl_anim_telapsed_U32AP  = (UINT32)0;
+  337:	               *fl_anim_frame_U8AP      = (UINT8)0;
+  338:	               if(fl_anim_def_SP-&gt;cb != GFX_ANIM02_NULL_PTR)
+  339:	               {
+  340:	                  /*
+  341:	                  ** Animation is getting stopped by application while its still
+  342:	                  ** running, so notify app handler if its configured with last 
+  343:	                  ** frame status
+  344:	                  */
+  345:	                  fl_anim_def_SP-&gt;cb(fl_anim_def_SP-&gt;num_frames, fl_anim_def_SP-&gt;num_frames);
+  346:	               }
+  347:	            }
+  348:	            else if((((UINT8)p_param_flag) &amp; GFX_ANIM_PAUSE) == GFX_ANIM_PAUSE)
+  349:	            {
+  350:	               fl_anim_flags_SAP-&gt;state = GFX_ANIM_STATE_PAUSED;
+  351:	            }
+  352:	            else
+  353:	            {
+  354:	            }
+  355:	         }
+  356:	         if((((UINT8)p_param_flag) &amp; GFX_ANIM_PLAY) == GFX_ANIM_PLAY)
+  357:	         {
+  358:	            if(fl_anim_flags_SAP-&gt;state == GFX_ANIM_STATE_STOPPED)
+  359:	            {
+  360:	               if(GFX_ANIM_IS_DIR_FWD(((UINT8)p_param_flag)))
+  361:	               {
+  362:	                  /*
+  363:	                  ** A stopped animation is started from the first
+  364:	                  ** frame for forward direction PLAY.
+  365:	                  */
+  366:	                  fl_anim_flags_SAP-&gt;dir    = GFX_ANIM_DIR_FORWARD;
+  367:	                  *fl_anim_frame_U8AP       = (UINT8)0;
+  368:	                  *fl_anim_telapsed_U32AP   = (UINT32)0;
+  369:	
+  370:	               }
+  371:	               else
+  372:	               {
+  373:	                  /*
+  374:	                  ** A stopped animation is started from the last
+  375:	                  ** frame for backward direction PLAY.
+  376:	                  ** For backward direction fl_anim_telapsed_U32AP
+  377:	                  ** represents the duration pending for the animation
+  378:	                  */
+  379:	                  fl_anim_flags_SAP-&gt;dir    = GFX_ANIM_DIR_BACKWORD;
+  380:	                  *fl_anim_frame_U8AP       = (UINT8)(fl_anim_def_SP-&gt;num_frames-((UINT32)1));
+  381:	                  fl_frames_SP = &amp;fl_anim_def_SP-&gt;frames[*fl_anim_frame_U8AP];
+  382:	                  *fl_anim_telapsed_U32AP   = fl_frames_SP-&gt;duration;
+  383:	               }
+  384:	               fl_anim_flags_SAP-&gt;state = GFX_ANIM_STATE_RUNNING;
+  385:	               fl_anim_flags_SAP-&gt;start = (UINT8)1;
+  386:	               *fl_anim_client_id_U16AP  = (UINT16)p_client_id;
+  387:	            #if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+  388:	               fl_anim_flags_SAP-&gt;goto_frame_cnt = (SINT8)(*fl_anim_frame_U8AP);
+  389:	            #endif
+  390:	            }
+  391:	            else if(fl_anim_flags_SAP-&gt;state == GFX_ANIM_STATE_PAUSED)
+  392:	            {
+  393:	               /*
+  394:	               ** Accept the run request for a paused animation only if the
+  395:	               ** lsh id matches with what is stored and what is given rightnow.
+  396:	               ** Also accept change of direction
+  397:	               */
+  398:	               if(*fl_anim_client_id_U16AP == (UINT16)p_client_id)
+  399:	               {
+  400:	                  fl_anim_flags_SAP-&gt;state = GFX_ANIM_STATE_RUNNING;
+  401:	                  if(GFX_ANIM_IS_DIR_FWD(p_param_flag))
+  402:	                  {
+  403:	                     fl_anim_flags_SAP-&gt;dir = GFX_ANIM_DIR_FORWARD;
+  404:	                  }
+  405:	                  else
+  406:	                  {
+  407:	                     fl_anim_flags_SAP-&gt;dir = GFX_ANIM_DIR_BACKWORD;
+  408:	                  }
+  409:	               }
+  410:	            }
+  411:	            else
+  412:	            {
+  413:	            }
+  414:	         }
+  415:	         fl_status = fl_anim_flags_SAP-&gt;state;
+  416:	      }
+  417:	   }
+  418:	   return(fl_status);
+  419:	}
+  420:	
+  421:	/*============================================================================
+  422:	** Function Name:    hmi_gfx_anim_engine
+  423:	** Visibility:       global
+  424:	** Description:      Performs execution of active animations
+  425:	** Invocation:       By GDG03  
+  426:	** Inputs/Outputs:   Derives animation commands and issues to GDG03
+  427:	** Critical Section: None.
+  428:	** Created:          27-Nov-2012 by EMANOJ1
+  429:	** Updated:          27-Nov-2012 by EMANOJ1
+  430:	**==========================================================================*/
+  431:	void hmi_gfx_anim_engine(void)
+  432:	{
+  433:	   UINT32             fl_end_frame;
+  434:	   UINT32             fl_cur_anim_id;
+  435:	   UINT32             fl_anim_timer_cur_U32 = l_anim_timer_cur_U32;
+  436:	   UINT32             fl_timer_delta_U32;
+  437:	   GFX_ANIM_CONTROL_T fl_anim_ctrl_S;
+  438:	   GFX_ANIM_FLAGS_T * fl_flags_SAP;
+  439:	   UINT32             fl_retry_count;
+  440:	
+  441:	   if(l_anim_timer_pre_U32 != fl_anim_timer_cur_U32)
+  442:	   {
+  443:	      fl_anim_ctrl_S.timer_U32 = (fl_anim_timer_cur_U32-l_anim_timer_pre_U32);
+  444:	      l_anim_timer_pre_U32     = fl_anim_timer_cur_U32;
+  445:	
+  446:	      for(fl_cur_anim_id = (UINT32)0; fl_cur_anim_id &lt; (UINT32)GFX_NUM_ANIMATIONS; fl_cur_anim_id++)
+  447:	      {
+  448:	         fl_retry_count = (UINT32)2;
+  449:	         fl_flags_SAP   = &amp;l_anim_flags_SA[fl_cur_anim_id];
+  450:	          
+  451:	         while((fl_flags_SAP-&gt;state == GFX_ANIM_STATE_RUNNING) &amp;&amp; (fl_retry_count &gt; (UINT32)0))
+  452:	         {
+  453:	            UINT32 fl_frame_U32 = (UINT32)(l_anim_frame_U8A[fl_cur_anim_id]);
+  454:	
+  455:	            fl_anim_ctrl_S.def_sp     = &amp;lc_animation_table_S[fl_cur_anim_id];
+  456:	            fl_anim_ctrl_S.frames_sp  = &amp;fl_anim_ctrl_S.def_sp-&gt;frames[fl_frame_U32];
+  457:	            fl_anim_ctrl_S.types_sp   = fl_anim_ctrl_S.frames_sp-&gt;types;
+  458:	            fl_anim_ctrl_S.anim_id    = fl_cur_anim_id;
+  459:	            fl_flags_SAP-&gt;end_reached = (UINT8)0;
+  460:	            l_current_anim_id_U32 = fl_anim_ctrl_S.anim_id;
+  461:	
+  462:	            if(fl_flags_SAP-&gt;start != (UINT32)0)
+  463:	            {
+  464:	               /*
+  465:	               ** If the start flag is set then force time as 0  to make sure
+  466:	               ** we execute the first step of the frame.
+  467:	               */
+  468:	               fl_timer_delta_U32  = (UINT32)0;
+  469:	               fl_flags_SAP-&gt;start = (UINT8)0;
+  470:	               if(fl_flags_SAP-&gt;dir == GFX_ANIM_DIR_BACKWORD)
+  471:	               {
+  472:	                  l_anim_time_elapsed_U32A[fl_cur_anim_id] = fl_anim_ctrl_S.frames_sp-&gt;duration;
+  473:	                  fl_end_frame = (UINT32)(fl_anim_ctrl_S.def_sp-&gt;num_frames-((UINT32)1));
+  474:	                  if(l_anim_frame_U8A[fl_cur_anim_id] == fl_end_frame)
+  475:	                  {
+  476:	                     HMI_GFX_ANIM_SET_CLIENT(l_anim_client_id_U16A[fl_cur_anim_id]);
+  477:	                     if(fl_anim_ctrl_S.def_sp-&gt;cb != GFX_ANIM02_NULL_PTR)
+  478:	                     {
+  479:	                        fl_anim_ctrl_S.def_sp-&gt;cb(fl_end_frame, fl_anim_ctrl_S.def_sp-&gt;num_frames);
+  480:	                     }
+  481:	                  }
+  482:	               }
+  483:	               else
+  484:	               {
+  485:	                  l_anim_time_elapsed_U32A[fl_cur_anim_id] = (UINT32)0;
+  486:	                  if(l_anim_frame_U8A[fl_cur_anim_id] == (UINT8)0)
+  487:	                  {
+  488:	                     HMI_GFX_ANIM_SET_CLIENT(l_anim_client_id_U16A[fl_cur_anim_id]);
+  489:	                     if(fl_anim_ctrl_S.def_sp-&gt;cb != GFX_ANIM02_NULL_PTR)
+  490:	                     {
+  491:	                        fl_anim_ctrl_S.def_sp-&gt;cb((UINT32)0, fl_anim_ctrl_S.def_sp-&gt;num_frames);
+  492:	                     }
+  493:	                  }
+  494:	               }
+  495:	            }
+  496:	            else
+  497:	            {
+  498:	               /*
+  499:	               ** Animation already started, so pass the actual timer
+  500:	               ** values.
+  501:	               */
+  502:	               fl_timer_delta_U32 = fl_anim_ctrl_S.timer_U32;
+  503:	            }
+  504:	
+  505:	            if(fl_frame_U32 &lt; (UINT32)(fl_anim_ctrl_S.def_sp-&gt;num_frames))
+  506:	            {
+  507:	               fl_anim_ctrl_S.prev_elap_time_U32 = l_anim_time_elapsed_U32A[fl_cur_anim_id];
+  508:	               if(fl_flags_SAP-&gt;dir == GFX_ANIM_DIR_BACKWORD)
+  509:	               {
+  510:	                  /*
+  511:	                  ** For backward direction the timer is counted downwards.
+  512:	                  */
+  513:	                  if(l_anim_time_elapsed_U32A[fl_cur_anim_id] &gt; fl_timer_delta_U32)
+  514:	                  {
+  515:	                     l_anim_time_elapsed_U32A[fl_cur_anim_id] -= fl_timer_delta_U32;
+  516:	                  }
+  517:	                  else
+  518:	                  {
+  519:	                     /*
+  520:	                     ** Reached the begining (End of backward animation)
+  521:	                     ** Clamp the elapsed time and set start bit to 1 so that the
+  522:	                     ** next frame starts from 0 time.
+  523:	                     */
+  524:	                     l_anim_time_elapsed_U32A[fl_cur_anim_id] = (UINT32)0;
+  525:	                     fl_flags_SAP-&gt;end_reached                = (UINT8)1;
+  526:	                  }
+  527:	               }
+  528:	               else
+  529:	               {
+  530:	                  /*
+  531:	                  ** For backward direction the timer is counted upwards.
+  532:	                  */
+  533:	                  l_anim_time_elapsed_U32A[fl_cur_anim_id] += fl_timer_delta_U32;
+  534:	                  if(l_anim_time_elapsed_U32A[fl_cur_anim_id] &gt; fl_anim_ctrl_S.frames_sp-&gt;duration)
+  535:	                  {
+  536:	                     /*
+  537:	                     ** Reached the End (End of forward animation)
+  538:	                     ** Clamp the elapsed time and set start bit to 1 so that the
+  539:	                     ** next frame starts from 0 time.
+  540:	                     */
+  541:	                     l_anim_time_elapsed_U32A[fl_cur_anim_id] = fl_anim_ctrl_S.frames_sp-&gt;duration;
+  542:	                     fl_flags_SAP-&gt;end_reached                = (UINT8)1;
+  543:	                  }
+  544:	               }
+  545:	               if(hmi_gfx_anim_engine_run(&amp;fl_anim_ctrl_S) == (UINT32)FALSE)
+  546:	               {
+  547:	                  /* 
+  548:	                  ** animation is not executed due to goto command, so give another try to run the
+  549:	                  ** animation (else there will be delay of one frame for the animation to run)
+  550:	                  */
+  551:	                  fl_retry_count--;
+  552:	               }
+  553:	               else
+  554:	               {
+  555:	                  fl_retry_count = (UINT32)0;
+  556:	               }
+  557:	            }
+  558:	            else
+  559:	            {
+  560:	               fl_retry_count = (UINT32)0;
+  561:	            }
+  562:	         }
+  563:	      }
+  564:	      for(fl_cur_anim_id = (UINT32)0; fl_cur_anim_id &lt; (UINT32)GFX_NUM_ANIMATIONS; fl_cur_anim_id++)
+  565:	      {
+  566:	         fl_flags_SAP = &amp;l_anim_flags_SA[fl_cur_anim_id];
+  567:	         if(fl_flags_SAP-&gt;state == GFX_ANIM_STATE_RUNNING)
+  568:	         {
+  569:	            if((((UINT32)l_anim_frame_U8A[fl_cur_anim_id]) &gt;= ((UINT32)lc_animation_table_S[fl_cur_anim_id].num_frames)) ||
+  570:	               (l_anim_frame_U8A[fl_cur_anim_id] == (UINT8)GFX_ANIM_MAX_U8))
+  571:	            {
+  572:	               /*
+  573:	               ** Frame number has gone ouside boundary.
+  574:	               ** Stop the animation as the configuration is invalid
+  575:	               ** or the animation has completed all frames.
+  576:	               */
+  577:	               hmi_gfx_anim_engine_stop(fl_cur_anim_id);
+  578:	            }
+  579:	         }
+  580:	      }
+  581:	   }
+  582:	}
+  583:	
+  584:	/*============================================================================
+  585:	** Function Name:    hmi_gfx_anim_engine_fwd
+  586:	** Visibility:       local
+  587:	** Description:      Performs execution of animation in forward direction
+  588:	** Invocation:       By hmi_gfx_anim_engine  
+  589:	** Inputs/Outputs:   Derives animation commands and issues to GDG03
+  590:	** Critical Section: None.
+  591:	** Created:          27-Nov-2012 by EMANOJ1
+  592:	** Updated:          27-Nov-2012 by EMANOJ1
+  593:	**==========================================================================*/
+  594:	static UINT32 hmi_gfx_anim_engine_run(GFX_ANIM_CONTROL_T * p_anim_ctrl_SP)
+  595:	{
+  596:	   UINT32 fl_animation_sts = (UINT32)TRUE;
+  597:	   UINT32 fl_anim_count;
+  598:	   UINT32 fl_stime_U32;
+  599:	   UINT32 fl_rate_U32;
+  600:	   UINT32 fl_max_step;
+  601:	   UINT32 fl_cur_step;
+  602:	   UINT32 fl_pre_step;
+  603:	   UINT32 fl_cur_anim_id = p_anim_ctrl_SP-&gt;anim_id; 
+  604:	   #if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+  605:	   GFX_ANIM_FLAGS_T * fl_anim_flags_SAP = &amp;l_anim_flags_SA[fl_cur_anim_id];
+  606:	   #endif
+  607:	   UINT32 fl_type;
+  608:	#ifdef GFX_DYN_DATA_ANIMATIONS
+  609:	   /*
+  610:	   ** This flag is added to see if all animations in a frame is completed.
+  611:	   ** If all frames are completed and all the animations are dynamic 
+  612:	   ** MAL animations then this flag will result in immediately
+  613:	   ** stoping the frame.
+  614:	   */
+  615:	   UINT32 fl_all_anim_done = (UINT32)TRUE;
+  616:	#endif
+  617:	
+  618:	   fl_anim_count = p_anim_ctrl_SP-&gt;frames_sp-&gt;num_types;
+  619:	
+  620:	   if(fl_anim_count == (UINT32)0)
+  621:	   {
+  622:	      /*
+  623:	      ** There are no animations in this frame. So move to next frame.
+  624:	      */
+  625:	      hmi_gfx_anim_engine_next_frame((GFX_ANIM_CONTROL_T const *)p_anim_ctrl_SP);
+  626:	   }
+  627:	   else
+  628:	   {
+  629:	      while(fl_anim_count &gt; (UINT32)0)
+  630:	      {
+  631:	         fl_type = p_anim_ctrl_SP-&gt;types_sp-&gt;type;
+  632:	      #if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+  633:	         if(fl_type == (UINT32)ANIM_TYPE_GO_TO)
+  634:	         {
+  635:	            /*
+  636:	            ** When a goto element is reached we need to break the loop after
+  637:	            ** executing it.
+  638:	            */
+  639:	            fl_anim_count = (UINT32)0;
+  640:	            if(p_anim_ctrl_SP-&gt;types_sp-&gt;val.go_to == GFX_ANIM02_NULL_PTR)
+  641:	            {
+  642:	               /*
+  643:	               ** If a condition check function is set by user, then the return value of user_goto
+  644:	               ** function is set directly as the next frame.\
+  645:	               */
+  646:	               if(p_anim_ctrl_SP-&gt;types_sp-&gt;handler.user_goto == GFX_ANIM02_NULL_PTR)
+  647:	               {
+  648:	                  /*
+  649:	                  ** Error condition, handler cannot be NULL.
+  650:	                  */
+  651:	                  hmi_gfx_anim_engine_stop(fl_cur_anim_id);
+  652:	               }
+  653:	               else
+  654:	               {
+  655:	                  hmi_gfx_anim_engine_set_frame(p_anim_ctrl_SP, p_anim_ctrl_SP-&gt;types_sp-&gt;handler.user_goto(l_anim_frame_U8A[fl_cur_anim_id]));
+  656:	               }
+  657:	            }
+  658:	            else if(p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count != GFX_ANIM_NULL_HANDLER)
+  659:	            {
+  660:	               /* 
+  661:	               ** We have to reset the goto count variable only for the first run of the
+  662:	               ** animation. We do this by using the goto_frame_cnt variable.
+  663:	               ** this one increments or decrements only for the first run based
+  664:	               ** the direction of animation.
+  665:	               */
+  666:	               if(fl_anim_flags_SAP-&gt;dir == GFX_ANIM_DIR_FORWARD)
+  667:	               {
+  668:	                  if(fl_anim_flags_SAP-&gt;goto_frame_cnt &lt;= l_anim_frame_U8A[fl_cur_anim_id])
+  669:	                  {
+  670:	                     (*p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count) = 0;
+  671:	                     fl_anim_flags_SAP-&gt;goto_frame_cnt = (SINT8)(l_anim_frame_U8A[fl_cur_anim_id]);
+  672:	                     fl_anim_flags_SAP-&gt;goto_frame_cnt++;
+  673:	                  }
+  674:	               }
+  675:	               else
+  676:	               {
+  677:	                  if(fl_anim_flags_SAP-&gt;goto_frame_cnt &gt;= l_anim_frame_U8A[fl_cur_anim_id])
+  678:	                  {
+  679:	                     /* 
+  680:	                     ** Frame just started so reset the goto counter
+  681:	                     */
+  682:	                     (*p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count) = 0;
+  683:	                     fl_anim_flags_SAP-&gt;goto_frame_cnt = (SINT8)(l_anim_frame_U8A[fl_cur_anim_id]);
+  684:	                     fl_anim_flags_SAP-&gt;goto_frame_cnt--;
+  685:	                  }
+  686:	               }
+  687:	               /*
+  688:	               ** Increment goto_count. As long as the count is within the threshold 
+  689:	               ** frame is set to the configured frame.
+  690:	               ** Once it reaches set threshold next frame is activated. 
+  691:	               */
+  692:	               (*p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count)++;
+  693:	               if(*p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count != 0) 
+  694:	               {
+  695:	                  if(*p_anim_ctrl_SP-&gt;types_sp-&gt;handler.goto_count &lt;= p_anim_ctrl_SP-&gt;types_sp-&gt;val.go_to-&gt;repeat_cnt)
+  696:	                  {
+  697:	                     hmi_gfx_anim_engine_set_frame(p_anim_ctrl_SP, p_anim_ctrl_SP-&gt;types_sp-&gt;val.go_to-&gt;goto_frame);
+  698:	                  }
+  699:	                  else
+  700:	                  {
+  701:	                     hmi_gfx_anim_engine_next_frame(p_anim_ctrl_SP);
+  702:	                  }
+  703:	               }
+  704:	               else
+  705:	               {
+  706:	                  /*
+  707:	                  ** Error condition, overflow happened so stop the animation
+  708:	                  ** otherwise it may run indefinitely.
+  709:	                  */
+  710:	                  hmi_gfx_anim_engine_stop(fl_cur_anim_id);
+  711:	               }
+  712:	            }
+  713:	            else
+  714:	            {
+  715:	               /*
+  716:	               ** Error condition, goto count variable pointer cannot be NULL.
+  717:	               */
+  718:	               hmi_gfx_anim_engine_stop(fl_cur_anim_id);
+  719:	            }
+  720:	            if(fl_anim_flags_SAP-&gt;state != GFX_ANIM_STATE_STOPPED)
+  721:	            {
+  722:	               if(l_anim_frame_U8A[fl_cur_anim_id] &lt; lc_animation_table_S[fl_cur_anim_id].num_frames)
+  723:	               {
+  724:	                  /* 
+  725:	                  ** goto frame executed and there are still frames to execute 
+  726:	                  */
+  727:	                  fl_animation_sts = (UINT32)FALSE;
+  728:	               #ifdef GFX_DYN_DATA_ANIMATIONS
+  729:	                  fl_all_anim_done = (UINT32)FALSE;
+  730:	               #endif
+  731:	               }
+  732:	            }
+  733:	         }
+  734:	         else
+  735:	      #else
+  736:	         if(fl_type != (UINT32)ANIM_TYPE_GO_TO)
+  737:	      #endif
+  738:	         {
+  739:	            fl_rate_U32  = p_anim_ctrl_SP-&gt;types_sp-&gt;rate;
+  740:	            fl_stime_U32 = p_anim_ctrl_SP-&gt;types_sp-&gt;start_time;
+  741:	
+  742:	            if((l_anim_time_elapsed_U32A[fl_cur_anim_id] &gt;= fl_stime_U32) &amp;&amp; (fl_rate_U32 &gt; (UINT32)0))
+  743:	            {
+  744:	               UINT32 fl_cur_incr_percetage;
+  745:	               UINT32 fl_pre_incr_percetage;
+  746:	               UINT32 fl_anim_duration = p_anim_ctrl_SP-&gt;types_sp-&gt;duration;
+  747:	            #ifdef GFX_DYN_DATA_ANIMATIONS
+  748:	               if(p_anim_ctrl_SP-&gt;types_sp-&gt;dynamic_data != (UINT8)0)
+  749:	               {
+  750:	                  /*
+  751:	                  ** For dynamic data animations, the duration needs to be dynamically calculated
+  752:	                  ** as well.
+  753:	                  ** The default configurations tell us duration for a certain range and
+  754:	                  ** depending on the current range we have to interpolate to find the 
+  755:	                  ** duration
+  756:	                  */
+  757:	                  fl_anim_duration = hmi_gfx_anim_engine_calculate_dduration(p_anim_ctrl_SP, fl_anim_duration);
+  758:	               }
+  759:	            #endif   
+  760:	               if(fl_anim_duration &gt; (UINT32)0)
+  761:	               {
+  762:	                  /*
+  763:	                  ** Making sure the duration is atleast &gt;= 1tick to have proper
+  764:	                  ** start and end for the animation. 
+  765:	                  ** Otherwise if the duration is  &lt; rate mSec, the current and
+  766:	                  ** previous percentage will evaluate to 100% in the first execution
+  767:	                  ** itself and there will not be any animation happening. 
+  768:	                  */
+  769:	                  fl_rate_U32 = (UINT32)((fl_rate_U32+9u)/10u);
+  770:	                  if(fl_anim_duration &lt; fl_rate_U32)
+  771:	                  {
+  772:	                     fl_anim_duration = fl_rate_U32;
+  773:	                  }
+  774:	                  /*
+  775:	                  ** Find the current incremant percentage
+  776:	                  */
+  777:	                  fl_stime_U32 = (l_anim_time_elapsed_U32A[fl_cur_anim_id]-fl_stime_U32);
+  778:	                  if(fl_stime_U32 &gt; fl_anim_duration)
+  779:	                  {
+  780:	                     fl_stime_U32 = fl_anim_duration;
+  781:	                  }
+  782:	
+  783:	                  fl_max_step = (UINT32)((fl_anim_duration * 10u)/p_anim_ctrl_SP-&gt;types_sp-&gt;rate);
+  784:	                  fl_cur_step = (UINT32)((fl_stime_U32     * 10u)/p_anim_ctrl_SP-&gt;types_sp-&gt;rate);
+  785:	
+  786:	                  if(fl_cur_step == fl_max_step)
+  787:	                  {
+  788:	                     fl_cur_incr_percetage = 1000u;
+  789:	                  }
+  790:	                  else
+  791:	                  {
+  792:	                     fl_cur_incr_percetage = p_anim_ctrl_SP-&gt;types_sp-&gt;handler.user_ip(fl_cur_step, fl_max_step);
+  793:	                  }
+  794:	                  /*
+  795:	                  ** Find the previous incremant percentage for
+  796:	                  ** calculating delta movement incase of XY and WH
+  797:	                  */
+  798:	                  fl_stime_U32 = p_anim_ctrl_SP-&gt;types_sp-&gt;start_time;
+  799:	                  if(p_anim_ctrl_SP-&gt;prev_elap_time_U32 &gt; fl_stime_U32)
+  800:	                  {
+  801:	                     fl_stime_U32 = (p_anim_ctrl_SP-&gt;prev_elap_time_U32-fl_stime_U32);
+  802:	                  }
+  803:	                  else
+  804:	                  {
+  805:	                     fl_stime_U32 = (UINT32)0;
+  806:	                  }
+  807:	
+  808:	                  if(fl_stime_U32 &gt; fl_anim_duration)
+  809:	                  {
+  810:	                     fl_stime_U32 = fl_anim_duration;
+  811:	                  }
+  812:	
+  813:	                  fl_pre_step = (UINT32)((fl_stime_U32 * 10u)/p_anim_ctrl_SP-&gt;types_sp-&gt;rate);
+  814:	
+  815:	                  if(fl_pre_step == fl_max_step)
+  816:	                  {
+  817:	                      fl_pre_incr_percetage = 1000u;
+  818:	                  }
+  819:	                  else
+  820:	                  {
+  821:	                     fl_pre_incr_percetage = p_anim_ctrl_SP-&gt;types_sp-&gt;handler.user_ip(fl_pre_step, fl_max_step);
+  822:	                  }
+  823:	               }
+  824:	               else if(l_anim_time_elapsed_U32A[fl_cur_anim_id] == fl_stime_U32)
+  825:	               {
+  826:	                  fl_pre_incr_percetage = (UINT32)0;
+  827:	                  fl_cur_incr_percetage = 1000u;
+  828:	               }
+  829:	               else
+  830:	               {
+  831:	                  fl_pre_incr_percetage = 1000u;
+  832:	                  fl_cur_incr_percetage = 1000u;
+  833:	               }
+  834:	            #ifdef GFX_ANIM_DEBUG
+  835:	               GFX_ANIM_DEBUG_PRINT("ElapsedTime : %d, Current Percentage : %d\n", l_anim_time_elapsed_U32A[fl_cur_anim_id], fl_cur_incr_percetage);
+  836:	            #endif
+  837:	
+  838:	               /*
+  839:	               ** Call the handler of the animation type to handle the animation
+  840:	               */
+  841:	               if(fl_type &lt; (UINT32)GFX_ANIM_HANDLER_TABLE_ENTRIES)
+  842:	               {
+  843:	                  GFX_ANIM_HANDLER_CB fl_anim_handler_CBP = lc_anim_handler_FPA[fl_type];
+  844:	                  if(fl_anim_handler_CBP != GFX_ANIM_NULL_HANDLER)
+  845:	                  {
+  846:	                     fl_anim_handler_CBP(p_anim_ctrl_SP-&gt;types_sp, fl_cur_incr_percetage, fl_pre_incr_percetage);
+  847:	                  }
+  848:	                  else
+  849:	                  {
+</PRE>
+<A NAME="ERR_LINE_850"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  850:	                     UNUSED_VAR(fl_pre_incr_percetage);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(850) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  851:	                  }
+  852:	               }
+  853:	            #ifdef GFX_DYN_DATA_ANIMATIONS
+  854:	               if(p_anim_ctrl_SP-&gt;types_sp-&gt;dynamic_data != 0)
+  855:	               {
+  856:	                  /*
+  857:	                  ** For dynamic animations, if the current and previous % reaches
+  858:	                  ** to 100% we stop saying anim_done=FALSE there by causing
+  859:	                  ** a stop and moving to next frame.
+  860:	                  */
+  861:	                  if((fl_pre_incr_percetage != 1000) || (fl_cur_incr_percetage != 1000))
+  862:	                  {
+  863:	                     fl_all_anim_done = (UINT32)FALSE;
+  864:	                  }
+  865:	               }
+  866:	               else
+  867:	               {
+  868:	                  /* 
+  869:	                  ** For non dynamic data type, we will not say anim is done at all.
+  870:	                  ** It has to take normal path of finishing up the configured duration
+  871:	                  ** and then take a natural end
+  872:	                  */
+  873:	                  fl_all_anim_done = (UINT32)FALSE;
+  874:	               }
+  875:	            #endif
+  876:	            }
+  877:	            else
+  878:	            {
+  879:	            #ifdef GFX_DYN_DATA_ANIMATIONS
+  880:	               if(fl_rate_U32 &gt; 0)
+  881:	               {
+  882:	                  fl_all_anim_done = (UINT32)FALSE;
+  883:	               }
+  884:	            #endif
+  885:	            }
+  886:	            p_anim_ctrl_SP-&gt;types_sp++;
+  887:	            fl_anim_count--;
+  888:	         }
+  889:	      }
+  890:	      if(
+  891:	            (l_anim_flags_SA[fl_cur_anim_id].end_reached != (UINT32)0)
+  892:	       #ifdef GFX_DYN_DATA_ANIMATIONS
+  893:	         || (fl_all_anim_done != (UINT32)FALSE)
+  894:	       #endif
+  895:	        )
+  896:	      {
+  897:	         /*
+  898:	         ** If we reached end of frame then move to next frame.
+  899:	         ** Next cycle will begin the next frame
+  900:	         */
+  901:	         hmi_gfx_anim_engine_next_frame((GFX_ANIM_CONTROL_T const *)p_anim_ctrl_SP);
+  902:	      }
+  903:	   }
+  904:	   return(fl_animation_sts);
+  905:	}
+  906:	
+  907:	/*============================================================================
+  908:	** Function Name:    hmi_gfx_anim_engine_stop
+  909:	** Visibility:       local
+  910:	** Description:      Stops the animation
+  911:	** Invocation:       By hmi_gfx_anim_engine  
+  912:	** Inputs/Outputs:   Notifies the application of completion
+  913:	** Critical Section: None.
+  914:	** Created:          27-Nov-2012 by EMANOJ1
+  915:	** Updated:          27-Nov-2012 by EMANOJ1
+  916:	**==========================================================================*/
+  917:	static void hmi_gfx_anim_engine_stop(UINT32 p_anim_id)
+  918:	{
+  919:	   GFX_ANIM_FLAGS_T * fl_flags_SAP   = &amp;l_anim_flags_SA[p_anim_id];
+  920:	
+  921:	   if((fl_flags_SAP-&gt;state == GFX_ANIM_STATE_RUNNING) ||
+  922:	      (fl_flags_SAP-&gt;state == GFX_ANIM_STATE_PAUSED))
+  923:	   {
+  924:	      fl_flags_SAP-&gt;state       = GFX_ANIM_STATE_STOPPED;
+  925:	      fl_flags_SAP-&gt;end_reached = (UINT8)0;
+  926:	      fl_flags_SAP-&gt;start       = (UINT8)0;
+  927:	      HMI_GFX_ANIM_ENGINE_DONE_CB(p_anim_id,(UINT32)l_anim_client_id_U16A[p_anim_id]);
+  928:	   }
+  929:	}
+  930:	
+  931:	/*============================================================================
+  932:	** Function Name:    hmi_gfx_anim_engine_next_frame
+  933:	** Visibility:       local
+  934:	** Description:      Moves to the next frame
+  935:	** Invocation:       By hmi_gfx_anim_engine  
+  936:	** Inputs/Outputs:   
+  937:	** Critical Section: None.
+  938:	** Created:          27-Nov-2012 by EMANOJ1
+  939:	** Updated:          27-Nov-2012 by EMANOJ1
+  940:	**==========================================================================*/
+  941:	static void hmi_gfx_anim_engine_next_frame(GFX_ANIM_CONTROL_T const * p_anim_ctrl_SP)
+  942:	{
+  943:	   UINT32             fl_cur_anim_id = p_anim_ctrl_SP-&gt;anim_id;
+  944:	   GFX_ANIM_FLAGS_T * fl_flags_SAP   = &amp;l_anim_flags_SA[fl_cur_anim_id];
+  945:	
+  946:	   if(fl_flags_SAP-&gt;dir == GFX_ANIM_DIR_BACKWORD)
+  947:	   {
+  948:	      if(l_anim_frame_U8A[fl_cur_anim_id] == 0)
+  949:	      {
+  950:	          l_anim_frame_U8A[fl_cur_anim_id] = (UINT8)(p_anim_ctrl_SP-&gt;def_sp-&gt;num_frames);
+  951:	      }
+  952:	      else
+  953:	      {
+  954:	         l_anim_frame_U8A[fl_cur_anim_id]--;
+  955:	      }
+  956:	   }
+  957:	   else if(l_anim_frame_U8A[fl_cur_anim_id] &lt; GFX_ANIM_MAX_U8)
+  958:	   {
+  959:	      l_anim_frame_U8A[fl_cur_anim_id]++;
+  960:	   }
+  961:	   else
+  962:	   {
+  963:	   }
+  964:	   if(p_anim_ctrl_SP-&gt;def_sp-&gt;cb != GFX_ANIM02_NULL_PTR)
+  965:	   {
+  966:	      p_anim_ctrl_SP-&gt;def_sp-&gt;cb((UINT32)l_anim_frame_U8A[fl_cur_anim_id], p_anim_ctrl_SP-&gt;def_sp-&gt;num_frames);
+  967:	   }
+  968:	   fl_flags_SAP-&gt;start       = (UINT8)1;
+  969:	   fl_flags_SAP-&gt;end_reached = (UINT8)0;
+  970:	}
+  971:	
+  972:	#if GFX_ANIM_GOTO_COUNT_ARRAY_SIZE &gt; 0
+  973:	/*============================================================================
+  974:	** Function Name:    hmi_gfx_anim_engine_set_frame
+  975:	** Visibility:       local
+  976:	** Description:      Sets the frame to passed one
+  977:	** Invocation:       By hmi_gfx_anim_engine  
+  978:	** Inputs/Outputs:   Derives animation commands and issues to GDG03
+  979:	** Critical Section: None.
+  980:	** Created:          27-Nov-2012 by EMANOJ1
+  981:	** Updated:          27-Nov-2012 by EMANOJ1
+  982:	**==========================================================================*/
+  983:	static void hmi_gfx_anim_engine_set_frame(GFX_ANIM_CONTROL_T const * p_anim_ctrl_SP, UINT32 p_frame)
+  984:	{
+  985:	   UINT32             fl_cur_anim_id = p_anim_ctrl_SP-&gt;anim_id;
+  986:	   GFX_ANIM_FLAGS_T * fl_flags_SAP   = &amp;l_anim_flags_SA[fl_cur_anim_id];
+  987:	
+  988:	   l_anim_frame_U8A[fl_cur_anim_id] = (UINT8)p_frame;
+  989:	   fl_flags_SAP-&gt;start              = 1;
+  990:	   fl_flags_SAP-&gt;end_reached        = 0;
+  991:	}
+  992:	#endif
+  993:	
+  994:	#if defined GFX_NUM_LINEAR_ANIMATIONS
+  995:	/*============================================================================
+  996:	** Function Name:    hmi_gfx_anim_engine_linear_interpolate
+  997:	** Visibility:       global
+  998:	** Description:      Performas a linear interpolation to find the current %
+  999:	**                   of animation step  
+ 1000:	** Invocation:       By hmi_gfx_anim_engine  
+ 1001:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1002:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1003:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1004:	** Critical Section: None.
+ 1005:	** Created:          27-Nov-2012 by EMANOJ1
+ 1006:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1007:	**==========================================================================*/
+ 1008:	static UINT32 hmi_gfx_anim_engine_linear_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1009:	{
+ 1010:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1011:	   return(fl_percentage);
+ 1012:	}
+ 1013:	#endif
+ 1014:	
+ 1015:	#if defined GFX_NON_LINEAR_INTERPOLATIONS
+ 1016:	/*============================================================================
+ 1017:	** Function Name:    hmi_gfx_anim_engine_table_interpolate
+ 1018:	** Visibility:       global
+ 1019:	** Description:      Performas a table based interpolation to find the current %
+ 1020:	**                   of animation step. Depending on the table the output will  
+ 1021:	**                   be non-linear w.r.t input percentage
+ 1022:	** Invocation:       By hmi_gfx_anim_engine  
+ 1023:	** Inputs/Outputs:   In  - Table pointer, Maximum index possible for the table
+ 1024:	**                         Table scale factor (10000 / p_table_max_index)
+ 1025:	**                         input percentage value
+ 1026:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1027:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1028:	** Critical Section: None.
+ 1029:	** Created:          27-Nov-2012 by EMANOJ1
+ 1030:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1031:	**==========================================================================*/
+ 1032:	static UINT32 hmi_gfx_anim_engine_table_interpolate(UINT16 const * p_table_U16AP, 
+ 1033:	                                                    UINT32         p_table_max_index, 
+ 1034:	                                                    UINT32         p_table_scale_factor, 
+ 1035:	                                                    UINT32         p_percentage_in)
+ 1036:	{
+ 1037:	   UINT32 fl_startindex   = (p_percentage_in*100)/p_table_scale_factor;
+ 1038:	   UINT32 fl_endindex;
+ 1039:	   UINT32 fl_error;
+ 1040:	
+ 1041:	   fl_error      = (fl_startindex % 10);
+ 1042:	   fl_endindex   = ((fl_startindex + 5)/10);
+ 1043:	   fl_startindex = ((fl_startindex)/10);
+ 1044:	
+ 1045:	   fl_startindex = GFX_ANIM_UCLAMP(fl_startindex, p_table_max_index);
+ 1046:	   fl_startindex = (UINT32)p_table_U16AP[fl_startindex];
+ 1047:	
+ 1048:	   if(fl_error != 0)
+ 1049:	   {
+ 1050:	      /* Interpolate */
+ 1051:	      fl_endindex    = GFX_ANIM_UCLAMP(fl_endindex, p_table_max_index);
+ 1052:	      fl_endindex    = (UINT32)p_table_U16AP[fl_endindex];
+ 1053:	      fl_startindex += (((fl_endindex-fl_startindex)*fl_error)/10);
+ 1054:	   }
+ 1055:	   return(fl_startindex);
+ 1056:	}
+ 1057:	#endif
+ 1058:	#if defined GFX_NUM_SINE_UP_ANIMATIONS 
+ 1059:	/*============================================================================
+ 1060:	** Function Name:    hmi_gfx_anim_engine_sine_up_interpolate
+ 1061:	** Visibility:       global
+ 1062:	** Description:      Performas a sine interpolation to find the current %
+ 1063:	**                   of animation step which maps 0-100% to a 0-90Deg sine
+ 1064:	**                   movement.   
+ 1065:	** Invocation:       By hmi_gfx_anim_engine  
+ 1066:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1067:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1068:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1069:	** Critical Section: None.
+ 1070:	** Created:          27-Nov-2012 by EMANOJ1
+ 1071:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1072:	**==========================================================================*/
+ 1073:	static UINT32 hmi_gfx_anim_engine_sine_up_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1074:	{
+ 1075:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);   
+ 1076:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_sineup_table, 
+ 1077:	                                                         (GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1078:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1079:	                                                         fl_percentage);
+ 1080:	   return(fl_percentage);
+ 1081:	}
+ 1082:	#endif
+ 1083:	
+ 1084:	
+ 1085:	#if defined GFX_NUM_SINE_DOWN_ANIMATIONS
+ 1086:	/*============================================================================
+ 1087:	** Function Name:    hmi_gfx_anim_engine_sine_down_interpolate
+ 1088:	** Visibility:       global
+ 1089:	** Description:      Performas a sine interpolation to find the current %
+ 1090:	**                   of animation step which maps 0-100% to a 90-0Deg sine
+ 1091:	**                   movement.   
+ 1092:	** Invocation:       By hmi_gfx_anim_engine  
+ 1093:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1094:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1095:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1096:	** Critical Section: None.
+ 1097:	** Created:          27-Nov-2012 by EMANOJ1
+ 1098:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1099:	**==========================================================================*/
+ 1100:	static UINT32 hmi_gfx_anim_engine_sine_down_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1101:	{
+ 1102:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1103:	   
+ 1104:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_sinedn_table, 
+ 1105:	                                                         (GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1106:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1107:	                                                         fl_percentage);
+ 1108:	   return(fl_percentage);
+ 1109:	}
+ 1110:	#endif
+ 1111:	
+ 1112:	#if defined GFX_NUM_SINE_UPDOWN_ANIMATIONS
+ 1113:	/*============================================================================
+ 1114:	** Function Name:    hmi_gfx_anim_engine_sine_updown_interpolate
+ 1115:	** Visibility:       global
+ 1116:	** Description:      Performas a sine interpolation to find the current %
+ 1117:	**                   of animation step which maps 0-100% to a 0-180Deg sine
+ 1118:	**                   movement.   
+ 1119:	** Invocation:       By hmi_gfx_anim_engine  
+ 1120:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1121:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1122:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1123:	** Critical Section: None.
+ 1124:	** Created:          27-Nov-2012 by EMANOJ1
+ 1125:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1126:	**==========================================================================*/
+ 1127:	static UINT32 hmi_gfx_anim_engine_sine_updown_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1128:	{
+ 1129:	   UINT32 fl_percentage = ((p_cur_step * 1000)/p_max_step);
+ 1130:	   
+ 1131:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_sineupdn_table, 
+ 1132:	                                                         (GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1133:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1134:	                                                         fl_percentage);
+ 1135:	   return(fl_percentage);
+ 1136:	}
+ 1137:	#endif
+ 1138:	
+ 1139:	#if defined GFX_NUM_SINE_DOWNUP_ANIMATIONS
+ 1140:	/*============================================================================
+ 1141:	** Function Name:    hmi_gfx_anim_engine_sine_downup_interpolate
+ 1142:	** Visibility:       global
+ 1143:	** Description:      Performas a sine interpolation to find the current %
+ 1144:	**                   of animation step which maps 0-100% to a 180-0Deg sine
+ 1145:	**                   movement.   
+ 1146:	** Invocation:       By hmi_gfx_anim_engine  
+ 1147:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1148:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1149:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1150:	** Critical Section: None.
+ 1151:	** Created:          27-Nov-2012 by EMANOJ1
+ 1152:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1153:	**==========================================================================*/
+ 1154:	static UINT32 hmi_gfx_anim_engine_sine_downup_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1155:	{
+ 1156:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1157:	   
+ 1158:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_sinednup_table, 
+ 1159:	                                                         (GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1160:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1161:	                                                         fl_percentage);
+ 1162:	   return(fl_percentage);
+ 1163:	}
+ 1164:	#endif
+ 1165:	
+ 1166:	#if defined GFX_NUM_LOG_UP_ANIMATIONS
+ 1167:	/*============================================================================
+ 1168:	** Function Name:    hmi_gfx_anim_engine_log_up_interpolate
+ 1169:	** Visibility:       global
+ 1170:	** Description:      Performas a logerithimic interpolation to find the current %
+ 1171:	**                   of animation step in upward direction (Slow start and fast end).
+ 1172:	**                   movement.   
+ 1173:	** Invocation:       By hmi_gfx_anim_engine  
+ 1174:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1175:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1176:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1177:	** Critical Section: None.
+ 1178:	** Created:          27-Nov-2012 by EMANOJ1
+ 1179:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1180:	**==========================================================================*/
+ 1181:	static UINT32 hmi_gfx_anim_engine_log_up_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1182:	{
+ 1183:	   UINT32 fl_percentage = ((p_cur_step * 1000)/p_max_step);
+ 1184:	   
+ 1185:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_logup_table, 
+ 1186:	                                                         (GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1187:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1188:	                                                         fl_percentage);
+ 1189:	   return(fl_percentage);
+ 1190:	}
+ 1191:	#endif
+ 1192:	
+ 1193:	#if defined GFX_NUM_LOG_DOWN_ANIMATIONS
+ 1194:	/*============================================================================
+ 1195:	** Function Name:    hmi_gfx_anim_engine_log_down_interpolate
+ 1196:	** Visibility:       global
+ 1197:	** Description:      Performas a logerithimic interpolation to find the current %
+ 1198:	**                   of animation step in upward direction (fast start and slow end).
+ 1199:	**                   movement.   
+ 1200:	** Invocation:       By hmi_gfx_anim_engine  
+ 1201:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1202:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1203:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1204:	** Critical Section: None.
+ 1205:	** Created:          27-Nov-2012 by EMANOJ1
+ 1206:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1207:	**==========================================================================*/
+ 1208:	static UINT32 hmi_gfx_anim_engine_log_down_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1209:	{
+ 1210:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1211:	   
+ 1212:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_logdn_table, 
+ 1213:	                                                         (GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1214:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UP_DN_TABLE_NUM_ENTRIES-1u),
+ 1215:	                                                         fl_percentage);
+ 1216:	   return(fl_percentage);
+ 1217:	}
+ 1218:	#endif
+ 1219:	
+ 1220:	#if defined GFX_NUM_LOG_UPDOWN_ANIMATIONS
+ 1221:	/*============================================================================
+ 1222:	** Function Name:    hmi_gfx_anim_engine_log_updown_interpolate
+ 1223:	** Visibility:       global
+ 1224:	** Description:      Performas a logerithimic interpolation to find the current %
+ 1225:	**                   of animation step in upward direction (Slow start, fast
+ 1226:	**                   intermediate and slow end).
+ 1227:	**                   movement.   
+ 1228:	** Invocation:       By hmi_gfx_anim_engine  
+ 1229:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1230:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1231:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1232:	** Critical Section: None.
+ 1233:	** Created:          27-Nov-2012 by EMANOJ1
+ 1234:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1235:	**==========================================================================*/
+ 1236:	static UINT32 hmi_gfx_anim_engine_log_updown_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1237:	{
+ 1238:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1239:	   
+ 1240:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_logupdn_table, 
+ 1241:	                                                         (GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1242:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1243:	                                                         fl_percentage);
+ 1244:	   return(fl_percentage);
+ 1245:	}
+ 1246:	#endif
+ 1247:	
+ 1248:	#if defined GFX_NUM_LOG_DOWNUP_ANIMATIONS 
+ 1249:	/*============================================================================
+ 1250:	** Function Name:    hmi_gfx_anim_engine_log_downup_interpolate
+ 1251:	** Visibility:       global
+ 1252:	** Description:      Performas a logerithimic interpolation to find the current %
+ 1253:	**                   of animation step in upward direction (Fast start, Slow
+ 1254:	**                   intermediate and Fast end).
+ 1255:	**                   movement.   
+ 1256:	** Invocation:       By hmi_gfx_anim_engine  
+ 1257:	** Inputs/Outputs:   In  - Current Step and Maximum Step
+ 1258:	**                   Out - Calculated Percentage out in 0.1 resolution
+ 1259:	**                         0 to 1000 integer value for 0.0 to 100.0% 
+ 1260:	** Critical Section: None.
+ 1261:	** Created:          27-Nov-2012 by EMANOJ1
+ 1262:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1263:	**==========================================================================*/
+ 1264:	static UINT32 hmi_gfx_anim_engine_log_downup_interpolate(UINT32 p_cur_step, UINT32 p_max_step)
+ 1265:	{
+ 1266:	   UINT32 fl_percentage = ((p_cur_step * ((UINT32)1000))/p_max_step);
+ 1267:	   
+ 1268:	   fl_percentage = hmi_gfx_anim_engine_table_interpolate(lc_anim_logdnup_table, 
+ 1269:	                                                         (GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1270:	                                                         GFX_ANIM_TABLE_SCALE_FACTOR(GFX_ANIM_UPDN_DNUP_TABLE_NUM_ENTRIES-1u),
+ 1271:	                                                         fl_percentage);
+ 1272:	   return(fl_percentage);
+ 1273:	}
+ 1274:	#endif
+ 1275:	
+ 1276:	/*============================================================================
+ 1277:	** Function Name:    hmi_gfx_anim_engine_find_idelta
+ 1278:	** Visibility:       global
+ 1279:	** Description:      Calculates the delta corresponding to the percentage for
+ 1280:	**                   int values  
+ 1281:	** Invocation:       By hmi_gfx_anim_engine  
+ 1282:	** Inputs/Outputs:   
+ 1283:	** Critical Section: None.
+ 1284:	** Created:          27-Nov-2012 by EMANOJ1
+ 1285:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1286:	**==========================================================================*/
+ 1287:	static SINT32 hmi_gfx_anim_engine_find_idelta(SINT32 p_start_val, SINT32 p_end_val, UINT32 p_percentage)
+ 1288:	{
+ 1289:	    return(((p_end_val-p_start_val)*((SINT32)p_percentage))/1000);
+ 1290:	}
+ 1291:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+ 1292:	/*============================================================================
+ 1293:	** Function Name:    hmi_gfx_anim_engine_find_fdelta
+ 1294:	** Visibility:       global
+ 1295:	** Description:      Calculates the delta corresponding to the percentage for
+ 1296:	**                   float values  
+ 1297:	** Invocation:       By hmi_gfx_anim_engine  
+ 1298:	** Inputs/Outputs:   
+ 1299:	** Critical Section: None.
+ 1300:	** Created:          27-Nov-2012 by EMANOJ1
+ 1301:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1302:	**==========================================================================*/
+ 1303:	static GFX_FLOAT hmi_gfx_anim_engine_find_fdelta(GFX_FLOAT p_start_val, GFX_FLOAT p_end_val, UINT32 p_percentage)
+ 1304:	{
+ 1305:	   p_end_val -= p_start_val;
+ 1306:	   p_end_val *= (GFX_FLOAT)p_percentage;
+ 1307:	   p_end_val /= 1000.0f;
+ 1308:	   return(p_end_val);
+ 1309:	}
+ 1310:	#endif
+ 1311:	/*============================================================================
+ 1312:	** Function Name:    hmi_gfx_anim_engine_alpha
+ 1313:	** Visibility:       global
+ 1314:	** Description:      Calculates the alpha for the given current step percentage
+ 1315:	**                   and applies to all elements in list. (p_pre_per is not used
+ 1316:	**                   since alpha is calculated as direct data and not as an 
+ 1317:	**                   offset.
+ 1318:	** Invocation:       By hmi_gfx_anim_engine  
+ 1319:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1320:	**                   previous step percentage.  
+ 1321:	**                   Out : Applies calculated alpha to all elements in list
+ 1322:	** Critical Section: None.
+ 1323:	** Created:          27-Nov-2012 by EMANOJ1
+ 1324:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1325:	**==========================================================================*/
+ 1326:	static void hmi_gfx_anim_engine_alpha(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1327:	{
+ 1328:	   GFX_ANIM_ALPHA_T const * fl_data; 
+ 1329:	   SINT32                   fl_alpha;
+ 1330:	   UINT32                   fl_num_elements   = p_tdata-&gt;num_elements;
+ 1331:	   UINT32 const           * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1332:	
+ 1333:	   if(p_tdata-&gt;dynamic_data != 0)
+ 1334:	   {
+ 1335:	      fl_data = (GFX_ANIM_ALPHA_T const *)p_tdata-&gt;val.dyn_alpha-&gt;cur_val;
+ 1336:	   }
+ 1337:	   else
+ 1338:	   {
+ 1339:	      fl_data = (GFX_ANIM_ALPHA_T const *)p_tdata-&gt;val.alpha;
+ 1340:	   }
+ 1341:	   fl_alpha = hmi_gfx_anim_engine_find_idelta((SINT32)fl_data-&gt;start, (SINT32)fl_data-&gt;end, p_cur_per);   
+</PRE>
+<A NAME="ERR_LINE_1342"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1342:	   fl_alpha += (SINT32)(fl_data-&gt;start);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1342) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1392"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1343:	   
+ 1344:	   while(fl_num_elements &gt; (UINT32)0)
+ 1345:	   {
+ 1346:	      fl_num_elements--;
+ 1347:	      HMI_GFX_ANIM_SET_ALPHA(*fl_elem_list_U32A, (fl_alpha));
+ 1348:	      fl_elem_list_U32A++;
+ 1349:	   }
+ 1350:	   UNUSED_VAR(p_pre_per);
+ 1351:	}
+ 1352:	
+ 1353:	/*============================================================================
+ 1354:	** Function Name:    hmi_gfx_anim_engine_area
+ 1355:	** Visibility:       global
+ 1356:	** Description:      Calculates the area offset for the given step percentage
+ 1357:	**                   and applies to all elements in list.
+ 1358:	** Invocation:       By hmi_gfx_anim_engine  
+ 1359:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1360:	**                   previous step percentage.  
+ 1361:	**                   Out : Applies calculated offset to all elements in list
+ 1362:	** Critical Section: None.
+ 1363:	** Created:          27-Nov-2012 by EMANOJ1
+ 1364:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1365:	**==========================================================================*/
+ 1366:	static void hmi_gfx_anim_engine_area(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1367:	{
+ 1368:	   GFX_ANIM_AREA_T const * fl_data;
+ 1369:	   UINT32                  fl_num_elements   = p_tdata-&gt;num_elements;
+ 1370:	   UINT32 const          * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1371:	   SINT32 fl_cur_x_incr; 
+ 1372:	   SINT32 fl_cur_y_incr; 
+ 1373:	   SINT32 fl_cur_w_incr; 
+ 1374:	   SINT32 fl_cur_h_incr; 
+ 1375:	   SINT32 fl_prev_x_incr;
+ 1376:	   SINT32 fl_prev_y_incr;
+ 1377:	   SINT32 fl_prev_w_incr;
+ 1378:	   SINT32 fl_prev_h_incr;
+ 1379:	
+ 1380:	   if(p_tdata-&gt;dynamic_data != 0)
+ 1381:	   {
+ 1382:	      fl_data = (GFX_ANIM_AREA_T const *)p_tdata-&gt;val.dyn_area-&gt;cur_val;
+ 1383:	   }
+ 1384:	   else
+ 1385:	   {
+ 1386:	      fl_data = (GFX_ANIM_AREA_T const *)p_tdata-&gt;val.area;
+ 1387:	   }
+ 1388:	   /*
+ 1389:	   ** Calculate current and previous values
+ 1390:	   ** Apply the difference to elements in list
+ 1391:	   */ 
+</PRE>
+<A NAME="ERR_LINE_1392"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1392:	   fl_cur_x_incr  = ((fl_data-&gt;end.x*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1392) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1393"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1393"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1393:	   fl_cur_y_incr  = ((fl_data-&gt;end.y*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1393) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1394"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1394"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1394:	   fl_cur_w_incr  = ((fl_data-&gt;end.w*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1394) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1395"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1395"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1395:	   fl_cur_h_incr  = ((fl_data-&gt;end.h*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1395) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1396"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1396"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1396:	   fl_prev_x_incr = ((fl_data-&gt;end.x*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1396) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1397"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1397"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1397:	   fl_prev_y_incr = ((fl_data-&gt;end.y*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1397) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1398"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1398"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1398:	   fl_prev_w_incr = ((fl_data-&gt;end.w*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1398) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1399"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1399"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1399:	   fl_prev_h_incr = ((fl_data-&gt;end.h*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1399) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1477"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1400:	
+ 1401:	   while(fl_num_elements &gt; (UINT32)0)
+ 1402:	   {
+ 1403:	      fl_num_elements--;
+ 1404:	      HMI_GFX_ANIM_SET_OFFSET_AREA(((GFX_MGR02_ANIM_ELEM_ID)(*fl_elem_list_U32A)), 
+ 1405:	                                   (fl_cur_x_incr-fl_prev_x_incr),
+ 1406:	                                   (fl_cur_y_incr-fl_prev_y_incr),
+ 1407:	                                   (fl_cur_w_incr-fl_prev_w_incr),
+ 1408:	                                   (fl_cur_h_incr-fl_prev_h_incr));
+ 1409:	      fl_elem_list_U32A++;
+ 1410:	   }
+ 1411:	}
+ 1412:	
+ 1413:	/*============================================================================
+ 1414:	** Function Name:    hmi_gfx_anim_engine_wd_ht
+ 1415:	** Visibility:       global
+ 1416:	** Description:      Calculates the width/height offset for the given step percentage
+ 1417:	**                   and applies to all elements in list.
+ 1418:	** Invocation:       By hmi_gfx_anim_engine  
+ 1419:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1420:	**                   previous step percentage.  
+ 1421:	**                   Out : Applies calculated offset to all elements in list
+ 1422:	** Critical Section: None.
+ 1423:	** Created:          27-Nov-2012 by EMANOJ1
+ 1424:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1425:	**==========================================================================*/
+ 1426:	static void hmi_gfx_anim_engine_wd_ht(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1427:	{
+ 1428:	   GFX_ANIM_WDHT_T const * fl_data           = (GFX_ANIM_WDHT_T const *)p_tdata-&gt;val.wd_ht;
+ 1429:	   UINT32                  fl_num_elements   = p_tdata-&gt;num_elements;
+ 1430:	   UINT32 const          * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1431:	
+ 1432:	   SINT32 fl_cur_w_incr  = ((fl_data-&gt;end.w*(SINT32)p_cur_per)/1000);
+ 1433:	   SINT32 fl_cur_h_incr  = ((fl_data-&gt;end.h*(SINT32)p_cur_per)/1000);
+ 1434:	   SINT32 fl_prev_w_incr = ((fl_data-&gt;end.w*(SINT32)p_pre_per)/1000);
+ 1435:	   SINT32 fl_prev_h_incr = ((fl_data-&gt;end.h*(SINT32)p_pre_per)/1000);
+ 1436:	
+ 1437:	   while(fl_num_elements &gt; (UINT32)0)
+ 1438:	   {
+ 1439:	      fl_num_elements--;
+ 1440:	      HMI_GFX_ANIM_SET_OFFSET_WH(((GFX_MGR02_ANIM_ELEM_ID)(*fl_elem_list_U32A)), 
+ 1441:	                                 (fl_cur_w_incr-fl_prev_w_incr),
+ 1442:	                                 (fl_cur_h_incr-fl_prev_h_incr));
+ 1443:	      fl_elem_list_U32A++;
+ 1444:	   }
+ 1445:	}
+ 1446:	
+ 1447:	/*============================================================================
+ 1448:	** Function Name:    hmi_gfx_anim_engine_color
+ 1449:	** Visibility:       global
+ 1450:	** Description:      Calculates the Color for the given step percentage
+ 1451:	**                   and applies to all elements in list.
+ 1452:	** Invocation:       By hmi_gfx_anim_engine  
+ 1453:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage and
+ 1454:	**                   previous step percentage.                              
+ 1455:	**                   Out : Applies calculated color to all elements in list
+ 1456:	** Critical Section: None.
+ 1457:	** Created:          27-Nov-2012 by EMANOJ1
+ 1458:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1459:	**==========================================================================*/
+ 1460:	static void hmi_gfx_anim_engine_color(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1461:	{
+ 1462:	   GFX_ANIM_COLOR_T const * fl_data           = (GFX_ANIM_COLOR_T const *)p_tdata-&gt;val.color;
+ 1463:	   UINT32                   fl_num_elements   = p_tdata-&gt;num_elements;
+ 1464:	   UINT32 const           * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1465:	
+ 1466:	   SINT32 fl_a      = (SINT32)((UINT8)(fl_data-&gt;start.argb&gt;&gt;24));
+ 1467:	   SINT32 fl_r      = (SINT32)((UINT8)(fl_data-&gt;start.argb&gt;&gt;16));
+ 1468:	   SINT32 fl_g      = (SINT32)((UINT8)(fl_data-&gt;start.argb&gt;&gt;8));
+ 1469:	   SINT32 fl_b      = (SINT32)((UINT8)(fl_data-&gt;start.argb));
+ 1470:	   UINT32 fl_c_incr;
+ 1471:	
+ 1472:	   fl_a += hmi_gfx_anim_engine_find_idelta(fl_a, (SINT32)((UINT8)(fl_data-&gt;end.argb&gt;&gt;24)), p_cur_per);
+ 1473:	   fl_r += hmi_gfx_anim_engine_find_idelta(fl_r, (SINT32)((UINT8)(fl_data-&gt;end.argb&gt;&gt;16)), p_cur_per);
+ 1474:	   fl_g += hmi_gfx_anim_engine_find_idelta(fl_g, (SINT32)((UINT8)(fl_data-&gt;end.argb&gt;&gt;8)),  p_cur_per);
+ 1475:	   fl_b += hmi_gfx_anim_engine_find_idelta(fl_b, (SINT32)((UINT8)(fl_data-&gt;end.argb)),     p_cur_per);
+ 1476:	   
+</PRE>
+<A NAME="ERR_LINE_1477"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1477:	   fl_c_incr = GFX_ANIM_ARGB(fl_a, fl_r, fl_g, fl_b);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1477) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1509"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1478:	
+ 1479:	   while(fl_num_elements &gt; (UINT32)0)
+ 1480:	   {
+ 1481:	      fl_num_elements--;
+ 1482:	      HMI_GFX_ANIM_SET_COLOR(*fl_elem_list_U32A, fl_c_incr);
+ 1483:	      fl_elem_list_U32A++;
+ 1484:	   }
+ 1485:	   UNUSED_VAR(p_pre_per);
+ 1486:	}
+ 1487:	
+ 1488:	/*============================================================================
+ 1489:	** Function Name:    hmi_gfx_anim_engine_data
+ 1490:	** Visibility:       global
+ 1491:	** Description:      Calculates the Data for the given step percentage
+ 1492:	**                   and applies to all elements in list.
+ 1493:	** Invocation:       By hmi_gfx_anim_engine  
+ 1494:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage and
+ 1495:	**                   previous step percentage.                              
+ 1496:	**                   Out : Applies calculated data to all elements in list
+ 1497:	** Critical Section: None.
+ 1498:	** Created:          27-Nov-2012 by EMANOJ1
+ 1499:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1500:	**==========================================================================*/
+ 1501:	static void hmi_gfx_anim_engine_data(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1502:	{
+ 1503:	   GFX_ANIM_DATA_T const * fl_data           = (GFX_ANIM_DATA_T const *)p_tdata-&gt;val.data;
+ 1504:	   UINT32                  fl_num_elements   = p_tdata-&gt;num_elements;
+ 1505:	   UINT32 const          * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1506:	
+ 1507:	   SINT32 fl_data_val = hmi_gfx_anim_engine_find_idelta((SINT32)fl_data-&gt;start, (SINT32)fl_data-&gt;end, p_cur_per);
+ 1508:	
+</PRE>
+<A NAME="ERR_LINE_1509"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1509:	   fl_data_val += (SINT32)fl_data-&gt;start;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1509) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1556"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1510:	
+ 1511:	   while(fl_num_elements &gt; (UINT32)0)
+ 1512:	   {
+ 1513:	      fl_num_elements--;
+ 1514:	      HMI_GFX_ANIM_SET_DATA(*fl_elem_list_U32A, fl_data_val);
+ 1515:	      fl_elem_list_U32A++;
+ 1516:	   }
+ 1517:	   UNUSED_VAR(p_pre_per);   
+ 1518:	}
+ 1519:	
+ 1520:	/*============================================================================
+ 1521:	** Function Name:    hmi_gfx_anim_engine_mal
+ 1522:	** Visibility:       global
+ 1523:	** Description:      Calculates the x/y offset for the given step percentage
+ 1524:	**                   and applies to all elements in list.
+ 1525:	** Invocation:       By hmi_gfx_anim_engine  
+ 1526:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1527:	**                   previous step percentage.  
+ 1528:	**                   Out : Applies calculated offset to all elements in list
+ 1529:	** Critical Section: None.
+ 1530:	** Created:          27-Nov-2012 by EMANOJ1
+ 1531:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1532:	**==========================================================================*/
+ 1533:	static void hmi_gfx_anim_engine_mal(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1534:	{
+ 1535:	   GFX_ANIM_MAL_T const * fl_data;
+ 1536:	   UINT32                 fl_num_elements   = p_tdata-&gt;num_elements;
+ 1537:	   UINT32 const         * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1538:	   SINT32 fl_cur_x_incr; 
+ 1539:	   SINT32 fl_cur_y_incr; 
+ 1540:	   SINT32 fl_prev_x_incr;
+ 1541:	   SINT32 fl_prev_y_incr;
+ 1542:	
+ 1543:	   if(p_tdata-&gt;dynamic_data != 0)
+ 1544:	   {
+ 1545:	      fl_data = (GFX_ANIM_MAL_T const *)p_tdata-&gt;val.dyn_mal-&gt;cur_val;
+ 1546:	   }
+ 1547:	   else
+ 1548:	   {
+ 1549:	      fl_data = (GFX_ANIM_MAL_T const *)p_tdata-&gt;val.mal;
+ 1550:	   }
+ 1551:	
+ 1552:	   #if defined(GFX_ANIM_DLAYOUT_ENABLED)
+ 1553:	        fl_data= &amp;fl_data[l_selected_anim_layout_U8];
+ 1554:	   #endif
+ 1555:	   
+</PRE>
+<A NAME="ERR_LINE_1556"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1556:	   fl_cur_x_incr  = ((fl_data-&gt;end.x*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1556) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1557"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1557"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1557:	   fl_cur_y_incr  = ((fl_data-&gt;end.y*(SINT32)p_cur_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1557) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1558"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1558"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1558:	   fl_prev_x_incr = ((fl_data-&gt;end.x*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1558) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1559"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1559"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1559:	   fl_prev_y_incr = ((fl_data-&gt;end.y*(SINT32)p_pre_per)/1000);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1559) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1609"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1560:	
+ 1561:	   while(fl_num_elements &gt; (UINT32)0)
+ 1562:	   {
+ 1563:	      fl_num_elements--;
+ 1564:	      HMI_GFX_ANIM_SET_OFFSET_POS(((GFX_MGR02_ANIM_ELEM_ID)(*fl_elem_list_U32A)), 
+ 1565:	                                  (fl_cur_x_incr-fl_prev_x_incr),
+ 1566:	                                  (fl_cur_y_incr-fl_prev_y_incr));
+ 1567:	      fl_elem_list_U32A++;
+ 1568:	   }
+ 1569:	}
+ 1570:	
+ 1571:	/*============================================================================
+ 1572:	** Function Name:    hmi_gfx_anim_engine_map
+ 1573:	** Visibility:       global
+ 1574:	** Description:      Calculates the x/y offset for the given step percentage
+ 1575:	**                   and applies to all elements in list.
+ 1576:	** Invocation:       By hmi_gfx_anim_engine  
+ 1577:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1578:	**                   previous step percentage.  
+ 1579:	**                   Out : Applies calculated offset to all elements in list
+ 1580:	** Critical Section: None.
+ 1581:	** Created:          27-Nov-2012 by EMANOJ1
+ 1582:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1583:	**==========================================================================*/
+ 1584:	static void hmi_gfx_anim_engine_map(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1585:	{
+ 1586:	    GFX_ANIM_MAP_T const * fl_data           = (GFX_ANIM_MAP_T const *)p_tdata-&gt;val.map;
+ 1587:	    UINT32                 fl_num_elements   = p_tdata-&gt;num_elements;
+ 1588:	    UINT32 const         * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1589:	    SINT32 fl_cur_index;
+ 1590:	    SINT32 fl_pre_index;
+ 1591:	    SINT32 fl_delta_x;
+ 1592:	    SINT32 fl_delta_y;
+ 1593:	    /*
+ 1594:	    ** Calculate the current and previous point from the motion path data
+ 1595:	    ** Find the delta and apply to the element
+ 1596:	    */
+ 1597:	   #if defined(GFX_ANIM_DLAYOUT_ENABLED)
+ 1598:	        fl_data= &amp;fl_data[l_selected_anim_layout_U8];
+ 1599:	   #endif
+ 1600:	
+ 1601:	    fl_cur_index = hmi_gfx_anim_engine_find_idelta(0, (SINT32)fl_data-&gt;num_points, p_cur_per);
+ 1602:	    fl_pre_index = hmi_gfx_anim_engine_find_idelta(0, (SINT32)fl_data-&gt;num_points, p_pre_per);
+ 1603:	
+ 1604:	    fl_cur_index = GFX_ANIM_UCLAMP(fl_cur_index, (fl_data-&gt;num_points-((UINT16)1)));
+ 1605:	    fl_pre_index = GFX_ANIM_UCLAMP(fl_pre_index, (fl_data-&gt;num_points-((UINT16)1)));
+ 1606:	
+ 1607:	    if(fl_cur_index != fl_pre_index)
+ 1608:	    {
+</PRE>
+<A NAME="ERR_LINE_1609"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1609:	        fl_delta_x = (fl_data-&gt;points[fl_cur_index].x - fl_data-&gt;points[fl_pre_index].x);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1609) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1610"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_1610"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1610:	        fl_delta_y = (fl_data-&gt;points[fl_cur_index].y - fl_data-&gt;points[fl_pre_index].y);
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1610) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B><A HREF="#ERR_LINE_1635"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1611:	        while(fl_num_elements &gt; (UINT32)0)
+ 1612:	        {
+ 1613:	            fl_num_elements--;
+ 1614:	            HMI_GFX_ANIM_SET_OFFSET_POS(((GFX_MGR02_ANIM_ELEM_ID)(*fl_elem_list_U32A)), fl_delta_x, fl_delta_y);
+ 1615:	            fl_elem_list_U32A++;
+ 1616:	        }
+ 1617:	    }
+ 1618:	}
+ 1619:	
+ 1620:	/*============================================================================
+ 1621:	** Function Name:    hmi_gfx_anim_engine_screen
+ 1622:	** Visibility:       global
+ 1623:	** Description:      Calculates the screen index to be selected and activates it
+ 1624:	** Invocation:       By hmi_gfx_anim_engine  
+ 1625:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1626:	**                   previous step percentage.  
+ 1627:	**                   Out : Activates the current screen for the anim step.
+ 1628:	** Critical Section: None.
+ 1629:	** Created:          27-Nov-2012 by EMANOJ1
+ 1630:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1631:	**==========================================================================*/
+ 1632:	static void hmi_gfx_anim_engine_screen(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1633:	{
+ 1634:	   SINT32 fl_cur_index = hmi_gfx_anim_engine_find_idelta(0, (SINT32)p_tdata-&gt;num_elements, p_cur_per);
+</PRE>
+<A NAME="ERR_LINE_1635"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1635:	   fl_cur_index = GFX_ANIM_UCLAMP(fl_cur_index, (p_tdata-&gt;num_elements-((UINT8)1)));
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2983.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_gfx_anim_engine.c(1635) ++ WARNING ++: &lt;=7=(2983) This assignment is redundant. The value of this object is never subsequently used.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+ 1636:	   HMI_GFX_ANIM_SET_SCREEN(p_tdata-&gt;elem_list[fl_cur_index]);
+ 1637:	   UNUSED_VAR(p_pre_per);
+ 1638:	}
+ 1639:	
+ 1640:	#if defined(GFX_MGR02_OPEN_VG)||defined(GFX_MGR02_AMBER)
+ 1641:	/*============================================================================
+ 1642:	** Function Name:    hmi_gfx_anim_engine_rotate
+ 1643:	** Visibility:       global
+ 1644:	** Description:      Calculates the rotation angle for the given step percentage
+ 1645:	**                   and applies to all elements in list.
+ 1646:	** Invocation:       By hmi_gfx_anim_engine  
+ 1647:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1648:	**                   previous step percentage.  
+ 1649:	**                   Out : Applies calculated factor to all elements in list
+ 1650:	** Critical Section: None.
+ 1651:	** Created:          27-Nov-2012 by EMANOJ1
+ 1652:	** Updated:          27-Nov-2012 by EMANOJ1
+ 1653:	**==========================================================================*/
+ 1654:	static void hmi_gfx_anim_engine_rotate(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1655:	{
+ 1656:	   GFX_ANIM_ROTATE_T const * fl_data = p_tdata-&gt;val.rotate;
+ 1657:	   UINT32                    fl_num_elements   = p_tdata-&gt;num_elements;
+ 1658:	   UINT32 const            * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1659:	   GFX_FLOAT fl_matrix_1[9];
+ 1660:	
+ 1661:	   GFX_FLOAT fl_cur_angle  = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;angle, p_cur_per);
+ 1662:	   GFX_FLOAT fl_prev_angle = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;angle, p_pre_per);
+ 1663:	
+ 1664:	   fl_cur_angle -= fl_prev_angle;
+ 1665:	   fl_cur_angle *= 3.141592654f;
+ 1666:	   fl_cur_angle /=180.0f;
+ 1667:	
+ 1668:	   fl_matrix_1[0] = cosf(fl_cur_angle);
+ 1669:	   fl_matrix_1[1] = sinf(fl_cur_angle);
+ 1670:	   fl_matrix_1[2] = 0;
+ 1671:	   fl_matrix_1[3] = -fl_matrix_1[1];
+ 1672:	   fl_matrix_1[4] = fl_matrix_1[0];
+ 1673:	   fl_matrix_1[5] = 0;
+ 1674:	   fl_matrix_1[6] = 0;
+ 1675:	   fl_matrix_1[7] = 0;
+ 1676:	   fl_matrix_1[8] = 1;
+ 1677:	
+ 1678:	   while(fl_num_elements &gt; 0)
+ 1679:	   {
+ 1680:	      fl_num_elements--;
+ 1681:	      HMI_GFX_ANIM_MUL_MATRIX(*fl_elem_list_U32A, fl_matrix_1);
+ 1682:	      fl_elem_list_U32A++;
+ 1683:	   }
+ 1684:	}
+ 1685:	
+ 1686:	/*============================================================================
+ 1687:	** Function Name:    hmi_gfx_anim_engine_scale
+ 1688:	** Visibility:       global
+ 1689:	** Description:      Calculates the scale factor for the given step percentage
+ 1690:	**                   and applies to all elements in list.
+ 1691:	** Invocation:       By hmi_gfx_anim_engine  
+ 1692:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1693:	**                   previous step percentage.  
+ 1694:	**                   Out : Applies calculated factor to all elements in list
+ 1695:	** Critical Section: None.
+ 1696:	** Created:          27-Nov-2012 by EMANOJ1
+ 1697:	** Updated:          10-Jul-2013 by EMANOJ1
+ 1698:	**==========================================================================*/
+ 1699:	static void hmi_gfx_anim_engine_scale(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1700:	{
+ 1701:	   GFX_ANIM_SCALE_T const * fl_data = p_tdata-&gt;val.scale;
+ 1702:	   UINT32                   fl_num_elements   = p_tdata-&gt;num_elements;
+ 1703:	   UINT32 const           * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1704:	   GFX_FLOAT         fl_matrix_1[9];
+ 1705:	   GFX_FLOAT const * fl_cur_matrix; 
+ 1706:	   GFX_FLOAT         fl_cur_scale_incr = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;scale, p_cur_per);
+ 1707:	   GFX_FLOAT         fl_pre_scale_incr = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;scale, p_pre_per);
+ 1708:	
+ 1709:	   fl_cur_scale_incr -= fl_pre_scale_incr;
+ 1710:	   
+ 1711:	   fl_matrix_1[0] = (1.0f + fl_cur_scale_incr);
+ 1712:	   fl_matrix_1[1] = 0;
+ 1713:	   fl_matrix_1[2] = 0;
+ 1714:	
+ 1715:	   fl_matrix_1[3] = 0;
+ 1716:	   fl_matrix_1[4] = fl_matrix_1[0];
+ 1717:	   fl_matrix_1[5] = 0;
+ 1718:	
+ 1719:	   fl_matrix_1[6] = 0;
+ 1720:	   fl_matrix_1[7] = 0;
+ 1721:	   fl_matrix_1[8] = 1;
+ 1722:	
+ 1723:	   while(fl_num_elements &gt; 0)
+ 1724:	   {
+ 1725:	      fl_num_elements--;
+ 1726:	      fl_cur_matrix = HMI_GFX_ANIM_GET_MATRIX(*fl_elem_list_U32A);
+ 1727:	      if(fl_cur_matrix!= GFX_ANIM02_NULL_PTR)
+ 1728:	      {
+ 1729:	         /*
+ 1730:	         ** Reset the matrix and then multiply with the scale transform
+ 1731:	         */
+ 1732:	         fl_matrix_1[0] = (fl_cur_matrix[0] + fl_cur_scale_incr);
+ 1733:	         fl_matrix_1[1] = fl_cur_matrix[1];
+ 1734:	         fl_matrix_1[2] = fl_cur_matrix[2];
+ 1735:	         fl_matrix_1[3] = fl_cur_matrix[3];
+ 1736:	         fl_matrix_1[4] = (fl_cur_matrix[4] + fl_cur_scale_incr);
+ 1737:	         fl_matrix_1[5] = fl_cur_matrix[5];
+ 1738:	         fl_matrix_1[6] = fl_cur_matrix[6];
+ 1739:	         fl_matrix_1[7] = fl_cur_matrix[7];
+ 1740:	         fl_matrix_1[8] = fl_cur_matrix[8];
+ 1741:	         HMI_GFX_ANIM_SET_MATRIX(*fl_elem_list_U32A, fl_matrix_1);
+ 1742:	      }
+ 1743:	      fl_elem_list_U32A++;
+ 1744:	   }
+ 1745:	}
+ 1746:	
+ 1747:	/*============================================================================
+ 1748:	** Function Name:    hmi_gfx_anim_engine_transform
+ 1749:	** Visibility:       global
+ 1750:	** Description:      Calculates the transform factor for the given step percentage
+ 1751:	**                   and applies to all elements in list.
+ 1752:	** Invocation:       By hmi_gfx_anim_engine  
+ 1753:	** Inputs/Outputs:   In : Pointer to anim type data, current step percentage    and
+ 1754:	**                   previous step percentage.  
+ 1755:	**                   Out : Applies calculated factor to all elements in list
+ 1756:	** Critical Section: None.
+ 1757:	** Created:          27-Nov-2012 by EMANOJ1
+ 1758:	** Updated:          10-Jul-2013 by EMANOJ1
+ 1759:	**==========================================================================*/
+ 1760:	static void hmi_gfx_anim_engine_transform(GFX_ANIM_TYPES_DEF_T const * p_tdata, UINT32 p_cur_per, UINT32 p_pre_per)
+ 1761:	{
+ 1762:	   GFX_ANIM_TRANSFORM_T const * fl_data = p_tdata-&gt;val.transform;
+ 1763:	   UINT32                       fl_num_elements   = p_tdata-&gt;num_elements;
+ 1764:	   UINT32 const               * fl_elem_list_U32A = p_tdata-&gt;elem_list;
+ 1765:	   GFX_FLOAT                        fl_next_matrix[9];
+ 1766:	   GFX_FLOAT const                * fl_cur_matrix;
+ 1767:	   UINT32 i;
+ 1768:	   GFX_FLOAT                        fl_cur_value;
+ 1769:	   GFX_FLOAT                        fl_pre_value;
+ 1770:	
+ 1771:	   while(fl_num_elements &gt; 0)
+ 1772:	   {
+ 1773:	      fl_num_elements--;
+ 1774:	      /*
+ 1775:	      ** Read the default matrix for the element and find the
+ 1776:	      ** new matrix by interpolating it with fl_data-&gt;matrix
+ 1777:	      ** load the new matrix to elements animation property
+ 1778:	      */
+ 1779:	      fl_cur_matrix = HMI_GFX_ANIM_GET_MATRIX(*fl_elem_list_U32A);
+ 1780:	      if(fl_cur_matrix != GFX_ANIM02_NULL_PTR)
+ 1781:	      {
+ 1782:	         for (i=0; i &lt; 9; i++)
+ 1783:	         {
+ 1784:	            fl_next_matrix[i] = fl_cur_matrix[i];
+ 1785:	            if(fl_data-&gt;matrix[i] != 0)
+ 1786:	            {
+ 1787:	               fl_cur_value = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;matrix[i], p_cur_per);
+ 1788:	               fl_pre_value = hmi_gfx_anim_engine_find_fdelta(0, fl_data-&gt;matrix[i], p_pre_per);
+ 1789:	               fl_cur_value-= fl_pre_value;
+ 1790:	               fl_next_matrix[i] += fl_cur_value;
+ 1791:	            }
+ 1792:	         }
+ 1793:	         HMI_GFX_ANIM_SET_MATRIX(*fl_elem_list_U32A, fl_next_matrix);
+ 1794:	      }
+ 1795:	      fl_elem_list_U32A++;
+ 1796:	   }
+ 1797:	}
+ 1798:	#endif /* #if defined(GFX_MGR02_OPEN_VG) */
+ 1799:	
+ 1800:	#ifdef GFX_DYN_DATA_ANIMATIONS
+ 1801:	/*============================================================================
+ 1802:	** Function Name:    hmi_gfx_anim_engine_calculate_dduration
+ 1803:	** Visibility:       local
+ 1804:	** Description:      Calculates the duration required for dynamic data animations
+ 1805:	**                   based on the default duration/offset and the current offset
+ 1806:	**                   Dynamic data animations are supported only for MAL for the
+ 1807:	**                   moment.
+ 1808:	** Invocation:       By hmi_gfx_anim_engine_run  
+ 1809:	** Inputs/Outputs:   
+ 1810:	** Critical Section: None.
+ 1811:	** Created:          30-Apr-2013 by EMANOJ1
+ 1812:	** Updated:          30-Apr-2013 by EMANOJ1
+ 1813:	**==========================================================================*/
+ 1814:	static UINT32 hmi_gfx_anim_engine_calculate_dduration(GFX_ANIM_CONTROL_T * p_anim_ctrl_SP, UINT32 p_anim_duration)
+ 1815:	{
+ 1816:	   SINT32 fl_cdst_x;
+ 1817:	   SINT32 fl_cdst_y;
+ 1818:	   SINT32 fl_ddst_x = 0;
+ 1819:	   SINT32 fl_ddst_y = 0;
+ 1820:	   UINT32 fl_valid_type = (UINT32)TRUE;
+ 1821:	
+ 1822:	   if(p_anim_ctrl_SP-&gt;types_sp-&gt;type == ANIM_TYPE_MAL)
+ 1823:	   {
+ 1824:	      GFX_ANIM_MAL_DYN_T const * fl_data = p_anim_ctrl_SP-&gt;types_sp-&gt;val.dyn_mal;
+ 1825:	      fl_cdst_x = fl_data-&gt;cur_val-&gt;end.x;
+ 1826:	      fl_cdst_y = fl_data-&gt;cur_val-&gt;end.y;
+ 1827:	      fl_ddst_x = fl_data-&gt;def_val.end.x;
+ 1828:	      fl_ddst_y = fl_data-&gt;def_val.end.y;
+ 1829:	   }
+ 1830:	   else if(p_anim_ctrl_SP-&gt;types_sp-&gt;type == ANIM_TYPE_AREA)
+ 1831:	   {
+ 1832:	      GFX_ANIM_AREA_DYN_T const * fl_data = p_anim_ctrl_SP-&gt;types_sp-&gt;val.dyn_area;
+ 1833:	      fl_cdst_x = (fl_data-&gt;cur_val-&gt;end.x-fl_data-&gt;cur_val-&gt;end.w);
+ 1834:	      fl_cdst_y = (fl_data-&gt;cur_val-&gt;end.y-fl_data-&gt;cur_val-&gt;end.h);
+ 1835:	      fl_ddst_x = (fl_data-&gt;def_val.end.x-fl_data-&gt;def_val.end.w);
+ 1836:	      fl_ddst_y = (fl_data-&gt;def_val.end.y-fl_data-&gt;def_val.end.h);
+ 1837:	   }
+ 1838:	   else
+ 1839:	   {
+ 1840:	      fl_cdst_x     = 0;
+ 1841:	      fl_cdst_y     = 0;
+ 1842:	      fl_valid_type = (UINT32)FALSE;
+ 1843:	   }
+ 1844:	   if(fl_cdst_x &lt; 0)
+ 1845:	   {
+ 1846:	       fl_cdst_x = -fl_cdst_x;
+ 1847:	   }
+ 1848:	   if(fl_cdst_y &lt; 0)
+ 1849:	   {
+ 1850:	       fl_cdst_y = -fl_cdst_y;
+ 1851:	   }
+ 1852:	   if(fl_ddst_x &lt; 0)
+ 1853:	   {
+ 1854:	       fl_ddst_x = -fl_ddst_x;
+ 1855:	   }
+ 1856:	   if(fl_ddst_y &lt; 0)
+ 1857:	   {
+ 1858:	       fl_ddst_y = -fl_ddst_y;
+ 1859:	   }
+ 1860:	   if((fl_cdst_x != 0) || (fl_cdst_y != 0))
+ 1861:	   {
+ 1862:	      SINT32 fl_cur_area;
+ 1863:	
+ 1864:	      fl_cdst_x = (fl_ddst_x-fl_cdst_x);
+ 1865:	      fl_cdst_y = (fl_ddst_y-fl_cdst_y);
+ 1866:	      
+ 1867:	      if(fl_cdst_x == 0)
+ 1868:	      {
+ 1869:	         fl_cur_area = fl_cdst_y;
+ 1870:	      }
+ 1871:	      else if(fl_cdst_y == 0)
+ 1872:	      {
+ 1873:	         fl_cur_area = fl_cdst_x;
+ 1874:	      }
+ 1875:	      else
+ 1876:	      {
+ 1877:	         fl_cur_area = (fl_cdst_x * fl_cdst_y);
+ 1878:	      }
+ 1879:	
+ 1880:	      if((fl_ddst_x != 0) || (fl_ddst_y != 0))
+ 1881:	      {
+ 1882:	         SINT32 fl_def_area;
+ 1883:	         GFX_FLOAT  fl_duration;
+ 1884:	
+ 1885:	         if(fl_ddst_x == 0)
+ 1886:	         {
+ 1887:	            fl_def_area = fl_ddst_y;
+ 1888:	         }
+ 1889:	         else if(fl_ddst_y == 0)
+ 1890:	         {
+ 1891:	            fl_def_area = fl_ddst_x;
+ 1892:	         }
+ 1893:	         else
+ 1894:	         {
+ 1895:	            fl_def_area = (fl_ddst_x * fl_ddst_y);
+ 1896:	         }
+ 1897:	         
+ 1898:	         fl_duration  = (GFX_FLOAT)(p_anim_duration);
+ 1899:	         fl_duration /= (GFX_FLOAT)(fl_def_area);
+ 1900:	         fl_duration += 0.5f; /* Add the rounding value */
+ 1901:	         fl_duration *= (GFX_FLOAT)(fl_cur_area);
+ 1902:	
+ 1903:	         if(fl_duration &lt; 0)
+ 1904:	         {
+ 1905:	            fl_duration = (-fl_duration);
+ 1906:	         }
+ 1907:	         fl_duration = ((GFX_FLOAT)p_anim_duration-fl_duration);
+ 1908:	         if(fl_duration &lt; 0)
+ 1909:	         {
+ 1910:	            p_anim_duration = 0;
+ 1911:	         }
+ 1912:	         else
+ 1913:	         {
+ 1914:	            p_anim_duration = (UINT32)(fl_duration);
+ 1915:	         }
+ 1916:	      }
+ 1917:	      else
+ 1918:	      {
+ 1919:	         p_anim_duration = 0;
+ 1920:	      }
+ 1921:	      if(p_anim_duration == 0)
+ 1922:	      {
+ 1923:	         p_anim_duration = 1;
+ 1924:	      }
+ 1925:	   }
+ 1926:	   else if(fl_valid_type != (UINT32)FALSE)
+ 1927:	   {
+ 1928:	      p_anim_duration = 0;
+ 1929:	   }
+ 1930:	   else
+ 1931:	   {
+ 1932:	   }
+ 1933:	   return(p_anim_duration);
+ 1934:	}
+ 1935:	#endif /* #ifdef GFX_DYN_DATA_ANIMATIONS */
+ 1936:	
+ 1937:	/*============================================================================
+ 1938:	** Function Name:    hmi_gfx_anim_get_client_id
+ 1939:	** Visibility:       global
+ 1940:	** Description:      Get the client of a running animation
+ 1941:	** Invocation:       By Application
+ 1942:	** Inputs/Outputs:   In :*p_client_id  - Pointer to UINT32 to store the Client id
+ 1943:	**                        p_anim_id    - Animation Id for which client Id to be
+ 1944:	**                                       read
+ 1945:	**                   Out : Client id is written in to *p_client_id and returns TRUE
+ 1946:	**                         if p_anim_id is valid and the state of the animation is 
+ 1947:	**                         GFX_ANIM_STATE_RUNNING - if running
+ 1948:	**                         GFX_ANIM_STATE_PAUSED  - if paused
+ 1949:	**                         Else returns FALSE and nothing gets written to *p_client_id
+ 1950:	**
+ 1951:	** Critical Section: None.
+ 1952:	** Created:          24-Mar-2014 by EMANOJ1
+ 1953:	** Updated:          24-Mar-2014 by EMANOJ1
+ 1954:	**==========================================================================*/
+ 1955:	UINT32 hmi_gfx_anim_get_client_id(UINT32 p_anim_id, UINT32 * p_client_id)
+ 1956:	{
+ 1957:	   UINT32 fl_ret_status = (UINT32)FALSE;
+ 1958:	   if((p_anim_id &lt; (UINT32)GFX_NUM_ANIMATIONS) &amp;&amp; (p_client_id != GFX_ANIM02_NULL_PTR))
+ 1959:	   {
+ 1960:	      GFX_ANIM_FLAGS_T * fl_anim_flags_SAP = &amp;l_anim_flags_SA[p_anim_id];
+ 1961:	      if((fl_anim_flags_SAP-&gt;state == GFX_ANIM_STATE_RUNNING) ||
+ 1962:	         (fl_anim_flags_SAP-&gt;state == GFX_ANIM_STATE_PAUSED))
+ 1963:	      {
+ 1964:	         *p_client_id  = l_anim_client_id_U16A[p_anim_id];
+ 1965:	         fl_ret_status = (UINT32)TRUE;
+ 1966:	      }
+ 1967:	   }
+ 1968:	   return(fl_ret_status);
+ 1969:	}
+ 1970:	/*============================================================================
+ 1971:	** Function Name:    hmi_gfx_anim_get_current_anim_id
+ 1972:	** Visibility:       global
+ 1973:	** Description:      Get the running animation id
+ 1974:	** Invocation:       By Application
+ 1975:	** Inputs/Outputs:   None.
+ 1976:	**                   current anim ID UINT32
+ 1977:	**                   
+ 1978:	** Critical Section: None.
+ 1979:	** Created:          
+ 1980:	** Updated:          
+ 1981:	**==========================================================================*/
+ 1982:	UINT32 hmi_gfx_anim_get_current_anim_id(void)
+ 1983:	{
+ 1984:	   return(l_current_anim_id_U32);
+ 1985:	}
+ 1986:	#if defined(GFX_ANIM_DLAYOUT_ENABLED)
+ 1987:	/*============================================================================
+ 1988:	** Function Name:    hmi_gfx_anim_engine_set_layout_selection
+ 1989:	** Visibility:       global
+ 1990:	** Description:      update to Animation core the selected GFX Animation Layout ID
+ 1991:	** Invocation:       GFX MGR02
+ 1992:	** Inputs/Outputs:   UINT8 p_layout_id.
+ 1993:	** Critical Section: None.
+ 1994:	** Created:          26-JUL-2016 by CMUTHUSA
+ 1995:	** Updated:          26-JUL-2016 by CMUTHUSA          
+ 1996:	**==========================================================================*/
+ 1997:	void hmi_gfx_anim_engine_set_layout_selection(UINT8 p_layout_id)
+ 1998:	{
+ 1999:	    l_selected_anim_layout_U8=p_layout_id;  
+ 2000:	}
+ 2001:	#endif /* #if defined(GFX_ANIM_DLAYOUT_ENABLED) */
+ 2002:	#endif /* #if GFX_NUM_ANIMATIONS &gt; 0 */
+ 2003:	
+ 2004:	/*============================================================================
+ 2005:	**
+ 2006:	**============================================================================
+ 2007:	** C M S    R E V I S I O N    N O T E S
+ 2008:	**============================================================================
+ 2009:	**
+ 2010:	** For each change to this file, be sure to record:
+ 2011:	** 1.  Who made the change and when the change was made.
+ 2012:	** 2.  Why the change was made and the intended result.
+ 2013:	**
+ 2014:	** CMS Rev #        Date         By
+ 2015:	** CMS Rev X.X      mm/dd/yy     CDSID
+ 2016:	**
+ 2017:	**============================================================================
+ 2018:	** CMS Rev 1.25      26-Jul-2016    CMUTHUSA
+ 2019:	** 642213: Coding and implementation in GDT simulation for Arabic Design Layout support in gfx mgr 02.
+ 2020:	**
+ 2021:	** CMS Rev 1.24     08-JULY-16    APERUMAL             RTC: 639042
+ 2022:	** Porsche Misra warning Fix
+ 2023:	**
+ 2024:	** CMS Rev 1.23     01-OCT-15    APERUMAL             RTC: 434948
+ 2025:	** Fixed Compiler warning for Porsche
+ 2026:	**
+ 2027:	** CMS Rev 1.22     24-SEP-15    ADEVI             RTC: 368734
+ 2028:	** Interface hmi_gfx_anim_get_current_anim_id added to get current anim id.
+ 2029:	**
+ 2030:	** CMS Rev 1.21     24-JUL-15    ARAJASE2
+ 2031:	** Compiler warning fix for W207. GDT tool also changed for this fix.
+ 2032:	**
+ 2033:	** CMS Rev 1.20     10-FEB-15    KKUBENDI
+ 2034:	** Compiler warning fix for Honda THAA.
+ 2035:	**
+ 2036:	** CMS Rev 1.19     06-oct-14    SSIGAMAN
+ 2037:	** The conditional compilation macro for GFX_MGR02_AMBER is added.
+ 2038:	** 
+ 2039:	** CMS Rev 1.18     19-Apr-14    EMANOJ1
+ 2040:	** hmi_gfx_anim_engine_calculate_dduration updated to fix P42M coverity issue
+ 2041:	** 11090 and 11091
+ 2042:	**
+ 2043:	** CMS Rev 1.17     24-Mar-14    EMANOJ1
+ 2044:	** Added interface to read the client id of a running animation 
+ 2045:	** hmi_gfx_anim_get_client_id()
+ 2046:	**
+ 2047:	** CMS Rev 1.16     19-Aug-13    EMANOJ1
+ 2048:	** Type in hmi_gfx_anim_engine_map function fixed which was using the 
+ 2049:	** fl_cur_index insted of fl_pre_index
+ 2050:	**
+ 2051:	** CMS Rev 1.15     16-Aug-13    EMANOJ1
+ 2052:	** Animations not running after execution of a goto frame when dynamic data 
+ 2053:	** animations are present issue is fixed. The "fl_all_anim_done" flag was not 
+ 2054:	** updated for goto animation case and was causing the animation to stop.
+ 2055:	**
+ 2056:	** CMS Rev 1.14     26-Jul-13    EMANOJ1
+ 2057:	** Dynamic MAL animation getting compleated soon issue fix. 
+ 2058:	** hmi_gfx_anim_engine_calculate_ddurationupdated to work with only positive 
+ 2059:	** values. Updated rounding to be done immediately after division.
+ 2060:	**
+ 2061:	** CMS Rev 1.13     10-Jul-13    EMANOJ1
+ 2062:	** Updated hmi_gfx_anim_engine_scale &amp; hmi_gfx_anim_engine_transform also offset
+ 2063:	** based from current matrix rather than from default matrix. This is to allow
+ 2064:	** application to scale up and down in a same animation sequence. In earlier 
+ 2065:	** implementation the scale was done with default matrix always so if the 
+ 2066:	** scale up happens and followed by a scale down, the actual expectation was 
+ 2067:	** that the after the scale up animation the object will remain in the scaled
+ 2068:	** up position, and the scale down will bring it back to original state. But
+ 2069:	** since we were operating with default matrix it wasn't happening this way.
+ 2070:	**
+ 2071:	** CMS Rev 1.12     19-Jun-13    EMANOJ1
+ 2072:	** Updated to add dynamic AREA animation support for P552. Updated 
+ 2073:	** hmi_gfx_anim_engine_calculate_dduration use float to avoid overflow while
+ 2074:	** multiplications and to calculate time for the area moved rather than the
+ 2075:	** area available after move.
+ 2076:	** Updated hmi_gfx_anim_command to invoke the frame callback when this function
+ 2077:	** terminates an already running animation. This is to fix an issue noted in
+ 2078:	** TVM where the frame handler was doing some action on end of frame status
+ 2079:	** and before the animation ends normally the hmi_gfx_anim_command invoked by
+ 2080:	** view manager terminated it and the frame call back with end of frame did
+ 2081:	** not get called and application failed to take the end of frame action.
+ 2082:	** Fixed anim frame counter overflow, if application returns 0xFF from the goto
+ 2083:	** callback handler.
+ 2084:	** Handled a case where dynamic option is set to an unsupported type - in
+ 2085:	** this case the duration is returned as is instead of returning 0
+ 2086:	**
+ 2087:	** CMS Rev 1.11     11-Jun-13    EMANOJ1
+ 2088:	** Updated to fix the delay of one frame after execution of a goto frame
+ 2089:	** by introducing a while loop to run the frame selected by goto in the 
+ 2090:	** same cycle itself.
+ 2091:	**
+ 2092:	** CMS Rev 1.10     17-May-13    EMANOJ1
+ 2093:	** Fixed an issue reported by jerome where an animation doesn't run if the value
+ 2094:	** is too small for a dynamic MAL animation. The cause was that the duration was 
+ 2095:	** calculated to a very low value which resulted in calculation of &lt; a frame 
+ 2096:	** needed to complete the animation and therefore the logic computed the 
+ 2097:	** current and previous % to 100% and therefore no animation happened because 
+ 2098:	** we the value says we reached 100%. This is fixed by adjusting the duration
+ 2099:	** to atleast 1frame based on the rate configured for the animation.
+ 2100:	** Enhancement done to stop the dynamic MAL animation as soon as the target
+ 2101:	** is reached. Earlier it used to wait until the configured default duration 
+ 2102:	** is elapsed.
+ 2103:	** Roundup logic corrected in hmi_gfx_anim_engine_calculate_dduration()
+ 2104:	**
+ 2105:	** CMS Rev 1.9      06-May-13    EMANOJ1
+ 2106:	** Fixed hmi_gfx_anim_engine_transform animation to match GDT behaviour. 
+ 2107:	** The fl_data-&gt;matrix[] contains an offset value which should be added to
+ 2108:	** current matrix. So hmi_gfx_anim_engine_find_fdelta, first param should be 0
+ 2109:	**
+ 2110:	** CMS Rev 1.8      30-Apr-13    EMANOJ1
+ 2111:	** Added support for dynamic MAL animations by adding a new MAL data structure
+ 2112:	** GFX_ANIM_MAL_DYN_T to hold the dynamic MAL data and its default MAL data
+ 2113:	** Duration of the dynamic MAL animation is calculated by linearly interpolating
+ 2114:	** or extrapolating based on the "default duration" &amp; "default MAL data" ratio
+ 2115:	** And applying this ratio to user modified "dynamic MAL data". Added function
+ 2116:	** hmi_gfx_anim_engine_calculate_dduration to perform the duration calculation.
+ 2117:	** Updated GFX_ANIM_HANDLER_CB typedef to fix an issue with gcc compiler not
+ 2118:	** generating code for function invocation.
+ 2119:	**
+ 2120:	** CMS Rev 1.7      19-Apr-13    EMANOJ1
+ 2121:	** Replaced MAL, MAP, AREA, WdHt with a single property set macro call to simplyfy
+ 2122:	** implementation.
+ 2123:	**
+ 2124:	** CMS Rev 1.6      16-Apr-13    EMANOJ1
+ 2125:	** QAC 7.1 fixes
+ 2126:	**
+ 2127:	** CMS Rev 1.5      12-Apr-13    EMANOJ1
+ 2128:	** 1. MAL, AREA and WhHt handler fixed to use previous percentage in calculations
+ 2129:	** 2. Fixed an issue in hmi_gfx_anim_engine which passed the previously set 
+ 2130:	** fl_anim_ctrl_S pointer to hmi_gfx_anim_engine_stop which caused the incorrect
+ 2131:	** animation to get stopped when there are multiple animations running. To fix
+ 2132:	** passed animation id directly to hmi_gfx_anim_engine_stop
+ 2133:	**
+ 2134:	** CMS Rev 1.4      11-Apr-13    EMANOJ1
+ 2135:	** Start value removed for MAL, AREA and WhHt Animations as they are offset based 
+ 2136:	** and a start value doesn't matter. These animation functions updated accordingly
+ 2137:	**
+ 2138:	** CMS Rev 1.3      05-Apr-13    EMANOJ1
+ 2139:	** Added support for goto condition check functionality by calling an application
+ 2140:	** function. Added cur frame parameter to go to condition check function.
+ 2141:	** Fixed an issue with initialization of goto count variable. It is fixed to 
+ 2142:	** perform init only during the first run of frame for an animation sequence.
+ 2143:	**
+ 2144:	** CMS Rev 1.2      01-Apr-13    EMANOJ1
+ 2145:	** hmi_gfx_anim_engine_run updated to fix
+ 2146:	** 1. Overflow due to subtraction (p_anim_ctrl_SP-&gt;prev_elap_time_U32-fl_stime_U32)
+ 2147:	**    for a case where fl_stime_U32 was != 0 in which case, prev_elap_time_U32 was
+ 2148:	**    becoming &lt; fl_stime_U32 during the initial comparisons.
+ 2149:	** 2. Handled a case where duration == 0. When duration == 0, the cur and prev
+ 2150:	**    position needs to be passed first as 100, 0% and 100, 100% respectively
+ 2151:	**    to handle the XY, WH animations since they are handled as offset animations
+ 2152:	**    based on previous and current positions.
+ 2153:	**
+ 2154:	** CMS Rev 1.1      21-Mar-13    EMANOJ1
+ 2155:	** 1. Added support for OpenVG animations (Scale, Rotate and Transform).
+ 2156:	** 2. Call back support added to provide application ability to set up the data
+ 2157:	**    Callback will be called on start of every frame and on completion of all the
+ 2158:	**    frames.
+ 2159:	** 3. Issue with clamping to 100%, percentage was having a resolution of 0.1,
+ 2160:	**    i.e. 100 percentage is represented as 1000, so updated all the places
+ 2161:	**    where the percentage was assigned 100 to 1000.
+ 2162:	** 4. hmi_gfx_anim_engine_next_frame updated to make current frame to max frame
+ 2163:	**    count, when the direction is reverse and we are at frame 0.
+ 2164:	** 5. Issue fix in Alpha and color animation handlers
+ 2165:	** 6. l_anim_time_elapsed_U32A[] is initialized on every frame start becuase
+ 2166:	**    earlier it continued to get accumulated and the second frame was getting 
+ 2167:	**    shortened or not getting played.
+ 2168:	**
+ 2169:	** CMS Rev 1.0      27-Nov-12    EMANOJ1
+ 2170:	** Creation.
+ 2171:	**==========================================================================*/
+ 2172:	#ifdef  __cplusplus
+ 2173:	}
+ 2174:	#endif
+ 2175:	
+ 2176:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_gfx_anim_engine.c (2176 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0092             20
+     6           0.0005              1
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0097             21
+</PRE>
+
+</BODY></HTML>

@@ -1,0 +1,7 @@
+#ifndef gear_19_prnl_unselected_d_selected_warm_img_2b_h
+#define gear_19_prnl_unselected_d_selected_warm_img_2b_h
+namespace UX_SHMI_PLAYER
+{
+extern const uint8_t gear_19_prnl_unselected_d_selected_warm_img_2b[13935];
+}
+#endif

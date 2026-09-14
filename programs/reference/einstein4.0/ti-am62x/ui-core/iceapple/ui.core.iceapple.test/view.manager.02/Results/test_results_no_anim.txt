@@ -1,0 +1,7161 @@
+*******************************************************************
+TEST SEQUENCES FOR VALIDATING MULTI PRIORITY TRANSITION WITHOUT ANIMATIONS.
+*******************************************************************
+
+----------------------------------------
+Test1 : Initialization
+----------------------------------------
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_1]
+  BTN STS = [REPEAT1]
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+
+----------------------------------------
+Test1a : Freeze Button
+----------------------------------------
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+
+scr_unfreeze_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+
+----------------------------------------
+Test2 : Add the first state.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+ Animation status not active Priority 0 Layerid 0
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_PRESSED)
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_REPEAT1)
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [REPEAT1]
+hmi_lsh_post_button_event(ButtonID_0, LSH_BUTTON_INACTIVE_STATE)
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_PRESSED)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_REPEAT1)
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [REPEAT1]
+hmi_lsh_post_button_event(ButtonID_0, LSH_BUTTON_INACTIVE_STATE)
+
+hmi_lsh_default_button_event_handler
+  state = INVALID_STATE
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_PRESSED)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_REPEAT1)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [REPEAT1]
+hmi_lsh_post_button_event(ButtonID_0, LSH_BUTTON_INACTIVE_STATE)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+
+----------------------------------------
+Test3 : Add a high priority state and remove.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+
+----------------------------------------
+Test4 : Remove an intermediate priority state.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_add_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+
+----------------------------------------
+Test5 : Replace a high priority state with another.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+
+----------------------------------------
+Test6 : Replace Low priority existing state with a new state.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_add_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_add_state(GFX_SCR_12, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 3
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test7 : Removing itself on a Lost focus notification.
+----------------------------------------
+hmi_lsh_remove_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_add_state(GFX_SCR_11, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_11_focus
+  logic state = GFX_SCR_11
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_11
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_11_pres
+  logic state = GFX_SCR_11
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_add_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_11_focus
+  logic state = GFX_SCR_11
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+hmi_lsh_remove_state(S11, ANIM_MAX_ID)
+scr_all_scr
+  logic state = GFX_SCR_11
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_11_pres
+  logic state = GFX_SCR_11
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_11_focus
+  logic state = GFX_SCR_11
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_lsh_remove_state(S11, ANIM_MAX_ID)
+scr_all_scr
+  logic state = GFX_SCR_11
+  focus id = 4
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test8 : On S02 event handler activate S12 on 
+a ButtonID_POWER press. Now transfer ButtonID_POWER
+ to S12.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_02, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_02_focus
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_post_button_event(ButtonID_POWER, BUTTON_PRESSED)
+
+scr_02_ev
+  state = GFX_SCR_02
+  BTN ID = [ButtonID_POWER]
+  BTN STS = [PRESSED]
+hmi_lsh_add_state(GFX_SCR_12, ANIM_MAX_ID)
+hmi_lsh_remap_button_events(ButtonID_POWER, GFX_SCR_12)
+hmi_lsh_task()
+scr_02_focus
+  logic state = GFX_SCR_02
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_02
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_post_button_event(ButtonID_POWER, BUTTON_REPEAT1)
+
+scr_12_ev
+  state = GFX_SCR_12
+  BTN ID = [ButtonID_POWER]
+  BTN STS = [REPEAT1]
+hmi_lsh_post_button_event(ButtonID_POWER, LSH_BUTTON_INACTIVE_STATE)
+
+scr_12_ev
+  state = GFX_SCR_12
+  BTN ID = [ButtonID_POWER]
+  BTN STS = [RELEASED]
+
+----------------------------------------
+Test9 : Replace an intermediate priority state.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_20, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_20_focus
+  logic state = GFX_SCR_20
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_20
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_add_state(GFX_SCR_10, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_20_pres
+  logic state = GFX_SCR_20
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_10_focus
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_10
+  focus id = 6
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_10_pres
+  logic state = GFX_SCR_10
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+*******************************************************************
+TEST SEQUENCES FOR VALIDATING TRANSITION WITH ANIMATIONS.
+1. During Open Animation-|---Remove State|--- with animation       
+   Test1x                |               |                         
+                         |               |--- with out animation   
+                         |                                         
+                         |---Replace State|--- with animation      
+                         |                |                        
+                         |                |--- with out animation  
+                         |                                         
+                         |---Add same state with New Animation     
+                         |---Add same state with Same Animation    
+                         |---Add same state with No animation      
+                         |---Force Presentation                    
+
+2. During Run Animation--|---Remove State|--- with animation       
+   Test2x                |               |                         
+                         |               |--- with out animation   
+                         |                                         
+                         |---Replace State|--- with animation      
+                         |                |                        
+                         |                |--- with out animation  
+                         |                                         
+                         |---Add same state with New Animation     
+                         |---Add same state with Same Animation    
+                         |---Add same state with No animation      
+                         |---Force Presentation                    
+
+3. During Close Animation|---Remove State|--- with animation       
+   Test3x                |               |                         
+                         |               |--- with out animation   
+                         |                                         
+                         |---Replace State|--- with animation      
+                         |                |                        
+                         |                |--- with out animation  
+                         |                                         
+                         |---Add same state with New Animation     
+                         |---Add same state with Same Animation    
+                         |---Add same state with No animation      
+                         |---Force Presentation                    
+
+4. During Active State---|---Remove State|--- with animation       
+   Test4x                |               |                         
+                         |               |--- with out animation   
+                         |                                         
+                         |---Replace State|--- with animation      
+                         |                |                        
+                         |                |--- with out animation  
+                         |                                         
+                         |---Add same state with New Animation     
+                         |---Add same state with Same Animation    
+                         |---Add same state with No animation      
+                         |---Force Presentation                    
+
+5. During Inctive State--|---Remove State|--- with animation       
+   Test5x                |               |                         
+                         |               |--- with out animation   
+                         |                                         
+                         |---Replace State|--- with animation      
+                         |                |                        
+                         |                |--- with out animation  
+                         |                                         
+                         |---Add same state with New Animation     
+                         |---Add same state with Same Animation    
+                         |---Add same state with No animation      
+                         |---Force Presentation                    
+*******************************************************************
+
+----------------------------------------
+Test10 : Initialization, Open Anim Normal seq
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+ Animation status not active Priority 0 Layerid 0
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+ Animation status not active Priority 0 Layerid 0
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+ Animation status not active Priority 0 Layerid 0
+
+----------------------------------------
+Test11 : Open Anim Normal seq with force presentation 
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_execute_presentation(GFX_SCR_00)
+
+----------------------------------------
+Test12 : Remove state with anim on Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test13 : Remove state with out anim on Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test14a : Replace state with anim on Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test14b : Replace state with anim on Open Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test15a : Replace state with out anim on Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test15b : Replace state with out anim on Open Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test16a : New animation during an Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test16b : New animation during an Open Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test17a : Force presentation during Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test17b : Force presentation during Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test17c : Force presentation during Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test18a : Same animation during an Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test18b : Same animation during an Open Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test19a : No animation during an Open Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test19b : No animation during an Open Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test20a : Remove state with anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test20b : Remove state with anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test21a : Remove state with out anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test21b : Remove state with out anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test22a : Replace state with anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+ Animation status not active Priority 0 Layerid 0
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+ Animation status not active Priority 0 Layerid 0
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+ Animation status not active Priority 0 Layerid 0
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+ Animation status not active Priority 0 Layerid 0
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test22b : Replace state with anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test23a : Replace state with out anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test23b : Replace state with out anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test24a : Add same state with same anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test24b : Add same state with same anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test25a : Add same state with new anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test25b : Add same state with new anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test26a : Add same state with no anim on Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test24b : Add same state with no anim on Run Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test25a : Force presentation during Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+
+----------------------------------------
+Test25b : Force presentation during Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test25c : Force presentation during Run Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test30a : Remove state with anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test30b : Remove state with anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test31a : Remove state with out anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test31b : Remove state with out anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test32a : Replace state with anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test32b : Replace state with anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test33a : Replace state with out anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+ Animation status not active Priority 0 Layerid 0
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+ Animation status not active Priority 0 Layerid 0
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test33b : Replace state with out anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test34a : Add same state with same anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test34b : Add same state with same anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test35a : Add same state with new anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test35b : Add same state with new anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test36a : Add same state with no anim on Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test34b : Add same state with no anim on Close Anim
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test35a : Force presentation during Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+
+----------------------------------------
+Test35b : Force presentation during Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test35c : Force presentation during Close Anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test40a : Remove state with anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test40b : Remove state with anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test41a : Remove state with out anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test41b : Remove state with out anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test42a : Replace state with anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test42b : Replace state with anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test43a : Replace state with out anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test43b : Replace state with out anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test44a : Add same state with same anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test44b : Add same state with same anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test45a : Add same state with new anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test45b : Add same state with new anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test46a : Add same state with no anim on Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test44b : Add same state with no anim on Active State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test45a : Force presentation during Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+
+----------------------------------------
+Test45b : Force presentation during Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test45c : Force presentation during Active State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test50a : Remove state with anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test50b : Remove state with anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test51a : Remove state with out anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test51b : Remove state with out anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test52a : Replace state with anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test52b : Replace state with anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, TEST_ANIM_2)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test53a : Replace state with out anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test53b : Replace state with out anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test54a : Add same state with same anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test54b : Add same state with same anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test55a : Add same state with new anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test55b : Add same state with new anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test56a : Add same state with no anim on Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test54b : Add same state with no anim on Inactive State
+(hmi_lsh_task executes before anim open completion)
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test55a : Force presentation during Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+
+----------------------------------------
+Test55b : Force presentation during Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_execute_presentation(GFX_SCR_00)
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test55c : Force presentation during Inactive State
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+
+----------------------------------------
+Test56 : Back to back Add/Remove (Usecase by W201 L3).
+----------------------------------------
+hmi_lsh_add_state_ext(GFX_SCR_00, ANIM_MAX_ID, 1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 1
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 1
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state_ext(GFX_SCR_00, ANIM_MAX_ID, 1)
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 1
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 1
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test57 : Remove state with anim on Open Anim and add a state without anim
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test58 : Add same priority screen.
+----------------------------------------
+hmi_lsh_add_state(GFX_SCR_02, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_02_focus
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state(GFX_SCR_02, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_02_pres
+  logic state = GFX_SCR_02
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_02_focus
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_02
+  focus id = 2
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_lsh_task()
+
+----------------------------------------
+Test59 : Add same priority screen.
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_add_state(GFX_SCR_12, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_task()
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_remove_state(GFX_SCR_12, ANIM_MAX_ID)
+hmi_lsh_add_state(GFX_SCR_21, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 7
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 7
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+scr_21_focus
+  logic state = GFX_SCR_21
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_21
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_21_pres
+  logic state = GFX_SCR_21
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+scr_12_pres
+  logic state = GFX_SCR_12
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_12_focus
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_12
+  focus id = 5
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_21_pres
+  logic state = GFX_SCR_21
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_lsh_task()
+scr_21_pres
+  logic state = GFX_SCR_21
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test60 : Remove Animation when another animation active 
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test61 : During Remove animation of a screen, add the screen with abort 
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_ABORT_ID)
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test62 : During Remove animation, add same priority another screen with abort 
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_ABORT_ID)
+hmi_lsh_task()
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+
+----------------------------------------
+Test63 : During Remove animation, remove same priority same screen with abort 
+
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_ABORT_ID)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test64 : hmi_lsh_inspect_screen_animation_status status check 
+
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+ Animation status not active 0 
+hmi_lsh_add_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_1)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+ Animation status not active 0 
+hmi_lsh_remove_state(GFX_SCR_00, GFX_NEW_ANIMATIONS_2)
+hmi_lsh_task()
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_remove_state(GFX_SCR_00, ANIM_ABORT_ID)
+hmi_lsh_task()
+hmi_anim01_periodic_task()
+hmi_anim01_periodic_task()
+hmi_lsh_task()
+
+----------------------------------------
+Test65 : freeze event will not happen only if gfx and logic active are  same 
+
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_PRESSED)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_anim01_periodic_task()
+hmi_lsh_post_button_event(ButtonID_0, LSH_BUTTON_INACTIVE_STATE)
+
+scr_unfreeze_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+
+----------------------------------------
+Test66 : freeze event will happen only if gfx and logic active are not same 
+
+----------------------------------------
+hmi_lsh_initialize()
+hmi_anim01_intialization()
+hmi_lsh_task()
+hmi_lsh_add_state(GFX_SCR_00, ANIM_MAX_ID)
+hmi_lsh_task()
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_lsh_post_button_event(ButtonID_0, BUTTON_PRESSED)
+
+scr_00_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [PRESSED]
+hmi_lsh_remove_state(GFX_SCR_00, TEST_ANIM_2)
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_add_state(GFX_SCR_01, ANIM_MAX_ID)
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS
+hmi_anim01_periodic_task()
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_REFRESH_STATUS
+hmi_anim01_periodic_task()
+hmi_lsh_post_button_event(ButtonID_0, LSH_BUTTON_INACTIVE_STATE)
+
+scr_unfreeze_ev
+  state = GFX_SCR_00
+  BTN ID = [ButtonID_0]
+  BTN STS = [RELEASED]
+scr_01_pres
+  logic state = GFX_SCR_01
+  FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+scr_01_focus
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_01
+  focus id = 1
+  client id = 255
+  FOCUS_STATUS
+   LSH_LOST_FOCUS_STATUS
+   LSH_DEACTIVATED_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_focus
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_all_scr
+  logic state = GFX_SCR_00
+  focus id = 0
+  client id = 255
+  FOCUS_STATUS
+   LSH_GOT_FOCUS_STATUS
+   LSH_ANIM_COMPLETE_STATUS
+scr_00_pres
+  logic state = GFX_SCR_00
+  FOCUS_STATUS
+   LSH_ACTIVATED_STATUS

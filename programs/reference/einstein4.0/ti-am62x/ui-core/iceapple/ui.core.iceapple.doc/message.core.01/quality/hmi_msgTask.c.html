@@ -1,0 +1,392 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_msgTask.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2010. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_msgTask.c
+   20:	**
+   21:	** Description:
+   22:	**
+   23:	** Organization:   Driver Information Software Section,
+   24:	**                 DI Core Engineering Department
+   25:	**
+   26:	**==========================================================================*/
+   27:	#define hmi_msgTask_C
+   28:	
+   29:	/*==========================================================================*/
+   30:	/*  I N C L U D E   F I L E S                                               */
+   31:	/*==========================================================================*/
+   32:	#include "system.h"
+   33:	#include "hmi_msgTask.h"
+   34:	#include "hmi_msgTask.cfg"
+   35:	
+   36:	/*==========================================================================*/
+   37:	/* I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S    */
+   38:	/*==========================================================================*/
+   39:	
+   40:	
+   41:	/*==========================================================================*/
+   42:	/* I N T E R N A L   F U N C T I O N   P R O T O T Y P E S                  */
+   43:	/*==========================================================================*/
+   44:	static void msg_TaskInitialise(void);
+   45:	
+   46:	/*==========================================================================*/
+   47:	/* M E M O R Y   A L L O C A T I O N                                        */
+   48:	/*==========================================================================*/
+   49:	static UINT32 msgStatus;
+   50:	static UINT32 msgStatusQualifier;
+   51:	
+   52:	/*==========================================================================*/
+   53:	/* E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S      */
+   54:	/*==========================================================================*/
+   55:	void hm_msg_KSColdInit(void)
+   56:	/*============================================================================
+   57:	**  Visibility:     Public (hm_msgTask.h)
+   58:	**----------------------------------------------------------------------------
+   59:	**  Description:    Initialisation of module following cold start. This function
+   60:	**                  is normally called from the scheduler cold init list.
+   61:	**
+   62:	**  Parameters:     None.
+   63:	**
+   64:	**  Returns:        None.
+   65:	**----------------------------------------------------------------------------
+   66:	** Created: AFERRIS2 07/Apr/2010
+   67:	**==========================================================================*/
+   68:	{
+   69:	    msg_ArbitratorInitialise();
+   70:	    msg_SequencerInitialise();
+   71:	    msg_StoreInitialise();
+   72:	    msg_TaskInitialise();
+   73:	}
+   74:	
+   75:	
+   76:	void hm_msg_KSWarmInit(void)
+   77:	/*============================================================================
+   78:	**  Visibility:     Public (hm_msgTask.h)
+   79:	**----------------------------------------------------------------------------
+   80:	**  Description:    Initialisation of module following warm start. This function
+   81:	**                  is normally called from the scheduler warm init list.
+   82:	**
+   83:	**  Parameters:     None.
+   84:	**
+   85:	**  Returns:        None.
+   86:	**----------------------------------------------------------------------------
+   87:	** Created: AFERRIS2 07/Apr/2010
+   88:	**==========================================================================*/
+   89:	{
+   90:	    /*--------------------------------------------------------------*/
+   91:	    /* Configure the initialisation routines that are to be invoked */
+   92:	    /* during warm init.                                            */
+   93:	    /*--------------------------------------------------------------*/
+   94:	    MSG_WARM_INIT();
+   95:	}
+   96:	
+   97:	
+   98:	void hm_msg_KSRRobin(void)
+   99:	/*============================================================================
+  100:	**  Visibility:     Public (hm_msgTask.h)
+  101:	**----------------------------------------------------------------------------
+  102:	**  Description:    Main module function.  This function is called by the
+  103:	**                  scheduler round-robin task list.
+  104:	**
+  105:	**  Parameters:     None.
+  106:	**
+  107:	**  Returns:        None.
+  108:	**----------------------------------------------------------------------------
+  109:	** Created: AFERRIS2 07/Apr/2010
+  110:	**==========================================================================*/
+  111:	{
+  112:	    UINT8 currentIgnitionState;
+  113:	    UINT32 mcStatus;
+  114:	
+  115:	    currentIgnitionState = MSG_GET_IGNITION_STATE();
+  116:	
+  117:	    msg_ArbitratorUpdate(currentIgnitionState);
+  118:	    msg_SequencerUpdate();
+  119:	    #ifdef HMI_MSG_ENABLE_NEW_MESSAGE_SEQ_QUEUE_TIMEOUT
+  120:	    msg_SequencerNewMsgQTimeoutUpdate();
+  121:	    #endif
+  122:	    #ifdef MSG_OLD_WRNG_REPETITION
+  123:	    msg_SequencerOldWrngRepUpdate();
+  124:	    #endif
+  125:	    #ifdef MSG_ACK_WRNG_REPETITION
+  126:	    msg_StorAckWrngRepUpdate();
+  127:	    #endif
+  128:	
+  129:	    /*--------------------------------------------------------------*/
+  130:	    /* Process module status if this is required.                   */
+  131:	    /*--------------------------------------------------------------*/
+  132:	    if (0UL != msgStatusQualifier)
+  133:	    {
+  134:	        (void)SIF_EXEC(hm_msg_GetStatus, mcStatus, msgStatusQualifier);
+  135:	        if (mcStatus != msgStatus)
+  136:	        {
+  137:	            /*------------------------------------------------------*/
+  138:	            /* Status has changed, so notify user...                */
+  139:	            /*------------------------------------------------------*/
+  140:	            MSG_STATUS_CHANGE(&amp;mcStatus, msgStatusQualifier);
+  141:	        }
+  142:	    }
+  143:	}
+  144:	
+  145:	
+  146:	void hm_msg_KSSleep(void)
+  147:	/*============================================================================
+  148:	**  Visibility:     Public (hm_msgTask.h)
+  149:	**----------------------------------------------------------------------------
+  150:	**  Description:    Initialisation of module in preparation for sleep. Called
+  151:	**                  from the scheduler sleep list
+  152:	**
+  153:	**  Parameters:     None.
+  154:	**
+  155:	**  Returns:        None.
+  156:	**----------------------------------------------------------------------------
+  157:	** Created: AFERRIS2 07/Apr/2010
+  158:	**==========================================================================*/
+  159:	{
+  160:	    /*--------------------------------------------------------------*/
+  161:	    /* Configure the initialisation routines that are to be invoked */
+  162:	    /* during sleep init.                                           */
+  163:	    /*--------------------------------------------------------------*/
+  164:	    MSG_SLEEP_INIT();
+  165:	}
+  166:	
+  167:	
+  168:	void hm_msg_KSWakeup(void)
+  169:	/*============================================================================
+  170:	**  Visibility:     Public (hm_msgTask.h)
+  171:	**----------------------------------------------------------------------------
+  172:	**  Description:    Initialisation of module following wakeup. Called
+  173:	**                  from the scheduler wakeup list
+  174:	**
+  175:	**  Parameters:     None.
+  176:	**
+  177:	**  Returns:        None.
+  178:	**----------------------------------------------------------------------------
+  179:	** Created: AFERRIS2 07/Apr/2010
+  180:	**==========================================================================*/
+  181:	{
+  182:	    /*--------------------------------------------------------------*/
+  183:	    /* Configure the initialisation routines that are to be invoked */
+  184:	    /* during wake up init.                                         */
+  185:	    /*--------------------------------------------------------------*/
+  186:	    MSG_WAKEUP_INIT();
+  187:	}
+  188:	
+  189:	
+  190:	BOOLEAN hm_msg_KSNvRamCheck(void)
+  191:	/*============================================================================
+  192:	**  Visibility:     Public (hm_msgTask.h)
+  193:	**----------------------------------------------------------------------------
+  194:	**  Description:    Indicates whether the module RAM variables contain valid
+  195:	**                  values. Called by the scheduler RAM check list
+  196:	**
+  197:	**  Parameters:     None.
+  198:	**
+  199:	**  Returns:        None.
+  200:	**----------------------------------------------------------------------------
+  201:	** Created: AFERRIS2 07/Apr/2010
+  202:	**==========================================================================*/
+  203:	{
+  204:	    return(TRUE);
+  205:	}
+  206:	
+  207:	
+  208:	U32SIF_STANDARD_INTERFACE(hm_msg_GetStatus)
+  209:	/*============================================================================
+  210:	**  Visibility:     Public (hm_msgTask.h)
+  211:	**----------------------------------------------------------------------------
+  212:	**  Description:    Get message category status.  This is called by the message
+  213:	**                  task whenever the message state is processed, but it can also
+  214:	**                  be called by the application when a specific status needs
+  215:	**                  to be checked.
+  216:	**
+  217:	**  Parameters:     *Data:      Returned Status
+  218:	**                  Qualifier:  Qualification data (see hmi_msgTask.h)
+  219:	**                      B0..B7:     Module selection
+  220:	**                      B8..B15     Options
+  221:	**                      B16..B31:   Threshold.
+  222:	**
+  223:	**  Returns:        sif_OK (always)
+  224:	**----------------------------------------------------------------------------
+  225:	** Created: AFERRIS2 20/Oct/2010
+  226:	**==========================================================================*/
+  227:	{
+  228:	    UINT32 seqStatus = 0;
+  229:	    UINT32 storStatus = 0;
+  230:	    UINT32 qualifierValue;
+  231:	    UINT32 Threshold;
+  232:	
+  233:	    /*----------------------------------------------------------------------*/
+  234:	    /* Get qualifier data (if valid).                                       */
+  235:	    /*----------------------------------------------------------------------*/
+  236:	    qualifierValue = SIF_GET_QUALIFIER();
+  237:	
+  238:	     /*-----------------------------------------------------------------*/
+  239:	     /* Latch data if requested, so that task can update status without */
+  240:	     /* further notification.                                           */
+  241:	     /*-----------------------------------------------------------------*/
+  242:	    if (TESTBIT(qualifierValue, MSG_CATEGORY_LATCH_QUALIFIER))
+  243:	    {
+  244:	        CLEARBIT(qualifierValue, MSG_CATEGORY_LATCH_QUALIFIER); /* ### QAC ERROR:3212 ### */
+  245:	        msgStatusQualifier = qualifierValue;
+  246:	    }
+  247:	    /*----------------------------------------------------------------------*/
+  248:	    /* Extract threshold from qualifier.                                    */
+  249:	    /*----------------------------------------------------------------------*/
+  250:	    Threshold = (qualifierValue &gt;&gt; (MSG_THRESHOLD_BITPOS));
+  251:	
+  252:	    /*----------------------------------------------------------------------*/
+  253:	    /* Only check if the caller has provided a valid pointer.               */
+  254:	    /*----------------------------------------------------------------------*/
+  255:	    if (SIF_ISVALID_DATA())
+  256:	    {
+  257:	        /*------------------------------------------------------------------*/
+  258:	        /* Check SEQ categories...                                          */
+  259:	        /*------------------------------------------------------------------*/
+  260:	        if (TESTBIT(qualifierValue, MSG_SEQUENCER_CATEGORY))
+  261:	        {
+  262:	            seqStatus = seq_GetCategories(Threshold);
+  263:	        }
+  264:	
+  265:	        /*------------------------------------------------------------------*/
+  266:	        /* Check STOR categories...                                         */
+  267:	        /*------------------------------------------------------------------*/
+  268:	        if (TESTBIT(qualifierValue, MSG_STORE_CATEGORY))
+  269:	        {
+  270:	            storStatus = stor_GetCategories(Threshold);
+  271:	        }
+  272:	
+  273:	        /*------------------------------------------------------------------*/
+  274:	        /* Combine result and pass to caller.                               */
+  275:	        /*------------------------------------------------------------------*/
+  276:	        SIF_SET_DATA(seqStatus | storStatus);
+  277:	    }
+  278:	
+  279:	    return sif_OK;
+  280:	}
+  281:	
+  282:	
+  283:	static void msg_TaskInitialise(void)
+  284:	/*============================================================================
+  285:	**  Visibility:     Private
+  286:	**----------------------------------------------------------------------------
+  287:	**  Description:    Initialisation of this module.
+  288:	**
+  289:	**  Parameters:     None.
+  290:	**
+  291:	**  Returns:        None.
+  292:	**----------------------------------------------------------------------------
+  293:	** Created: AFERRIS2 20/Oct/2010
+  294:	**==========================================================================*/
+  295:	{
+  296:	    msgStatus = 0UL;
+  297:	    msgStatusQualifier = (MSG_CATEGORY_THRESHOLD(MSG_DEFAULT_MODULE_THRESHOLD) |
+  298:	                             MSG_DEFAULT_MODULE_SELECTION);
+  299:	}
+  300:	
+  301:	
+  302:	/*==========================================================================*/
+  303:	/* R E V I S I O N    N O T E S                                             */
+  304:	/*==========================================================================*/
+  305:	/* For each change to this file, be sure to record:
+  306:	** 1.  Who made the change and when the change was made.
+  307:	** 2.  Why the change was made and the intended result.
+  308:	**==========================================================================*/
+  309:	
+  310:	/****************************************************************************
+  311:	**  Date  : 07/Apr/2010
+  312:	**  by    : AFERRIS2
+  313:	**  Ref   : None.
+  314:	**  Change: Initial version.
+  315:	**
+  316:	*****************************************************************************/
+  317:	
+  318:	/****************************************************************************
+  319:	**  Date: 06/May/2010     by: AFERRIS2        Ref: None.
+  320:	**  Change: 1.  Update task actions.
+  321:	**          2. Add wakeup action.
+  322:	**
+  323:	**  Checks: COMPILER - NO WARNINGS       QAC - NO WARNINGS
+  324:	*****************************************************************************/
+  325:	
+  326:	/****************************************************************************
+  327:	**  Date: 19/Oct/2010     by: AFERRIS2        Ref:
+  328:	**  Change: 1.  Add standard interface to check active message categories.
+  329:	**          2.  User-defined notification via MSG_STATUS_CHANGE() if any
+  330:	**              change detected.
+  331:	**  Checks: COMPILER - NO WARNINGS       QAC - 1 WARNING
+  332:	*****************************************************************************/
+  333:	
+  334:	/****************************************************************************
+  335:	**  Date: 25/Aug/2013     by: vsarava2        Ref: RTC 91916
+  336:	**  New warning Seq Q timeout implementation to support Honda requirements.
+  337:	*****************************************************************************/
+  338:	
+  339:	/****************************************************************************
+  340:	**  Date: 27/Dec/2013     by: adevi           Ref: RTC 91917
+  341:	**  Old &amp; Ack warning repetition implementation to support Honda requirements.
+  342:	*****************************************************************************/
+  343:	
+  344:	/****************************************************************************
+  345:	**  Date: 25/Jun/2014     by: adevi           Ref: Bug 196  , RTC 172041
+  346:	**  Initialisation routines of warm, wake up and sleep init made configurable .
+  347:	*****************************************************************************/
+  348:	
+  349:	/****************************************************************************
+  350:	**  Date: 29/Jun/2015     by: adevi        Ref: RTC 365702
+  351:	**  Change: QAC warnings resolved for Honda THAA
+  352:	*****************************************************************************/
+  353:	
+  354:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_msgTask.c (354 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0000              0
+     6           0.0000              0
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0000              0
+</PRE>
+
+</BODY></HTML>

@@ -1,0 +1,1106 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_view_manager_02.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*
+    2:	 * Stateflow code generation for chart:
+    3:	 *    hmi_view_manager_02/hmi_view_manager_02
+    4:	 * 
+    5:	 * Target Name                          : autocode
+    6:	 * Stateflow Version                    : 6.7.0.14.00.0.000001
+    7:	 * Date of code generation              : 03-Sep-2015 18:05:29
+    8:	 */
+    9:	
+   10:	/* Include files */
+   11:	#include "hmi_view_manager_02_autocode.h"
+   12:	#include "hmi_view_manager_02.h"
+   13:	
+   14:	/* Type Definitions */
+   15:	
+   16:	/* Named Constants */
+   17:	#define event_LSH_GFX_TICK_EV           (1U)
+   18:	#define event_LSH_ANIM_COMPLETE_EV      (4U)
+   19:	#define event_LSH_LOGIC_ADD_EV          (2U)
+   20:	#define event_LSH_LOGIC_REMOVE_EV       (0U)
+   21:	#define event_LSH_GFX_FORCE_PRESENTATION_EV (3U)
+   22:	#define event_LSH_GFX_CHECK_DEACTIVATION_EV (5U)
+   23:	#define IN_NO_ACTIVE_CHILD              (0)
+   24:	#define IN_VM_LOGIC_ACTIVE_ST           (1)
+   25:	#define IN_VM_LOGIC_INACTIVE_ST         (2)
+   26:	#define IN_VM_GFX_ACTIVE_ST             (1)
+   27:	#define IN_VM_GFX_NORMAL_RUN_ST         (1)
+   28:	#define IN_VM_GFX_STARTUP_ANIM_ST       (2)
+   29:	#define IN_VM_GFX_INACTIVE_ST           (3)
+   30:	#define IN_VM_GFX_ACTIVE_PRESENT_ST     (2)
+   31:	#define IN_VM_GFX_ACTIVE_ANIMATION_ST   (1)
+   32:	#define IN_VM_GFX_CLOSE_ANIM_ST         (2)
+   33:	
+   34:	/* Variable Declarations */
+   35:	
+   36:	/* Variable Definitions */
+   37:	
+   38:	/* Function Declarations */
+   39:	static void VM_LOGIC_ST(SFhmi_view_manager_02InstanceStruct *chartInstance);
+   40:	static void VM_PRESENTATION_ST(SFhmi_view_manager_02InstanceStruct
+   41:	 *chartInstance);
+   42:	static void VM_GFX_ACTIVE_ST(SFhmi_view_manager_02InstanceStruct *chartInstance);
+   43:	static void
+   44:	enter_internal_VM_GFX_NORMAL_RUN_ST(SFhmi_view_manager_02InstanceStruct
+   45:	 *chartInstance);
+   46:	
+   47:	/* Function Definitions */
+   48:	void initialize_hmi_view_manager_02(SFhmi_view_manager_02InstanceStruct
+   49:	 *chartInstance)
+   50:	{
+   51:	  uint8_T b_previousEvent;
+   52:	  chartInstance-&gt;is_active_VM_LOGIC_ST = 0U;
+</PRE>
+<A NAME="ERR_LINE_53"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   53:	  chartInstance-&gt;is_VM_LOGIC_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(53) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_54"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_54"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   54:	  chartInstance-&gt;is_active_VM_PERIODIC_FOCUS_MONITOR_ST = 0U;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(54) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_63"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   55:	  chartInstance-&gt;is_active_VM_PRESENTATION_ST = 0U;
+   56:	  chartInstance-&gt;is_VM_PRESENTATION_ST = 0U;
+   57:	  chartInstance-&gt;is_VM_GFX_ACTIVE_ST = 0U;
+   58:	  chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = 0U;
+   59:	  chartInstance-&gt;p_logic_req_state_id = MAX_uint16_T;
+   60:	  chartInstance-&gt;p_logic_req_anim_id = MAX_uint8_T;
+   61:	  chartInstance-&gt;l_logic_active_state_id = MAX_uint16_T;
+   62:	  chartInstance-&gt;l_logic_active_anim_id = MAX_uint8_T;
+</PRE>
+<A NAME="ERR_LINE_63"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   63:	  chartInstance-&gt;l_gfx_active_state_id = MAX_uint16_T;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(63) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_64"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_64"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   64:	  chartInstance-&gt;l_gfx_active_anim_id = MAX_uint8_T;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(64) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_70"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   65:	  chartInstance-&gt;l_gfx_deactivate_flag = 0U;
+   66:	  chartInstance-&gt;l_gfx_deactivate_anim = MAX_uint8_T;
+   67:	  chartInstance-&gt;l_gfx_prev_focus = 0U;
+   68:	  chartInstance-&gt;l_gfx_presentation_state = 0U;
+   69:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+</PRE>
+<A NAME="ERR_LINE_70"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   70:	  _sfEvent_hmi_view_manager_02_ = CALL_EVENT;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(70) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_597"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_71"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   71:	  if(chartInstance-&gt;is_active_VM_LOGIC_ST != 1) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(71) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_78"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(71) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_78"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   72:	    chartInstance-&gt;is_active_VM_LOGIC_ST = 1U;
+   73:	    /* 
+   74:	     ** Maintains the request from HMI logic
+   75:	     */
+   76:	  }
+   77:	  chartInstance-&gt;is_VM_LOGIC_ST = (uint8_T)IN_VM_LOGIC_INACTIVE_ST;
+</PRE>
+<A NAME="ERR_LINE_78"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   78:	  if(chartInstance-&gt;is_active_VM_PRESENTATION_ST != 1) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(78) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_84"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(78) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_84"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   79:	    chartInstance-&gt;is_active_VM_PRESENTATION_ST = 1U;
+   80:	    /* 
+   81:	     ** Maintains the graphics state
+   82:	     */
+   83:	  }
+</PRE>
+<A NAME="ERR_LINE_84"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   84:	  if(chartInstance-&gt;is_VM_PRESENTATION_ST != IN_VM_GFX_INACTIVE_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(84) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_372"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(84) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_372"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+   85:	    chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_INACTIVE_ST;
+   86:	    chartInstance-&gt;l_gfx_active_state_id = (uint16_T)LSH_ALL_VM_LOGIC_STATES;
+   87:	    chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+   88:	  }
+   89:	  chartInstance-&gt;is_active_VM_PERIODIC_FOCUS_MONITOR_ST = 1U;
+   90:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+   91:	}
+   92:	
+   93:	void hmi_view_manager_02(SFhmi_view_manager_02InstanceStruct *chartInstance)
+   94:	{
+   95:	  VM_LOGIC_ST(chartInstance);
+   96:	  VM_PRESENTATION_ST(chartInstance);
+   97:	  if((chartInstance-&gt;is_active_VM_PERIODIC_FOCUS_MONITOR_ST != 0) &amp;&amp;
+   98:	   ((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp; (!(
+   99:	      chartInstance-&gt;is_VM_PRESENTATION_ST == IN_VM_GFX_INACTIVE_ST)) &amp;&amp;
+</PRE>
+<A NAME="ERR_LINE_100"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  100:	    (hmi_lsh_get_focus_status(LSH_GET_STATE_ID(chartInstance-&gt;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3415.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(100) ++ WARNING ++: &lt;=7=(3415) Right hand operand of '&amp;&amp;' or '||' is an expression with possible side effects.</A></B><A HREF="#ERR_LINE_714"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  101:	       l_gfx_active_state_id)) == LSH_FOCUS_STATUS_INACTIVE))) {
+  102:	    hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  103:	     chartInstance-&gt;l_gfx_prev_focus);
+  104:	  }
+  105:	}
+  106:	
+  107:	static void VM_LOGIC_ST(SFhmi_view_manager_02InstanceStruct *chartInstance)
+  108:	{
+</PRE>
+<A NAME="ERR_LINE_109"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  109:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(109) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_217"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  110:	  if(chartInstance-&gt;is_active_VM_LOGIC_ST != 0) {
+  111:	    guard1 = false;
+  112:	    switch(chartInstance-&gt;is_VM_LOGIC_ST) {
+  113:	     case IN_VM_LOGIC_ACTIVE_ST:
+  114:	      if((_sfEvent_hmi_view_manager_02_ == event_LSH_LOGIC_REMOVE_EV) &amp;&amp;
+  115:	       (chartInstance-&gt;p_logic_req_state_id == chartInstance-&gt;
+  116:	        l_logic_active_state_id)) {
+  117:	        if(chartInstance-&gt;p_logic_req_state_id ==
+  118:	         chartInstance-&gt;l_gfx_active_state_id) {
+  119:	          chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)TRUE;
+  120:	          chartInstance-&gt;l_gfx_deactivate_anim =
+  121:	            chartInstance-&gt;p_logic_req_anim_id;
+  122:	          chartInstance-&gt;l_logic_active_state_id =
+  123:	            (uint16_T)LSH_ALL_VM_LOGIC_STATES;
+  124:	          chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  125:	          chartInstance-&gt;is_VM_LOGIC_ST = (uint8_T)IN_VM_LOGIC_INACTIVE_ST;
+  126:	        } else {
+  127:	          chartInstance-&gt;l_logic_active_state_id =
+  128:	            (uint16_T)LSH_ALL_VM_LOGIC_STATES;
+  129:	          chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  130:	          chartInstance-&gt;is_VM_LOGIC_ST = (uint8_T)IN_VM_LOGIC_INACTIVE_ST;
+  131:	        }
+</PRE>
+<A NAME="ERR_LINE_132"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  132:	      } else if((_sfEvent_hmi_view_manager_02_ == event_LSH_LOGIC_ADD_EV) &amp;&amp;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(132) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B><A HREF="#ERR_LINE_187"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  133:	       (chartInstance-&gt;p_logic_req_state_id &lt;
+  134:	        LSH_ALL_VM_LOGIC_STATES)) {
+  135:	        /*  New state is replacing current state  */
+  136:	        if(chartInstance-&gt;l_logic_active_state_id !=
+  137:	         chartInstance-&gt;p_logic_req_state_id) {
+  138:	          if((chartInstance-&gt;p_logic_req_state_id ==
+  139:	            chartInstance-&gt;l_gfx_active_state_id) &amp;&amp;
+  140:	           (!(chartInstance-&gt;is_VM_PRESENTATION_ST ==
+  141:	             IN_VM_GFX_CLOSE_ANIM_ST))) {
+  142:	            chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)FALSE;
+  143:	          } else {
+  144:	            /* 
+  145:	             ** active state is being presented by graphics so
+  146:	             ** need to deactivate it
+  147:	             */
+  148:	            if(chartInstance-&gt;l_logic_active_state_id ==
+  149:	             chartInstance-&gt;l_gfx_active_state_id) {
+  150:	              chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)TRUE;
+  151:	              chartInstance-&gt;l_gfx_deactivate_anim = (uint8_T)ANIM_MAX_ID;
+  152:	            } else {
+  153:	              /* 
+  154:	               ** active state is not being presented yet by graphics
+  155:	               ** so no deactivations required
+  156:	               */
+  157:	            }
+  158:	          }
+  159:	          guard1 = true;
+  160:	        } else {
+  161:	          /*  requested state is same as active state  */
+  162:	          if(chartInstance-&gt;l_gfx_active_anim_id == ANIM_MAX_ID) {
+  163:	#ifdef LSH_IGNORE_ANIM_REQUEST_DURING_ACTIVE_ANIM
+  164:	            chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  165:	#else
+  166:	            chartInstance-&gt;l_logic_active_anim_id =
+  167:	              chartInstance-&gt;p_logic_req_anim_id;
+  168:	#endif
+  169:	            if(chartInstance-&gt;l_logic_active_anim_id == ANIM_ABORT_ID) {
+  170:	              chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  171:	            }
+  172:	          } else {
+  173:	            /*  req state prev anim actively running  */
+  174:	            guard1 = true;
+  175:	          }
+  176:	        }
+  177:	      }
+  178:	      break;
+  179:	     case IN_VM_LOGIC_INACTIVE_ST:
+  180:	      if((_sfEvent_hmi_view_manager_02_ == event_LSH_LOGIC_ADD_EV) &amp;&amp;
+  181:	       (chartInstance-&gt;p_logic_req_state_id &lt; LSH_ALL_VM_LOGIC_STATES)) {
+  182:	        chartInstance-&gt;is_VM_LOGIC_ST = (uint8_T)IN_VM_LOGIC_ACTIVE_ST;
+  183:	        chartInstance-&gt;l_logic_active_state_id =
+  184:	          chartInstance-&gt;p_logic_req_state_id;
+  185:	        chartInstance-&gt;l_logic_active_anim_id =
+  186:	          chartInstance-&gt;p_logic_req_anim_id;
+</PRE>
+<A NAME="ERR_LINE_187"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  187:	      } else if((_sfEvent_hmi_view_manager_02_ == event_LSH_LOGIC_REMOVE_EV) &amp;&amp;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(187) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B><A HREF="#ERR_LINE_258"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  188:	       (chartInstance-&gt;p_logic_req_state_id == chartInstance-&gt;
+  189:	        l_gfx_active_state_id)) {
+  190:	        if(!(chartInstance-&gt;is_VM_PRESENTATION_ST == IN_VM_GFX_CLOSE_ANIM_ST)) {
+  191:	          chartInstance-&gt;l_gfx_deactivate_anim =
+  192:	            chartInstance-&gt;p_logic_req_anim_id;
+  193:	        } else if(chartInstance-&gt;p_logic_req_anim_id == ANIM_ABORT_ID) {
+  194:	          chartInstance-&gt;l_gfx_deactivate_anim =
+  195:	            chartInstance-&gt;p_logic_req_anim_id;
+  196:	        } else {
+  197:	          /*  Do Nothing
+  198:	             QAC 8.1.2 Fix */
+  199:	        }
+  200:	      }
+  201:	      break;
+  202:	     default:
+  203:	      chartInstance-&gt;is_VM_LOGIC_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  204:	      break;
+  205:	    }
+  206:	    if(guard1 == true) {
+  207:	      chartInstance-&gt;l_logic_active_state_id =
+  208:	        chartInstance-&gt;p_logic_req_state_id;
+  209:	      chartInstance-&gt;l_logic_active_anim_id = chartInstance-&gt;p_logic_req_anim_id;
+  210:	    }
+  211:	  }
+  212:	}
+  213:	
+  214:	static void VM_PRESENTATION_ST(SFhmi_view_manager_02InstanceStruct
+  215:	 *chartInstance)
+  216:	{
+</PRE>
+<A NAME="ERR_LINE_217"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  217:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(217) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_324"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  218:	  if(chartInstance-&gt;is_active_VM_PRESENTATION_ST != 0) {
+  219:	    guard1 = false;
+  220:	    switch(chartInstance-&gt;is_VM_PRESENTATION_ST) {
+  221:	     case IN_VM_GFX_ACTIVE_ST:
+  222:	      VM_GFX_ACTIVE_ST(chartInstance);
+  223:	      break;
+  224:	     case IN_VM_GFX_CLOSE_ANIM_ST:
+  225:	      if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  226:	       (chartInstance-&gt;l_gfx_deactivate_anim == ANIM_ABORT_ID)) {
+  227:	        hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  228:	         chartInstance-&gt;l_gfx_active_anim_id);
+  229:	        chartInstance-&gt;l_gfx_deactivate_anim = (uint8_T)ANIM_MAX_ID;
+  230:	        guard1 = true;
+  231:	      } else {
+  232:	        /*  animation completed and no state active  */
+  233:	        if(_sfEvent_hmi_view_manager_02_ == event_LSH_ANIM_COMPLETE_EV) {
+  234:	          guard1 = true;
+  235:	        }
+  236:	      }
+  237:	      break;
+  238:	     case IN_VM_GFX_INACTIVE_ST:
+  239:	      /*  Check if we have got a new logic state  */
+  240:	      if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  241:	       (chartInstance-&gt;l_logic_active_state_id &lt; LSH_ALL_VM_LOGIC_STATES)) {
+  242:	        chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_ACTIVE_ST;
+  243:	        chartInstance-&gt;l_gfx_prev_focus = 0U;
+  244:	        chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)FALSE;
+  245:	        hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  246:	         chartInstance-&gt;l_gfx_active_anim_id);
+  247:	        chartInstance-&gt;l_gfx_active_state_id =
+  248:	          chartInstance-&gt;l_logic_active_state_id;
+  249:	        chartInstance-&gt;l_gfx_active_anim_id =
+  250:	          chartInstance-&gt;l_logic_active_anim_id;
+  251:	        chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  252:	        chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_ACTIVATED_STATUS;
+  253:	        /*  no animations  */
+  254:	        if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  255:	          chartInstance-&gt;l_gfx_active_anim_id) == FALSE) {
+  256:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  257:	          enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+</PRE>
+<A NAME="ERR_LINE_258"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  258:	        } else if(chartInstance-&gt;is_VM_GFX_ACTIVE_ST !=
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(258) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B><A HREF="#ERR_LINE_305"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  259:	         IN_VM_GFX_STARTUP_ANIM_ST) {
+  260:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  261:	            (uint8_T)IN_VM_GFX_STARTUP_ANIM_ST;
+  262:	          hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  263:	           (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  264:	            LSH_ANIM_STARTED_STATUS));
+  265:	        }
+  266:	      }
+  267:	      break;
+  268:	     default:
+  269:	      chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  270:	      break;
+  271:	    }
+  272:	    if(guard1 == true) {
+  273:	      hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  274:	       LSH_DEACTIVATED_STATUS);
+  275:	      hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  276:	       (uint8_T)((int32_T)LSH_LOST_FOCUS_STATUS | (int32_T)
+  277:	        LSH_DEACTIVATED_STATUS | (int32_T)LSH_ANIM_COMPLETE_STATUS));
+  278:	      if(chartInstance-&gt;l_gfx_active_state_id !=
+  279:	       chartInstance-&gt;l_logic_active_state_id) {
+  280:	        hmi_lsh_freeze_button_events_ext(LSH_GET_STATE_ID(chartInstance-&gt;l_gfx_active_state_id),
+  281:	         LSH_GET_CLIENT_ID(chartInstance-&gt;
+  282:	          l_gfx_active_state_id));
+  283:	      }
+  284:	      /* 
+  285:	         if we come here via l_gfx_deactivate_flag != FALSE path
+  286:	         then check to see if there is an active state beccause
+  287:	         focus handler can add/remove states  */
+  288:	      if(chartInstance-&gt;l_logic_active_state_id &lt; LSH_ALL_VM_LOGIC_STATES) {
+  289:	        chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_ACTIVE_ST;
+  290:	        chartInstance-&gt;l_gfx_prev_focus = 0U;
+  291:	        chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)FALSE;
+  292:	        hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  293:	         chartInstance-&gt;l_gfx_active_anim_id);
+  294:	        chartInstance-&gt;l_gfx_active_state_id =
+  295:	          chartInstance-&gt;l_logic_active_state_id;
+  296:	        chartInstance-&gt;l_gfx_active_anim_id =
+  297:	          chartInstance-&gt;l_logic_active_anim_id;
+  298:	        chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  299:	        chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_ACTIVATED_STATUS;
+  300:	        /*  no animations  */
+  301:	        if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  302:	          chartInstance-&gt;l_gfx_active_anim_id) == FALSE) {
+  303:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  304:	          enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+</PRE>
+<A NAME="ERR_LINE_305"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  305:	        } else if(chartInstance-&gt;is_VM_GFX_ACTIVE_ST !=
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(305) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B><A HREF="#ERR_LINE_392"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  306:	         IN_VM_GFX_STARTUP_ANIM_ST) {
+  307:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  308:	            (uint8_T)IN_VM_GFX_STARTUP_ANIM_ST;
+  309:	          hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  310:	           (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  311:	            LSH_ANIM_STARTED_STATUS));
+  312:	        }
+  313:	      } else {
+  314:	        chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_INACTIVE_ST;
+  315:	        chartInstance-&gt;l_gfx_active_state_id = (uint16_T)LSH_ALL_VM_LOGIC_STATES;
+  316:	        chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  317:	      }
+  318:	    }
+  319:	  }
+  320:	}
+  321:	
+  322:	static void VM_GFX_ACTIVE_ST(SFhmi_view_manager_02InstanceStruct *chartInstance)
+  323:	{
+</PRE>
+<A NAME="ERR_LINE_324"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  324:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(324) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_325"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_325"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  325:	  boolean_T guard2 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(325) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_326"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_326"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  326:	  boolean_T guard3 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(326) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B><A HREF="#ERR_LINE_633"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  327:	  if(chartInstance-&gt;is_VM_PRESENTATION_ST == IN_VM_GFX_ACTIVE_ST) {
+  328:	    /* 
+  329:	     ** If the logic state has gone inactive or if the deactivation flag is set
+  330:	     ** then perform a deactivation. Perform the animation if requested
+  331:	     */
+  332:	    guard1 = false;
+  333:	    guard2 = false;
+  334:	    guard3 = false;
+  335:	    if(((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) ||
+  336:	      (_sfEvent_hmi_view_manager_02_ ==
+  337:	       event_LSH_GFX_CHECK_DEACTIVATION_EV) || (_sfEvent_hmi_view_manager_02_ ==
+  338:	       event_LSH_ANIM_COMPLETE_EV)) &amp;&amp; ((chartInstance-&gt;
+  339:	       l_logic_active_state_id == LSH_ALL_VM_LOGIC_STATES) ||
+  340:	      (chartInstance-&gt;l_gfx_deactivate_flag != FALSE))) {
+  341:	      hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  342:	       chartInstance-&gt;l_gfx_active_anim_id);
+  343:	      if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  344:	        chartInstance-&gt;l_gfx_deactivate_anim) != FALSE) {
+  345:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  346:	        chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  347:	        chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_CLOSE_ANIM_ST;
+  348:	        chartInstance-&gt;l_gfx_active_anim_id =
+  349:	          chartInstance-&gt;l_gfx_deactivate_anim;
+  350:	        chartInstance-&gt;l_gfx_deactivate_anim = (uint8_T)ANIM_MAX_ID;
+  351:	      } else {
+  352:	        /*  Animation not started  */
+  353:	        hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  354:	         LSH_DEACTIVATED_STATUS);
+  355:	        hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  356:	         (uint8_T)((int32_T)LSH_LOST_FOCUS_STATUS | (int32_T)
+  357:	          LSH_DEACTIVATED_STATUS | (int32_T)LSH_ANIM_COMPLETE_STATUS));
+  358:	        if(chartInstance-&gt;l_gfx_active_state_id !=
+  359:	         chartInstance-&gt;l_logic_active_state_id) {
+  360:	          hmi_lsh_freeze_button_events_ext(LSH_GET_STATE_ID(chartInstance-&gt;l_gfx_active_state_id),
+  361:	           LSH_GET_CLIENT_ID(chartInstance-&gt;
+  362:	            l_gfx_active_state_id));
+  363:	        }
+  364:	        /* 
+  365:	           if we come here via l_gfx_deactivate_flag != FALSE path
+  366:	           then check to see if there is an active state beccause
+  367:	           focus handler can add/remove states  */
+  368:	        if(chartInstance-&gt;l_logic_active_state_id &lt; LSH_ALL_VM_LOGIC_STATES) {
+  369:	          chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  370:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  371:	          chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+</PRE>
+<A NAME="ERR_LINE_372"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  372:	          if(chartInstance-&gt;is_VM_PRESENTATION_ST != IN_VM_GFX_ACTIVE_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(372) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_392"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(372) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_392"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  373:	            chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_ACTIVE_ST;
+  374:	            chartInstance-&gt;l_gfx_prev_focus = 0U;
+  375:	            chartInstance-&gt;l_gfx_deactivate_flag = (uint8_T)FALSE;
+  376:	          }
+  377:	          hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  378:	           chartInstance-&gt;l_gfx_active_anim_id);
+  379:	          chartInstance-&gt;l_gfx_active_state_id =
+  380:	            chartInstance-&gt;l_logic_active_state_id;
+  381:	          chartInstance-&gt;l_gfx_active_anim_id =
+  382:	            chartInstance-&gt;l_logic_active_anim_id;
+  383:	          chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  384:	          chartInstance-&gt;l_gfx_presentation_state =
+  385:	            (uint8_T)LSH_ACTIVATED_STATUS;
+  386:	          /*  no animations  */
+  387:	          if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  388:	            chartInstance-&gt;l_gfx_active_anim_id) == FALSE) {
+  389:	            chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  390:	              (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  391:	            enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+</PRE>
+<A NAME="ERR_LINE_392"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  392:	          } else if(chartInstance-&gt;is_VM_GFX_ACTIVE_ST !=
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(392) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B><A HREF="#ERR_LINE_518"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(392) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_450"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(392) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_450"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  393:	           IN_VM_GFX_STARTUP_ANIM_ST) {
+  394:	            chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  395:	              (uint8_T)IN_VM_GFX_STARTUP_ANIM_ST;
+  396:	            hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  397:	             (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  398:	              LSH_ANIM_STARTED_STATUS));
+  399:	          }
+  400:	        } else {
+  401:	          chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  402:	          chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  403:	          chartInstance-&gt;is_VM_PRESENTATION_ST = (uint8_T)IN_VM_GFX_INACTIVE_ST;
+  404:	          chartInstance-&gt;l_gfx_active_state_id =
+  405:	            (uint16_T)LSH_ALL_VM_LOGIC_STATES;
+  406:	          chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  407:	        }
+  408:	      }
+  409:	    } else if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  410:	     (chartInstance-&gt;l_gfx_active_state_id != chartInstance-&gt;
+  411:	      l_logic_active_state_id)) {
+  412:	      chartInstance-&gt;l_gfx_prev_focus = 0U;
+  413:	      hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  414:	       LSH_DEACTIVATED_STATUS);
+  415:	      hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  416:	       (uint8_T)((int32_T)LSH_LOST_FOCUS_STATUS | (int32_T)
+  417:	        LSH_DEACTIVATED_STATUS | (int32_T)LSH_ANIM_COMPLETE_STATUS));
+  418:	      hmi_lsh_freeze_button_events_ext(LSH_GET_STATE_ID(chartInstance-&gt;l_gfx_active_state_id),
+  419:	       LSH_GET_CLIENT_ID(chartInstance-&gt;
+  420:	        l_gfx_active_state_id));
+  421:	      /* 
+  422:	         Force a reentry if the logic state is different than
+  423:	         the current graphics state
+  424:	         This path is never expected to execute
+  425:	       */
+  426:	      hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  427:	       chartInstance-&gt;l_gfx_active_anim_id);
+  428:	      chartInstance-&gt;l_gfx_active_state_id =
+  429:	        chartInstance-&gt;l_logic_active_state_id;
+  430:	      chartInstance-&gt;l_gfx_active_anim_id =
+  431:	        chartInstance-&gt;l_logic_active_anim_id;
+  432:	      chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  433:	      chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_ACTIVATED_STATUS;
+  434:	      /*  no animations  */
+  435:	      if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  436:	        chartInstance-&gt;l_gfx_active_anim_id) == FALSE) {
+  437:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  438:	        chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  439:	        enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+  440:	      } else {
+  441:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  442:	        chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_VM_GFX_STARTUP_ANIM_ST;
+  443:	        hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  444:	         (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  445:	          LSH_ANIM_STARTED_STATUS));
+  446:	      }
+  447:	    } else {
+  448:	      switch(chartInstance-&gt;is_VM_GFX_ACTIVE_ST) {
+  449:	       case IN_VM_GFX_NORMAL_RUN_ST:
+</PRE>
+<A NAME="ERR_LINE_450"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  450:	        if(chartInstance-&gt;is_VM_GFX_ACTIVE_ST == IN_VM_GFX_NORMAL_RUN_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(450) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_476"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(450) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_476"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  451:	          if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  452:	           (chartInstance-&gt;l_logic_active_anim_id &lt; ANIM_MAX_ID)) {
+  453:	            /*  if logic active state is different, it will exit
+  454:	               in parent state   */
+  455:	            hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  456:	             chartInstance-&gt;l_gfx_active_anim_id);
+  457:	            chartInstance-&gt;l_gfx_active_anim_id =
+  458:	              chartInstance-&gt;l_logic_active_anim_id;
+  459:	            chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  460:	            /* 
+  461:	             ** !!!!! This transition needs to be avaluated first always
+  462:	             ** So if for any chance if you rearrange the states
+  463:	             ** please make sure the order is maintained
+  464:	             */
+  465:	            if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  466:	              chartInstance-&gt;l_gfx_active_anim_id) != FALSE) {
+  467:	              chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  468:	                (uint8_T)IN_VM_GFX_ACTIVE_ANIMATION_ST;
+  469:	              hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  470:	               (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  471:	                LSH_ANIM_STARTED_STATUS));
+  472:	            } else if(!(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST ==
+  473:	              IN_VM_GFX_ACTIVE_PRESENT_ST)) {
+  474:	              chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  475:	                (uint8_T)IN_NO_ACTIVE_CHILD;
+</PRE>
+<A NAME="ERR_LINE_476"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  476:	              if(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST !=
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(476) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_502"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(476) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_502"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_477"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  477:	               IN_VM_GFX_ACTIVE_PRESENT_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/0715.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(477) ++ WARNING ++: &lt;=6=(0715) [L] Nesting of control structures (statements) exceeds 15 - program does not conform strictly to ISO:C90.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  478:	                chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  479:	                  (uint8_T)IN_VM_GFX_ACTIVE_PRESENT_ST;
+  480:	                chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  481:	                /* Added during Abort anim implementation  */
+  482:	                hmi_vm_focus(chartInstance,
+  483:	                 chartInstance-&gt;l_gfx_active_state_id,
+  484:	                 (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  485:	                  LSH_ANIM_COMPLETE_STATUS));
+  486:	                hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  487:	                 chartInstance-&gt;l_gfx_presentation_state);
+  488:	                chartInstance-&gt;l_gfx_presentation_state =
+  489:	                  (uint8_T)LSH_REFRESH_STATUS;
+  490:	                /* Added during Abort anim implementation  */
+  491:	                chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  492:	              }
+  493:	            } else {
+  494:	              guard3 = true;
+  495:	            }
+  496:	          } else {
+  497:	            guard3 = true;
+  498:	          }
+  499:	        }
+  500:	        break;
+  501:	       case IN_VM_GFX_STARTUP_ANIM_ST:
+</PRE>
+<A NAME="ERR_LINE_502"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  502:	        if(chartInstance-&gt;is_VM_GFX_ACTIVE_ST == IN_VM_GFX_STARTUP_ANIM_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(502) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_553"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(502) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_553"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  503:	          if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  504:	           ((chartInstance-&gt;l_logic_active_anim_id == ANIM_ABORT_ID) &amp;&amp; (
+  505:	             chartInstance-&gt;l_gfx_active_state_id ==
+  506:	             chartInstance-&gt;l_logic_active_state_id))) {
+  507:	            hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  508:	             chartInstance-&gt;l_gfx_active_anim_id);
+  509:	            chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  510:	            chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  511:	              (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  512:	            enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+  513:	          } else if(_sfEvent_hmi_view_manager_02_ == event_LSH_ANIM_COMPLETE_EV)
+  514:	          {
+  515:	            chartInstance-&gt;is_VM_GFX_ACTIVE_ST =
+  516:	              (uint8_T)IN_VM_GFX_NORMAL_RUN_ST;
+  517:	            enter_internal_VM_GFX_NORMAL_RUN_ST(chartInstance);
+</PRE>
+<A NAME="ERR_LINE_518"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  518:	          } else if(_sfEvent_hmi_view_manager_02_ ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2004.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(518) ++ WARNING ++: &lt;=7=(2004) No concluding 'else' exists in this 'if'-'else'-'if' statement.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  519:	           event_LSH_GFX_FORCE_PRESENTATION_EV) {
+  520:	            hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  521:	             chartInstance-&gt;l_gfx_presentation_state);
+  522:	            chartInstance-&gt;l_gfx_presentation_state =
+  523:	              (uint8_T)LSH_REFRESH_STATUS;
+  524:	          }
+  525:	        }
+  526:	        break;
+  527:	       default:
+  528:	        chartInstance-&gt;is_VM_GFX_ACTIVE_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  529:	        break;
+  530:	      }
+  531:	    }
+  532:	    if(guard3 == true) {
+  533:	      switch(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST) {
+  534:	       case IN_VM_GFX_ACTIVE_ANIMATION_ST:
+  535:	        if(_sfEvent_hmi_view_manager_02_ == event_LSH_ANIM_COMPLETE_EV) {
+  536:	          hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  537:	           chartInstance-&gt;l_gfx_active_anim_id);
+  538:	          chartInstance-&gt;l_gfx_active_anim_id =
+  539:	            chartInstance-&gt;l_logic_active_anim_id;
+  540:	          chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  541:	          /* 
+  542:	           ** !!!!! This transition needs to be avaluated first always
+  543:	           ** So if for any chance if you rearrange the states
+  544:	           ** please make sure the order is maintained
+  545:	           */
+  546:	          if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  547:	            chartInstance-&gt;l_gfx_active_anim_id) != FALSE) {
+  548:	            chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  549:	              (uint8_T)IN_VM_GFX_ACTIVE_ANIMATION_ST;
+  550:	            hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  551:	             (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  552:	              LSH_ANIM_STARTED_STATUS));
+</PRE>
+<A NAME="ERR_LINE_553"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  553:	          } else if(!(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(553) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_598"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(553) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_598"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2996.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(553) ++ WARNING ++: &lt;=7=(2996) The result of this logical operation is always 'false'.</A></B><A HREF="#ERR_LINE_598"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  554:	            IN_VM_GFX_ACTIVE_PRESENT_ST)) {
+  555:	            chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  556:	              (uint8_T)IN_VM_GFX_ACTIVE_PRESENT_ST;
+  557:	            chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  558:	            /* Added during Abort anim implementation  */
+  559:	            hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  560:	             (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  561:	              LSH_ANIM_COMPLETE_STATUS));
+  562:	            hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  563:	             chartInstance-&gt;l_gfx_presentation_state);
+  564:	            chartInstance-&gt;l_gfx_presentation_state =
+  565:	              (uint8_T)LSH_REFRESH_STATUS;
+  566:	            /* Added during Abort anim implementation  */
+  567:	            chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  568:	          } else {
+</PRE>
+<A NAME="ERR_LINE_569"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  569:	            guard2 = true;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2880.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(569) ++ WARNING ++: &lt;=7=(2880) This code is unreachable.</A></B><A HREF="#ERR_LINE_613"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  570:	          }
+  571:	        } else {
+  572:	          guard2 = true;
+  573:	        }
+  574:	        break;
+  575:	       case IN_VM_GFX_ACTIVE_PRESENT_ST:
+  576:	        /*  call refresh every alternate cycles  */
+  577:	        if(_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) {
+  578:	          hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  579:	           LSH_REFRESH_STATUS);
+  580:	          if(chartInstance-&gt;l_logic_active_anim_id == ANIM_ABORT_ID) {
+  581:	            chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  582:	          }
+  583:	        }
+  584:	        break;
+  585:	       default:
+  586:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST = (uint8_T)IN_NO_ACTIVE_CHILD;
+  587:	        break;
+  588:	      }
+  589:	    }
+  590:	    if(guard2 == true) {
+  591:	      if((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp;
+  592:	       ((chartInstance-&gt;l_logic_active_anim_id == ANIM_ABORT_ID) &amp;&amp; (
+  593:	         chartInstance-&gt;l_gfx_active_state_id ==
+  594:	         chartInstance-&gt;l_logic_active_state_id))) {
+  595:	        hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  596:	         chartInstance-&gt;l_gfx_active_anim_id);
+</PRE>
+<A NAME="ERR_LINE_597"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  597:	        chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2982.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(597) ++ WARNING ++: &lt;=7=(2982) This assignment is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_598"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  598:	        if(!(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST ==
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(598) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B><A HREF="#ERR_LINE_657"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(598) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_657"> &lt;next&gt; </A>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2996.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(598) ++ WARNING ++: &lt;=7=(2996) The result of this logical operation is always 'false'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  599:	          IN_VM_GFX_ACTIVE_PRESENT_ST)) {
+  600:	          chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  601:	            (uint8_T)IN_VM_GFX_ACTIVE_PRESENT_ST;
+  602:	          chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  603:	          /* Added during Abort anim implementation  */
+  604:	          hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  605:	           (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  606:	            LSH_ANIM_COMPLETE_STATUS));
+  607:	          hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  608:	           chartInstance-&gt;l_gfx_presentation_state);
+  609:	          chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_REFRESH_STATUS;
+  610:	          /* Added during Abort anim implementation  */
+  611:	          chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  612:	        } else {
+</PRE>
+<A NAME="ERR_LINE_613"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  613:	          guard1 = true;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2880.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(613) ++ WARNING ++: &lt;=7=(2880) This code is unreachable.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  614:	        }
+  615:	      } else {
+  616:	        guard1 = true;
+  617:	      }
+  618:	    }
+  619:	    if(guard1 == true) {
+  620:	      if(_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_FORCE_PRESENTATION_EV) {
+  621:	        hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  622:	         chartInstance-&gt;l_gfx_presentation_state);
+  623:	        chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_REFRESH_STATUS;
+  624:	      }
+  625:	    }
+  626:	  }
+  627:	}
+  628:	
+  629:	static void
+  630:	enter_internal_VM_GFX_NORMAL_RUN_ST(SFhmi_view_manager_02InstanceStruct
+  631:	 *chartInstance)
+  632:	{
+</PRE>
+<A NAME="ERR_LINE_633"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  633:	  boolean_T guard1 = false;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2981.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(633) ++ WARNING ++: &lt;=7=(2981) This initialization is redundant. The value of this object is never used before being modified.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  634:	  guard1 = false;
+  635:	  if(chartInstance-&gt;l_logic_active_anim_id &lt; ANIM_MAX_ID) {
+  636:	    hmi_lsh_stop_animation(chartInstance-&gt;l_gfx_active_state_id,
+  637:	     chartInstance-&gt;l_gfx_active_anim_id);
+  638:	    chartInstance-&gt;l_gfx_active_anim_id = chartInstance-&gt;l_logic_active_anim_id;
+  639:	    chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  640:	    /* 
+  641:	     ** !!!!! This transition needs to be avaluated first always
+  642:	     ** So if for any chance if you rearrange the states
+  643:	     ** please make sure the order is maintained
+  644:	     */
+  645:	    if(hmi_lsh_start_animation(chartInstance-&gt;l_gfx_active_state_id,
+  646:	      chartInstance-&gt;l_gfx_active_anim_id) != FALSE) {
+  647:	      if(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST !=
+  648:	       IN_VM_GFX_ACTIVE_ANIMATION_ST) {
+  649:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  650:	          (uint8_T)IN_VM_GFX_ACTIVE_ANIMATION_ST;
+  651:	        hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  652:	         (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  653:	          LSH_ANIM_STARTED_STATUS));
+  654:	      }
+  655:	    } else if(!(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST ==
+  656:	      IN_VM_GFX_ACTIVE_PRESENT_ST)) {
+</PRE>
+<A NAME="ERR_LINE_657"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  657:	      if(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST != IN_VM_GFX_ACTIVE_PRESENT_ST) {
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2991.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(657) ++ WARNING ++: &lt;=7=(2991) The value of this 'if' controlling expression is always 'true'.</A></B>
+<BR>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(657) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B><A HREF="#ERR_LINE_712"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  658:	        chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  659:	          (uint8_T)IN_VM_GFX_ACTIVE_PRESENT_ST;
+  660:	        chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  661:	        /* Added during Abort anim implementation  */
+  662:	        hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  663:	         (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  664:	          LSH_ANIM_COMPLETE_STATUS));
+  665:	        hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  666:	         chartInstance-&gt;l_gfx_presentation_state);
+  667:	        chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_REFRESH_STATUS;
+  668:	        /* Added during Abort anim implementation  */
+  669:	        chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  670:	      }
+  671:	    } else {
+  672:	      guard1 = true;
+  673:	    }
+  674:	  } else {
+  675:	    guard1 = true;
+  676:	  }
+  677:	  if(guard1 == true) {
+  678:	    if(chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST != IN_VM_GFX_ACTIVE_PRESENT_ST) {
+  679:	      chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST =
+  680:	        (uint8_T)IN_VM_GFX_ACTIVE_PRESENT_ST;
+  681:	      chartInstance-&gt;l_logic_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  682:	      /* Added during Abort anim implementation  */
+  683:	      hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  684:	       (uint8_T)((int32_T)LSH_GOT_FOCUS_STATUS | (int32_T)
+  685:	        LSH_ANIM_COMPLETE_STATUS));
+  686:	      hmi_lsh_run_presentation(chartInstance-&gt;l_gfx_active_state_id,
+  687:	       chartInstance-&gt;l_gfx_presentation_state);
+  688:	      chartInstance-&gt;l_gfx_presentation_state = (uint8_T)LSH_REFRESH_STATUS;
+  689:	      /* Added during Abort anim implementation  */
+  690:	      chartInstance-&gt;l_gfx_active_anim_id = (uint8_T)ANIM_MAX_ID;
+  691:	    }
+  692:	  }
+  693:	}
+  694:	
+  695:	void hmi_vm_focus(SFhmi_view_manager_02InstanceStruct *chartInstance, uint16_T
+  696:	 p_state_id, uint8_T p_focus)
+  697:	{
+  698:	  hmi_lsh_focus_handler(p_state_id, p_focus);
+  699:	  chartInstance-&gt;l_gfx_prev_focus = p_focus;
+  700:	}
+  701:	
+  702:	void hmi_vm_tick(SFhmi_view_manager_02InstanceStruct *chartInstance)
+  703:	{
+  704:	  uint8_T b_previousEvent;
+  705:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  706:	  _sfEvent_hmi_view_manager_02_ = event_LSH_GFX_TICK_EV;
+  707:	  VM_PRESENTATION_ST(chartInstance);
+  708:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  709:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  710:	  _sfEvent_hmi_view_manager_02_ = event_LSH_GFX_TICK_EV;
+  711:	  if((chartInstance-&gt;is_active_VM_PERIODIC_FOCUS_MONITOR_ST != 0) &amp;&amp;
+</PRE>
+<A NAME="ERR_LINE_712"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  712:	   ((_sfEvent_hmi_view_manager_02_ == event_LSH_GFX_TICK_EV) &amp;&amp; (!(
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2995.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(712) ++ WARNING ++: &lt;=7=(2995) The result of this logical operation is always 'true'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  713:	      chartInstance-&gt;is_VM_PRESENTATION_ST == IN_VM_GFX_INACTIVE_ST)) &amp;&amp;
+</PRE>
+<A NAME="ERR_LINE_714"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  714:	    (hmi_lsh_get_focus_status(LSH_GET_STATE_ID(chartInstance-&gt;
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3415.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(714) ++ WARNING ++: &lt;=7=(3415) Right hand operand of '&amp;&amp;' or '||' is an expression with possible side effects.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  715:	       l_gfx_active_state_id)) == LSH_FOCUS_STATUS_INACTIVE))) {
+  716:	    hmi_vm_focus(chartInstance, chartInstance-&gt;l_gfx_active_state_id,
+  717:	     chartInstance-&gt;l_gfx_prev_focus);
+  718:	  }
+  719:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  720:	}
+  721:	
+  722:	void hmi_vm_check_deactivation(SFhmi_view_manager_02InstanceStruct
+  723:	 *chartInstance)
+  724:	{
+  725:	  uint8_T b_previousEvent;
+  726:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  727:	  _sfEvent_hmi_view_manager_02_ = event_LSH_GFX_CHECK_DEACTIVATION_EV;
+  728:	  VM_PRESENTATION_ST(chartInstance);
+  729:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  730:	}
+  731:	
+  732:	void hmi_vm_animation_completed(SFhmi_view_manager_02InstanceStruct
+  733:	 *chartInstance)
+  734:	{
+  735:	  uint8_T b_previousEvent;
+  736:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  737:	  _sfEvent_hmi_view_manager_02_ = event_LSH_ANIM_COMPLETE_EV;
+  738:	  VM_PRESENTATION_ST(chartInstance);
+  739:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  740:	}
+  741:	
+  742:	void hmi_vm_force_presentation(SFhmi_view_manager_02InstanceStruct
+  743:	 *chartInstance)
+  744:	{
+  745:	  uint8_T b_previousEvent;
+  746:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  747:	  _sfEvent_hmi_view_manager_02_ = event_LSH_GFX_FORCE_PRESENTATION_EV;
+  748:	  VM_PRESENTATION_ST(chartInstance);
+  749:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  750:	}
+  751:	
+  752:	void hmi_vm_add_state(SFhmi_view_manager_02InstanceStruct *chartInstance,
+  753:	 uint16_T p_state_id, uint8_T p_anim_id)
+  754:	{
+  755:	  uint8_T b_previousEvent;
+  756:	  chartInstance-&gt;p_logic_req_state_id = p_state_id;
+  757:	  chartInstance-&gt;p_logic_req_anim_id = p_anim_id;
+  758:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  759:	  _sfEvent_hmi_view_manager_02_ = event_LSH_LOGIC_ADD_EV;
+  760:	  VM_LOGIC_ST(chartInstance);
+  761:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  762:	}
+  763:	
+  764:	void hmi_vm_remove_state(SFhmi_view_manager_02InstanceStruct *chartInstance,
+  765:	 uint16_T p_state_id, uint8_T p_anim_id)
+  766:	{
+  767:	  uint8_T b_previousEvent;
+  768:	  chartInstance-&gt;p_logic_req_state_id = p_state_id;
+  769:	  chartInstance-&gt;p_logic_req_anim_id = p_anim_id;
+  770:	  b_previousEvent = _sfEvent_hmi_view_manager_02_;
+  771:	  _sfEvent_hmi_view_manager_02_ = event_LSH_LOGIC_REMOVE_EV;
+  772:	  VM_LOGIC_ST(chartInstance);
+  773:	  _sfEvent_hmi_view_manager_02_ = b_previousEvent;
+  774:	}
+  775:	
+</PRE>
+<A NAME="ERR_LINE_776"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  776:	boolean_T hmi_vm_animation_active_status(SFhmi_view_manager_02InstanceStruct
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2889.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(776) ++ WARNING ++: &lt;=5=(2889) This function has more than one 'return' path.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+</PRE>
+<A NAME="ERR_LINE_777"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  777:	 *chartInstance)
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/3673.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_view_manager_02.c(777) ++ WARNING ++: &lt;=5=(3673) The object addressed by the pointer parameter 'chartInstance' is not modified and so the pointer could be of type 'pointer to const'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  778:	{
+  779:	  if((chartInstance-&gt;is_VM_GFX_ACTIVE_ST == IN_VM_GFX_STARTUP_ANIM_ST) ||
+  780:	   (chartInstance-&gt;is_VM_GFX_NORMAL_RUN_ST ==
+  781:	    IN_VM_GFX_ACTIVE_ANIMATION_ST) || (chartInstance-&gt;is_VM_PRESENTATION_ST ==
+  782:	    IN_VM_GFX_CLOSE_ANIM_ST)) {
+  783:	    return (boolean_T)TRUE != 0;
+  784:	  } else {
+  785:	    return (boolean_T)FALSE != 0;
+  786:	  }
+  787:	}
+  788:	
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_view_manager_02.c (788 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0596             47
+     6           0.0013              1
+     5           0.0025              2
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0635             50
+</PRE>
+
+</BODY></HTML>

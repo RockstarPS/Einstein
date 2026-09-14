@@ -1,0 +1,228 @@
+/*============================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2014. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**============================================================================
+**
+** Name:           hmi_gfx_mgr02_iris_init_app.c
+**
+** Description:    
+**                 
+**
+** Organization:   
+**
+**============================================================================
+**
+**==========================================================================*/
+
+/*============================================================================
+** I N C L U D E   F I L E S
+**==========================================================================*/
+#include "mml_gdc_driver_api.h"
+#include "hmi_gfx_mgr02_amber_mem_mgmt.h"
+#include "hmi_gfx_mgr02_layout.h"
+#include "hmi_gfx_mgr02_context.h"
+#include "hmi_gfx_mgr02_amber_iris.h"
+#include "sm_util.h"
+#include "ut_compatibility.h"
+#include "panel_definition.h"
+
+#define GFX_APP_DRIVER_NUM_FB   2
+/*============================================================================
+** I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S
+**==========================================================================*/
+static void*    l_app_vInstrBuffer = NULL;
+static MML_GDC_DISPLAY      s_display;
+static MML_GDC_DISP_WINDOW  s_win;
+
+static MML_GDC_SURFACE      l_app_ambr_irs_mml_gdc_store_surf[GFX_MGR02_NUM_LAYERS];
+MML_GDC_SYNC                app_gpu_sync;									   /*Sync for knowing the GPU finished rendering or Not*/
+MML_GDC_SYNC                app_disp_sync;									   /*Sync for knowing the GPU finished rendering or Not*/
+
+/****************************************************************************
+Function Name        : hmi_app_amber_iris_initialize
+Description          : Initializes the Iris Driver and internal variables.
+Invocation           : Invoked by manager
+Parameters           : None
+Return Value         : None
+Critical Section     : None
+External Interfaces  : None
+******************************************************************************/
+void hmi_app_amber_iris_initialize(void)
+{
+	MML_GDC_SYSINIT_INFO fl_sys_init = GFX_MGR02_CUSTOM_GDC_SYSINIT_INITIALIZER;
+	MML_GDC_DISP_WINDOW_PROPERTIES  winprop = MML_GDC_DISP_WINDOW_PROPERTIES_INITIALIZER;
+	MM_S32  ret = MML_OK;
+    MM_U32  fl_amber_iris_layer;
+	IrisMemInfo fl_memory_s;
+
+
+	/* driver initialization */
+	IRIS_API_CHECK(ret, mmlGdcSysInitializeDriver(&fl_sys_init));
+
+	/* Initializes internal data for first tme use */
+	(void)hmi_gfx_mgr02_amber_mem_mgmt_init();
+
+	/* set up an instruction buffer for the command sequencer */
+    fl_memory_s.MemCateg        = IRIS_PE_INSTRUCTION_BUFFER;
+    fl_memory_s.WidgetClientId  = 0xFFFFFFFF; /*Not applicable for Instruction Buffer*/
+    fl_memory_s.Alignment       = (UINT32)32; /*32 Byte alignement*/
+    fl_memory_s.Size            = (UINT32)GFX_MGR02_IRIS_INSTR_BUFF_SIZE;
+    fl_memory_s.ExtMemory       = (UINT8)0; /*It is expected that the Instruction Buffer must be in VRAM*/
+    #if defined(GFX_MGR02_MEM_MGMT_STATIC_ALLOCATION)    
+    fl_memory_s.WidgetFBGroupId = GFX_MGR02_INVALID_FB_GROUP_ID;
+    #endif
+    l_app_vInstrBuffer = hmi_gfx_mgr02_amber_mem_mgmt_malloc(&fl_memory_s);
+
+	IRIS_API_CHECK(ret, mmlGdcSysSetInstructionBuffer(l_app_vInstrBuffer, (UINT32)GFX_MGR02_IRIS_INSTR_BUFF_SIZE));
+
+	/* set up the display */
+	IRIS_API_CHECK(ret, mmlGdcDispOpenDisplay((MML_GDC_DISP_PROPERTIES *)&l_mml_gdc_dispParams[0], &s_display));
+	(void)mmlGdcDispSetAttribute(s_display,MML_GDC_DISP_ATTR_BACKGROUND_COLOR,GFX_MGR02_DISP0_BG_COLOR);
+  	IRIS_API_CHECK(ret, mmlGdcDispCommit(s_display));
+	/* create a display window and connect the store surface to it
+	complete the windows params */
+	winprop.width   = l_mml_gdc_dispParams[0].xResolution; /* horizontal display resolution */
+	winprop.height  = l_mml_gdc_dispParams[0].yResolution; /* vertical display resolution */
+	for(fl_amber_iris_layer = 0; fl_amber_iris_layer < GFX_MGR02_NUM_LAYERS; fl_amber_iris_layer++)
+	{
+	  IRIS_API_CHECK(ret, mmlGdcSmGenSurfaceObjects((MM_U32)1, &l_app_ambr_irs_mml_gdc_store_surf[fl_amber_iris_layer]));
+	}
+	/* Create the window */
+	IRIS_API_CHECK(ret, mmlGdcDispWinCreate(s_display, &winprop, &s_win));
+	IRIS_API_CHECK(ret, mmlGdcDispWinSetAttribute(s_win, MML_GDC_DISP_WIN_ATTR_DISABLE, (UINT32)MM_FALSE));
+
+    IRIS_API_CHECK(ret,mmlGdcDispWinSetAttribute(s_win,
+                                                 MML_GDC_DISP_WIN_ATTR_TILE_MODE,
+                                                 (UINT32)MML_GDC_DISP_TILE_MODE_ZERO));
+    IRIS_API_CHECK(ret, mmlGdcSyncCreate((MM_U32)1, &app_gpu_sync));
+    IRIS_API_CHECK(ret, mmlGdcSyncCreate((MM_U32)1, &app_disp_sync));
+}
+
+/*============================================================================
+** Function Name:    hmi_app_amber_iris_render_window
+** Visibility:       Global
+** Description:      This function for rendering the window
+**                   
+** Invocation:       By hmi_gfx_mgr02_context_end_update()
+** Inputs/Outputs:   None
+** Critical Section: None.
+**==========================================================================*/
+
+void hmi_app_amber_iris_render_window(MM_U32 p_layer_id, void * p_fb_ptr)
+{
+    MM_S32 ret = MML_OK;
+	UINT32 fl_pix_format;
+	if(p_fb_ptr != NULL)
+	{
+       fl_pix_format = hmi_gfx_mgr02_amber_get_wdg_pix_format(lc_layer_def_S[p_layer_id].pix_format);
+       IRIS_API_CHECK(ret, mmlGdcSmAssignBuffer(l_app_ambr_irs_mml_gdc_store_surf[p_layer_id],
+                                              lc_layer_def_S[p_layer_id].area.width,
+                                              lc_layer_def_S[p_layer_id].area.height,
+                                              (MML_GDC_SURF_FORMAT)fl_pix_format,
+                                              (void *)p_fb_ptr,
+                                              (UINT32)0));
+       IRIS_API_CHECK(ret, mmlGdcDispWinSetBlendMode(s_win, (UINT32)MML_GDC_DISP_BLEND_NONE));
+
+
+       IRIS_API_CHECK(ret, mmlGdcDispWinSetSurface(s_win, MML_GDC_DISP_BUFF_TARGET_COLOR_BUFF, l_app_ambr_irs_mml_gdc_store_surf[p_layer_id]));
+       IRIS_API_CHECK(ret, mmlGdcDispWinWaitSync(s_win, app_gpu_sync))
+	}			
+
+}
+
+
+/*============================================================================
+** Function Name:    hmi_app_amber_iris_shutdown
+** Visibility:       Global
+** Description:      This function for Destroying the window in shutdown sequence.
+**                   
+** Invocation:       By hmi_gfx_mgr02_context_shutdown()
+** Inputs/Outputs:   None
+** Critical Section: None.
+**==========================================================================*/
+void hmi_app_amber_iris_shutdown(void)
+{
+    MM_U32 i,j;
+	MM_S32  ret = MML_OK;
+	for(i=0; i < GFX_MGR02_NUM_LAYERS; i++)
+    {
+       for(j=0; j<(UINT32)GFX_APP_DRIVER_NUM_FB; j++)
+       {
+          if(l_app_ambr_irs_mml_gdc_store_surf[i] != NULL)
+          {
+             IRIS_API_CHECK(ret, mmlGdcSmDeleteSurfaceObjects((MM_U32)1, &l_app_ambr_irs_mml_gdc_store_surf[i]));
+    		 l_app_ambr_irs_mml_gdc_store_surf[i] = NULL;
+          }
+      }
+    }
+    IRIS_API_CHECK(ret, mmlGdcSyncDelete((MM_U32)1, &app_gpu_sync));
+    IRIS_API_CHECK(ret, mmlGdcSyncDelete((MM_U32)1, &app_disp_sync));
+
+	/* Destroy the Window we have created */
+    mmlGdcDispWinDestroy(s_win);
+	/* Close the display and de-init the driver */
+    mmlGdcDispCloseDisplay(s_display);
+	hmi_gfx_mgr02_amber_mem_mgmt_free(l_app_vInstrBuffer);
+
+    mmlGdcSysUninitializeDriver();
+}
+
+/*============================================================================
+** Function Name:    hmi_gfx_mgr02_layout_is_render_done
+** Visibility:       Global
+** Description:      Checks if the rendering of the last frame been done
+**                   
+** Invocation:       By hmi_gfx_mgr02_layout_build_screen
+** Inputs/Outputs:   None
+** Critical Section: None.
+**==========================================================================*/
+
+BOOLEAN hmi_gfx_mgr02_layout_is_render_done(void)
+{
+    SINT32 ret = MML_OK;
+    BOOLEAN fl_return_value=TRUE;
+    /*Check whether the all active windows are commited?*/
+    ret = mmlGdcSyncWait(app_disp_sync, 0);
+    if (MML_ERR_GDC_SYNC_TIMEOUT == ret)
+    {
+	  fl_return_value = FALSE;
+    }	
+    
+    return(fl_return_value);
+}
+/*============================================================================
+** Function Name:    hmi_app_amber_iris_render_done
+** Visibility:       Global
+** Description:      Checks if the rendering of the last frame been done
+**                   
+** Invocation:       By hmi_gfx_mgr02_layout_build_screen
+** Inputs/Outputs:   None
+** Critical Section: None.
+**==========================================================================*/
+void hmi_app_amber_iris_render_done(void)
+{
+    MM_S32 ret = MML_OK;
+
+	IRIS_API_CHECK(ret, mmlGdcDispWinCommit(s_win));
+    IRIS_API_CHECK(ret, mmlGdcDispWinSync(s_win,app_disp_sync));
+}
+/*---------------------------------------------------------------------------
+Date              :
+CDSID             :
+Traceability      :
+Change Description: Initial version
+Compliances:
+-----------------------------------------------------------------------------*/

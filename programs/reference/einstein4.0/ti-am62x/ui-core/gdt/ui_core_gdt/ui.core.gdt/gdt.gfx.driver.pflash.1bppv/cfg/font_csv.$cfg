@@ -1,0 +1,169 @@
+/*==============================================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2011. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==============================================================================================
+**
+** Name:           Font_Name.csv
+**
+** Description:    This file contains the configurations to be specified 
+**                 by the application for the Font Files.Take a copy of the 
+**                 below comma separated values to your application
+**                 folder structure.Remove the comments and rename the file 
+**                 as Font_name.csv (remove the $)and make necessary adjustments 
+**                 to the configurations explained below to suit your need. 
+**                 This is applicable for 1bpp, 2bpp and 4bpp versions of GDT.
+**
+** Organization:   Driver Information Software Section,
+**                 DI Core Engineering Department
+**
+**==============================================================================================
+**
+**============================================================================================*/
+
+/*
+** Separate as comma separated values for the configurations and follow the 
+** same order as below.
+** NAME                     - Specify the font name 
+** POINT                    - Specify appropriate floating point value
+** HEIGHT                   - Specify the font height as integer value  
+** STYLE                    - Specify the font style as either Normal, Bold, Italic,Underline
+**                            or strikeout
+** PRERENDER                - Specify whether prerender should be enabled or not by setting 
+**                            true or false
+** USE_BGCOLOR              - Specify the useBgcolor as integer value
+** CHAR_SPACING             - Specify the character spacing as integer value
+** SPACE_CHAR_WIDTH         - Specify the space character width as integer value          
+** KEYWORD_CUSTOM_FONT_PATH - Specify the font path if necessary 
+** CHAR_SPACE_CTRL          - Specify whether the space control for characters should be
+**                            enabled or not by giving a boolean value
+** AA_MODE                  - Specify the mode as either 1BPP, 2BPP or 4BPP. 1BPPV Or 2BPPV if vertical
+**                            packing is enabled    
+** DEFAULT_CHAR             - Specify the default char to be displayed if the unicode range is not 
+**                            specified within RANGE_START to RANGE_END 
+** IMAGE_TO_CHAR            - Specify whether the image to char should be enabled or disabled by 
+**                            setting true or false 
+** IMG_PATH                 - Specify the image path or null as default
+** KEYWORD_TEXT_RENDERING_HINT - Specify SingleBitPerPixelGridFit,AntiAlias,
+**                          SingleBitPerPixel,AntiAliasGridFit,ClearTypeGridFit
+**                          or SystemDefault
+** SystemDefault            This will take the default settings of the PC 
+** SingleBitPerPixelGridFit Each character is drawn using its glyph bitmap.
+**                          Hinting is used to improve character appearance
+**                          on stems and curvature.
+** SingleBitPerPixel        Each character is drawn using its glyph bitmap.
+**                          Hinting is not used.
+** AntiAliasGridFit         Each character is drawn using its antialiased glyph
+**                          bitmap with hinting. Much better quality due to
+**                          antialiasing, but at a higher performance cost.This is not 
+**                          applicable for 1bpp version of GDT.                                                 
+** AntiAlias                Each character is drawn using its antialiased glyph
+**                          bitmap without hinting. Better quality due to antialiasing.
+**                          Stem width differences may be noticeable because hinting
+**                          is turned off.This is not applicable for 1bpp version of GDT.
+** ClearTypeGridFit         Each character is drawn using its glyph ClearType bitmap
+**                          with hinting. The highest quality setting. Used to take
+**                          advantage of ClearType font features. This is not 
+**                          applicable for 1bpp version of GDT.
+** KEYWORD_FONT_ENGINE         - Specify the font engine as Windows or Freetype2 
+** KEYWORD_FREETYPE2_FONT_FILE - Specify the font file name or NULL as default
+** KEYWORD_FREETYPE2_FONT_SIZE - Specify the font size required for Freetype2 
+** KEYWORD_FREETYPE2_AUTO_HINT - Specify the auto hint as boolean value 
+** KEYWORD_FONT_GROUP          - Specify whether to enable font group as a bool value
+** KEYWORD_DEFAULT_INDEX       - Specify the default index
+** KEYWORD_SELECTED_INDEX      - Specify the index to select 
+** RANGE_START 
+** Specify the valid range of unicodes 
+** RANGE_END   
+*/
+
+/*==============================================================================================
+** Sample configuration for a font file
+**==============================================================================================*/
+NAME,HelveticaNeueLT Com 45 Lt,,
+POINT,8.67,,
+HEIGHT,14,,
+STYLE,Normal,,
+PRERENDER,FALSE,,
+USE_BGCOLOR,0,,
+CHAR_SPACING,0,,
+SPACE_CHAR_WIDTH,0,,
+KEYWORD_CUSTOM_FONT_PATH,,,
+CHAR_SPACE_CTRL,FALSE,,
+AA_MODE,1BPP,,
+DEFAULT_CHAR,0,,
+IMAGE_TO_CHAR,FALSE,,
+IMG_PATH,NULL,,
+KEYWORD_TEXT_RENDERING_HINT,SingleBitPerPixelGridFit,,
+KEYWORD_FONT_ENGINE,Windows,,
+KEYWORD_FREETYPE2_FONT_FILE,NULL,,
+KEYWORD_FREETYPE2_FONT_SIZE,0,,
+KEYWORD_FREETYPE2_AUTO_HINT,FALSE,,
+KEYWORD_FONT_GROUP,TRUE,
+KEYWORD_DEFAULT_INDEX,255,
+KEYWORD_SELECTED_INDEX,0,
+RANGE_START,,,
+1,8,1,8
+RANGE_END,,,
+,,,
+,,,
+NAME,Font_Name2,,
+POINT,8.67,,
+HEIGHT,14,,
+STYLE,Normal,,
+PRERENDER,FALSE,,
+USE_BGCOLOR,0,,
+CHAR_SPACING,0,,
+SPACE_CHAR_WIDTH,0,,
+KEYWORD_CUSTOM_FONT_PATH,,,
+CHAR_SPACE_CTRL,FALSE,,
+AA_MODE,1BPPV,,
+DEFAULT_CHAR,0,,
+IMAGE_TO_CHAR,FALSE,,
+IMG_PATH,NULL,,
+KEYWORD_TEXT_RENDERING_HINT,SingleBitPerPixelGridFit,,
+KEYWORD_FONT_ENGINE,Freetype2,,
+KEYWORD_FREETYPE2_FONT_FILE,C:\fonts\ArialForFordAL.ttf,,
+KEYWORD_FREETYPE2_FONT_SIZE,10,,
+KEYWORD_FREETYPE2_AUTO_HINT,FALSE,,
+KEYWORD_FONT_GROUP,FALSE,
+KEYWORD_DEFAULT_INDEX,255,
+KEYWORD_SELECTED_INDEX,0,
+RANGE_START,,,
+269,269,9,9
+8211,8211,8211,8211
+8230,8230,8230,8230
+RANGE_END,,,
+,,,
+,,,
+/*==============================================================================================
+**
+**==============================================================================================
+** C M S    R E V I S I O N    N O T E S
+**==============================================================================================
+**
+** For each change to this file, be sure to record:
+** 1.  Who made the change and when the change was made.
+** 2.  Why the change was made and the intended result.
+**
+** CMS Rev #        Date         By
+** CMS Rev X.X      mm/dd/yy     CDSID
+**
+**==============================================================================================
+**
+** CMS Rev 1.1      24-Mar-16    APERUMAL
+** Initial Version.
+**
+**============================================================================================*/

@@ -1,0 +1,103 @@
+/*============================================================================
+ **
+ **                     CONFIDENTIAL VISTEON CORPORATION
+ **
+ ** This is an unpublished work of authorship, which contains trade secrets,
+ ** created in 2018. Visteon Corporation owns all rights to this work and
+ ** intends to maintain it in confidence to preserve its trade secret status.
+ ** Visteon Corporation reserves the right, under the copyright laws of the
+ ** United States or those of any other country that may have jurisdiction,
+ ** to protect this work as an unpublished work, in the event of an
+ ** inadvertent or deliberate unauthorized publication. Visteon Corporation
+ ** also reserves its rights under all copyright laws to protect this work as
+ ** a published work, when appropriate. Those having access to this work may
+ ** not copy it, use it, modify it or disclose the information contained in
+ ** it without the written authorization of Visteon Corporation.
+ **
+ **============================================================================
+ **
+ ** Name:           SigIfCdd_cfg.h
+ **
+ ** Description:    This cfg file is used to configure the static items of Signature unit.
+ **                 The static items are
+ **                 1. Input for Signature unit
+ **                 2. Panic Colour
+ **                 3. Error Threshold Value
+ **                 4. Error Threshold Reset Value
+ **
+ ** Organization:   GUI Software Section, Visteon
+ **
+ **============================================================================
+ **
+ **==========================================================================*/
+#include "mm_gdc_iris_registers.h"
+#include "iris_sigdrv.h"
+
+/* Number of Display Controllers Units*/
+#define NUM_OF_DCUS             2 /*Cypress has 2 DCUs*/
+
+/*
+Configure the macro SIGNATURE_UNITS_TO_USE as below.
+Define 
+0 for SIGNATURE_UNITS_TO_USE if SigUnit 0 to use.
+1 for SIGNATURE_UNITS_TO_USE if SigUnit 1 to use.
+2 for SIGNATURE_UNITS_TO_USE if SigUnit 0 and 1 to use.
+*/
+
+#define SIGNATURE_UNITS_TO_USE  0 /*Cypress has 2 Signature Units*/
+
+/*
+Input for Signature units
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT0_FRAMEGEN
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT0_GAMMACOR
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT0_DITHER  
+*/
+
+#define SIG_UNIT0_INPUT     (uint8_t)DISENG_DISENGCFG_SIG_SELECT0_FRAMEGEN
+
+/*
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT1_FRAMEGEN
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT1_GAMMACOR
+MM_GDC_IRIS_DISENG_DISENGCFG_SIG_SELECT1_DITHER
+*/
+
+#define SIG_UNIT1_INPUT     (uint8_t)DISENG_DISENGCFG_SIG_SELECT1_FRAMEGEN
+
+
+/*Panic Colour
+Set the Panic colour(uint32_t) as RGBA format where Alpha is a 1 Bit(MSB) and other colour components are 8bits each.
+For example to set white colour as panic colour, the value is 0xFFFFFF80.
+*/
+
+/*
+** If application wants no panic color replace then update alph value with 0 as
+** 	0xFFFFFF00
+*/
+
+#define SIG0_PANIC_COLOUR    ((uint32_t)0xFFFFFF80)
+#define SIG1_PANIC_COLOUR    ((uint32_t)0xFFFFFF80)
+
+
+/*
+Number of frames with signature violation before StsSigError is set for an evaluation window. 
+These frames do not need to be consecutive. 
+0 means that each frame with violation will set the status. 
+The internal counter compared against this threshold is reset when 'ErrThreshReset' 
+consecutive frames without signature violation occur.
+The valid range is 0-255.
+*/
+#define SIG0_ERROR_THRESHOLD_VALUE              (uint8_t)0
+#define SIG1_ERROR_THRESHOLD_VALUE              (uint8_t)0
+
+/*
+Number of consecutive frames without signature violation before StsSigError is reset for an evaluation window.
+0 means that each frame without violation will reset the status. 
+The internal counter compared against this threshold is reset with each frame that has violation.
+The valid range is 0-255.
+*/
+#define SIG0_ERROR_THRESHOLD_RESET_VALUE        (uint8_t)0
+#define SIG1_ERROR_THRESHOLD_RESET_VALUE        (uint8_t)0
+
+
+
+

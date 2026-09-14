@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{82AE19D3-1944-4809-9617-9EB74EC71DB3}</ProjectGuid>
+    <RootNamespace>ovg_monotype</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>ovg_monotype_vs13</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\autogen;..\menu;..\popup;..\warning;..\common;..\cfg;..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src;..\..\..\..\ui.core.gdt\osal\sosa;..\..\..\..\ui.core.gdt.test\hmi.gfx.manager.02\test.harness\dcu_win32;..\..\..\..\ui.core.iceapple\language.core.01\src;..\language;..\..\..\..\ui.core.iceapple\view.manager.02\src;..\..\..\..\ui.core.iceapple\animation.core.02\src;..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\fsl;..\..\..\..\switch.event.manager\src;..\..\..\..\ui.core.iceapple\message.core.01\src;..\..\..\..\ui.core.iceapple\menu.core.01\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;CWR_MPC5645S;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libAmanithVG.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\animation.core.02\src\hmi_gfx_anim_engine.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\animation.core.02\src\hmi_gfx_anim_vm02_if.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_amber.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_amber_iris.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_context.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_dcu.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_dirty_area.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_driver.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_generic.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if_chart.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if_model_autocode.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_irislib.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_layout.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_mem.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_ogllib.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_ovglib.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_perflog.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_swrlib.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_text.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\menu.core.01\src\hmi_menu_core_01_chart.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\menu.core.01\src\hmi_menu_core_01_logic.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\menu.core.01\src\hmi_menu_core_01_model_autocode.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\hmi_msgArbitrator.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\hmi_msgDefinition.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\hmi_msgSequencer.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\hmi_msgStore.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\hmi_msgTask.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\message.core.01\src\localSemaphores.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\popup.core.02\src\hmi_popup_core.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_logic_state_handler.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_view_manager_02.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_view_manager_02_autocode.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt.test\hmi.gfx.manager.02\test.harness\dcu_win32\egl.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt.test\hmi.gfx.manager.02\test.harness\dcu_win32\eglfsl.c" />
+    <ClCompile Include="..\common\hmi_gfx02_sim_main.c" />
+    <ClCompile Include="..\..\..\..\ui.core.gdt.test\hmi.gfx.manager.02\test.harness\dcu_win32\hmi_gfx_dcu_sim_w32.c" />
+    <ClCompile Include="..\autogen\Default_Font.c" />
+    <ClCompile Include="..\common\hmi_gfx02_image_data.c" />
+    <ClCompile Include="..\autogen\hmi_gfx_mgr02_clut_table.c" />
+    <ClCompile Include="..\autogen\hmi_gfx_mgr02_font.c" />
+    <ClCompile Include="..\autogen\hmi_gfx_mgr02_vgfont.c" />
+    <ClCompile Include="..\common\hmi_opening_screen.c" />
+    <ClCompile Include="..\common\hmi_popup_screen.c" />
+    <ClCompile Include="..\common\hmi_startup_screen.c" />
+    <ClCompile Include="..\common\hmi_timer_support.c" />
+    <ClCompile Include="..\common\hmi_warning_screen.c" />
+    <ClCompile Include="..\language\hmi_language_1.c" />
+    <ClCompile Include="..\..\..\..\switch.event.manager\src\dm_swch.c" />
+    <ClCompile Include="..\..\..\..\ui.core.iceapple\language.core.01\src\hmi_language_interface.c" />
+    <ClCompile Include="..\common\hmi_button.c" />
+    <ClCompile Include="..\common\hmi_default.c" />
+    <ClCompile Include="..\menu\hmi_menu_presentation.c" />
+    <ClCompile Include="..\popup\hmi_popup_core_if.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\animation.core.02\src\hmi_gfx_anim_engine.h" />
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\animation.core.02\src\hmi_gfx_anim_engine_types.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_amber.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_amber_iris.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_context.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_dcu.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_defs.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_dirty_area.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_driver.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_generic.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if_chart.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_if_model_autocode.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_irislib.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_layout.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_mem.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_ogllib.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_ovglib.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_perflog.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_swrlib.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_test.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_text.h" />
+    <ClInclude Include="..\..\..\..\ui.core.gdt\hmi.gfx.manager.02\src\hmi_gfx_mgr02_types.h" />
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_logic_state_handler.h" />
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_view_manager_02.h" />
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\view.manager.02\src\hmi_view_manager_02_autocode.h" />
+    <ClInclude Include="..\..\..\..\switch.event.manager\src\dm_swch.h" />
+    <ClInclude Include="..\..\..\..\ui.core.iceapple\language.core.01\src\hmi_language_interface.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

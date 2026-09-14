@@ -1,0 +1,12 @@
+#include "system.h"
+#include "hmi_gfx_mgr02_layout.h"  
+#include "hmi_lang_pre_render.h"
+#pragma ghs section rodata=".prerender2"
+#include "gpos_data_23.inc"
+#include "gpos_data_24.inc"
+#include "gpos_data_26.inc"
+#include "gpos_data_27.inc"
+#include "gpos_data_28.inc"
+#include "gpos_data_30.inc"
+#include "hmi_sid_mapping.inc"
+#pragma ghs section rodata=default

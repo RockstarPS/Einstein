@@ -1,0 +1,206 @@
+;
+; Example script for programming of MPC5645S internal Flash and external QSPI FLASH in parallel mode.
+;
+; To use, put all parallel data ar 0x88000000 (0x80000000 in cut 2). Script will automatically split between both memories.
+;
+; Internal Flash algorithm may depend on processor revision:
+;   MPC5645S all revisions       c90fl564xl.bin or higher
+;
+; External QuadSPI Flash algorithm may depend on processor revision:
+;   MPC5645S Cut 1:     jpc5645s_parallel_quadspi.bin
+;   MPC5645S Cut 2:     jpc5645s_c2_parallel_quadspi.bin
+;
+; NOTES:
+;
+; PLL Init assumes 8MHz XTAL. Settings will require changing for other values.
+;
+;
+
+;setup internal Flash variables
+&flashbase_int=0x00000000
+&shadowbase_int=0x00ffc000
+&flashsize_int=0x00100000
+&flashdriver_int="c90fl564xl.bin"
+
+;setup QuadSPI Flash variables
+
+&flashsize_parallel_qspi=0x01FFFFFF  ; TODO: set flash size here (32MB)
+
+&sectorsize_qspi=0x00020000 ; TODO: set sector size (128k)
+
+;declare varaibles - These will be initialised in "check processor version"
+&flashbase_parallel_qspi=0  ; flash base address
+&flashdriver_qspi="tbd.bin"
+
+&rambase=0x40000000
+&quadread_enable=0  ;set to 1 for quad reads, 0 for single
+;========================================================================
+; CPU setup
+
+SYStem.RESet
+SYStem.BdmClock 4.0MHz
+;select automatic CPU detection
+SYStem.DETECT CPU
+SYStem.Option.WATCHDOG OFF
+SYStem.Up
+;check processor version
+&NPC_DID=Data.Long(DBG:0x80)
+IF (&NPC_DID&0x0FFFF000)==0x0AE64000 ;cut 1
+(
+  &flashdriver_qspi="jpc5645s_parallel_quadspi.bin"
+  &flashbase_parallel_qspi=0x88000000
+)
+ELSE ;cut 2 (0x0AE65000)
+(
+  &flashdriver_qspi="jpc5645s_c2_parallel_quadspi.bin"
+  &flashbase_parallel_qspi=0x80000000
+)
+;one MMU page for full memory map - set to VLE for QuadSPI Driver
+MMU.TLBSET 0x0 0xC0000b00 0x00000020 0x0000003F  ; 0x0000_0000 to 0xFFFF_FFFF  VLE	;Rainbow VLE
+
+
+
+
+;enable all peripherals and enter DRUN mode
+Data.Set ANC:0xC3FE037C %Long 0x80808080 ;enable all perip clocks
+Data.Set ANC:0xC3FDC080 %Long 0x000000FE ;Peripheral ON in every mode
+Data.Set ANC:0xC3FE0374 %Long 0x00000000 ;Select Fast IRC (16 MHz)
+;Re-enter in DRUN mode to update
+Data.Set ANC:0xC3FDC004 %Long 0x30005AF0
+Data.Set ANC:0xC3FDC004 %Long 0x3000A50F
+
+; Enable power supply
+Data.Set ANC:0xC3F906AD %Byte 0x01
+Data.Set ANC:0xC3F9019A %Word 0x0300
+
+GOSUB Setup_PLL
+GOSUB Setup_QSPI
+
+;protect from accessing unimplemented memory (open Data.List/Dump windows)
+MAP.DENYACCESS 0x20000000--0x3FFFFFFF
+
+; initialize internal SRAM (64K)
+Data.Set EA:0x40000000--0x4000ffff %Quad 0
+
+
+;========================================================================
+; External Flash declaration and load
+
+; get user to select elf
+;LOCAL &filename
+;DIALOG.FILE *
+;ENTRY %LINE &filename
+
+FLASH.RESet
+FLASH.Create 1. &flashbase_parallel_qspi++&flashsize_parallel_qspi &sectorsize_qspi TARGET quad
+FLASH.TARGET E:&rambase E:&rambase+0x2000 0x1000 "&flashdriver_qspi" /STACKSIZE 0x0400
+
+;program flash A
+FLASH.ReProgram &flashbase_parallel_qspi++(&flashsize_parallel_qspi-1)
+Data.LOAD "hmi_gfx_mgr02.elf" &flashbase_parallel_qspi++(&flashsize_parallel_qspi-1)
+FLASH.ReProgram off
+
+
+; Internal Flash declaration and load
+
+;alter MMU page for full memory map - set to BOOKE for Internal Flash Driver
+MMU.TLBSET 0x0 0xC0000b00 0x00000000 0x0000003F  ; 0x0000_0000 to 0xFFFF_FFFF  VLE	;Rainbow VLE
+
+FLASH.RESet
+FLASH.Create 1. (&flashbase_int+0x00000000)++0x03fff TARGET Quad 0. ; L0
+FLASH.Create 1. (&flashbase_int+0x00004000)++0x03fff TARGET Quad 1. ; L1
+FLASH.Create 1. (&flashbase_int+0x00008000)++0x03fff TARGET Quad 2. ; L2
+FLASH.Create 1. (&flashbase_int+0x0000c000)++0x03fff TARGET Quad 3. ; L3
+FLASH.Create 1. (&flashbase_int+0x00010000)++0x03fff TARGET Quad 4. ; L4
+FLASH.Create 1. (&flashbase_int+0x00014000)++0x03fff TARGET Quad 5. ; L5
+FLASH.Create 1. (&flashbase_int+0x00018000)++0x03fff TARGET Quad 6. ; L6
+FLASH.Create 1. (&flashbase_int+0x0001c000)++0x03fff TARGET Quad 7. ; L7
+FLASH.Create 1. (&flashbase_int+0x00020000)++0x0ffff TARGET Quad 8. ; L8
+FLASH.Create 1. (&flashbase_int+0x00030000)++0x0ffff TARGET Quad 9. ; L9
+
+FLASH.Create 2. (&flashbase_int+0x00040000)++0x1ffff TARGET Quad 0. ; M0
+FLASH.Create 2. (&flashbase_int+0x00060000)++0x1ffff TARGET Quad 1. ; M1
+
+FLASH.Create 3. (&flashbase_int+0x00080000)++0x3ffff TARGET Quad 0. ; H0
+FLASH.Create 3. (&flashbase_int+0x000C0000)++0x3ffff TARGET Quad 1. ; H1
+
+; Shadow row
+FLASH.Create 4. (&shadowbase_int+0x00000000)++0x3fff NOP Quad
+
+
+FLASH.TARGET E:&rambase E:&rambase+0x2000 0x1000 &flashdriver_int /STACKSIZE 0x0200
+
+
+FLASH.ReProgram ALL
+Data.LOAD "hmi_gfx_mgr02.elf" E:0x00--(&flashsize_int-1)
+FLASH.ReProgram off
+Data.LOAD "hmi_gfx_mgr02.elf" E:&rambase--(&rambase+0xffff) ;load any data into RAM now that flash driver has been removed
+Data.LOAD "hmi_gfx_mgr02.elf" /compare ;compare elf with memory to ensure load has been successful
+ENDDO
+
+
+
+;========================================================================
+;setup PLL - Assumes 8MHz Source
+Setup_PLL:
+  Data.Set ANC:0xC3FDC02C %Long (Data.Long(ANC:0xC3FDC02C)|0x00000020);switch on external osc
+  Data.Set ANC:0xC3FDC02C %Long (Data.Long(ANC:0xC3FDC02C)|0x00000002);Select external osc
+  ;enter DRUN
+  Data.Set ANC:0xC3FDC004 %Long 0x30005AF0
+  Data.Set ANC:0xC3FDC004 %Long 0x3000A50F
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0x00000020)!=0x0 ;Wait for external osc to stabilize
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0x08000000)!=0x08000000 ;Wait for mode entry to complete
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0xF0000000)==0x30000000 ;Check DRUN mode has been entered
+
+  ;set divider values
+  Data.Set ANC:0xC3FE00A0 %Byte (Data.Byte(ANC:0xC3FE00A0)&0xC3) ;IDF- div by 1
+  Data.Set ANC:0xC3FE00A0 %Byte ((Data.Byte(ANC:0xC3FE00A0)&0xFC)|0x00) ;ODF - div by 2
+  Data.Set ANC:0xC3FE00A1 %Byte (0x20) ;NDIV - div by 32 for 128MHz PLL
+  Data.Set ANC:0xC3FDC02C %Long (Data.Long(ANC:0xC3FDC02C)|0x00000040) ;PLL on
+
+  ;re-enter the drun mode, to update the configuration
+  Data.Set ANC:0xC3FDC004 %Long 0x30005AF0
+  Data.Set ANC:0xC3FDC004 %Long 0x3000A50F
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0x08000000)!=0x08000000 ;Wait for mode entry to complete
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0xF0000000)==0x30000000 ;Check DRUN mode has been entered
+  WAIT ((Data.Long(ANC:0xC3FE00A0))&0x00000008)!=0x00000000 ;Wait til PLL is locked
+
+  Data.Set ANC:0xC3FDC02C %Long (Data.Long(ANC:0xC3FDC02C)|0x04) ;Select external osc;system clock is PLL
+  Data.Set ANC:0xC3FDC004 %Long 0x30005AF0
+  Data.Set ANC:0xC3FDC004 %Long 0x3000A50F
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0x08000000)!=0x08000000 ;Wait for mode entry to complete
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0xF0000000)==0x30000000 ;Check DRUN mode has been entered
+  WAIT ((Data.Long(ANC:0xC3FDC000))&0x0000000F)==0x00000004 ;ensure we rnow running from PLL
+RETURN
+
+
+;========================================================================
+;set up QuadSPI
+; setup pins in SIU
+Setup_QSPI:
+	;QSPI_A
+  Data.Set ANC:0xC3F900E6 %Word 0x70c;  IO0 PF13
+  Data.Set ANC:0xC3F900E8 %Word 0x70c;  IO1 PF14
+  Data.Set ANC:0xC3F900E2 %Word 0x70c;  IO2 PF11
+  Data.Set ANC:0xC3F900E4 %Word 0x70c;  IO3 PF12
+  Data.Set ANC:0xC3F900E0 %Word 0x70f;  CS PF10
+  Data.Set ANC:0xC3F900EA %Word 0x600;  SCLK PF15
+	;QSPI_B
+  Data.Set ANC:0xC3F900D8 %Word 0x70c;  IO0 PF6
+  Data.Set ANC:0xC3F900D6 %Word 0x70c;  IO1 PF5
+  Data.Set ANC:0xC3F90134 %Word 0x70c;  IO2 PK1
+  Data.Set ANC:0xC3F90130 %Word 0x70c;  IO3 PJ15
+  Data.Set ANC:0xC3F9012C %Word 0x70f;  CS PJ13
+  Data.Set ANC:0xC3F9012E %Word 0x600;  SCLK PJ14
+
+  Data.Set ANC:0xC3FE0398 %Long 0x00000000 ;set QSPI clock as sysclk
+  Data.Set ANC:0xFFFA0000 %Long 0x000f0010 ;Enable QuadSPI mode for Spansion. Change to 0x000f0008 for Winbond
+
+  IF &quadread_enable==1
+  (
+    Data.Set ANC:0xFFFA0104 %Long 0x000000a3 ;enable high performance mode (winbond only, cmd is ignored by spansion)
+    WAIT ((Data.Long(ANC:0xFFFA015c))&0x00000001)!=0x00000001   ;wait for command to be sent
+	Data.Set ANC:0xFFFA0004 %Long 0x00000004 ; set LCR to 4 dummy cycles. Required for Spansion, ignored by Winbond.
+    Data.Set ANC:0xFFFA0158 %Long 0x00A080eb ; Use Quad I/O reads - Command: 0xEB, Read Size:64bytes
+  )
+RETURN

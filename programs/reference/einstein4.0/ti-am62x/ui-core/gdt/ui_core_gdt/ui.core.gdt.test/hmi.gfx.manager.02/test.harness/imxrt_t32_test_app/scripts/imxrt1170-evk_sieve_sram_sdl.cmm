@@ -1,0 +1,102 @@
+; --------------------------------------------------------------------------------
+; @Title: Simple demo script for IMXRT1176-CM7 on IMXRT1170-EVK (RAM)
+; @Description:
+;   Loads the sieve demo application into RAM and sets up a demo debug
+;   scenario.
+;   Use this script for getting started.
+;   Prerequisites:
+;    * Connect Debug Cable to J1
+;      or
+;      Connect Combiprobe/uTrace to J1
+; @Keywords: ARM, Cortex-M7
+; @Author: STK
+; @Board: IMXRT1170-EVK
+; @Chip: IMXRT1176-CM7
+; @Copyright: (C) 1989-2019 Lauterbach GmbH, licensed for use with TRACE32(R) only
+; --------------------------------------------------------------------------------
+; $Id: imxrt1170-evk_sieve_sram.cmm 15095 2019-10-15 20:17:28Z skrausse $
+
+
+;WinCLEAR
+; store current script path in &ppd
+PRIVATE &ppd
+&ppd=OS.PPD()
+; --------------------------------------------------------------------------------
+; initialize and start the debugger
+RESet
+SYStem.RESet
+SYStem.CPU IMXRT1176-CM7
+SYStem.CONFIG.DEBUGPORTTYPE JTAG
+SYStem.Option DUALPORT ON
+SYStem.MemAccess DAP
+SYStem.JtagClock 10MHz
+SYStem.Up
+sys.Option IMASKHLL ON
+sys.Option IMASKASM ON
+; initialize VTOR with new vector vector table @10080000
+; Data.Set AD:0xE000ED08 %Long 0x00000400
+
+; --------------------------------------------------------------------------------
+; load demo program (uses internal RAM only)
+; Data.LOAD "~~~~/default.srec"
+; Data.LOAD "~~~~/Zeroes.srec"
+; Data.LOAD.Elf "~~~~/kcluster_VP_Platform.elf"
+  Data.LOAD.Elf &(ppd)/../../out/VP_Platform/KCLUSTER_ED1A/debug/kcluster_VP_Platform/kcluster_VP_Platform.elf 
+; symbol.sourcePATH.Translate "\build\" "..\..\..\..\..\..\"
+; initialize VTOR with new vector vector table @10080000
+; Data.Set AD:0xE000ED08 %Long 0x00000400
+; Data.Set AD:0xE000ED08 %Long 0x20260C00
+;Data.Set AD:0xE000ED08 %Long 0x20240000
+Data.Set AD:0xE000ED08 %Long 0x00000000
+; --------------------------------------------------------------------------------
+; start program execution
+; Go.direct main
+;WAIT !STATE.RUN()
+
+; Use on-chip breakpoints by default
+Map.BOnchip
+
+; --------------------------------------------------------------------------------
+; open some windows
+;WinCLEAR
+; Mode.Hll
+; WinPOS 0. 0. 116. 26.
+; List.auto
+; WinPOS 120. 0. 100. 8.
+; Frame.view
+; WinPOS 120. 14.
+; Var.Watch
+; Var.AddWatch %SpotLight myRunnableCount myIsrCount a b joshua 
+; WinPOS 120. 25. 50. 14.
+; Register.view /SpotLight
+; WinPOS 0. 32.
+; ; Var.DRAW %DEFault x
+
+Mode.Hll
+WinPOS 0% 50% 100% 50%
+WinLarge.Data.List
+
+WinPOS 0% 0% 30% 50%
+WinLarge.sYmbol.Browse.Module
+
+WinPOS 30% 0% 60% 50%
+WinLarge.sYmbol.Browse.Function
+
+WinPOS 60% 0% 100% 50%
+WinLarge.Register
+
+WinPAGE.select P000
+
+symbol.sourcePATH.Translate "\build\" "..\..\..\..\..\..\"
+
+break.set startup /program
+
+; SYStem.RESetTarget
+
+Register.Set PC __ghs_board_memory_init
+
+b.set main
+
+; b.set osStartOS
+
+ENDDO

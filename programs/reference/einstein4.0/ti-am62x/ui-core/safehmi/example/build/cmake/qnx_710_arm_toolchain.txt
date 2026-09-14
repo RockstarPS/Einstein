@@ -1,0 +1,20 @@
+#include(CMakeForceCompiler)
+
+set(CMAKE_SYSTEM_NAME QNX)
+set(CMAKE_SYSTEM_VERSION 710)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+
+set(tools $ENV{QNX_HOST})
+set(CMAKE_C_COMPILER ${tools}/usr/bin/qcc.exe)
+set(CMAKE_CXX_COMPILER ${tools}/usr/bin/qcc.exe)
+set(CMAKE_AR ${tools}/usr/bin/aarch64-unknown-nto-qnx7.1.0-ar.exe CACHE FILEPATH "" FORCE)
+set(CMAKE_LD ${tools}/usr/bin/aarch64-unknown-nto-qnx7.1.0-ld.exe)
+set(CMAKE_RANLIB ${tools}/usr/bin/aarch64-unknown-nto-qnx7.1.0-ranlib.exe)
+set(CMAKE_CXX_FLAGS "-std=c++11 -Vgcc_ntoaarch64 -EL -DVARIANT_le -DBUILDENV_qss -D__QNX__ -D_QNX_SOURCE -D_GNU_SOURCE -D_XOPEN_SOURCE=500" CACHE STRING "" FORCE)
+set(CMAKE_C_FLAGS "-Vgcc_ntoaarch64  -EL -DVARIANT_le -DBUILDENV_qss -D_QNX_SOURCE -D_GNU_SOURCE -D_XOPEN_SOURCE=500" CACHE STRING "" FORCE)
+set_property(TARGET ${target} APPEND_STRING PROPERTY LINK_FLAGS "-Vgcc_ntoaarch64 -Wl,--no-keep-memory -Wl,-v -EL")
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)

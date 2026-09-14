@@ -1,0 +1,403 @@
+/*============================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2010. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==========================================================================*/
+
+/*============================================================================
+**
+** Name:           hmi_popup_core.dat
+**
+** Description:    
+                   This file has the data definition table for the Popup 
+                   Core Component
+**                 
+** Organization:   Driver Information Software Section,
+**                 Visteon
+**
+**============================================================================
+**
+**==========================================================================*/
+
+#ifndef HMI_POPUP_CORE_DAT
+#define HMI_POPUP_CORE_DAT
+
+/* ****** Application Include Files */
+
+#include "hmi_timer_support.h"
+#include "hmi_popup_screen.h"
+
+#include "system.h"
+#include "hmi_popup_core_if.h"
+#include "hmi_popup_core.h"
+#include "hmi_logic_state_handler.h"
+
+/* Release label major version 4 */
+/* Release label minor version 13 */
+#define HMI_POPUP_CORETOOL_LABEL "POPUPTOOL_LABEL: rel-UI-CORE-ICEAPPLE-4.13"
+#define HMI_POPUP_CORE_TOOL_MAJOR_VERSION	4
+#define HMI_POPUP_CORE_TOOL_MINOR_VERSION	13
+#define HMI_POPUP_CORETOOL_VERSION     ((HMI_POPUP_CORE_TOOL_MAJOR_VERSION * 100) + HMI_POPUP_CORE_TOOL_MINOR_VERSION)
+#if HMI_POPUP_CORE_VERSION != HMI_POPUP_CORETOOL_VERSION
+#pragma message (HMI_POPUP_CORETOOL_LABEL)
+#pragma message (HMI_POPUP_CORE_LABEL)
+#error  The above Popup core and its tool version are mismatched. Please verify.
+#endif
+
+#define POPUP_APP_DEFINED_ANIM_FUNCTION(anim_id,popup_id) (anim_id)
+
+/***************************************************/
+/*                  Timer Interface                */
+/***************************************************/
+#define  HMI_POPUP_START_TIMER(timer_id, timeout, evt)  ( hmi_popup_core_support_timer_start((timer_id), (timeout), (evt)))
+#define  HMI_POPUP_STOP_TIMER(timer_id)                 ( hmi_popup_core_support_timer_stop(timer_id))
+#define  HMI_POPUP_CHECK_TIMER(timer_id)                ( hmi_popup_core_support_timer_check(timer_id))
+
+#define  POPUP_TMR_RUNNING               ( HMI_TIMER_RUNNING)
+#define  POPUP_TMR_EXPIRED               ( HMI_TIMER_EXPIRED)
+#define  POPUP_TMR_CLEARED               ( HMI_TIMER_CLEAR)
+#define  POPUP_MAX_TIMER                 (0x0FFFF)
+
+
+/***************************************************/
+/*           Animation Configuration               */
+/***************************************************/
+#define  HMI_DEFAULT_POPUP_CLOSE_ANIM					( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_MINTIMEOUT_ANIM				( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM			( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_TIMEOUT_ANIM					( ANIM_MAX_ID)
+#define  HMI_POPUP_ADD_MINTIME_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_ADD_TIMEOUT_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_PROG_TIMEOUT_ANIM				( ANIM_MAX_ID)
+#define  HMI_DEFAULT_POPUP_ADD_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_ACK_ANIM						( ANIM_MAX_ID)
+
+#define POPUP_IGNORE_MIN_TIME_ON_HIGH_PRIO_POPUP      (1)
+
+#define POPUP_LSH_ADD_STATE_EXT(state, anim, client)	LSH_ADD_STATE_EXT(state, anim, client)
+#define POPUP_LSH_REM_STATE_EXT(state, anim, client)	LSH_REM_STATE_EXT(state, anim, client)
+
+/************************************************************************
+                      General Key Pad Entry Config                       
+************************************************************************/
+
+static const HMI_CHAR l_Numeric_KEYPAD_1_IN_char[1] = {((HMI_CHAR)'1')};
+static const HMI_CHAR l_Numeric_KEYPAD_2_IN_char[1] = {((HMI_CHAR)'2')};
+static const HMI_CHAR l_Numeric_KEYPAD_3_IN_char[1] = {((HMI_CHAR)'3')};
+static const HMI_CHAR l_Numeric_KEYPAD_4_IN_char[1] = {((HMI_CHAR)'4')};
+static const HMI_CHAR l_Numeric_KEYPAD_5_IN_char[1] = {((HMI_CHAR)'5')};
+static const HMI_CHAR l_Numeric_KEYPAD_6_IN_char[1] = {((HMI_CHAR)'6')};
+static const HMI_CHAR l_Numeric_KEYPAD_7_IN_char[1] = {((HMI_CHAR)'7')};
+static const HMI_CHAR l_Numeric_KEYPAD_8_IN_char[1] = {((HMI_CHAR)'8')};
+static const HMI_CHAR l_Numeric_KEYPAD_9_IN_char[1] = {((HMI_CHAR)'9')};
+static const HMI_CHAR l_Numeric_KEYPAD_0_IN_char[1] = {((HMI_CHAR)'0')};
+
+static const KEYPAD_EVENT_TYPE l_Numeric_keyevent[] =
+{
+    {KEYPAD_1_IN, 1  ,&l_Numeric_KEYPAD_1_IN_char[0]        },
+    {KEYPAD_2_IN, 1  ,&l_Numeric_KEYPAD_2_IN_char[0]        },
+    {KEYPAD_3_IN, 1  ,&l_Numeric_KEYPAD_3_IN_char[0]        },
+    {KEYPAD_4_IN, 1  ,&l_Numeric_KEYPAD_4_IN_char[0]        },
+    {KEYPAD_5_IN, 1  ,&l_Numeric_KEYPAD_5_IN_char[0]        },
+    {KEYPAD_6_IN, 1  ,&l_Numeric_KEYPAD_6_IN_char[0]        },
+    {KEYPAD_7_IN, 1  ,&l_Numeric_KEYPAD_7_IN_char[0]        },
+    {KEYPAD_8_IN, 1  ,&l_Numeric_KEYPAD_8_IN_char[0]        },
+    {KEYPAD_9_IN, 1  ,&l_Numeric_KEYPAD_9_IN_char[0]        },
+    { KEYPAD_0_IN, 1 ,&l_Numeric_KEYPAD_0_IN_char[0]        }
+
+};
+
+static const KEYPAD_CONFIG_TYPE l_Numeric_keyconfig = {10 , l_Numeric_keyevent};
+static const UINT16 l_ok_event_1[] = 
+{
+    BTN_ID_ENTER
+};
+static const PP_BTN_EVENT_TYPE l_ok_event[] = 
+{
+    {1,l_ok_event_1}
+};
+
+static const UINT16 l_delete_event_1[] = 
+{
+    BTN_ID_MAX
+};
+static const PP_BTN_EVENT_TYPE l_delete_event[] = 
+{
+    {1,l_delete_event_1}
+};
+
+static const UINT16 l_clear_event_1[] = 
+{
+    BTN_ID_MAX
+};
+static const PP_BTN_EVENT_TYPE l_clear_event[] = 
+{
+    {1,l_clear_event_1}
+};
+
+static const UINT16 l_cancel_event_1[] = 
+{
+    BTN_ID_MAX
+};
+static const PP_BTN_EVENT_TYPE l_cancel_event[] = 
+{
+    {1,l_cancel_event_1}
+};
+
+
+/************************************************************************
+                      General Ack Entry Config                           
+************************************************************************/
+
+static const ACK_EVENT_TYPE l_gui_common_ack_button_config1_event[1]=
+{
+{  BTN_ID_ENTER,  PASSED  }
+};
+
+static const UINT16 l_gui_common_nack_button_config1_event[1]=
+{
+    BTN_ID_POWER
+};
+
+static const ACK_CONFIG_TYPE gui_common_ack_button_config1 = {1 , l_gui_common_ack_button_config1_event   };
+static const NACK_CONFIG_TYPE gui_common_nack_button_config1 = {1 , l_gui_common_nack_button_config1_event   };
+
+
+/* Master Popup Data Base Structure */
+
+static UINT8  l_pp_id_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_lsh_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_tmr_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_min_tmr_bit_U8_ptr[(L_POPUP_MAX_COUNT+7)/8];
+
+static const POPUP_CONFIG_T lc_popup_config_table[L_POPUP_MAX_COUNT] =
+{
+         /*WARNING_POPUP_ID*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_WARNING                         ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER0_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        (LSH_EVENT_HANDLER_T *)scr_warning_popup_event_handler         ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)scr_warning_popup_focus_handler         ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)scr_warning_popup_presentation_handler  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*INFO_POPUP_ID*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        1                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_INFO_POPUP                      ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        5                                       ,              /*Popup Timer Out	        */
+        (LSH_EVENT_HANDLER_T *)scr_info_popup_event_handler            ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)scr_info_popup_focus_handler            ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)scr_info_popup_presentation_handler     ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*ACK_POPUP_ID*/
+    {
+        POPUP_ACK                               ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_ACK_POPUP                       ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        (LSH_EVENT_HANDLER_T *)scr_ack_popup_event_handler             ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)scr_ack_popup_focus_handler             ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)scr_ack_popup_presentation_handler      ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*KEYPAD_POPUP_ID*/
+    {
+        POPUP_KEYPAD                            ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_KEYPAD_POPUP                    ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        (LSH_EVENT_HANDLER_T *)scr_keypad_popup_event_handler          ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)scr_keypad_popup_focus_handler          ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)scr_keypad_popup_presentation_handler   ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*PROGRESS_POPUP_ID*/
+    {
+        POPUP_PROGRESS                          ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_PROGRESS_POPUP                  ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        1                                       ,              /*Progress Time Out         */
+        (LSH_EVENT_HANDLER_T *)scr_progress_popup_event_handler        ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)scr_progress_popup_focus_handler        ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)scr_progress_popup_presentation_handler ,              /*Presentation Handler   	*/
+        hmi_progress_popup_status_handler       ,              /*Popup Core Handler 	    */
+    }
+};
+
+/**************************************************************************
+                      Key Pad Entry Popup Definitions
+**************************************************************************/
+
+static HMI_CHAR l_KEYPAD__0_entry_data[10];
+static UINT16 l_KEYPAD__0_timer_counter;
+static UINT16 l_KEYPAD__0_press_counter;
+static UINT16 l_KEYPAD__0_press_btn;
+
+static const  POPUP_KEYPADENTRY_TYPE l_keypad_entry_array[] =
+{
+    /*KEYPAD_POPUP_ID*/
+    {
+          NUMERIC_ENTRY,     /*KeypadEntryType 	*/
+          &l_Numeric_keyconfig,				/*Keypad Config 	*/
+          10,              /*MaxChar 			*/
+          0,              /*MTimeout 	        */
+          &l_ok_event[0],
+          &l_delete_event[0],
+          &l_clear_event[0],
+          &l_cancel_event[0],
+          POPUP_VALIDATE_HANDLER_NULL,              /*ValidationHandler */
+
+          l_KEYPAD__0_entry_data,
+          &l_KEYPAD__0_timer_counter,
+          &l_KEYPAD__0_press_counter,
+          &l_KEYPAD__0_press_btn
+
+    },
+};
+
+/**************************************************************************
+                      Progress Bar Counter Definitions 
+**************************************************************************/
+
+static UINT8 l_PROGRES_0_counter_U8;
+
+static const POPUP_PROGRESSBAR_TYPE l_ProgressBarPopupArray[] = 
+{
+        /*PROGRESS_POPUP_ID*/
+    {
+        22,/*popup timeout/progress bar rate timer with round off value,if no popup timeout(i.e. 0), then this counter value will be 255*/
+        &l_PROGRES_0_counter_U8
+    },
+};
+
+/**************************************************************************
+                      Acknowledge Popup Definitions
+**************************************************************************/
+
+static const POPUP_ACK_TYPE l_AckPopupArray[] = 
+{
+        /*ACK_POPUP_ID*/
+    {
+         &gui_common_ack_button_config1, /*ACK Button Config 		*/
+         ABSORBED, /*Not ACK Button Type 		*/
+         &gui_common_nack_button_config1 /*Not ACK Button Config 	*/
+    }
+};
+
+/* Macros for the No of Groups available in each Layer */
+
+#define POPUP_Layer0_NUM_GROUPS    (0)
+#define POPUP_Layer1_NUM_GROUPS    (0)
+
+/* Q declaration for the Group Priority Management */
+
+
+
+
+/***************************************************************************
+                           Layer Details
+***************************************************************************/
+
+static const POPUP_LAYER_TYPE l_popup_layer0 = 
+{
+    0,      /* Logic State Priority		*/
+    L_POPUP_LAYER0_ID,    /* Layer ID       */
+    POPUP_MAX_TIMER,           /* Minimum Timeout Timer         */
+    0,       /* Start Index      */
+    1,      /* Total Popup Count     */
+    POPUP_Layer0_NUM_GROUPS,       /* Total Group Prio Count    */
+    NULL
+};
+
+static const POPUP_LAYER_TYPE l_popup_layer1 = 
+{
+    1,      /* Logic State Priority		*/
+    L_POPUP_LAYER1_ID,    /* Layer ID       */
+    POPUP_MAX_TIMER,           /* Minimum Timeout Timer         */
+    1,       /* Start Index      */
+    4,      /* Total Popup Count     */
+    POPUP_Layer1_NUM_GROUPS,       /* Total Group Prio Count    */
+    NULL
+};
+static POPUP_LAYER_TYPE const * l_layer_table[POPUP_MAX_LAYERS] = 
+{
+    &l_popup_layer0,
+    &l_popup_layer1,
+};
+
+static const POPUP_TOTAL_POPUPTYPE_COUNT_T l_total_pp_type =
+{
+    2,
+#ifdef POPUP_TYPE_KEYPAD
+    1,
+#endif
+#ifdef POPUP_TYPE_PROGRESSBAR
+    1,
+#endif
+#ifdef POPUP_TYPE_ACK
+    1,
+#endif
+#ifdef POPUP_TYPE_ACK
+    &l_AckPopupArray[0],                            /* Pointer to Acknowledge Popup Struct                      */
+#endif
+#ifdef POPUP_TYPE_PROGRESSBAR
+    &l_ProgressBarPopupArray[0],                            /* Pointer to Progress Bar Struct                      */
+#endif
+#ifdef POPUP_TYPE_KEYPAD
+    &l_keypad_entry_array[0],                            /* Pointer to Key Pad Struct								*/
+#endif
+#ifdef POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED
+    POPUP_NOTIFY_CB_NULL_HANDLER_T
+#endif
+};
+
+#endif
+
+

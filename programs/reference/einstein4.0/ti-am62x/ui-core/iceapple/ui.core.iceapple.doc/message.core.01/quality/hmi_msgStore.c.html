@@ -1,0 +1,1326 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_msgStore.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2009. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_msgStore.c
+   20:	**
+   21:	** Description:    Message Core Component.  This module handles the storage
+   22:	**                  and erview of messages that have been dismissed.
+   23:	**
+   24:	** Organization:   Driver Information Software Section,
+   25:	**                 DI Core Engineering Department
+   26:	**
+   27:	**==========================================================================*/
+   28:	#define hmi_msgStore_C
+   29:	
+   30:	/*==========================================================================*/
+   31:	/*  I N C L U D E   F I L E S                                               */
+   32:	/*==========================================================================*/
+   33:	#include "system.h"
+   34:	#include "hmi_msgStore.h"
+   35:	#include "hmi_msgStore.cfg"
+   36:	
+   37:	/*==========================================================================*/
+   38:	/* I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S    */
+   39:	/*==========================================================================*/
+   40:	
+   41:	/*----------------------------------------------------------------------*/
+   42:	/* Set optimisation OFF (useful for debugging)                          */
+   43:	/*----------------------------------------------------------------------*/
+   44:	/* #pragma optimization_level 0 */
+   45:	
+   46:	
+   47:	/*==========================================================================*/
+   48:	/* I N T E R N A L   F U N C T I O N   P R O T O T Y P E S                  */
+   49:	/*==========================================================================*/
+   50:	static void stor_InitIndex(void);
+   51:	static void stor_InitList(void);
+   52:	
+   53:	static void stor_UpdateViewer(eMessageIdentity MessageID);
+   54:	static void stor_IndexUp(UINT16 BaseCategory);
+   55:	static void stor_IndexDown(UINT16 BaseCategory);
+   56:	static void stor_Delete(UINT32 Index);
+   57:	static void stor_Insert(UINT32 Index, eMessageIdentity Value);
+   58:	static UINT16 stor_GetViewCount(UINT32 CategaoryMask);
+   59:	static UINT16 stor_GetViewIndex(eMessageIdentity MessageID, UINT32 CategoryMask);
+   60:	
+   61:	static UINT32 stor_FindFirstIndex(UINT32 CategoryMask);
+   62:	static UINT32 stor_FindNextIndex(UINT32 Start, UINT32 CategoryMask);
+   63:	static UINT32 stor_FindPreviousIndex(UINT32 Start, UINT32 CategoryMask);
+   64:	
+   65:	
+   66:	/*==========================================================================*/
+   67:	/* M E M O R Y   A L L O C A T I O N                                        */
+   68:	/*==========================================================================*/
+   69:	eMessageIdentity stor_MessageList[MSG_NUM_MESSAGES + 1];
+   70:	
+   71:	#ifdef MSG_ACK_WRNG_REPETITION
+   72:	BOOLEAN MsgAddedFromStoreQueue;
+   73:	#ifdef MSG_ACK_WRNG_REPEAT_TIMER_CONTROL
+   74:	eAckWrngRepTimerStatus stor_AckWrng_Rep_TimerStatus;
+   75:	#endif
+   76:	#endif
+   77:	static UINT16 stor_Categories[MSG_NUM_MESSAGE_CATEGORIES + 1];
+   78:	static MSG_VIEWINFO_T stor_ViewMessage;
+   79:	static UINT32 stor_ViewMask;
+   80:	
+   81:	#define STOR_LAST_INDEX    (stor_Categories[MSG_NUM_MESSAGE_CATEGORIES])
+   82:	
+   83:	#ifdef MSG_ACK_WRNG_REPETITION
+   84:	/*--------------------------------------------------------------------------*/
+   85:	/* Array that holds the ack warning repetition duration of every message    */
+   86:	/*--------------------------------------------------------------------------*/
+   87:	static UINT8 stor_Ack_Wrng_RepDuration[MSG_NUM_MESSAGES + 1];
+   88:	#if defined ENABLE_PRIVATE_TIMERS
+   89:	    /* Timer used for calculation for ack warning repetition */
+   90:	    static TIMER  stor_AckWrng_Rep_Timer;
+   91:	#else
+   92:	    /* Timer used for calculation for ack warning repetition */
+   93:	    #define stor_AckWrng_Rep_Timer  (STOR_ACK_WRNG_REP_TIMER_ID)
+   94:	#endif
+   95:	
+   96:	#endif
+   97:	
+   98:	/*==========================================================================*/
+   99:	/* E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S      */
+  100:	/*==========================================================================*/
+  101:	
+  102:	void msg_StoreInitialise(void)
+  103:	/*============================================================================
+  104:	**  Visibility:     Public (.h)
+  105:	**----------------------------------------------------------------------------
+  106:	**  Description:    Message store initialisation
+  107:	**
+  108:	**  Parameters:     None.
+  109:	**
+  110:	**  Returns:        None.
+  111:	**----------------------------------------------------------------------------
+  112:	** Created: AFERRIS2 12/Apr/2010
+  113:	**==========================================================================*/
+  114:	{
+  115:	    stor_InitIndex();
+  116:	    stor_InitList();
+  117:	    stor_ViewMessage.Id = (UINT16)MSG_INDEX_UNDEFINED;
+  118:	    stor_ViewMessage.Count = 0;
+  119:	    stor_ViewMessage.Position = 0;
+  120:	    stor_ViewMask = MSG_ALL_CATEGORIES;
+  121:	    #ifdef MSG_ACK_WRNG_REPETITION
+  122:	    /* Timer used for 1 second calculation for ack warning repetition */
+  123:	    MSG_CLEAR_SW_TIMER(stor_AckWrng_Rep_Timer);
+  124:	    MsgAddedFromStoreQueue = MSG_NOT_ADDED_FROM_STORE_QUEUE;
+  125:	    #ifdef MSG_ACK_WRNG_REPEAT_TIMER_CONTROL 
+  126:	    stor_AckWrng_Rep_TimerStatus = ACK_WRNG_REP_TIMER_RESTART;
+  127:	    #endif
+  128:	    #endif
+  129:	}
+  130:	
+  131:	
+  132:	void msg_StoreUpdate(void)
+  133:	{
+  134:	    /*------------------------------------------------------------------*/
+  135:	    /* No actions needed right now.                                     */
+  136:	    /*------------------------------------------------------------------*/
+  137:	}
+  138:	
+  139:	NULSIF_STANDARD_INTERFACE(msg_StoreSelectFirst)
+  140:	/*============================================================================
+  141:	**  Visibility:     Public (.h)
+  142:	**----------------------------------------------------------------------------
+  143:	**  Description:    Standard interface function to select the first message in
+  144:	**                  the store list that matches the given category mask.
+  145:	**
+  146:	**  Parameters:     Data:       ID of first message
+  147:	**                              (MSG_INDEX_UNDEFINED if none available)
+  148:	**
+  149:	**  Returns:        sif_OK (always)
+  150:	**----------------------------------------------------------------------------
+  151:	** Created: AFERRIS2 12/Apr/2010
+  152:	**==========================================================================*/
+  153:	{
+  154:	    eMessageIdentity messageID;
+  155:	    MSG_VIEWINFO_T *retData;
+  156:	    UINT32 index;
+  157:	
+  158:	    retData = (MSG_VIEWINFO_T *)SIF_GET_DATA_REF();
+  159:	
+  160:	    /*----------------------------------------------------------------------*/
+  161:	    /* Obtain value that has been requested.                                */
+  162:	    /*----------------------------------------------------------------------*/
+  163:	    index = stor_FindFirstIndex(stor_ViewMask);
+  164:	    messageID = stor_MessageList[index];
+  165:	
+  166:	    stor_ViewMessage.Id       = (UINT16)messageID;
+  167:	    stor_ViewMessage.Position = 0;
+  168:	    stor_ViewMessage.Count    = stor_GetViewCount(stor_ViewMask);
+  169:	
+  170:	    /*----------------------------------------------------------------------*/
+  171:	    /* Store data if caller provided a valid pointer.                       */
+  172:	    /*----------------------------------------------------------------------*/
+  173:	    if (SIF_ISVALID_DATA())
+  174:	    {
+  175:	        retData-&gt;Count    = stor_ViewMessage.Count;
+  176:	        retData-&gt;Position = stor_ViewMessage.Position;
+  177:	        retData-&gt;Id       = stor_ViewMessage.Id;
+  178:	    }
+  179:	
+  180:	    return sif_OK;
+  181:	}
+  182:	
+  183:	NULSIF_STANDARD_INTERFACE(msg_StoreSelectNext)
+  184:	/*============================================================================
+  185:	**  Visibility:     Public (.h)
+  186:	**----------------------------------------------------------------------------
+  187:	**  Description:    Standard interface function to obtain the next message in
+  188:	**                  the store list that matches the given category mask.
+  189:	**
+  190:	**  Parameters:     Data:       ID of next message
+  191:	**                              (MSG_INDEX_UNDEFINED if none available)
+  192:	**
+  193:	**  Returns:        sif_OK:     Next message is valid
+  194:	**                  sif_ERROR:  Next message not available
+  195:	**----------------------------------------------------------------------------
+  196:	** Created: AFERRIS2 12/Apr/2010
+  197:	**==========================================================================*/
+  198:	{
+  199:	    MSG_VIEWINFO_T *retData;
+  200:	
+  201:	    UINT32 index;
+  202:	    SIF_STATUS retVal = sif_OK;
+  203:	
+  204:	    retData = (MSG_VIEWINFO_T *)SIF_GET_DATA_REF();
+  205:	
+  206:	    /*----------------------------------------------------------------------*/
+  207:	    /* Obtain value that has been requested.                                */
+  208:	    /*----------------------------------------------------------------------*/
+  209:	    index = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, MSG_ALL_CATEGORIES);
+  210:	    index = stor_FindNextIndex(index + 1UL, stor_ViewMask);
+  211:	
+  212:	    /*----------------------------------------------------------------------*/
+  213:	    /* Handle attempt to go past the end of the list                        */
+  214:	    /*----------------------------------------------------------------------*/
+  215:	    if (index == STOR_LAST_INDEX)
+  216:	    {
+  217:	        #if(MSG_STORE_VIEWER_OPTIONS == OPTION_VIEWER_WRAP)
+  218:	        {
+  219:	            /*--------------------------------------------------------------*/
+  220:	            /* Find first if wrapping is enabled                            */
+  221:	            /*--------------------------------------------------------------*/
+  222:	            index = stor_FindFirstIndex(stor_ViewMask);
+  223:	
+  224:	            stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  225:	            stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  226:	        }
+  227:	        #else
+  228:	        {
+  229:	            /*--------------------------------------------------------------*/
+  230:	            /* Otherwise return error condition (data not available)        */
+  231:	            /*--------------------------------------------------------------*/
+  232:	            retVal = sif_ERROR;
+  233:	        }
+  234:	        #endif
+  235:	    }
+  236:	
+  237:	    /*----------------------------------------------------------------------*/
+  238:	    /* Otherwise get message ID and position.                               */
+  239:	    /*----------------------------------------------------------------------*/
+  240:	    else
+  241:	    {
+  242:	        stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  243:	        stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  244:	    }
+  245:	
+  246:	    /*----------------------------------------------------------------------*/
+  247:	    /* Store data if caller provided a valid pointer.                       */
+  248:	    /*----------------------------------------------------------------------*/
+  249:	    if (SIF_ISVALID_DATA())
+  250:	    {
+  251:	        retData-&gt;Count    = stor_ViewMessage.Count;
+  252:	        retData-&gt;Position = stor_ViewMessage.Position;
+  253:	        retData-&gt;Id       = stor_ViewMessage.Id;
+  254:	    }
+  255:	
+  256:	    return retVal;
+  257:	}
+  258:	
+  259:	NULSIF_STANDARD_INTERFACE(msg_StoreSelectPrevious)
+  260:	/*============================================================================
+  261:	**  Visibility:     Public (.h)
+  262:	**----------------------------------------------------------------------------
+  263:	**  Description:    Standard interface function to obtain the previous message in
+  264:	**                  the store list that matches the given category mask.
+  265:	**
+  266:	**  Parameters:     Data:       ID of next message
+  267:	**                              (MSG_INDEX_UNDEFINED if none available)
+  268:	**
+  269:	**  Returns:        sif_OK:     Next message is valid
+  270:	**                  sif_ERROR:  Next message not available
+  271:	**----------------------------------------------------------------------------
+  272:	** Created: AFERRIS2 27/Apr/2010
+  273:	**==========================================================================*/
+  274:	{
+  275:	    MSG_VIEWINFO_T *retData;
+  276:	    UINT32 index;
+  277:	    SIF_STATUS retVal = sif_OK;
+  278:	
+  279:	    retData = (MSG_VIEWINFO_T *)SIF_GET_DATA_REF();
+  280:	
+  281:	    /*----------------------------------------------------------------------*/
+  282:	    /* Obtain value that has been requested.                                */
+  283:	    /*----------------------------------------------------------------------*/
+  284:	    index = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, MSG_ALL_CATEGORIES);
+  285:	    index = stor_FindPreviousIndex(index, stor_ViewMask);
+  286:	
+  287:	    /*----------------------------------------------------------------------*/
+  288:	    /* Handle attempt to go past the end of the list                        */
+  289:	    /*----------------------------------------------------------------------*/
+  290:	    if (index == STOR_LAST_INDEX)
+  291:	    {
+  292:	        #if(MSG_STORE_VIEWER_OPTIONS == OPTION_VIEWER_WRAP)
+  293:	        {
+  294:	            /*--------------------------------------------------------------*/
+  295:	            /* Find first if wrapping is enabled                            */
+  296:	            /*--------------------------------------------------------------*/
+  297:	            index = (UINT16)stor_FindPreviousIndex(STOR_LAST_INDEX, stor_ViewMask);
+  298:	            stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  299:	            stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  300:	        }
+  301:	        #else
+  302:	        {
+  303:	            /*--------------------------------------------------------------*/
+  304:	            /* Otherwise return error condition (data not available)        */
+  305:	            /*--------------------------------------------------------------*/
+  306:	            retVal = sif_ERROR;
+  307:	        }
+  308:	        #endif
+  309:	    }
+  310:	
+  311:	    /*----------------------------------------------------------------------*/
+  312:	    /* Otherwise get message ID and position.                               */
+  313:	    /*----------------------------------------------------------------------*/
+  314:	    else
+  315:	    {
+  316:	        stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  317:	        stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  318:	    }
+  319:	
+  320:	    /*----------------------------------------------------------------------*/
+  321:	    /* Store data if caller provided a valid pointer.                       */
+  322:	    /*----------------------------------------------------------------------*/
+  323:	    if (SIF_ISVALID_DATA())
+  324:	    {
+  325:	        retData-&gt;Count    = stor_ViewMessage.Count;
+  326:	        retData-&gt;Position = stor_ViewMessage.Position;
+  327:	        retData-&gt;Id       = stor_ViewMessage.Id;
+  328:	    }
+  329:	
+  330:	    return retVal;
+  331:	}
+  332:	
+  333:	NULSIF_STANDARD_INTERFACE(msg_StoreGetCurrent)
+  334:	/*============================================================================
+  335:	**  Visibility:     Public (.h)
+  336:	**----------------------------------------------------------------------------
+  337:	**  Description:    Get number of messages in teh STORE list.
+  338:	**
+  339:	**  Parameters:     *Data:      Where data will be stored.
+  340:	**                  *Unused:    Required by caller. Not used.
+  341:	**                 [Size:       Number of elements to return]
+  342:	**
+  343:	**  Returns:        None.
+  344:	**----------------------------------------------------------------------------
+  345:	** Created: AFERRIS2 27/Apr/2010
+  346:	**==========================================================================*/
+  347:	{
+  348:	    MSG_VIEWINFO_T *retData;
+  349:	    retData = (MSG_VIEWINFO_T *)SIF_GET_DATA_REF();
+  350:	
+  351:	
+  352:	    /*----------------------------------------------------------------------*/
+  353:	    /* Get and store data if caller provided a valid pointer.               */
+  354:	    /*----------------------------------------------------------------------*/
+  355:	    if (SIF_ISVALID_DATA())
+  356:	    {
+  357:	        retData-&gt;Count    = stor_ViewMessage.Count;
+  358:	        retData-&gt;Position = stor_ViewMessage.Position;
+  359:	        retData-&gt;Id       = stor_ViewMessage.Id;
+  360:	    }
+  361:	
+  362:	    return sif_OK;
+  363:	}
+  364:	
+  365:	static UINT16 stor_GetViewCount(UINT32 CategaoryMask)
+  366:	/*============================================================================
+  367:	**  Visibility:     Private
+  368:	**----------------------------------------------------------------------------
+  369:	**  Description:    Get number of messages that match the categories supplied
+  370:	**
+  371:	**  Parameters:     CategoryMask:   the categories being searched.
+  372:	**
+  373:	**  Returns:        Numbr of messages found
+  374:	**----------------------------------------------------------------------------
+  375:	** Created: AFERRIS2 06/Jul/2010
+  376:	**==========================================================================*/
+  377:	{
+  378:	    MSG_MESSAGE_STRUCT const * thisMessage;
+  379:	    eMessageIdentity iMessage;
+  380:	    UINT32 numEntries;
+  381:	    UINT32 i;
+  382:	    UINT32 categoryValue;
+  383:	
+  384:	    numEntries = 0;
+  385:	    /*------------------------------------------------------------------*/
+  386:	    /* Loop through the whole list to find all entries that match.      */
+  387:	    /*------------------------------------------------------------------*/
+  388:	    for (i=0; i &lt; STOR_LAST_INDEX; i++)
+  389:	    {
+  390:	        /*--------------------------------------------------------------*/
+  391:	        /* Get pointer to message definition.                           */
+  392:	        /*--------------------------------------------------------------*/
+  393:	        iMessage = stor_MessageList[i];
+  394:	        thisMessage = &amp;messageList[iMessage];
+  395:	
+  396:	        categoryValue = (1u &lt;&lt; thisMessage-&gt;Category);
+</PRE>
+<A NAME="ERR_LINE_397"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  397:	        if (TESTBIT(CategaoryMask, categoryValue) )
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2984.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_msgStore.c(397) ++ WARNING ++: &lt;=7=(2984) This operation is redundant. The value of the result is always '0'.</A></B><A HREF="#ERR_LINE_428"> &lt;next&gt; </A>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  398:	        {
+  399:	            /*----------------------------------------------------------*/
+  400:	            /* Found matching category, so icrement count.              */
+  401:	            /*----------------------------------------------------------*/
+  402:	            numEntries++;
+  403:	        }
+  404:	    }
+  405:	    return (UINT16)numEntries;
+  406:	}
+  407:	
+  408:	
+  409:	void msg_StorePurge(UINT8 FilterOptions)
+  410:	/*============================================================================
+  411:	**  Visibility:     Public (.h)
+  412:	**----------------------------------------------------------------------------
+  413:	**  Description:    Purge messages from the list.  Only Messages selected by the
+  414:	**                  FilterOptions parameter are passed to the purge action function.
+  415:	**
+  416:	**  Parameters:     FilterOptions:  Mask to select which messages are purged
+  417:	**
+  418:	**  Returns:        None.
+  419:	**----------------------------------------------------------------------------
+  420:	** Created: AFERRIS2 12/Apr/2010
+  421:	**==========================================================================*/
+  422:	{
+  423:	    UINT32 i;
+  424:	
+  425:	    for (i = STOR_LAST_INDEX; i != 0UL; i--)
+  426:	    {
+  427:	        eMessageIdentity aMessage = stor_MessageList[i-1UL];
+</PRE>
+<A NAME="ERR_LINE_428"></A>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  428:	        if (TESTBIT(messageList[aMessage].Options, FilterOptions) )
+</PRE>
+<B><A HREF="file:///C:/PRQA/QAC-8.1.2-R/m3cm/messages/2984.html">c:\ADEVI\RTC_Workspace\UI_CORE_IA\ui.core.iceapple.test\iceapple_build\qac\src\hmi_msgStore.c(428) ++ WARNING ++: &lt;=7=(2984) This operation is redundant. The value of the result is always '0'.</A></B>
+<BR>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+  429:	        {
+  430:	            MSG_STORE_PURGE(aMessage);
+  431:	            (void)msg_StoreRemove((eMessageIdentity)(i-1UL));
+  432:	        }
+  433:	    }
+  434:	
+  435:	    stor_UpdateViewer((eMessageIdentity)0);
+  436:	}
+  437:	
+  438:	
+  439:	void msg_StoreAdd(eMessageIdentity MessageID)
+  440:	/*============================================================================
+  441:	**  Visibility:     Public (.h)
+  442:	**----------------------------------------------------------------------------
+  443:	**  Description:    Adds a new message into the message store.  Action is dependant
+  444:	**                  on the message options.  If MSG_OPTION_STORE is set, the
+  445:	**                  message is added to the store, otherwise the message is
+  446:	**                  transferred directly to the client (if defined).
+  447:	**
+  448:	**  Parameters:     MessageID:  ID of the message to be added.
+  449:	**
+  450:	**  Returns:        None.
+  451:	**----------------------------------------------------------------------------
+  452:	** Created: AFERRIS2 12/Apr/2010
+  453:	**==========================================================================*/
+  454:	{
+  455:	    MSG_MESSAGE_STRUCT const * thisMessage;
+  456:	    UINT32 thisIndex;
+  457:	    UINT32 endIndex;
+  458:	
+  459:	    thisMessage = &amp;messageList[MessageID];
+  460:	
+  461:	    if (TESTBIT(thisMessage-&gt;Options, MSG_OPTION_STORE) )
+  462:	    {
+  463:	        /*------------------------------------------------------------------*/
+  464:	        /* Message can be stored.                                           */
+  465:	        /*------------------------------------------------------------------*/
+  466:	        thisIndex = stor_Categories[thisMessage-&gt;Category];
+  467:	        endIndex = stor_Categories[thisMessage-&gt;Category + 1];
+  468:	
+  469:	        /*--------------------------------------------------------------*/
+  470:	        /* Locate priority position and insert message in list.         */
+  471:	        /*--------------------------------------------------------------*/
+  472:	        while (thisIndex &lt; endIndex)
+  473:	        {
+  474:	            eMessageIdentity aMessage = stor_MessageList[thisIndex];
+  475:	            MSG_MESSAGE_STRUCT const *ptrMessage = &amp;messageList[aMessage];
+  476:	
+  477:	#ifdef STORE_QUEUE_FIFO
+  478:	            /* If the store queue should have msg first validated at the top */
+  479:	            if (thisMessage-&gt;Priority &lt; ptrMessage-&gt;Priority)
+  480:	            {
+  481:	                break;
+  482:	            }
+  483:	#else
+  484:	            if (thisMessage-&gt;Priority &lt;= ptrMessage-&gt;Priority)
+  485:	            {
+  486:	                break;
+  487:	            }
+  488:	#endif
+  489:	            thisIndex++;
+  490:	        }
+  491:	        stor_Insert((UINT16)thisIndex, MessageID);
+  492:	        stor_IndexUp((UINT16)thisMessage-&gt;Category + 1);
+  493:	        stor_UpdateViewer(MessageID);
+  494:	        #ifdef MSG_ACK_WRNG_REPETITION
+  495:	            if(TESTBIT(thisMessage-&gt;Options, MSG_OPTION_ACK_WRNG_REPEAT))
+  496:	            {
+  497:	                /*--------------------------------------------------------------*/
+  498:	                /* The warning has now been acknowledged so load ack warning    */
+  499:	                /* repeat duration in the stor_Ack_Wrng_RepDuration array         */
+  500:	                /*--------------------------------------------------------------*/
+  501:	                stor_Ack_Wrng_RepDuration[MessageID] = (UINT8)(HMI_MSG_ACK_WRNG_REP_DURATION * HMI_MSG_ACK_REP_TIMER_RESLN_FACTOR);
+  502:	            }
+  503:	            else
+  504:	            {
+  505:	                stor_Ack_Wrng_RepDuration[MessageID] = HMI_MSG_ACK_WRNG_REP_INVALID_U8;
+  506:	            }
+  507:	        #endif
+  508:	    }
+  509:	    else
+  510:	    {
+  511:	        /*------------------------------------------------------------------*/
+  512:	        /* Message is not stored.  Transfer to client.                      */
+  513:	        /*------------------------------------------------------------------*/
+  514:	        MSG_STORE_CLIENT_ADD(MessageID);
+  515:	    }
+  516:	}
+  517:	
+  518:	BOOLEAN msg_StoreRemove(eMessageIdentity MessageID)
+  519:	/*============================================================================
+  520:	**  Visibility:     Public (.h)
+  521:	**----------------------------------------------------------------------------
+  522:	**  Description:    Remove a message from the message store.
+  523:	**
+  524:	**  Parameters:     MessageID:  ID of the message to be removed.
+  525:	**
+  526:	**  Returns:        None.
+  527:	**----------------------------------------------------------------------------
+  528:	** Created: AFERRIS2 12/Apr/2010
+  529:	**==========================================================================*/
+  530:	{
+  531:	    MSG_MESSAGE_STRUCT const * thisMessage;
+  532:	    UINT32 thisIndex;
+  533:	    UINT32 endIndex;
+  534:	    BOOLEAN found = FALSE;
+  535:	
+  536:	    thisMessage = &amp;messageList[MessageID];
+  537:	
+  538:	    if (TESTBIT(thisMessage-&gt;Options, MSG_OPTION_STORE) )
+  539:	    {
+  540:	        /*------------------------------------------------------------------*/
+  541:	        /* Message can be stored so could be in the list.                   */
+  542:	        /*------------------------------------------------------------------*/
+  543:	        thisIndex = stor_Categories[thisMessage-&gt;Category];
+  544:	        endIndex = stor_Categories[thisMessage-&gt;Category + 1];
+  545:	
+  546:	        /*------------------------------------------------------------------*/
+  547:	        /* Locate message in the list and remove it.                        */
+  548:	        /*------------------------------------------------------------------*/
+  549:	        while (thisIndex &lt; endIndex)
+  550:	        {
+  551:	            if (stor_MessageList[thisIndex] == MessageID)
+  552:	            {
+  553:	                stor_Delete(thisIndex);
+  554:	                MSG_STORE_CLIENT_REMOVE(MessageID);
+  555:	                stor_IndexDown((UINT16)thisMessage-&gt;Category + 1);
+  556:	                stor_UpdateViewer(MessageID);
+  557:	                found = TRUE;
+  558:	                break;
+  559:	            }
+  560:	            thisIndex++;
+  561:	        }
+  562:	
+  563:	        #ifdef MSG_ACK_WRNG_REPETITION
+  564:	        if(TESTBIT(thisMessage-&gt;Options, MSG_OPTION_ACK_WRNG_REPEAT))
+  565:	        {
+  566:	            /*--------------------------------------------------------------*/
+  567:	            /* Load invalid value in ack warning repetition duration array  */                                           
+  568:	            /*--------------------------------------------------------------*/
+  569:	            stor_Ack_Wrng_RepDuration[MessageID] = HMI_MSG_ACK_WRNG_REP_INVALID_U8;
+  570:	        }
+  571:	        #endif
+  572:	    }
+  573:	    else
+  574:	    {
+  575:	        /*------------------------------------------------------------------*/
+  576:	        /* Message is not sequenced.  Notify client.                        */
+  577:	        /*------------------------------------------------------------------*/
+  578:	        MSG_STORE_CLIENT_REMOVE(MessageID);
+  579:	    }
+  580:	
+  581:	    return found;
+  582:	}
+  583:	
+  584:	
+  585:	UINT32 stor_GetCategories(UINT32 Threshold)
+  586:	/*============================================================================
+  587:	**  Visibility:     Public (.h)
+  588:	**----------------------------------------------------------------------------
+  589:	**  Description:    Check if there are more than "Threshold" messages active.
+  590:	**                  Each category is checked and the appropriate bit in the
+  591:	**                  return status set if the threshold has been exceeded.
+  592:	**
+  593:	**  Parameters:     Threshold:  More than this number of messages must be active
+  594:	**                              in a category to set the output bit.
+  595:	**
+  596:	**  Returns:        Category message status.
+  597:	**----------------------------------------------------------------------------
+  598:	** Created: AFERRIS2 18/Oct/2010
+  599:	**==========================================================================*/
+  600:	{
+  601:	    UINT32 i;
+  602:	    UINT32 retValue = 0;
+  603:	
+  604:	    for (i=0UL; i &lt; MSG_NUM_MESSAGE_CATEGORIES; i++)
+  605:	    {
+  606:	        if ((stor_Categories[i] + (UINT16)Threshold) &lt; stor_Categories[i + 1UL])
+  607:	        {
+  608:	            SETBIT(retValue, (1UL &lt;&lt; i));
+  609:	        }
+  610:	    }
+  611:	    return retValue;
+  612:	}
+  613:	
+  614:	
+  615:	static void stor_UpdateViewer(eMessageIdentity MessageID)
+  616:	/*============================================================================
+  617:	**  Visibility:     Private
+  618:	**----------------------------------------------------------------------------
+  619:	**  Description:    Notify VIEWER if we need to show a different message.
+  620:	**                   (removed message has same or higher priority than the msg
+  621:	**                   being viewed). Next message to be viewed can be found using
+  622:	**                   the FindNext function.
+  623:	**
+  624:	**  Parameters:     MessageID:  ID of message being removed.
+  625:	**
+  626:	**  Returns:        None.
+  627:	**----------------------------------------------------------------------------
+  628:	** Created: AFERRIS2 27/Apr/2010
+  629:	**==========================================================================*/
+  630:	{
+  631:	#ifdef STORE_QUEUE_VIEW_CURRENT
+  632:	
+  633:	    /* If the msg queue is empty */
+  634:	    if (stor_ViewMessage.Id == MSG_INDEX_UNDEFINED)
+  635:	    {
+  636:	        /* Get the first message from store list */
+  637:	        stor_ViewMessage.Id = (UINT16)stor_MessageList[stor_ViewMessage.Position];
+  638:	    }
+  639:	    /* If the message currently being pointed is deleted */
+  640:	    else if((UINT16)MessageID == stor_ViewMessage.Id)
+  641:	    {
+  642:	        /* If it is the first message in the queue */
+  643:	        if(stor_ViewMessage.Position == 0)
+  644:	        {
+  645:	            /* Point to the first message from store list */
+  646:	            stor_ViewMessage.Id = (UINT16)stor_MessageList[stor_ViewMessage.Position];
+  647:	        }
+  648:	        /* If the message is in middle or bottom of queue */
+  649:	        else
+  650:	        {
+  651:	            UINT32 index;
+  652:	            /* Point to the previous message */
+  653:	            index = stor_FindPreviousIndex(stor_ViewMessage.Position, stor_ViewMask);
+  654:	            stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  655:	            stor_ViewMessage.Position = (UINT16)index;
+  656:	        }
+  657:	    }
+  658:	    /* If new msg is added or if old messages are deleted */
+  659:	    else
+  660:	    {
+  661:	        /* Update the position of the currently pointing message */
+  662:	        stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  663:	    }
+  664:	
+  665:	    /* Update the count always */
+  666:	    stor_ViewMessage.Count = stor_GetViewCount(stor_ViewMask);
+  667:	    MSG_STORE_NOTIFY_VIEWER();
+  668:	
+  669:	#else
+  670:	
+  671:	    if ((UINT16)MessageID &lt;= stor_ViewMessage.Id)
+  672:	    {
+  673:	        UINT32 index;
+  674:	
+  675:	        /*----------------------------------------------------------*/
+  676:	        /* Select next message in list.                             */
+  677:	        /*----------------------------------------------------------*/
+  678:	        index = stor_FindFirstIndex(stor_ViewMask);
+  679:	        stor_ViewMessage.Id = (UINT16)stor_MessageList[index];
+  680:	        stor_ViewMessage.Position = stor_GetViewIndex((eMessageIdentity)stor_ViewMessage.Id, stor_ViewMask);
+  681:	    }
+  682:	
+  683:	    stor_ViewMessage.Count = stor_GetViewCount(stor_ViewMask);
+  684:	    MSG_STORE_NOTIFY_VIEWER();
+  685:	
+  686:	#endif
+  687:	}
+  688:	
+  689:	static UINT16 stor_GetViewIndex(eMessageIdentity MessageID, UINT32 CategoryMask)
+  690:	/*============================================================================
+  691:	**  Visibility:     Private
+  692:	**----------------------------------------------------------------------------
+  693:	**  Description:    Get the index of the message within the list of messages that
+  694:	**                  match the specified categories.
+  695:	**
+  696:	**  Parameters:     aMessage:   The Message ID
+  697:	**                  CategoryMask:   The Categories to search in.
+  698:	**
+  699:	**  Returns:        None.
+  700:	**----------------------------------------------------------------------------
+  701:	** Created: AFERRIS2 06/Jul/2010
+  702:	**==========================================================================*/
+  703:	{
+  704:	    UINT32 i;
+  705:	    UINT32 index = 0;
+  706:	    eMessageIdentity iMessage;
+  707:	    MSG_MESSAGE_STRUCT const * pMessage;
+  708:	
+  709:	    for (i=0; i &lt; STOR_LAST_INDEX; i++)
+  710:	    {
+  711:	        iMessage = stor_MessageList[i];
+  712:	        if (MessageID == iMessage)
+  713:	        {
+  714:	            /*----------------------------------------------------------*/
+  715:	            /* Found the message we are looking for....                 */
+  716:	            /*----------------------------------------------------------*/
+  717:	            break;
+  718:	        }
+  719:	        else
+  720:	        {
+  721:	            /*-----------------------------------------------------------*/
+  722:	            /* Check if this message is in one of the categories being   */
+  723:	            /* searched                                                  */
+  724:	            /*-----------------------------------------------------------*/
+  725:	            pMessage = &amp;messageList[iMessage];
+  726:	            if (TESTBIT(CategoryMask, (1u &lt;&lt; pMessage-&gt;Category)) )
+  727:	            {
+  728:	                /*------------------------------------------------------*/
+  729:	                /* It is, so increment count.                           */
+  730:	                /*------------------------------------------------------*/
+  731:	                index++;
+  732:	            }
+  733:	        }
+  734:	    }
+  735:	
+  736:	    return (UINT16)index;
+  737:	}
+  738:	
+  739:	
+  740:	static void stor_IndexUp(UINT16 BaseCategory)
+  741:	/*============================================================================
+  742:	**  Visibility:     Private
+  743:	**----------------------------------------------------------------------------
+  744:	**  Description:    Update category index values when a new message is added.
+  745:	**
+  746:	**  Parameters:     BaseCategory:   First category to be updated.  All categroies
+  747:	**                                  following this one will also be updated.
+  748:	**
+  749:	**  Returns:        None.
+  750:	**----------------------------------------------------------------------------
+  751:	** Created: AFERRIS2 12/Apr/2010
+  752:	**==========================================================================*/
+  753:	{
+  754:	    UINT32 iCategory = BaseCategory;
+  755:	
+  756:	    while (iCategory &lt; (MSG_NUM_MESSAGE_CATEGORIES + 1) )
+  757:	    {
+  758:	        stor_Categories[iCategory]++;
+  759:	        iCategory++;
+  760:	    }
+  761:	}
+  762:	
+  763:	static void stor_IndexDown(UINT16 BaseCategory)
+  764:	/*============================================================================
+  765:	**  Visibility:     Private
+  766:	**----------------------------------------------------------------------------
+  767:	**  Description:    Update category index values when a message is removed.
+  768:	**
+  769:	**  Parameters:     BaseCategory:   First category to be updated.  All categroies
+  770:	**                                  following this one will also be updated.
+  771:	**
+  772:	**  Returns:        None.
+  773:	**----------------------------------------------------------------------------
+  774:	** Created: AFERRIS2 12/Apr/2010
+  775:	**==========================================================================*/
+  776:	{
+  777:	    UINT32 iCategory = BaseCategory;
+  778:	
+  779:	    while (iCategory &lt; (MSG_NUM_MESSAGE_CATEGORIES + 1) )
+  780:	    {
+  781:	        stor_Categories[iCategory]--;
+  782:	        iCategory++;
+  783:	    }
+  784:	}
+  785:	
+  786:	static void stor_Delete(UINT32 Index)
+  787:	/*============================================================================
+  788:	**  Visibility:     Private
+  789:	**----------------------------------------------------------------------------
+  790:	**  Description:    Delete the message at the given position. All messages
+  791:	**                  following this one are moved up one position.
+  792:	**
+  793:	**  Parameters:     Index:  Position of the message to delete.
+  794:	**
+  795:	**  Returns:        None.
+  796:	**----------------------------------------------------------------------------
+  797:	** Created: AFERRIS2 12/Apr/2010
+  798:	**==========================================================================*/
+  799:	{
+  800:	    /*----------------------------------------------------------------------*/
+  801:	    /* Shift messages up.                                                   */
+  802:	    /*----------------------------------------------------------------------*/
+  803:	    while (Index &lt; STOR_LAST_INDEX)
+  804:	    {
+  805:	        stor_MessageList[Index] = stor_MessageList[Index + 1UL];
+  806:	        Index++;
+  807:	    }
+  808:	    /*----------------------------------------------------------------------*/
+  809:	    /* Set last position to invalid message ID.                             */
+  810:	    /*----------------------------------------------------------------------*/
+  811:	    stor_MessageList[Index] = MSG_INDEX_UNDEFINED;
+  812:	}
+  813:	
+  814:	static void stor_Insert(UINT32 Index, eMessageIdentity Value)
+  815:	/*============================================================================
+  816:	**  Visibility:     Private
+  817:	**----------------------------------------------------------------------------
+  818:	**  Description:    Insert a message at the given position.  All messages from
+  819:	**                  this index downwards are shifted down one place to make room
+  820:	**                  for the new message.
+  821:	**
+  822:	**  Parameters:     Index:  Position of the message in the list.
+  823:	**                  Value:  New Message ID.
+  824:	**
+  825:	**  Returns:        None.
+  826:	**----------------------------------------------------------------------------
+  827:	** Created: AFERRIS2 12/Apr/2010
+  828:	**==========================================================================*/
+  829:	{
+  830:	    UINT32 i;
+  831:	
+  832:	    /*----------------------------------------------------------------------*/
+  833:	    /* Shift messages down.                                                 */
+  834:	    /*----------------------------------------------------------------------*/
+  835:	    i = (UINT32)STOR_LAST_INDEX + 1UL;
+  836:	    while (i &gt; Index)
+  837:	    {
+  838:	        stor_MessageList[i] = stor_MessageList[i-1UL];
+  839:	        i--;
+  840:	    }
+  841:	
+  842:	    /*----------------------------------------------------------------------*/
+  843:	    /* Save message ID to this position.                                    */
+  844:	    /*----------------------------------------------------------------------*/
+  845:	    stor_MessageList[Index] = Value;
+  846:	}
+  847:	
+  848:	static void stor_InitIndex(void)
+  849:	/*============================================================================
+  850:	**  Visibility:     Private
+  851:	**----------------------------------------------------------------------------
+  852:	**  Description:    Initialise the category indexes.
+  853:	**
+  854:	**  Parameters:     None.
+  855:	**
+  856:	**  Returns:        None.
+  857:	**----------------------------------------------------------------------------
+  858:	** Created: AFERRIS2 12/Apr/2010
+  859:	**==========================================================================*/
+  860:	{
+  861:	    UINT32 i;
+  862:	
+  863:	    for (i=0; i &lt;= MSG_NUM_MESSAGE_CATEGORIES; i++)
+  864:	    {
+  865:	        stor_Categories[i] = 0;
+  866:	    }
+  867:	}
+  868:	
+  869:	static void stor_InitList(void)
+  870:	/*============================================================================
+  871:	**  Visibility:     Private
+  872:	**----------------------------------------------------------------------------
+  873:	**  Description:    Initialise the message indexes.
+  874:	**
+  875:	**  Parameters:     None.
+  876:	**
+  877:	**  Returns:        None.
+  878:	**----------------------------------------------------------------------------
+  879:	** Created: AFERRIS2 12/Apr/2010
+  880:	**==========================================================================*/
+  881:	{
+  882:	    UINT32 i;
+  883:	
+  884:	    for (i=0; i &lt;= (UINT32)MSG_NUM_MESSAGES; i++)
+  885:	    {
+  886:	        stor_MessageList[i] = MSG_INDEX_UNDEFINED;
+  887:	        #ifdef MSG_ACK_WRNG_REPETITION
+  888:	        /*------------------------------------------------------------------*/
+  889:	        /* Initialize with 0xffff, indicates that the ack warning repetition*/
+  890:	        /* is not applicable for that warning                               */
+  891:	        /*------------------------------------------------------------------*/
+  892:	        stor_Ack_Wrng_RepDuration[i] = HMI_MSG_ACK_WRNG_REP_INVALID_U8;
+  893:	        #endif
+  894:	    }
+  895:	}
+  896:	
+  897:	static UINT32 stor_FindFirstIndex(UINT32 CategoryMask)
+  898:	/*============================================================================
+  899:	**  Visibility:     Private
+  900:	**----------------------------------------------------------------------------
+  901:	**  Description:    Get index of the first message that matches the category mask
+  902:	**                  supplied
+  903:	**
+  904:	**  Parameters:     CategoryMask:   Mask of categories to search.
+  905:	**
+  906:	**  Returns:        Index of first message.
+  907:	**----------------------------------------------------------------------------
+  908:	** Created: AFERRIS2 06/Jul/2010
+  909:	**==========================================================================*/
+  910:	{
+  911:	    return stor_FindNextIndex(0, CategoryMask);
+  912:	}
+  913:	
+  914:	static UINT32 stor_FindNextIndex(UINT32 Start, UINT32 CategoryMask)
+  915:	/*============================================================================
+  916:	**  Visibility:     Private
+  917:	**----------------------------------------------------------------------------
+  918:	**  Description:    Get index of the next message that matches the category mask
+  919:	**                  supplied
+  920:	**
+  921:	**  Parameters:     Start:  The index to search from
+  922:	**                  CategoryMask:   Mask of categories to search.
+  923:	**
+  924:	**  Returns:        Index of next message.
+  925:	**----------------------------------------------------------------------------
+  926:	** Created: AFERRIS2 06/Jul/2010
+  927:	**==========================================================================*/
+  928:	{
+  929:	    UINT32 i;
+  930:	    eMessageIdentity iMessage;
+  931:	    UINT32 index = STOR_LAST_INDEX;
+  932:	    MSG_MESSAGE_STRUCT const * pMessage;
+  933:	
+  934:	    for (i = Start; i &lt; STOR_LAST_INDEX; i++)
+  935:	    {
+  936:	        /*--------------------------------------------------------------*/
+  937:	        /* Get pointer to message definition.                           */
+  938:	        /*--------------------------------------------------------------*/
+  939:	        iMessage = stor_MessageList[i];
+  940:	        pMessage = &amp;messageList[iMessage];
+  941:	
+  942:	        if (TESTBIT(CategoryMask, (1u &lt;&lt; pMessage-&gt;Category)) )
+  943:	        {
+  944:	            /*----------------------------------------------------------*/
+  945:	            /* Match found....                                          */
+  946:	            /*----------------------------------------------------------*/
+  947:	            index = i;
+  948:	            break;
+  949:	        }
+  950:	    }
+  951:	
+  952:	    return index;
+  953:	}
+  954:	
+  955:	static UINT32 stor_FindPreviousIndex(UINT32 Start, UINT32 CategoryMask)
+  956:	/*============================================================================
+  957:	**  Visibility:     Private
+  958:	**----------------------------------------------------------------------------
+  959:	**  Description:    Get index of the previous message that matches the category
+  960:	**                  mask supplied
+  961:	**
+  962:	**  Parameters:     Start:  The index to search from
+  963:	**                  CategoryMask:   Mask of categories to search.
+  964:	**
+  965:	**  Returns:        Index of previous message.
+  966:	**----------------------------------------------------------------------------
+  967:	** Created: AFERRIS2 06/Jul/2010
+  968:	**==========================================================================*/
+  969:	{
+  970:	    UINT32 i;
+  971:	    eMessageIdentity iMessage;
+  972:	    UINT32 index = STOR_LAST_INDEX;
+  973:	    MSG_MESSAGE_STRUCT const * pMessage;
+  974:	
+  975:	    for (i = Start; i != 0UL; i--)
+  976:	    {
+  977:	        /*--------------------------------------------------------------*/
+  978:	        /* Get pointer to message definition.                           */
+  979:	        /*--------------------------------------------------------------*/
+  980:	        iMessage = stor_MessageList[i-1UL];
+  981:	        pMessage = &amp;messageList[iMessage];
+  982:	
+  983:	        if (TESTBIT(CategoryMask, (1u &lt;&lt; pMessage-&gt;Category)) )
+  984:	        {
+  985:	            /*----------------------------------------------------------*/
+  986:	            /* Match found....                                          */
+  987:	            /*----------------------------------------------------------*/
+  988:	            index = i - 1UL;
+  989:	            break;
+  990:	        }
+  991:	    }
+  992:	
+  993:	    return index;
+  994:	}
+  995:	
+  996:	#ifdef MSG_ACK_WRNG_REPETITION
+  997:	#ifdef MSG_ACK_WRNG_REPEAT_TIMER_CONTROL
+  998:	/*============================================================================
+  999:	**  Visibility:     Public (.h)
+ 1000:	**----------------------------------------------------------------------------
+ 1001:	**  Description:    The ack warning repeat timer status required by the 
+ 1002:	**  application will be passed as an argument.  Three controls are available
+ 1003:	**  either pause or resume or restart. Based on the control required by the
+ 1004:	**  application actions will be taken.
+ 1005:	**
+ 1006:	**  Parameters:     eAckWrngRepTimerStatus
+ 1007:	**
+ 1008:	**  Returns:        None.
+ 1009:	**----------------------------------------------------------------------------
+ 1010:	** Created: adevi  12/Aug/2015
+ 1011:	**==========================================================================*/
+ 1012:	void msg_StorAckWrngRepTimerControl(eAckWrngRepTimerStatus p_AckWrngRepTimerAction)
+ 1013:	{
+ 1014:	  eMessageIdentity MessageID;
+ 1015:	  UINT32 i;
+ 1016:	  MSG_MESSAGE_STRUCT const * pMessage;
+ 1017:	  switch(p_AckWrngRepTimerAction)
+ 1018:	  {
+ 1019:	    case ACK_WRNG_REP_TIMER_PAUSE:
+ 1020:	      stor_AckWrng_Rep_TimerStatus = ACK_WRNG_REP_TIMER_PAUSE;
+ 1021:	    break;
+ 1022:	    case ACK_WRNG_REP_TIMER_RESUME:
+ 1023:	      stor_AckWrng_Rep_TimerStatus = ACK_WRNG_REP_TIMER_RESUME;
+ 1024:	    break;
+ 1025:	    case ACK_WRNG_REP_TIMER_RESTART:
+ 1026:	    {
+ 1027:	      stor_AckWrng_Rep_TimerStatus = ACK_WRNG_REP_TIMER_RESTART;
+ 1028:	      /* Load all the warnings with option ack warning repeat with their repeat duration */
+ 1029:	      for (i=0UL; i &lt;= (UINT32)MSG_NUM_MESSAGES; i++)
+ 1030:	      {
+ 1031:	        MessageID = stor_MessageList[i];
+ 1032:	        if(MSG_INDEX_UNDEFINED != MessageID)
+ 1033:	        {
+ 1034:	          pMessage = &amp;messageList[MessageID];
+ 1035:	          if(TESTBIT(pMessage-&gt;Options, MSG_OPTION_ACK_WRNG_REPEAT))
+ 1036:	          {
+ 1037:	            stor_Ack_Wrng_RepDuration[MessageID] = (UINT8)(HMI_MSG_ACK_WRNG_REP_DURATION * HMI_MSG_ACK_REP_TIMER_RESLN_FACTOR); 
+ 1038:	          }
+ 1039:	        }
+ 1040:	        /* there will be no more messages in the store queue */
+ 1041:	        else
+ 1042:	        {
+ 1043:	          break;
+ 1044:	        }
+ 1045:	      }
+ 1046:	    }
+ 1047:	    break;
+ 1048:	    default:
+ 1049:	    break;      
+ 1050:	  }
+ 1051:	}
+ 1052:	#endif
+ 1053:	
+ 1054:	void msg_StorAckWrngRepUpdate(void)
+ 1055:	/*============================================================================
+ 1056:	**  Visibility:     Public (.h)
+ 1057:	**----------------------------------------------------------------------------
+ 1058:	**  Description:    Will check the ack warning repetition duration expiry for
+ 1059:	**  the messages where MSG_OPTION_ACK_WRNG_REPEAT option is enabled.  If the ack
+ 1060:	**  warning duration expires then the ack warning is made old by adding the
+ 1061:	**  message in the sequencer queue.
+ 1062:	**
+ 1063:	**  Parameters:     None
+ 1064:	**
+ 1065:	**  Returns:        None.
+ 1066:	**----------------------------------------------------------------------------
+ 1067:	** Created: adevi  13/Dec/2013
+ 1068:	**==========================================================================*/
+ 1069:	{
+ 1070:	    const MSG_MESSAGE_STRUCT *pMessage;
+ 1071:	    eMessageIdentity MessageID;
+ 1072:	    UINT32 MsgTimerStatus_U32;
+ 1073:	    UINT32 i;
+ 1074:	
+ 1075:	    MsgTimerStatus_U32 = MSG_CHECK_SW_TIMER(stor_AckWrng_Rep_Timer);
+ 1076:	    if ((TIMER_RUNNING != MsgTimerStatus_U32)
+ 1077:	    #ifdef MSG_ACK_WRNG_REPEAT_TIMER_CONTROL
+ 1078:	    &amp;&amp; (stor_AckWrng_Rep_TimerStatus != ACK_WRNG_REP_TIMER_PAUSE)
+ 1079:	    #endif
+ 1080:	       )
+ 1081:	    {
+ 1082:	        /*------------------------------------------------------------------*/
+ 1083:	        /* Restart the timer during the expiry of the scheduled time        */
+ 1084:	        /*------------------------------------------------------------------*/
+ 1085:	        MSG_START_SW_TIMER(HMI_MSG_ACK_REP_TIMER_VAL, stor_AckWrng_Rep_Timer);
+ 1086:	        /*------------------------------------------------------------------*/
+ 1087:	        /* All the active messages present in stor list which has           */
+ 1088:	        /* MSG_OPTION_ACK_WRNG_REPEAT option enabled and has valid ack      */
+ 1089:	        /* warning repetition time is short listed. Ack warning repetition  */
+ 1090:	        /* duration is decremented every one second.  When the value is 0   */
+ 1091:	        /* then the message is added to the sequencer queue.                */
+ 1092:	        /*------------------------------------------------------------------*/
+ 1093:	        for (i=0UL; i &lt;= (UINT32)MSG_NUM_MESSAGES; i++)
+ 1094:	        {
+ 1095:	            MessageID = stor_MessageList[i];
+ 1096:	            if(MSG_INDEX_UNDEFINED != MessageID)
+ 1097:	            {
+ 1098:	                pMessage = &amp;messageList[MessageID];
+ 1099:	                if(TESTBIT(pMessage-&gt;Options, MSG_OPTION_ACK_WRNG_REPEAT))
+ 1100:	                {
+ 1101:	                    if(HMI_MSG_ACK_WRNG_REP_INVALID_U8 != stor_Ack_Wrng_RepDuration[MessageID])
+ 1102:	                    {
+ 1103:	                        if(stor_Ack_Wrng_RepDuration[MessageID] &gt;= HMI_MSG_VALUE_1)
+ 1104:	                        {
+ 1105:	                            stor_Ack_Wrng_RepDuration[MessageID] = (stor_Ack_Wrng_RepDuration[MessageID] - HMI_MSG_VALUE_1);
+ 1106:	                        }
+ 1107:	                        else
+ 1108:	                        {
+ 1109:	                            stor_Ack_Wrng_RepDuration[MessageID] = 0;
+ 1110:	                        }
+ 1111:	                        if(0 == stor_Ack_Wrng_RepDuration[MessageID])
+ 1112:	                        {
+ 1113:	                            /* To indicate msg_SequencerAdd that msg is added */
+ 1114:	                            /* from store queue due to ack warning repetition */
+ 1115:	                            MsgAddedFromStoreQueue = MSG_ADDED_FROM_STORE_QUEUE;
+ 1116:	                            /*---------------------------------------------------------------*/
+ 1117:	                            /* Call sequencer add and add the message to the sequencer queue */
+ 1118:	                            /*---------------------------------------------------------------*/
+ 1119:	                            msg_SequencerAdd(MessageID);
+ 1120:	                            /* Reset the flag once msg_SequencerAdd is executed */
+ 1121:	                            MsgAddedFromStoreQueue = MSG_NOT_ADDED_FROM_STORE_QUEUE;
+ 1122:	                            /*------------------------------------------------------------*/
+ 1123:	                            /* Clear the new message flag since the message should be old */
+ 1124:	                            /*------------------------------------------------------------*/
+ 1125:	                            msg_ClearNewMessageFlag(MessageID);
+ 1126:	                            #ifdef MSG_OLD_WRNG_REPETITION
+ 1127:	                            /*---------------------------------------------------------*/
+ 1128:	                            /* Set the old warning repetition duration for the message */
+ 1129:	                            /*---------------------------------------------------------*/
+ 1130:	                            msg_SetOldWrngRepDur(MessageID);
+ 1131:	                            #endif
+ 1132:	                        }
+ 1133:	                    }
+ 1134:	                }
+ 1135:	            }
+ 1136:	            else
+ 1137:	            {
+ 1138:	                /*----------------------------------------------------------*/
+ 1139:	                /* Stor list is empty, so terminate the check               */
+ 1140:	                /*----------------------------------------------------------*/
+ 1141:	                break;
+ 1142:	            }
+ 1143:	        }
+ 1144:	    }
+ 1145:	}
+ 1146:	#endif
+ 1147:	
+ 1148:	/*==========================================================================*/
+ 1149:	/* R E V I S I O N    N O T E S                                             */
+ 1150:	/*==========================================================================*/
+ 1151:	/* For each change to this file, be sure to record:
+ 1152:	** 1.  Who made the change and when the change was made.
+ 1153:	** 2.  Why the change was made and the intended result.
+ 1154:	**==========================================================================*/
+ 1155:	
+ 1156:	/****************************************************************************
+ 1157:	**  Date  : 09/Apr/2010
+ 1158:	**  by    : AFERRIS2
+ 1159:	**  Ref   : None.
+ 1160:	**  Change: Initial version.
+ 1161:	**
+ 1162:	*****************************************************************************/
+ 1163:	
+ 1164:	/****************************************************************************
+ 1165:	**  Date: 06/May/2010     by: AFERRIS2        Ref: None.
+ 1166:	**  Change: 1.  Update interfaces to use the formal Standard Interface.
+ 1167:	**          2. Corrected the FindFirst and FindNext functions.
+ 1168:	**          3. Add FindPrevious function (missing from original submission)
+ 1169:	**          4. Add interface to return the number of viewable messages.
+ 1170:	**
+ 1171:	**  Checks: COMPILER - NOT CHECKED       QAC - NOT CHECKED
+ 1172:	*****************************************************************************/
+ 1173:	
+ 1174:	/****************************************************************************
+ 1175:	**  Date: 07/Jul/2010     by: AFERRIS2        Ref:
+ 1176:	**  Change: 1.  Updated interfaces to include message ID, position, and count.
+ 1177:	**              We now use msg_StoreGetCurrent(), msg_StoreSelectFirst(),
+ 1178:	**              msg_StoreSelectNext(), and msg_StoreSelectPrevious() functions
+ 1179:	**          2.  Made wrapping an option via the configuration file.
+ 1180:	**          3.  QAC reports one error (nested comment within swtmr.h)
+ 1181:	**
+ 1182:	**  Checks: COMPILER - NO WARNINGS       QAC - 1 warning
+ 1183:	*****************************************************************************/
+ 1184:	
+ 1185:	/****************************************************************************
+ 1186:	**  Date: 07/Sep/2010     by: AFERRIS2        Ref:
+ 1187:	**  Change: 1.  Removed unused local variables (QAC actions)
+ 1188:	**
+ 1189:	**  Checks: COMPILER - NO WARNINGS       QAC - NOT CHECKED
+ 1190:	*****************************************************************************/
+ 1191:	
+ 1192:	/****************************************************************************
+ 1193:	**  Date: 19/Oct/2010     by: AFERRIS2        Ref:
+ 1194:	**  Change: 1.  Add new function stor_GetCategories() to obtain which categories
+ 1195:	**              contain active messages. (work in progress)
+ 1196:	**
+ 1197:	**  Checks: COMPILER - NO WARNINGS       QAC - NO WARNINGS
+ 1198:	*****************************************************************************/
+ 1199:	
+ 1200:	/****************************************************************************
+ 1201:	**  Date: 20/Oct/2010     by: AFERRIS2        Ref:
+ 1202:	**  Change: 1.  Updated stor_GetCategories() to allow checking for more than a
+ 1203:	**              specified number of messages in a category.
+ 1204:	**
+ 1205:	**  Checks: COMPILER - NO WARNINGS       QAC - 2 WARNINGS
+ 1206:	*****************************************************************************/
+ 1207:	
+ 1208:	/****************************************************************************
+ 1209:	**  Date: 26/Nov/2010     by: AFERRIS2        Ref:
+ 1210:	**  Change: 1.  Corrected the purge function which was attempting to remove each
+ 1211:	**              message twice.  This will lead to an underflow in the categories
+ 1212:	**              array.
+ 1213:	**
+ 1214:	**  Checks: COMPILER - NO WARNINGS       QAC - NO WARNINGS
+ 1215:	*****************************************************************************/
+ 1216:	
+ 1217:	/****************************************************************************
+ 1218:	**  Date: 25/Apr/2012     by: ADEVI          Ref:
+ 1219:	**  Change: 1.  Introduced new compiler switch  STORE_QUEUE_VIEW_CURRENT to
+ 1220:	**              view the current message even if new messages are added or old
+ 1221:	**              messages are deleted in the message queue.
+ 1222:	**
+ 1223:	**  Checks: COMPILER - NO WARNINGS       QAC - NO WARNINGS
+ 1224:	*****************************************************************************/
+ 1225:	
+ 1226:	
+ 1227:	/****************************************************************************
+ 1228:	**  Date: 26/Jul/2013     by: vsarava2        Ref: RTC 73978
+ 1229:	**  Fixed the Compiler(IAR) prototype warning as per project request.
+ 1230:	**  Checks: COMPILER - NO WARNINGS       QAC -
+ 1231:	*****************************************************************************/
+ 1232:	
+ 1233:	/****************************************************************************
+ 1234:	**  Date: 27/Dec/2013     by: adevi            Ref: RTC 91917
+ 1235:	**  Change: 1. Introduced compiler switch MSG_ACK_WRNG_REPETITION to allow
+ 1236:	**  repetition of an ack warning. 
+ 1237:	**  2.  If MSG_OPTION_ACK_WRNG_REPEAT is enabled then warnings which are 
+ 1238:	**  acknowledged will be made old after the ack warning repetition duration.
+ 1239:	*****************************************************************************/
+ 1240:	
+ 1241:	/****************************************************************************
+ 1242:	**  Date: 09/Jan/2014     by: adevi            Ref: PR 72449
+ 1243:	**  Change:
+ 1244:	**  1. Clearstor_AckWrng_Rep_1SecTimer removed from msg_StorAckWrngRepUpdate
+ 1245:	**  2. Flag MsgAddedFromStoreQueue added.
+ 1246:	*****************************************************************************/
+ 1247:	
+ 1248:	/****************************************************************************
+ 1249:	**  Date: 10/Feb/2015     by: adevi        Ref:
+ 1250:	**  Change: Compiler warnings resolved for Honda THAA
+ 1251:	*****************************************************************************/
+ 1252:	
+ 1253:	/****************************************************************************
+ 1254:	**  Date: 29/Jun/2015     by: adevi        Ref: RTC 365702
+ 1255:	**  Change: QAC warnings resolved for Honda THAA
+ 1256:	*****************************************************************************/
+ 1257:	
+ 1258:	/****************************************************************************
+ 1259:	**  Date: 13/Aug/2015     by: adevi        Ref:RTC 399553
+ 1260:	**  Change: msg_StorAckWrngRepTimerControl function added.
+ 1261:	*****************************************************************************/ 
+ 1262:	
+ 1263:	/****************************************************************************
+ 1264:	**  Date: 25/Aug/2015     by: arajase2        Ref:RTC 408084
+ 1265:	**  Change: eAckWrngRepTimerStatus stor_AckWrng_Rep_TimerStatus declaration protected
+ 1266:	**  with MSG_ACK_WRNG_REPEAT_TIMER_CONTROL macro.
+ 1267:	*****************************************************************************/ 
+ 1268:	/****************************************************************************
+ 1269:	**  Date: 03/Sep/2015     by: aperumal        Ref:RTC 408084
+ 1270:	**  Compiler warning for Honda Thaa
+ 1271:	*****************************************************************************/ 
+ 1272:	
+ 1273:	
+ 1274:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_msgStore.c (1274 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0016              2
+     6           0.0000              0
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0016              2
+</PRE>
+
+</BODY></HTML>

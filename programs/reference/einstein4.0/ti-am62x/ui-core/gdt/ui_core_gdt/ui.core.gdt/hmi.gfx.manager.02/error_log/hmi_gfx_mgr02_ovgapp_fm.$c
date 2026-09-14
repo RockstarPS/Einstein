@@ -1,0 +1,191 @@
+/******************************************************************************
+*                              Copyright Statement
+*                        CONFIDENTIAL VISTEON CORPORATION
+*
+*  This is an unpublished work of authorship, which contains trade secrets,
+*  created in 2016. Visteon Corporation owns all rights to this work and
+*  intends to maintain it in confidence to preserve its trade secret status.
+*  Visteon Corporation reserves the right, under the copyright laws of the
+*  United States or those of any other country that may have  jurisdiction,
+*  to protect this work as an unpublished work, in the event of an inadvertent
+*  or deliberate unauthorized publication. Visteon Corporation also reserves
+*  its rights under all copyright laws to protect this work as a published
+*  work, when appropriate. Those having access to this work may not copy it,
+*  use it, modify it or disclose the information contained in it without the
+*  written authorization of Visteon Corporation.
+*
+*******************************************************************************
+*
+*  Module:      hmi_gfx_mgr02_ovgapp_fm.c
+*  Description: When any of the OpenVG Api's are failed during run time
+*               this module will recover the software again        
+*  Author:      sbollam      
+*  Date:        30/1/2017         
+*
+*******************************************************************************/
+
+#define HMI_GFX_MGR02_OVGAPP_FM_C
+#define HMI_GFX_MGR02_PRIV_C
+
+/******************************************************************************
+* Include files
+******************************************************************************/
+/* <hmi_gfx_mgr02_if.h> is included since it has graphics task api
+*   if application has seperate graphics task then include that header file
+*/
+#include "hmi_gfx_mgr02_if.h"
+#include "hmi_gfx_mgr02_ovgapp_fm.h"
+
+/******************************************************************************
+* Data types - Macros and typedefs
+******************************************************************************/
+/* Internal states of OVG application */
+ 
+/*****************************************************************************
+*                                 Type Declarations                          *
+******************************************************************************/
+
+
+/*============================================================================
+** E N T R Y   P O I N T S
+**==========================================================================*/
+static UINT16 l_retry_count;
+/* Simulating error that forces recovery */
+static UINT16 l_g_OpenVG_state,l_context_init_done,l_sw_trial_limit_exceeds;
+
+/******************************************************************************
+* Data types - enums
+******************************************************************************/
+/******************************************************************************
+* function prototypes
+******************************************************************************/
+
+/*============================================================================
+ ** M E M O R Y   A L L O C A T I O N
+ **==========================================================================*/
+
+
+/*============================================================================
+ ** E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S
+ **==========================================================================*/
+
+/****************************************************************************
+Function Name     : hmi_gfx_mgr02_fm_get_trials
+Description       : Gives the status about whether sw trial count exceeds
+                    or not.
+Invocation	      : --
+Parameters        : None
+Return Type       : None.
+******************************************************************************/
+UINT16 hmi_gfx_mgr02_fm_get_trials(void)
+{
+  return l_sw_trial_limit_exceeds;
+}
+/****************************************************************************
+Function Name     : hmi_gfx_mgr02_fm_init
+Description       : OVG software recovery process initialization.
+Invocation	      : Display init sequence handler
+Parameters        : None
+Return Type       : None.
+******************************************************************************/
+void hmi_gfx_mgr02_fm_init(void)
+{
+  l_sw_trial_limit_exceeds = FALSE;
+  l_retry_count       = GFX_RETRY_COUNT; /* Try to do software recovery 3 times */
+  l_g_OpenVG_state    = OPENVG_STATE_BAD;
+  l_context_init_done = FALSE;
+  hmi_gfx_mgr02_fault_cold_init();
+}
+/****************************************************************************
+Function Name     : hmi_gfx_mgr02_fm_task
+Description       : Context init and Graphicstask should call from the routine
+                    It will handle the sw reovery feature when there is any
+					OVG api's get failed.
+Invocation	      : Graphics schedular task
+Parameters        : None
+Return Type       : None.
+******************************************************************************/
+void hmi_gfx_mgr02_fm_build_screen(void)
+{  
+   UINT8 fl_error_status;
+
+#ifdef HMI_GFX_MGR02_FM_NP_OS
+   if((l_retry_count > (UINT16)0) && (l_context_init_done == (UINT16)FALSE))
+#else
+   while((l_retry_count > (UINT16)0) && (l_context_init_done == (UINT16)FALSE))
+#endif
+   {
+     l_retry_count--;
+     hmi_gfx_mgr02_layout_ctx_init();
+	 fl_error_status = hmi_gfx_mgr02_fault_check_critical_error();
+	 if(fl_error_status != FALSE)
+	 {
+	   /* Something went wrong during "init" or "run" state hence shutdown the context.
+	    * In this phase try to release as much memory as possible
+	    * In other words keep note of error but don't prevent release routines from executing
+	   */
+       hmi_gfx_mgr02_layout_shutdown();
+	   hmi_gfx_mgr02_fault_clearall();
+	  #ifndef HMI_GFX_MGR02_FM_NP_OS
+	    HMI_GFX_MGR02_FM_OS_SLEEP(50);  /* wait here for some time before trying for another trial to recover sw */
+	  #endif
+	 }
+	 else
+	 {
+	   l_context_init_done      = TRUE;
+	   l_g_OpenVG_state         = OPENVG_STATE_GOOD;
+	 }
+   }
+   if(l_g_OpenVG_state == OPENVG_STATE_GOOD)
+   {
+	  hmi_gfx_mgr02_layout_build_screen();
+	  fl_error_status = hmi_gfx_mgr02_fault_check_critical_error();
+	  if(fl_error_status != FALSE)
+	  {
+	    l_context_init_done      = FALSE;
+	    l_g_OpenVG_state         = OPENVG_STATE_BAD;
+	    /* Something went wrong during "init" or "run" state hence shutdown the context.
+	     * In this phase try to release as much memory as possible
+	     * In other words keep note of error but don't prevent release routines from executing
+	    */
+        hmi_gfx_mgr02_layout_shutdown();
+		hmi_gfx_mgr02_fault_clearall();
+		#ifndef HMI_GFX_MGR02_FM_NP_OS
+	      HMI_GFX_MGR02_FM_OS_SLEEP(50);  /* wait here for some time before trying for another trial to recover sw */
+		#endif
+	  }
+	  else
+	  {
+	    l_retry_count	           = GFX_RETRY_COUNT;
+	    l_sw_trial_limit_exceeds = FALSE;
+	  }
+   }
+   if((l_retry_count == (UINT16)0) && (l_g_OpenVG_state == (UINT16)OPENVG_STATE_BAD))
+   {
+     /* set this flag when sw is still not recovered within limit count */
+     /* There is no further recover possible except A5 reset */
+     l_sw_trial_limit_exceeds = TRUE;
+   }
+}
+
+
+/*============================================================================
+ **
+ **============================================================================
+ ** C M S    R E V I S I O N    N O T E S
+ **============================================================================
+ **
+ ** For each change to this file, be sure to record:
+ ** 1.  Who made the change and when the change was made.
+ ** 2.  Why the change was made and the intended result.
+ **
+ ** CMS Rev #        Date         By
+ ** CMS Rev X.X      mm/dd/yy     CDSID
+ **
+ **============================================================================
+ **
+ ** CMS Rev 1.0      30-Jan-2017    SBOLLAM
+ ** Description:     Initial version creation. This file can be
+ **                  update by application as per their requirement
+ ** 
+ **==========================================================================*/

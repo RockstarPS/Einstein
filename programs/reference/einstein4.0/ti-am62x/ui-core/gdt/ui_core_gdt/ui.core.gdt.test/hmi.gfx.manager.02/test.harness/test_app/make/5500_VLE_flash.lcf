@@ -1,0 +1,314 @@
+/* MPC5645S (Rainbow) version for Kepler */
+
+FLASH_SIZE = 0x001FE000;
+
+/*
+** Define GPU related memory section sizes
+** in internal GRAM. Total size is 1048576
+*/
+MSPACE_SIZE   = 3145728;
+GPUCMD_SIZE   = 345000;
+GPUPRIV_SIZE  = 82048; /* DON'T CHANGE */
+GPUBUF_SIZE   = 4194304;
+GALLO_SIZE    = 140112;
+
+/*
+** Define GPU related memory section sizes
+** in external DRAM
+*/
+
+MEMORY
+{
+    boot_flash:           org = 0x00000000,   len = 0x00000100
+    fbl_flash:            org = 0x00000100,   len = 0x00007f00
+    app_ivor_flash:       org = 0x00008000,   len = 0x00000800
+    app_int_vector_flash: org = 0x00008800,   len = 0x00000400
+    app_flash:            org = 0x00008C00,   len = 0x001F7400 /* use this line for MPC5645s*/
+
+/* use the following lines for MPC5645s */
+    mmu_setup_ram:        org = 0x40000000,   len = 0x00000080     /* used at startup to load code into
+                                                                      which initializes the MMU */
+    internal_ram:         org = 0x40000080,   len = 0x0000DFD0
+    STACKLBOUND:          org = 0x4000DFD0,   len = 0x004      /* must be aligned 32 for mpu set up*/
+    stack_ram:            org = 0x4000DFD4,   len = 0x2000      /*0x1710 8KB */
+    STACKUBOUND:          org = 0x4000FFD4,   len = 0x004
+    TODC:                 org = 0x4000FFD8,   len = 0x0028     /* 0x4010000 = End of internal RAM 64*1024 */
+    graphics_ram:         org = 0x60000000,   len = 0x00100000  /* 1M */
+    heap  :               org = 0x20000000,   len = 0x00001000 /* 4MB */
+    ext_dram:             org = 0x20001000,   len = 0x03FFF000 /* 32MB for now */
+
+    ADC_0:                org = 0xFFE00000,   len = 0x4000
+    CAN_0:                org = 0xFFFC0000,   len = 0x4000
+    CAN_1:                org = 0xFFFC4000,   len = 0x4000
+    CAN_2:                org = 0xFFFC8000,   len = 0x4000
+    CANSP:                org = 0xFFE70000,   len = 0x4000
+    CFLASH0:              org = 0xC3F88000,   len = 0x4000
+    CFLASH1:              org = 0xC3FB0000,   len = 0x4000
+    CGM:                  org = 0xC3FE0000,   len = 0x4000
+    DCU:                  org = 0xFFE5C000,   len = 0x4000
+    DFLASH:               org = 0xC3F8C000,   len = 0x4000
+    DMAMUX:               org = 0xFFFDC000,   len = 0x4000
+    DRAMC:                org = 0xFFE28000,   len = 0x4000
+    DSPI_0:               org = 0xFFF90000,   len = 0x4000
+    DSPI_1:               org = 0xFFF94000,   len = 0x4000
+    DSPI_2:               org = 0xFFF98000,   len = 0x4000
+    ECSM:                 org = 0xFFF40000,   len = 0x4000
+    EDMA:                 org = 0xFFF44000,   len = 0x4000
+    EMIOS_0:              org = 0xC3FA0000,   len = 0x4000
+    EMIOS_1:              org = 0xC3FA4000,   len = 0x4000
+    I2C_0:                org = 0xFFE30000,   len = 0x4000
+    I2C_1:                org = 0xFFE34000,   len = 0x4000
+    I2C_2:                org = 0xFFE38000,   len = 0x4000
+    I2C_3:                org = 0xFFE3C000,   len = 0x4000
+    INTC:                 org = 0xFFF48000,   len = 0x4000
+    LINFLEX_0:            org = 0xFFE40000,   len = 0x4000
+    LINFLEX_1:            org = 0xFFE44000,   len = 0x4000
+    LINFLEX_2:            org = 0xFFE48000,   len = 0x4000
+    LINFLEX_3:            org = 0xFFE4C000,   len = 0x4000
+    ME:                   org = 0xC3FDC000,   len = 0x4000
+    MPU:                  org = 0xFFF10000,   len = 0x4000
+    QUADSPI_0:            org = 0xFFFA0000,   len = 0x4000
+    PCU:                  org = 0xC3FE8000,   len = 0x4000
+    PIT:                  org = 0xC3FF0000,   len = 0x4000
+    RGM:                  org = 0xC3FE4000,   len = 0x4000
+    RTC:                  org = 0xC3FEC000,   len = 0x4000
+    SIU:                  org = 0xC3F90000,   len = 0x4000
+    SMC:                  org = 0xFFE60000,   len = 0x1000
+    SSCM:                 org = 0xC3FD8000,   len = 0x4000
+    SSD_0:                org = 0xFFE61000,   len = 0x800
+    SSD_1:                org = 0xFFE61800,   len = 0x800
+    SSD_2:                org = 0xFFE62000,   len = 0x800
+    SSD_3:                org = 0xFFE62800,   len = 0x800
+    SSD_4:                org = 0xFFE63000,   len = 0x800
+    SSD_5:                org = 0xFFE63800,   len = 0x800
+    STM:                  org = 0xFFF3C000,   len = 0x4000
+    SWT:                  org = 0xFFF38000,   len = 0x4000
+    WKUP:                 org = 0xC3F94000,   len = 0x4000
+    qspi0_flash:          org = 0x80000000,   len = 0x02000000
+    RLE:                  org = 0xFFE14000,   len = 0x4000
+    VIU:                  org = 0xFFE24000,   len = 0x4000
+    GFX2D:                org = 0xFFE50000,   len = 0x4000
+    GXG:                  org = 0xFFE54000,   len = 0x4000
+    SGM:                  org = 0xFFE78000,   len = 0x4000
+    DCULITE:              org = 0xFFE58000,   len = 0x4000
+    TCON:                 org = 0xFFE7C000,   len = 0x4000
+    XBAR:                 org = 0xFFF04000,   len = 0x4000
+}
+
+/* This will ensure the rchw and reset vector are not stripped by the linker */
+FORCEACTIVE { "bam_rchw" "bam_resetvector"}
+
+/* Need the following because the default value is too small to acount for the gap between internal and external flash */
+MAX_BIN_GAP(0x7FFFFFFF)
+
+SECTIONS
+{
+  .boot  : {} > boot_flash
+
+  .boot_text (VLECODE) ALIGN (0x100)  : {} > fbl_flash
+
+   GROUP :
+   {
+      .ivor_branch_table (VLECODE) ALIGN (0x8000) : {}
+      .ivor_handlers (VLECODE)  : {}
+      .appl_start_text (VLECODE)  ALIGN (0x20) : {} /* put some stuff here to partly use   */
+        NVM_DEFAULT_AREA  ALIGN (0x100) : {}        /* the space between here and the vector table */
+        ROMTBLS    : {}
+        ROM_SFTW_PART_NUM : {}
+   } > app_ivor_flash
+
+   /* vector table must be 2K aligned */
+   .intc_sw_isr_vector_table ALIGN (ADDR(app_int_vector_flash)-_f_ivor_branch_table) : {} > app_int_vector_flash /* For INTC in SW Vector Mode */
+
+   GROUP :
+   {
+      FUEL03_CONSTANT_SEGMENT LOAD (ADDR(app_flash)) : {}
+      TCMP02_CONST LOAD (.) : {}
+      STEPPER_CONSTANT_SEGMENT LOAD (.) : {}
+
+      .text_vle (VLECODE) LOAD (.) : {
+             *(.text)
+             *(.text_vle)
+             *(.fini)
+             *(.eini)
+         }
+       .init LOAD (.) : {}
+       .init_vle (VLECODE) LOAD (.) : {
+             *(.init)
+             *(.init_vle)
+          }
+        .ctors LOAD (.) : {}
+        .dtors LOAD (.) : {}
+        .rodata (CONST) LOAD (.) : {
+            *(.rdata)
+            *(.rodata)
+         }
+        extab LOAD (.) : {}
+        extabindex LOAD (.) : {}
+        .sdata2 LOAD (.) : {}
+        .sbss2 LOAD (.) : {}
+   }   >  app_flash
+
+   . = ADDR(.sbss2);
+
+   ADC_0_REG  : {} >      ADC_0
+   CAN_0_REG  : {} >      CAN_0
+   CAN_1_REG  : {} >      CAN_1
+   CAN_2_REG  : {} >      CAN_2
+   CANSP_REG  : {} >      CANSP
+   CFLASH0_REG  : {} >     CFLASH0
+   CGM_REG  : {} >        CGM
+   DCU_REG  : {} >        DCU
+   DFLASH_REG  : {} >     DFLASH
+   DMAMUX_REG  : {} >     DMAMUX
+   DRAMC_REG  : {} >      DRAMC
+   DSPI_0_REG  : {} >     DSPI_0
+   DSPI_1_REG  : {} >     DSPI_1
+   DSPI_2_REG  : {} >     DSPI_2
+   EDMA_REG  : {} >       EDMA
+   EMIOS_0_REG  : {} >    EMIOS_0
+   EMIOS_1_REG  : {} >    EMIOS_1
+   I2C_0_REG  : {} >      I2C_0
+   I2C_1_REG  : {} >      I2C_1
+   I2C_2_REG  : {} >      I2C_2
+   I2C_3_REG  : {} >      I2C_3
+   INTC_REG  : {} >       INTC
+   LINFLEX_0_REG  : {} >  LINFLEX_0
+   LINFLEX_1_REG  : {} >  LINFLEX_1
+   LINFLEX_2_REG  : {} >  LINFLEX_2
+   LINFLEX_3_REG  : {} >  LINFLEX_3
+   ME_REG  : {} >         ME
+   MPU_REG  : {} >        MPU
+   PCU_REG  : {} >        PCU
+   PIT_REG  : {} >        PIT
+   RGM_REG  : {} >        RGM
+   RTC_REG  : {} >        RTC
+   SIU_REG  : {} >        SIU
+   SMC_REG  : {} >        SMC
+   SSCM_REG  : {} >       SSCM
+   SSD_0_REG  : {} >      SSD_0
+   SSD_1_REG  : {} >      SSD_1
+   SSD_2_REG  : {} >      SSD_2
+   SSD_3_REG  : {} >      SSD_3
+   SSD_4_REG  : {} >      SSD_4
+   SSD_5_REG  : {} >      SSD_5
+   STM_REG  : {} >        STM
+   SWT_REG  : {} >        SWT
+   WKUP_REG  : {} >       WKUP
+   CFLASH1_REG  : {} >     CFLASH1
+   ECSM_REG  : {} >     ECSM
+   QUADSPI_0_REG  : {} >    QUADSPI_0
+
+   RLE_REG : {} > RLE
+   VIU_REG : {} > VIU
+   GFX2D_REG : {} > GFX2D
+   GXG_REG : {} > GXG
+   SGM_REG : {} > SGM
+   DCULITE_REG : {} > DCULITE
+   TCON_REG : {} > TCON
+   XBAR_REG : {} > XBAR
+
+   DI_TODC_DATA_BSS  : {} >  TODC
+   DI_STACKLBOUND  : {} >  STACKLBOUND
+   DI_STACKUBOUND  : {} >  STACKUBOUND
+
+   GROUP ALIGN(0x20) :
+   {
+        DI_RESET_HISTORY_BSS  : {}
+        epm_start_e2_shadow : {}
+        NVM_PEO       : {}
+        NVM_GCONST    : {}
+        NVM_VSD_VP    : {}
+        NVM_CONST_END : {}
+        epm_start_write_ok : {}
+        NVM_VARIABLE : {}
+        FUEL03_NVM_SEGMENT : {}
+        NVM_VCOM_VAL : {}
+        epm_start_segment_2 : {}
+        CSC_NVM_ALIGN_4_VAR : {}
+        NVM_DTC : {}
+        NVM_ALIGN_4_VAR : {}
+        MPC_OSC_CAL : {}
+        nvm_odo_const : {}
+        OIL_CONSTANT_DATA  : {}
+        OIL_VARIABLE_DATA  : {}
+        TC_VAR_DATA  : {}
+        TC_CONST_DATA  : {}
+        epm_end_write_ok : {}
+        NVM_HDWR_PART_NUM  : {}
+        NVM_MANUFACT  : {}
+        epm_end_e2_shadow : {}
+        .data  (DATA) : {}
+        .sdata (DATA) : {}
+        .sbss  (BSS)  : {}
+        .bss   (BSS)  : {}
+      .PPC.EMB.sdata0 : {}
+      .PPC.EMB.sbss0 : {}
+      . = (. & 0xffffffe0) + 0x20;
+      START_UNUSED_RAM  : {}
+    } > internal_ram
+
+    .gpupriv  ALIGN(32) :{
+                              .=.+GPUPRIV_SIZE;
+                         } > ext_dram
+
+    .gpucmd   ALIGN(32) :{
+                              .=.+GPUCMD_SIZE;
+                         } > ext_dram
+
+    .gpubuf   ALIGN(32) :{
+                              .=.+GPUBUF_SIZE;
+                         } > ext_dram
+
+    .mspace   ALIGN(32) :{
+                              .=.+MSPACE_SIZE;
+                         } > ext_dram
+
+    QSPI0_FLASH LOAD (ADDR(qspi0_flash)) : {
+                                           }    > qspi0_flash
+
+   .gallo   ALIGN(32) :{
+                         .=.+100000;
+                       } > graphics_ram
+
+}
+
+/* Freescale CodeWarrior compiler address designations */
+_stack_addr = ADDR(stack_ram)+SIZEOF(stack_ram);
+_stack_size = SIZEOF(stack_ram);
+_stack_end  = ADDR(stack_ram);
+
+_heap_addr  = ADDR(heap);
+_heap_end   = ADDR(heap)+SIZEOF(heap);
+_heap_size  = SIZEOF(heap);
+
+_gallo_addr  = ADDR(.gallo); //AV
+_gallo_size  = SIZEOF(.gallo); //AV
+
+/* Labels for heap spaces */
+__MSPACE_BEGIN  = ADDR(.mspace);
+__MSPACE_SIZE   = SIZEOF(.mspace);
+__GPUBUF_BEGIN  = ADDR(.gpubuf);
+__GPUBUF_SIZE   = SIZEOF(.gpubuf);
+__GPUCMD_BEGIN  = ADDR(.gpucmd);
+__GPUCMD_SIZE   = SIZEOF(.gpucmd);
+__GPUPRIV_BEGIN = ADDR(.gpupriv);
+__GPUPRIV_SIZE  = SIZEOF(.gpupriv);
+
+__IVPR_VALUE = 0; /* use this line for Rainbow */
+
+RGM_FES = ADDR(RGM);
+PFLASH = ADDR(CFLASH0);
+WKUP_WISR = ADDR(WKUP)+0x14;
+
+ECSM_ECR = ADDR(ECSM) + 0x43;
+ECSM_ESR = ADDR(ECSM) + 0x47;
+ECSM_EEGR = ADDR(ECSM) + 0x4a;
+
+START_UNUSED_RAM_ADDR = ADDR(START_UNUSED_RAM);
+END_UNUSED_RAM_ADDR = ADDR(STACKLBOUND);
+
+/* L2 SRAM Location (used for L2 SRAM initialization) */
+
+L2SRAM_LOCATION = 0x40000000;
+L2SRAM_SIZE = 0x0000f000;

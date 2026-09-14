@@ -1,0 +1,318 @@
+/*****************************************************************************
+*                                                                            *
+*              CONFIDENTIAL VISTEON CORPORATION                              *
+*                                                                            *
+* This is an unpublished work of authorship, which contains trade            *
+* secrets, created in 2004. Visteon Corporation owns all rights to           *
+* this work and intends to maintain it in confidence to preserve             *
+* its trade secret status. Visteon Corporation reserves the right,           *
+* under the copyright laws of the United States or those of any              *
+* other country that may have jurisdiction, to protect this work             *
+* as an unpublished work, in the event of an inadvertent or                  *
+* deliberate unauthorized publication. Visteon Corporation also              *
+* reserves its rights under all copyright laws to protect this               *
+* work as a published work, when appropriate. Those having access            *
+* to this work may not copy it, use it, modify it or disclose the            *
+* information contained in it without the written authorization              *
+* of Visteon Corporation.                                                    *
+*                                                                            *
+******************************************************************************/
+
+/*****************************************************************************
+
+File Name        :  hmi_gfx_driver.cfg
+Module Short Name:  Driver
+VOBName          :  sw_hmi_ss
+Author           :  emanoj1
+Description      :  Graphics Driver Configuration
+Organization     :  Driver Information Software Section,
+                    Visteon Corporation
+
+******************************************************************************/
+#ifndef HMI_GFX_DRIVER_CFG
+#define HMI_GFX_DRIVER_CFG
+
+/*****************************************************************************
+*                                 Constant Declarations		                 *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the constant.                                                        *
+* purpose, unit, and resolution                                              *
+******************************************************************************/
+#ifndef YES
+   #define YES (1)
+#endif
+#ifndef NO
+   #define NO  (0)
+#endif
+
+#ifndef TRUE
+   #define TRUE (1)
+#endif
+#ifndef FALSE
+   #define FALSE  (0)
+#endif
+
+/* External Font flash configuration */
+#define EXTERNAL_FONT_FLASH_ENABLED YES
+#if (EXTERNAL_FONT_FLASH_ENABLED == YES)
+#include "hmi_ai_font_flash.h"
+#define EXTERNAL_FONT_FLASH_INIT()  string_init(l_buffer_U8,30); \
+                       			    init_font_flash_buffer();    \
+
+#define GFX_GET_FONT_DATA(p_char)          	
+#endif
+/* End of External Font flash configuration */
+
+/* For External ROM configuration */
+/* If external ROM configuration is required for font and image data do the following */
+#define GFX_IMG_DATA_SUFFIX
+#if defined(MATLAB_MEX_FILE)||defined(WIN32)
+  #define GFX_IMG_DATA_PREFIX
+  #define GFX_FONT_DATA_PREFIX
+#else
+  #pragma push
+  #pragma section "QSPI0_FLASH"
+  #define GFX_IMG_DATA_PREFIX   __declspec(section "QSPI0_FLASH")
+  #define GFX_FONT_DATA_PREFIX   __declspec(section "QSPI0_FLASH")
+#endif
+
+/* When external ROM configuration is not required then do the following */
+#define GFX_IMG_DATA_PREFIX
+#define GFX_IMG_DATA_SUFFIX
+#define GFX_FONT_DATA_PREFIX
+/* End of External ROM configuration */
+
+/*Define the below macro to reduce the build time of RLE image.*/
+#define GFX_COMPILE_SPEED_OPTIMIZE
+
+/*****************************************************************************
+*                                 Global Macro Definitions                   *
+*----------------------------------------------------------------------------*
+* Definition of macro shall be followed by a comment that explains the       *
+* purpose of the macro.                                                      *
+******************************************************************************/
+
+/* ===========================================================================
+** Name:            GFX_DRIVER_USE_DOUBLE_BUFFERING
+** Description:     Enable or Disable double buffering by setting GFX_DRIVER_USE_DOUBLE_BUFFERING
+**                  to YES or NO respectively.
+** Template:        #define GFX_DRIVER_USE_DOUBLE_BUFFERING  'NO or YES to disable or enable'
+** =========================================================================*/
+#define GFX_DRIVER_USE_DOUBLE_BUFFERING   (NO)
+
+/* ===========================================================================
+** Name:            GFX_DRIVER_START_LCD_UPDATE
+** Description:     Assign a handler function to transfer the frame buffer for 
+**                  the passed layer to LCD display. Use the "layer" parameter 
+**                  only if NB_LAYERS > 1
+** Template:        #define GFX_DRIVER_START_LCD_UPDATE  'handler function'
+** =========================================================================*/
+#define GFX_DRIVER_START_LCD_UPDATE(layer, fb_pointer)	hmi_disp_drv_data_update(fb_pointer)
+
+/* ===========================================================================
+** Name:            GFX_DRIVER_CUSTOM_TEXT_RENDERING
+** Description:     Define this macro to > 0 to override default font rendering
+**                  of the driver.
+** Template:        #define GFX_DRIVER_CUSTOM_TEXT_RENDERING  'NO or YES'
+** =========================================================================*/
+#define GFX_DRIVER_CUSTOM_TEXT_RENDERING  (NO)
+
+/* ===========================================================================
+** Name:            GFX_DRIVER_WAIT_SCHEDULING
+**					GFX_DRIVER_WAIT_THRESHOLD_COUNT and
+**					GFX_DRIVER_EXECUTE_EVENT_WAIT
+** Description:     Enable or disable wait implementation. This allows the 
+**                  operating system to service other task while the driver
+**                  is building the frame buffer. Since frame buffer building 
+** 					can take longer time (in milliseconds), it can affect the 
+**                  system performance if the display building is done using a 
+**                  blocking task. The wait implementation can run a loop counter
+**                  and once reaching a set threshold (GFX_DRIVER_WAIT_THRESHOLD_COUNT)
+**                  it can make a call to appropriate os_wait 
+**                  (HMI_GFX_DRIVER_EXECUTE_EVENT_WAIT) function to transfer 
+**                  control to OS to schedule other tasks. 
+** Template:        #define GFX_DRIVER_WAIT_SCHEDULING        'NO or YES'
+**                  #define GFX_DRIVER_WAIT_THRESHOLD_COUNT   <number of counts>
+					#define GFX_DRIVER_EXECUTE_EVENT_WAIT     <os wait handler function>
+** =========================================================================*/
+#define GFX_DRIVER_WAIT_SCHEDULING		(NO)
+#define GFX_DRIVER_WAIT_THRESHOLD_COUNT	(500)
+#define GFX_DRIVER_EXECUTE_EVENT_WAIT   (os_wait)
+
+/* Define the below macro only if buffer locking is to be done after DriverEndUpdate */s
+//#define DISABLE_BUFFER_LOCK NO
+
+/* ===========================================================================
+** Name:            GFX_DRIVER_NEED_BMP_CLIPPING
+** Description:     Enable or Disable support for clipping of 
+**                  images. This is required to perform clipping and scrolling
+**                  functionality for text display.
+** Template:        #define GFX_DRIVER_NEED_BMP_CLIPPING 'NO or YES'
+** =========================================================================*/
+#define GFX_DRIVER_NEED_BMP_CLIPPING (NO)
+
+
+/* ===========================================================================
+** Horizontal scan is supported for 4BPP only.  
+** This configuration is not supported for RLE compressed images.
+GFX_DRIVER_NEED_HORIZONTAL_SCAN macro will be defined in tool generated files.
+If the GFX_HOR_SCAN_BUILD_TEXT macro value is YES, then gfx core will build the
+text. If the value is NO, then gfx core will not build the text.  Open vg driver
+need to build the text.                                                     */
+** =========================================================================*/
+#ifdef GFX_DRIVER_NEED_HORIZONTAL_SCAN
+#define GFX_HOR_SCAN_BUILD_TEXT(pc_text_prop_SP,pc_dyn_text_def_SP)       YES          
+#endif
+
+/* ===========================================================================
+** Name:            GFX_ROTATED_DISPLAY
+** Description:     Support for rotated display.  Should be enabled only when
+**                  vertical packing of data is done and when vertical filling
+**                  of data is required.  
+** Template:        #define GFX_ROTATED_DISPLAY 'NO or YES'
+** =========================================================================*/
+#define GFX_ROTATED_DISPLAY (NO)
+
+/* ===========================================================================
+** Whenever pixels width of a input string is greater than available pixels 
+** width of a text box then append with user configurable string (say "...")
+** Configure below properties
+** =========================================================================*/
+//#define GFX_MGR_CLIP_TEXT_APPEND_ENABLE
+//#define GFX_MGR_APPEND_CHAR          (46)
+//#define GFX_MGR_APPEND_CHAR_CNT      (3)
+
+/* ===========================================================================
+** Name:            GFX_IMAGE_BLEND_USING_ARRAY_SUPPORT
+** Description:     Type for image blending.  Any one type can be enabled at
+					a time.  
+** Template:        #define GFX_IMAGE_BLEND_USING_ARRAY_SUPPORT   'NO or YES'
+** =========================================================================*/
+#if GFX_PIX_FORMAT == GFX_4BPP
+#define GFX_IMAGE_BLEND_USING_ARRAY_SUPPORT   (NO)
+#endif
+/* ===========================================================================
+** Name:            GFX_TEXT_ON_GREY_SUPPORT
+** Description:     Should be enabled when the text displayed on non-white or
+					non-black background color.
+** Template:        #define GFX_TEXT_ON_GREY_SUPPORT   'NO or YES'
+** =========================================================================*/
+#if GFX_PIX_FORMAT == GFX_4BPP
+#define GFX_TEXT_ON_GREY_SUPPORT             (YES)
+#endif
+
+
+/*****************************************************************************
+*                                 Type Decleration                           *
+*----------------------------------------------------------------------------*
+* Decleration of type shall be accompanied by a comment that explains the    *
+* purpose and usage of the type.                                             *
+******************************************************************************/
+
+/*****************************************************************************
+*                                 Global Variable Declarations               *
+*----------------------------------------------------------------------------*
+* Declaration shall be followed by a comment that gives the following info.  *
+* about the variable.                                                        *
+* purpose, critical section, unit, and resolution                            *
+******************************************************************************/
+
+#ifdef HMI_GFX_DRIVER_C
+/*
+** Allocate the frame buffer memory and create the framebuffer pointer table
+** static GFX_COLOR_T * const l_layer1_buffers_U8[NB_LAYERS][1] if double 
+** buffering is disabled.
+** static GFX_COLOR_T * const l_layer1_buffers_U8[NB_LAYERS][2] if double 
+** buffering is enabled.
+** NOTE!!!! Make sure the allocation happens with in #ifdef HMI_GFX_DRIVER_C
+**          to prevent multiple memory allocations. Below allocation is for 
+**			sample only. Modify this as necessary.
+*/
+
+
+//#define LCD_L1_BYTES_PER_COLOUMN  ((GFX_MAX_H_LENGTH + 7) / 8)
+
+/*
+** The following macro should be enabled for multi color support in segmented displays.
+** If support is not required, the above macro to compute bytes per columns need to be used 
+*/
+//#define LCD_L1_BYTES_PER_COLOUMN  (GFX_MAX_H_LENGTH / 2)
+
+//#define GFX_SEG_VERTICAL_PACKING
+
+
+GFX_COLOR_T         l_l1_fb1_U8A[LCD_L1_BYTES_PER_COLOUMN*GFX_MAX_W_LENGTH];
+GFX_COLOR_T * const l_layer_fb_pointer_table_U8AP[NB_LAYERS][1] = 
+{
+   l_l1_fb1_U8A 
+};
+
+#endif
+
+/* #define GFX_BIG_ENDIAN */
+
+/*****************************************************************************
+*                                 Global Function Prototypes                 *
+******************************************************************************/
+
+/*End of File*/
+/*****************************************************************************
+*   for each change to this file, be sure to record:                         *
+*      1.  who made the change and when the change was made                  *
+*      2.  why the change was made and the intended result                   *
+*   Following block needs to be repeated for each change
+******************************************************************************
+*   Note: In the traceability column we need to trace back to the Design Doc.*
+*   For the initial version it is traced to the Design Document section.     *
+*   For further changes it shall trace to the source of the change which may *
+*   be SPSS/SCR/Defect details(Defect may be Testing/validation defect)/Any  *
+*   other reason                                                            *
+******************************************************************************/
+/*---------------------------------------------------------------------------
+Date              :  24-APR-2017
+By                :  kkubendi
+Traceability      :  848393
+Change Description:  Added macros GFX_IMAGE_BLEND_USING_ARRAY_SUPPORT
+                     and GFX_TEXT_ON_GREY_SUPPORT.
+
+Date              :16/10/2015
+By                :sbollam
+Traceability      :RTC 444367
+Change Description:Appending string feature implementation
+
+Date              :  17-Jul-15
+By                :  adevi
+Traceability      :  RTC 344565
+Change Description:  Clipping macro renamed
+
+Date              :  12-Dec-14
+By                :  adevi
+Traceability      :  
+Change Description:  Image data and font data Prefixes configuration introduced
+                     For External ROM configuration.
+
+Date              :  24-July-14
+By                :  adevi
+Traceability      :  
+Change Description:  EXTERNAL_FONT_FLASH_ENABLED, GFX_ROTATED_DISPLAY configuration
+                     is newly added.
+
+Date              :  10-July-14
+By                :  adevi
+Traceability      :  
+Change Description:  Removed configuration GFX_DRIVER_FB_HORIZONTAL_FILL.
+
+Date              :  3-July-09
+By                :  tvijayas
+Traceability      :  
+Change Description:  added support for filling the  display buffer vertically.
+                     Horizontal buffer fill - #define GFX_DRIVER_FB_HORIZONTAL_FILL YES 
+                     Vertical buffer fill   - #define GFX_DRIVER_FB_HORIZONTAL_FILL NO
+
+Date              :  12-Jun-09
+By                :  emanoj1
+Traceability      :  
+Change Description:  Initial version.
+-----------------------------------------------------------------------------*/
+#endif /*HMI_GFX_DRIVER_CFG*/

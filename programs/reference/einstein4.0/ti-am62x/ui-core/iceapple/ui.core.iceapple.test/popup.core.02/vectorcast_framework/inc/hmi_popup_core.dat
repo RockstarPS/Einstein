@@ -1,0 +1,866 @@
+/*============================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2010. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==========================================================================*/
+
+/*============================================================================
+**
+** Name:           hmi_popup_core.dat
+**
+** Description:    
+                   This file has the data definition table for the Popup 
+                   Core Component
+**                 
+** Organization:   Driver Information Software Section,
+**                 Visteon
+**
+**============================================================================
+**
+**==========================================================================*/
+
+/* ****** Application Include Files */
+
+#include "hmi_button.h"
+#include "hmi_logic_state_handler.h"
+#include "hmi_timer_support.h"
+#include "system.h"
+#include "hmi_popup_core_if.h"
+#include "hmi_popup_core.h"
+#include "hmi_logic_state_handler.h"
+
+
+
+/***************************************************/
+/*                  Timer Interface                */
+/***************************************************/
+#define  HMI_POPUP_START_TIMER(timer_id, timeout, evt)  ( hmi_timer_support_start_timer((timer_id), (timeout), (evt)))
+#define  HMI_POPUP_STOP_TIMER(timer_id)                 ( hmi_timer_support_clear_timer(timer_id))
+#define  HMI_POPUP_CHECK_TIMER(timer_id)                 ( hmi_timer_support_check_timer(timer_id))
+
+#define  POPUP_TMR_RUNNING                ( HMI_TIMER_RUNNING)
+#define  POPUP_TMR_EXPIRED               ( HMI_TIMER_EXPIRED)
+#define  POPUP_TMR_CLEARED               ( HMI_TIMER_CLEAR)
+#define  POPUP_MAX_TIMER                  (TIMER_ID_TYPE)(0x0FFFF)
+
+
+/***************************************************/
+/*           Animation Configuration               */
+/***************************************************/
+#define  HMI_DEFAULT_POPUP_CLOSE_ANIM					( 1)
+#define  HMI_POPUP_REMOVE_MINTIMEOUT_ANIM				( 2)
+#define  HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM			( 3)
+#define  HMI_POPUP_REMOVE_TIMEOUT_ANIM					( 4)
+#define  HMI_POPUP_ADD_MINTIME_ANIM						( 5)
+#define  HMI_POPUP_ADD_TIMEOUT_ANIM						( 6)
+#define  HMI_POPUP_REMOVE_PROG_TIMEOUT_ANIM				( 7)
+#define  HMI_DEFAULT_POPUP_ADD_ANIM						( 8)
+#define  HMI_POPUP_REMOVE_ACK_ANIM						( POPUP_ANIM_MAX_ID)
+
+#define POPUP_IGNORE_MIN_TIME_ON_HIGH_PRIO_POPUP      (1)
+
+#define POPUP_LSH_ADD_STATE_EXT(state, anim, client, layer)  AppHandler(state, anim, client, layer)
+#define POPUP_LSH_REM_STATE_EXT(state, anim, client, layer)  AppHandler(state, anim, client, layer
+
+/************************************************************************
+                      General Key Pad Entry Config                       
+************************************************************************/
+
+static const HMI_CHAR l_TestConfig_ButtonID_1_char[3] = {((HMI_CHAR)'a'), ((HMI_CHAR)'b'), ((HMI_CHAR)'c')};
+
+static const KEYPAD_EVENT_TYPE l_TestConfig_keyevent[] =
+{
+    { ButtonID_1, 3 ,&l_TestConfig_ButtonID_1_char[0]        }
+
+};
+
+static const HMI_CHAR l_AlphaNumeric_ButtonID_1_char[1] = {((HMI_CHAR)'1')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_2_char[4] = {((HMI_CHAR)'a'), ((HMI_CHAR)'b'), ((HMI_CHAR)'c'), ((HMI_CHAR)'2')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_3_char[4] = {((HMI_CHAR)'d'), ((HMI_CHAR)'e'), ((HMI_CHAR)'f'), ((HMI_CHAR)'3')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_4_char[4] = {((HMI_CHAR)'g'), ((HMI_CHAR)'h'), ((HMI_CHAR)'i'), ((HMI_CHAR)'4')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_5_char[4] = {((HMI_CHAR)'j'), ((HMI_CHAR)'k'), ((HMI_CHAR)'l'), ((HMI_CHAR)'5')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_6_char[4] = {((HMI_CHAR)'m'), ((HMI_CHAR)'n'), ((HMI_CHAR)'o'), ((HMI_CHAR)'6')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_7_char[5] = {((HMI_CHAR)'p'), ((HMI_CHAR)'q'), ((HMI_CHAR)'r'), ((HMI_CHAR)'s'), ((HMI_CHAR)'7')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_8_char[4] = {((HMI_CHAR)'t'), ((HMI_CHAR)'u'), ((HMI_CHAR)'v'), ((HMI_CHAR)'8')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_9_char[5] = {((HMI_CHAR)'w'), ((HMI_CHAR)'x'), ((HMI_CHAR)'y'), ((HMI_CHAR)'z'), ((HMI_CHAR)'9')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_STAR_char[1] = {((HMI_CHAR)'*')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_0_char[1] = {((HMI_CHAR)'0')};
+static const HMI_CHAR l_AlphaNumeric_ButtonID_SHARP_char[1] = {((HMI_CHAR)'#')};
+
+static const KEYPAD_EVENT_TYPE l_AlphaNumeric_keyevent[] =
+{
+    {ButtonID_1, 1  ,&l_AlphaNumeric_ButtonID_1_char[0]        },
+    {ButtonID_2, 4  ,&l_AlphaNumeric_ButtonID_2_char[0]        },
+    {ButtonID_3, 4  ,&l_AlphaNumeric_ButtonID_3_char[0]        },
+    {ButtonID_4, 4  ,&l_AlphaNumeric_ButtonID_4_char[0]        },
+    {ButtonID_5, 4  ,&l_AlphaNumeric_ButtonID_5_char[0]        },
+    {ButtonID_6, 4  ,&l_AlphaNumeric_ButtonID_6_char[0]        },
+    {ButtonID_7, 5  ,&l_AlphaNumeric_ButtonID_7_char[0]        },
+    {ButtonID_8, 4  ,&l_AlphaNumeric_ButtonID_8_char[0]        },
+    {ButtonID_9, 5  ,&l_AlphaNumeric_ButtonID_9_char[0]        },
+    {ButtonID_STAR, 1  ,&l_AlphaNumeric_ButtonID_STAR_char[0]        },
+    {ButtonID_0, 1  ,&l_AlphaNumeric_ButtonID_0_char[0]        },
+    { ButtonID_SHARP, 1 ,&l_AlphaNumeric_ButtonID_SHARP_char[0]        }
+
+};
+
+static const HMI_CHAR l_Numeric_ButtonID_1_char[1] = {((HMI_CHAR)'1')};
+static const HMI_CHAR l_Numeric_ButtonID_2_char[1] = {((HMI_CHAR)'2')};
+static const HMI_CHAR l_Numeric_ButtonID_3_char[1] = {((HMI_CHAR)'3')};
+static const HMI_CHAR l_Numeric_ButtonID_4_char[1] = {((HMI_CHAR)'4')};
+static const HMI_CHAR l_Numeric_ButtonID_5_char[1] = {((HMI_CHAR)'5')};
+static const HMI_CHAR l_Numeric_ButtonID_6_char[1] = {((HMI_CHAR)'6')};
+static const HMI_CHAR l_Numeric_ButtonID_7_char[1] = {((HMI_CHAR)'7')};
+static const HMI_CHAR l_Numeric_ButtonID_8_char[1] = {((HMI_CHAR)'8')};
+static const HMI_CHAR l_Numeric_ButtonID_9_char[1] = {((HMI_CHAR)'9')};
+static const HMI_CHAR l_Numeric_ButtonID_STAR_char[1] = {((HMI_CHAR)'*')};
+static const HMI_CHAR l_Numeric_ButtonID_0_char[1] = {((HMI_CHAR)'0')};
+static const HMI_CHAR l_Numeric_ButtonID_SHARP_char[1] = {((HMI_CHAR)'#')};
+
+static const KEYPAD_EVENT_TYPE l_Numeric_keyevent[] =
+{
+    {ButtonID_1, 1  ,&l_Numeric_ButtonID_1_char[0]        },
+    {ButtonID_2, 1  ,&l_Numeric_ButtonID_2_char[0]        },
+    {ButtonID_3, 1  ,&l_Numeric_ButtonID_3_char[0]        },
+    {ButtonID_4, 1  ,&l_Numeric_ButtonID_4_char[0]        },
+    {ButtonID_5, 1  ,&l_Numeric_ButtonID_5_char[0]        },
+    {ButtonID_6, 1  ,&l_Numeric_ButtonID_6_char[0]        },
+    {ButtonID_7, 1  ,&l_Numeric_ButtonID_7_char[0]        },
+    {ButtonID_8, 1  ,&l_Numeric_ButtonID_8_char[0]        },
+    {ButtonID_9, 1  ,&l_Numeric_ButtonID_9_char[0]        },
+    {ButtonID_STAR, 1  ,&l_Numeric_ButtonID_STAR_char[0]        },
+    {ButtonID_0, 1  ,&l_Numeric_ButtonID_0_char[0]        },
+    { ButtonID_SHARP, 1 ,&l_Numeric_ButtonID_SHARP_char[0]        }
+
+};
+
+static const KEYPAD_CONFIG_TYPE l_TestConfig_keyconfig = {1 , l_TestConfig_keyevent};
+static const KEYPAD_CONFIG_TYPE l_AlphaNumeric_keyconfig = {12 , l_AlphaNumeric_keyevent};
+static const KEYPAD_CONFIG_TYPE l_Numeric_keyconfig = {12 , l_Numeric_keyevent};
+static const UINT16 l_ok_event_1[] = 
+{
+    ButtonID_K,
+    ButtonID_K1,
+    ButtonID_K2,
+    ButtonID_ok3
+};
+static const UINT16 l_ok_event_2[] = 
+{
+    ButtonID_K
+};
+static const UINT16 l_ok_event_3[] = 
+{
+    ButtonID_K,
+    ButtonID_K2
+};
+static const PP_BTN_EVENT_TYPE l_ok_event[] = 
+{
+    {4,l_ok_event_1},
+    {1,l_ok_event_2},
+    {2,l_ok_event_3}
+};
+
+static const UINT16 l_delete_event_1[] = 
+{
+    ButtonID_DELETE,
+    ButtonID_DELETE1,
+    ButtonID_DELETE3
+};
+static const UINT16 l_delete_event_2[] = 
+{
+    ButtonID_DELETE,
+    ButtonID_DELETE2,
+    ButtonID_DELETE3
+};
+static const UINT16 l_delete_event_3[] = 
+{
+    ButtonID_DELETE
+};
+static const PP_BTN_EVENT_TYPE l_delete_event[] = 
+{
+    {3,l_delete_event_1},
+    {3,l_delete_event_2},
+    {1,l_delete_event_3}
+};
+
+static const UINT16 l_clear_event_1[] = 
+{
+    ButtonID_CLEAR
+};
+static const UINT16 l_clear_event_2[] = 
+{
+    ButtonID_CLEAR1
+};
+static const UINT16 l_clear_event_3[] = 
+{
+    ButtonID_CLEAR1,
+    ButtonID_CLEAR2,
+    ButtonID_CLEAR4,
+    ButtonID_CLEAR3
+};
+static const PP_BTN_EVENT_TYPE l_clear_event[] = 
+{
+    {1,l_clear_event_1},
+    {1,l_clear_event_2},
+    {4,l_clear_event_3}
+};
+
+static const UINT16 l_cancel_event_1[] = 
+{
+    ButtonID_CANCEL
+};
+static const UINT16 l_cancel_event_2[] = 
+{
+    ButtonID_CANCEL,
+    ButtonID_CANCEL1
+};
+static const PP_BTN_EVENT_TYPE l_cancel_event[] = 
+{
+    {1,l_cancel_event_1},
+    {2,l_cancel_event_2}
+};
+
+
+/************************************************************************
+                      General Ack Entry Config                           
+************************************************************************/
+
+static const ACK_EVENT_TYPE l_TestAckConfig_event[3]=
+{
+{  ButtonID_1,  ABSORBED  },
+{  ButtonID_2,  ABSORBED  },
+{  ButtonID_3,  PASSED  }
+};
+
+static const UINT16 l_TestNackConfig_event[5]=
+{
+    ButtonID_4,
+    ButtonID_5,
+    ButtonID_6,
+    ButtonID_7,
+    ButtonID_8
+};
+
+static const ACK_CONFIG_TYPE TestAckConfig = {3 , l_TestAckConfig_event   };
+static const NACK_CONFIG_TYPE TestNackConfig = {5 , l_TestNackConfig_event   };
+
+
+/* Master Popup Data Base Structure */
+
+static UINT8  l_pp_id_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_lsh_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_tmr_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_min_tmr_bit_U8_ptr[(L_POPUP_MAX_COUNT+7)/8];
+
+static const POPUP_CONFIG_T lc_popup_config_table[L_POPUP_MAX_COUNT] =
+{
+         /*POPUP_INFO_0_0*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        20                                      ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER0_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_info_0_0_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_info_0_0_focus_handler        ,              /*Focus Handler 			*/
+        hmi_popup_info_0_0_presentation_handler ,              /*Presentation Handler   	*/
+        hmi_popup_info_0_0_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_0_1*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        1                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_01                              ,              /*Screen Id 				*/
+        20                                      ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE0_TMR_ID                   ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_info_0_1_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_info_0_1_focus_handler        ,              /*Focus Handler 			*/
+        hmi_popup_info_0_1_presentation_handler ,              /*Presentation Handler   	*/
+        hmi_popup_info_0_1_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_0_2*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        2                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_01                              ,              /*Screen Id 				*/
+        20                                      ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER0_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_info_0_2_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_info_0_2_focus_handler        ,              /*Focus Handler 			*/
+        hmi_popup_info_0_2_presentation_handler ,              /*Presentation Handler   	*/
+        hmi_popup_info_0_2_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_PROG_1_0*/
+    {
+        POPUP_PROGRESS                          ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_10                              ,              /*Screen Id 				*/
+        50                                      ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE1_TMR_ID                   ,              /*Timer Id					*/
+        40                                      ,              /*Progress Time Out         */
+        hmi_popup_prog_1_0_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_prog_1_0_focus_handler        ,              /*Focus Handler 			*/
+        hmi_popup_prog_1_0_present_handler      ,              /*Presentation Handler   	*/
+        hmi_popup_info_1_0_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_KEYPAD_1_1*/
+    {
+        POPUP_KEYPAD                            ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_11                              ,              /*Screen Id 				*/
+        100                                     ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE2_TMR_ID                   ,              /*Timer Id					*/
+        800                                     ,              /*Popup Timer Out	        */
+        hmi_popup_keypad_1_1_event_handler      ,              /*Event Handler 			*/
+        hmi_popup_keypad_1_1_focus_handler      ,              /*Focus Handler 			*/
+        hmi_popup_keypad_1_1_present_handler    ,              /*Presentation Handler   	*/
+        hmi_popup_keypad_1_1_popupevent_handler ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_1_2*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        GROUP_PRIORITY_2                        ,              /*Popup Group 				*/
+        3                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_12                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_info_1_2_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_info_1_2_focus_handler        ,              /*Focus Handler 			*/
+        hmi_popup_info_1_2_present_handler      ,              /*Presentation Handler   	*/
+        hmi_popup_info_1_2_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_ACK_1_3*/
+    {
+        POPUP_ACK                               ,              /*PopupType 				*/
+        GROUP_PRIORITY_2                        ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_12                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE3_TMR_ID                   ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_ack_1_3_event_handler         ,              /*Event Handler 			*/
+        hmi_popup_ack_1_3_focus_handler         ,              /*Focus Handler 			*/
+        hmi_popup_iack_1_3_present_handler      ,              /*Presentation Handler   	*/
+        hmi_popup_iack_1_3_popupevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_1_4*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        GROUP_PRIORITY_2                        ,              /*Popup Group 				*/
+        4                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_10                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_info_0_0_event_handler        ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_ACK_5_0*/
+    {
+        POPUP_ACK                               ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        1                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_20                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER5_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_KEYPAD_5_1*/
+    {
+        POPUP_KEYPAD                            ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        1                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_21                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER5_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_PROG_5_2*/
+    {
+        POPUP_PROGRESS                          ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        1                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_22                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE4_TMR_ID                   ,              /*Timer Id					*/
+        40                                      ,              /*Progress Time Out         */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        LSH_NULL_FOCUS_HANDLER                  ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_ACK_5_3*/
+    {
+        POPUP_ACK                               ,              /*PopupType 				*/
+        GROUP_PRIORITY_2                        ,              /*Popup Group 				*/
+        2                                       ,              /*Type Index 				*/
+        ALLOW_TO_EXPIRE                         ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_20                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_ATE5_TMR_ID                   ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_KEYPAD_5_4*/
+    {
+        POPUP_KEYPAD                            ,              /*PopupType 				*/
+        GROUP_PRIORITY_2                        ,              /*Popup Group 				*/
+        2                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_21                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER5_TMR_ID                 ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_9_0*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        5                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        30                                      ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER9_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        hmi_popup_default_focus_handler         ,              /*Focus Handler 			*/
+        LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_10_0*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        6                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER10_TMR_ID                ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        hmi_popup_keypad_10_0_event_handler     ,              /*Event Handler 			*/
+        hmi_popup_keypad_10_0_focus_handler     ,              /*Focus Handler 			*/
+        hmi_popup_keypad_10_0_present_handler   ,              /*Presentation Handler   	*/
+        hmi_popup_keypad_10_0_ppevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_10_1*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        7                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER10_TMR_ID                ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        hmi_popup_keypad_10_1_event_handler     ,              /*Event Handler 			*/
+        hmi_popup_info_10_1_focus_handler       ,              /*Focus Handler 			*/
+        hmi_popup_info_10_1_present_handler     ,              /*Presentation Handler   	*/
+        hmi_popup_keypad_10_1_ppevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_INFO_10_2*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        8                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER10_TMR_ID                ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        hmi_popup_keypad_10_2_event_handler     ,              /*Event Handler 			*/
+        hmi_popup_info_10_2_focus_handler       ,              /*Focus Handler 			*/
+        hmi_popup_info_10_2_present_handler     ,              /*Presentation Handler   	*/
+        hmi_popup_keypad_10_2_ppevent_handler   ,              /*Popup Core Handler 	    */
+    },
+         /*POPUP_KEYPAD_10_3*/
+    {
+        POPUP_KEYPAD                            ,              /*PopupType 				*/
+        GROUP_PRIORITY_1                        ,              /*Popup Group 				*/
+        3                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        SELF_DEACTIVATION                       ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_ENABLED                    ,              /*Interruption Option       */
+        GFX_SCR_00                              ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER10_TMR_ID                ,              /*Timer Id					*/
+        200                                     ,              /*Popup Timer Out	        */
+        hmi_popup_keypad_10_3_event_handler     ,              /*Event Handler 			*/
+        hmi_popup_keypad_10_3_focus_handler     ,              /*Focus Handler 			*/
+        hmi_popup_keypad_10_3_present_handler   ,              /*Presentation Handler   	*/
+        hmi_popup_keypad_10_3_ppevent_handler   ,              /*Popup Core Handler 	    */
+    }
+};
+
+/**************************************************************************
+                      Key Pad Entry Popup Definitions
+**************************************************************************/
+
+static HMI_CHAR l_POPUP_K_0_entry_data[6];
+static UINT16 l_POPUP_K_0_timer_counter;
+static UINT16 l_POPUP_K_0_press_counter;
+static UINT16 l_POPUP_K_0_press_btn;
+static HMI_CHAR l_POPUP_K_1_entry_data[3];
+static UINT16 l_POPUP_K_1_timer_counter;
+static UINT16 l_POPUP_K_1_press_counter;
+static UINT16 l_POPUP_K_1_press_btn;
+static HMI_CHAR l_POPUP_K_2_entry_data[2];
+static UINT16 l_POPUP_K_2_timer_counter;
+static UINT16 l_POPUP_K_2_press_counter;
+static UINT16 l_POPUP_K_2_press_btn;
+static HMI_CHAR l_POPUP_K_3_entry_data[1];
+static UINT16 l_POPUP_K_3_timer_counter;
+static UINT16 l_POPUP_K_3_press_counter;
+static UINT16 l_POPUP_K_3_press_btn;
+
+static const  POPUP_KEYPADENTRY_TYPE l_keypad_entry_array[] =
+{
+    /*POPUP_KEYPAD_1_1*/
+    {
+          ALPHABET_ENTRY,    /*KeypadEntryType 	*/
+          &l_AlphaNumeric_keyconfig,				/*Keypad Config 	*/
+          6,              /*MaxChar 			*/
+          200,              /*MTimeout 	        */
+          &l_ok_event[0],
+          &l_delete_event[0],
+          &l_clear_event[0],
+          &l_cancel_event[0],
+          hmi_popup_validation_hndler,              /*ValidationHandler */
+
+          l_POPUP_K_0_entry_data,
+          &l_POPUP_K_0_timer_counter,
+          &l_POPUP_K_0_press_counter,
+          &l_POPUP_K_0_press_btn
+
+    },
+    /*POPUP_KEYPAD_5_1*/
+    {
+          NUMERIC_ENTRY,     /*KeypadEntryType 	*/
+          &l_Numeric_keyconfig,				/*Keypad Config 	*/
+          3,              /*MaxChar 			*/
+          300,              /*MTimeout 	        */
+          &l_ok_event[0],
+          &l_delete_event[1],
+          &l_clear_event[0],
+          &l_cancel_event[1],
+          hmi_popup_validation_hndler,              /*ValidationHandler */
+
+          l_POPUP_K_1_entry_data,
+          &l_POPUP_K_1_timer_counter,
+          &l_POPUP_K_1_press_counter,
+          &l_POPUP_K_1_press_btn
+
+    },
+    /*POPUP_KEYPAD_5_4*/
+    {
+          NUMERIC_ENTRY,     /*KeypadEntryType 	*/
+          &l_Numeric_keyconfig,				/*Keypad Config 	*/
+          2,              /*MaxChar 			*/
+          0,              /*MTimeout 	        */
+          &l_ok_event[1],
+          &l_delete_event[1],
+          &l_clear_event[1],
+          &l_cancel_event[0],
+          POPUP_VALIDATE_HANDLER_NULL,              /*ValidationHandler */
+
+          l_POPUP_K_2_entry_data,
+          &l_POPUP_K_2_timer_counter,
+          &l_POPUP_K_2_press_counter,
+          &l_POPUP_K_2_press_btn
+
+    },
+    /*POPUP_KEYPAD_10_3*/
+    {
+          ALPHABET_ENTRY,    /*KeypadEntryType 	*/
+          &l_TestConfig_keyconfig,				/*Keypad Config 	*/
+          1,              /*MaxChar 			*/
+          300,              /*MTimeout 	        */
+          &l_ok_event[2],
+          &l_delete_event[2],
+          &l_clear_event[2],
+          &l_cancel_event[1],
+          hmi_popup_validation_hndler,              /*ValidationHandler */
+
+          l_POPUP_K_3_entry_data,
+          &l_POPUP_K_3_timer_counter,
+          &l_POPUP_K_3_press_counter,
+          &l_POPUP_K_3_press_btn
+
+    },
+};
+
+/**************************************************************************
+                      Progress Bar Counter Definitions 
+**************************************************************************/
+
+static UINT8 l_POPUP_P_0_counter_U8;
+static UINT8 l_POPUP_P_1_counter_U8;
+
+static const POPUP_PROGRESSBAR_TYPE l_ProgressBarPopupArray[] = 
+{
+        /*POPUP_PROG_1_0*/
+    {
+        5,/*popup timeout/progress bar rate timer with round off value,if no popup timeout(i.e. 0), then this counter value will be 255*/
+        &l_POPUP_P_0_counter_U8
+    },
+        /*POPUP_PROG_5_2*/
+    {
+        255,/*popup timeout/progress bar rate timer with round off value,if no popup timeout(i.e. 0), then this counter value will be 255*/
+        &l_POPUP_P_1_counter_U8
+    },
+};
+
+/**************************************************************************
+                      Acknowledge Popup Definitions
+**************************************************************************/
+
+static const POPUP_ACK_TYPE l_AckPopupArray[] = 
+{
+        /*POPUP_ACK_1_3*/
+    {
+         &TestAckConfig,/*ACK Button Config 		*/
+         PASSED,/*Not ACK Button Type 		*/
+         &TestNackConfig/*Not ACK Button Config 	*/
+    },
+        /*POPUP_ACK_5_0*/
+    {
+         &TestAckConfig,/*ACK Button Config 		*/
+         PASSED,/*Not ACK Button Type 		*/
+         &TestNackConfig/*Not ACK Button Config 	*/
+    },
+        /*POPUP_ACK_5_3*/
+    {
+         &TestAckConfig,/*ACK Button Config 		*/
+         ABSORBED,/*Not ACK Button Type 		*/
+         &TestNackConfig/*Not ACK Button Config 	*/
+    },
+};
+
+/* Macros for the No of Groups available in each Layer */
+
+#define POPUP_Layer0_NUM_GROUPS    (0)
+#define POPUP_Layer1_NUM_GROUPS    (2)
+#define POPUP_Layer5_NUM_GROUPS    (2)
+#define POPUP_Layer9_NUM_GROUPS    (0)
+#define POPUP_Layer10_NUM_GROUPS    (1)
+
+/* Q declaration for the Group Priority Management */
+
+static UINT8 l_Layer1_group_priority_1_Q [2];
+static UINT8 l_Layer1_group_priority_2_Q [1];
+static UINT8 l_Layer5_group_priority_1_Q [2];
+static UINT8 l_Layer5_group_priority_2_Q [2];
+static UINT8 l_Layer10_group_priority_1_Q [1];
+
+static const LAYER_GROUP_PRIORITY_TYPE l_Layer1_group_priority_1_struct =
+{
+    &l_Layer1_group_priority_1_Q[0],
+    2
+};
+static const LAYER_GROUP_PRIORITY_TYPE l_Layer1_group_priority_2_struct =
+{
+    &l_Layer1_group_priority_2_Q[0],
+    1
+};
+static const LAYER_GROUP_PRIORITY_TYPE l_Layer5_group_priority_1_struct =
+{
+    &l_Layer5_group_priority_1_Q[0],
+    2
+};
+static const LAYER_GROUP_PRIORITY_TYPE l_Layer5_group_priority_2_struct =
+{
+    &l_Layer5_group_priority_2_Q[0],
+    2
+};
+static const LAYER_GROUP_PRIORITY_TYPE l_Layer10_group_priority_1_struct =
+{
+    &l_Layer10_group_priority_1_Q[0],
+    1
+};
+
+
+static const LAYER_GROUP_PRIORITY_TYPE * l_Layer1_group_priority_table[] =
+{
+    &l_Layer1_group_priority_1_struct,
+    &l_Layer1_group_priority_2_struct,
+};
+
+
+static const LAYER_GROUP_PRIORITY_TYPE * l_Layer5_group_priority_table[] =
+{
+    &l_Layer5_group_priority_1_struct,
+    &l_Layer5_group_priority_2_struct,
+};
+
+
+static const LAYER_GROUP_PRIORITY_TYPE * l_Layer10_group_priority_table[] =
+{
+    &l_Layer10_group_priority_1_struct,
+};
+
+
+/***************************************************************************
+                           Layer Details
+***************************************************************************/
+static UINT8 l_layer0_min_timer_sts_U8[(3+ 7)/8];     /* byte Array to store the Mininum Time Out Timer Status for each Popups */
+
+static const POPUP_LAYER_TYPE l_popup_layer0 = 
+{
+    0,      /* Logic State Priority		*/
+    L_POPUP_LAYER0_ID,    /* Layer ID       */
+    GUI_POPUP_LAYER0_MIN_TMR_ID,        /* Minimum Timeout Timer        */
+    0,       /* Start Index      */
+    3,      /* Total Popup Count     */
+    POPUP_Layer0_NUM_GROUPS,       /* Total Group Prio Count    */
+    (LAYER_GROUP_PRIORITY_TYPE const ** const) NULL
+};
+static UINT8 l_layer1_min_timer_sts_U8[(5+ 7)/8];     /* byte Array to store the Mininum Time Out Timer Status for each Popups */
+
+static const POPUP_LAYER_TYPE l_popup_layer1 = 
+{
+    1,      /* Logic State Priority		*/
+    L_POPUP_LAYER1_ID,    /* Layer ID       */
+    GUI_POPUP_LAYER1_MIN_TMR_ID,        /* Minimum Timeout Timer        */
+    3,       /* Start Index      */
+    5,      /* Total Popup Count     */
+    POPUP_Layer1_NUM_GROUPS,       /* Total Group Prio Count    */
+    &l_Layer1_group_priority_table[0]
+};
+
+static const POPUP_LAYER_TYPE l_popup_layer5 = 
+{
+    2,      /* Logic State Priority		*/
+    L_POPUP_LAYER5_ID,    /* Layer ID       */
+    POPUP_MAX_TIMER,           /* Minimum Timeout Timer         */
+    8,       /* Start Index      */
+    5,      /* Total Popup Count     */
+    POPUP_Layer5_NUM_GROUPS,       /* Total Group Prio Count    */
+    &l_Layer5_group_priority_table[0]
+};
+static UINT8 l_layer9_min_timer_sts_U8[(1+ 7)/8];     /* byte Array to store the Mininum Time Out Timer Status for each Popups */
+
+static const POPUP_LAYER_TYPE l_popup_layer9 = 
+{
+    3,      /* Logic State Priority		*/
+    L_POPUP_LAYER9_ID,    /* Layer ID       */
+    GUI_POPUP_LAYER9_MIN_TMR_ID,        /* Minimum Timeout Timer        */
+    13,       /* Start Index      */
+    1,      /* Total Popup Count     */
+    POPUP_Layer9_NUM_GROUPS,       /* Total Group Prio Count    */
+    (LAYER_GROUP_PRIORITY_TYPE const ** const) NULL
+};
+
+static const POPUP_LAYER_TYPE l_popup_layer10 = 
+{
+    4,      /* Logic State Priority		*/
+    L_POPUP_LAYER10_ID,    /* Layer ID       */
+    POPUP_MAX_TIMER,           /* Minimum Timeout Timer         */
+    14,       /* Start Index      */
+    4,      /* Total Popup Count     */
+    POPUP_Layer10_NUM_GROUPS,       /* Total Group Prio Count    */
+    &l_Layer10_group_priority_table[0]
+};
+static POPUP_LAYER_TYPE const * l_layer_table[POPUP_MAX_LAYERS] = 
+{
+    &l_popup_layer0,
+    &l_popup_layer1,
+    &l_popup_layer5,
+    &l_popup_layer9,
+    &l_popup_layer10,
+};
+
+static const POPUP_TOTAL_POPUPTYPE_COUNT_T l_total_pp_type =
+{
+    9,
+    4,
+    2,
+    3,
+    &l_AckPopupArray[0],
+    &l_ProgressBarPopupArray[0],
+    &l_keypad_entry_array[0],
+    hmi_app_popup_core_update_handler
+};
+
+

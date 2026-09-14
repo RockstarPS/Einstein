@@ -1,0 +1,134 @@
+break.delete /all
+&flashbase=0x00000000
+&shadowbase=0x00ffc000
+&rambase=0x40000000
+&flashsize=0x00200000
+; Optimize flash programming time by switching on PLL
+&optimize=0
+;========================================================================
+; CPU setup
+SYStem.RESet
+SYStem.BdmClock 4.0MHz
+SYStem.CPU MPC55XX
+SYStem.DETECT CPU
+SYStem.Option.WATCHDOG OFF
+SYStem.Up
+
+if &optimize==1
+(
+  ; TBD
+  ; setup PLL
+  ; Data.Set ASD:0xC3F80000 %LONG 0x06000000
+  ; set JTAG clock to 25 MHz
+  ; SYStem.BdmClock 25MHz
+)
+
+; initialize internal SRAM (only partially used)
+Data.Set EA:0x40000000--0x40007fff %quad 0
+
+; setup MMU for flash, RAM and register access
+  	MMU.TLBSET 0x0 0xC0000600 0x00000000 0x0000003F  ; 0x0000_0000 to 0x003F_FFFF  bookE
+	MMU.TLBSET 0x1 0xC0000300 0x40000000 0x4000003F  ; 0x4000_0000 to 0x4000_FFFF  bookE
+	MMU.TLBSET 0x2 0xC0000500 0x60000000 0x6000003F  ; 0x6000_0000 to 0x600F_FFFF  bookE
+	MMU.TLBSET 0x3 0xC0000900 0x80000000 0x8000003F  ; 0x8000_0000 to 0x8FFF_FFFF  bookE
+	MMU.TLBSET 0x4 0xC0000200 0x90000000 0x9000003F  ; 0x9000_0000 to 0x9000_3FFF  bookE
+	MMU.TLBSET 0x5 0xC0000500 0xC3F00008 0xC3F0003F  ; 0xC3F0_0000 to 0xC3FF_FFFF  bookE
+	MMU.TLBSET 0x6 0xC0000600 0xFFE00008 0xFFE0003F  ; 0xFFC0_0000 to 0xFFFF_FFFF  bookE
+	MMU.TLBSET 0x7 0xC0000800 0x20000000 0x2000003F  ; 0x2000_0000 to 0x23FF_FFFF  bookE
+
+;MMU.TLB1.SET 0x1 0xC0000500 0xFFF0000A 0xFFF0003F
+;MMU.TLB1.SET 0x2 0xC0000700 0x20000000 0x2000003F
+;MMU.TLB1.SET 0x3 0xC0000400 0x40000008 0x4000003F
+;MMU.TLB1.SET 0x4 0xC0000500 0xC3F00008 0xC3F0003F
+;MMU.TLB1.SET 0x5 0xC0000700 0x00000000 0x0000003F
+
+;========================================================================
+; Flash declaration
+
+FLASH.RESet
+FLASH.Create 1. (&flashbase+0x00000000)++0x03fff TARGET Quad 0. ; L0
+FLASH.Create 1. (&flashbase+0x00004000)++0x03fff TARGET Quad 1. ; L1
+FLASH.Create 1. (&flashbase+0x00008000)++0x03fff TARGET Quad 2. ; L2
+FLASH.Create 1. (&flashbase+0x0000c000)++0x03fff TARGET Quad 3. ; L3
+FLASH.Create 1. (&flashbase+0x00010000)++0x03fff TARGET Quad 4. ; L4
+FLASH.Create 1. (&flashbase+0x00014000)++0x03fff TARGET Quad 5. ; L5
+FLASH.Create 1. (&flashbase+0x00018000)++0x03fff TARGET Quad 6. ; L6
+FLASH.Create 1. (&flashbase+0x0001c000)++0x03fff TARGET Quad 7. ; L7
+FLASH.Create 1. (&flashbase+0x00020000)++0x0ffff TARGET Quad 8. ; L8
+FLASH.Create 1. (&flashbase+0x00030000)++0x0ffff TARGET Quad 9. ; L9
+FLASH.Create 2. (&flashbase+0x00040000)++0x1ffff TARGET Quad 0. ; M0
+FLASH.Create 2. (&flashbase+0x00060000)++0x1ffff TARGET Quad 1. ; M1
+
+&flashaddr=&flashbase+0x00080000
+&Hx=0.
+while &flashaddr<(&flashbase+&flashsize)
+(
+  FLASH.Create 3. &flashaddr++0x3ffff TARGET Quad &Hx ; H0..H1
+  &flashaddr=&flashaddr+0x40000
+  &Hx=&Hx+1.
+)
+
+; Shadow row
+FLASH.Create 4. (&shadowbase+0x00000000)++0x3fff NOP Quad
+
+FLASH.TARGET E:&rambase E:&rambase+0x2000 0x1000 c90fl564xl.bin /STACKSIZE 0x0200
+
+FLASH.ReProgram ALL /Erase
+Data.LOAD hmi_gfx_mgr02.elf E:0x00--(&flashsize-1)
+FLASH.ReProgram OFF
+;set JTAG clock back to default
+SYStem.BdmClock 4MHz
+
+SYStem.RESet             ; back to default MMU TLB 
+SYStem.BdmClock 4.0MHz
+SYStem.CPU MPC55XX
+SYStem.DETECT CPU
+SYStem.Option.WATCHDOG ON
+SYStem.Up
+
+; clear windows
+;WinClear
+
+; Set up register window
+WINPOS 62.875 0.0 77. 20. 0. 0. W000
+Register
+
+; Set up source list window 
+WINPOS 0.0 0.0 83. 36. 13. 1. W001
+WINTABS 10. 10. 25. 62.
+Data.List
+
+;  Set default breakpoints.  See below fir addtional db_print and db_stop breaks. 
+break.delete /all
+; allow breakpoints to be set while executing from flash
+break.select.program onchip
+
+system.OPTION DUALPORT ON 
+
+; prevent access to INTC_IACKR use MAP.NODENYACCESS to reverse
+; this when debugging
+MAP.DENYACCESS A:0xFFF48010--0xFFF48013
+
+; enable entry to standby
+SYStem.Option.LPMDebug ON
+DIAG 3544 1
+
+;  creating printing area
+AREA.Create TERMINAL
+AREA.Select TERMINAL
+AREA.CLEAR TERMINAL
+AREA TERMINAL
+
+;  This break is a break & go used to print diagnostic messages.
+;  printf() will work for anything that calls it.  The printf()
+;  function is implemented in dbprint.c in openvg library guts.
+break.set   db_print /P /CMD "PRINT Data.String(GDprintbuff)" /RESUME
+
+;  set assertion breakpoint
+;  these assertions are in the Freescale openVG library code (e.g. MUST(x) )
+break.set   db_stop /P
+
+ENDDO
+
+
+

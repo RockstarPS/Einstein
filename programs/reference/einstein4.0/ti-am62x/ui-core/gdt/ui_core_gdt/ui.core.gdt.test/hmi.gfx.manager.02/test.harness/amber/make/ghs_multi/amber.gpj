@@ -1,0 +1,71 @@
+#!gbuild
+macro fcr5_template_path=../..
+macro gfx_manager=../../../../../../ui.core.gdt/hmi.gfx.manager.02
+macro iceapple=../../../../../../ui.core.iceapple
+macro iris_driver_path=../../../../../../ui.core.gdt/hmi.gfx.manager.02/src/amber/02_driver
+macro iris_util_path=../../../../../../ui.core.gdt/hmi.gfx.manager.02/src/amber/05_util
+primaryTarget=arm_standalone.tgt
+#component top_level_project
+[Project]
+
+	-I$(fcr5_template_path)/source
+	-I$(fcr5_template_path)/source/common
+	-I$(fcr5_template_path)/source/common/io_h/include
+	-I$(fcr5_template_path)/source/L3/source
+	-I$(fcr5_template_path)/source/driver
+	-I$(fcr5_template_path)/source/driver/port
+	-I$(fcr5_template_path)/source/modules
+	-I$(fcr5_template_path)/source/modules/semihosting
+	-I$(fcr5_template_path)/source/modules/timer
+	-I$(fcr5_template_path)/source/modules/button
+	-I$(iris_driver_path)/include
+	-I$(iris_driver_path)/basic_graphics/include
+	-I$(iris_driver_path)/basic_graphics/include_driver/arm-none-ghs-multi/
+	-I$(iris_util_path)/arm-none-ghs-multi/include
+	-I$(iris_util_path)/utgraphic/include
+	-I$(iris_util_path)/utfreetype/include
+	-I$(iris_util_path)/utwarp/include
+	-I$(iris_util_path)/common/include
+	-I$(iris_util_path)/common/utio/include
+	-I../../../../09_externals/freetype/include
+	-I../../../../../../ui.core.gdt/hmi.gfx.manager.02/src/amber
+	-I$(iceapple)/view.manager.02/src
+	-thumb
+	-align8
+	-cpu=cortexr5
+	-littleendian
+	--long_long
+	-fhard
+	-list
+	-needprototype
+	-G
+	:sourceDir=.
+	-v
+	-uvfd
+	-delete
+	-strip
+	--no_keep_static_symbols
+	--no_link_filter -lnk=-v
+	-Mu
+	-Ml
+	-gsize
+	-preprocess_assembly_files
+
+# Children section
+	-I..\..\autogen
+	-I$(iceapple)\language.core.01\src
+	-I$(iceapple)\animation.core.02\src
+	-I$(iceapple)\language.core.01\src
+	-I..\..\src
+	-I..\..\language
+	-I$(gfx_manager)/src
+
+	-L..\..\..\..\..\..\ui.core.gdt.test\hmi.gfx.manager.02\test.harness\amber\make\ghs_multi\libtraveostart\lib
+	-llibtraveostart.a
+	-c99
+libtraveostart\libtraveostart.gpj		[Library]
+standalone_tcflash_axi_production\standalone_tcflash_axi_production.gpj    [Program]
+standalone_tcflash_axi\standalone_tcflash_axi.gpj		[Program]
+debug_vram\debug_vram.gpj		[Program]
+debugger_scripts\debugger_scripts.gpj                           [Project]
+readme.txt

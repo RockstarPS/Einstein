@@ -1,0 +1,26 @@
+#include "hmi_gfx_mgr02_layout.h"
+#include "hmi_logic_state_handler.h"
+
+void my_present_scr(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}
+void text_glow_test_presentation(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+      hmi_gfx_mgr02_if_set_text(GFX_NEW_TEXTS_2, L"Left Aligned");
+   }
+}

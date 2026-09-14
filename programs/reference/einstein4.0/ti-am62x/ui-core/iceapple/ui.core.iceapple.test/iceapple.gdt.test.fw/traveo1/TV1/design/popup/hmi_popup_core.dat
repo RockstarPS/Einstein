@@ -1,0 +1,193 @@
+/*============================================================================
+**
+**                     CONFIDENTIAL VISTEON CORPORATION
+**
+** This is an unpublished work of authorship, which contains trade secrets,
+** created in 2010. Visteon Corporation owns all rights to this work and
+** intends to maintain it in confidence to preserve its trade secret status.
+** Visteon Corporation reserves the right, under the copyright laws of the
+** United States or those of any other country that may have jurisdiction,
+** to protect this work as an unpublished work, in the event of an
+** inadvertent or deliberate unauthorized publication. Visteon Corporation
+** also reserves its rights under all copyright laws to protect this work as
+** a published work, when appropriate. Those having access to this work may
+** not copy it, use it, modify it or disclose the information contained in
+** it without the written authorization of Visteon Corporation.
+**
+**==========================================================================*/
+
+/*============================================================================
+**
+** Name:           hmi_popup_core.dat
+**
+** Description:    
+                   This file has the data definition table for the Popup 
+                   Core Component
+**                 
+** Organization:   Driver Information Software Section,
+**                 Visteon
+**
+**============================================================================
+**
+**==========================================================================*/
+
+#ifndef HMI_POPUP_CORE_DAT
+#define HMI_POPUP_CORE_DAT
+
+/* ****** Application Include Files */
+
+#include "hmi_logic_state_handler.h"
+#include "hmi_timer_support.h"
+
+#include "system.h"
+#include "hmi_popup_core_if.h"
+#include "hmi_popup_core.h"
+#include "hmi_logic_state_handler.h"
+
+/* Release label major version 4 */
+/* Release label minor version 13 */
+#define HMI_POPUP_CORETOOL_LABEL "POPUPTOOL_LABEL: rel-UI-CORE-ICEAPPLE-4.13"
+#define HMI_POPUP_CORE_TOOL_MAJOR_VERSION	4
+#define HMI_POPUP_CORE_TOOL_MINOR_VERSION	13
+#define HMI_POPUP_CORETOOL_VERSION     ((HMI_POPUP_CORE_TOOL_MAJOR_VERSION * 100) + HMI_POPUP_CORE_TOOL_MINOR_VERSION)
+#if HMI_POPUP_CORE_VERSION != HMI_POPUP_CORETOOL_VERSION
+#pragma message (HMI_POPUP_CORETOOL_LABEL)
+#pragma message (HMI_POPUP_CORE_LABEL)
+#error  The above Popup core and its tool version are mismatched. Please verify.
+#endif
+
+#define POPUP_APP_DEFINED_ANIM_FUNCTION(anim_id,popup_id) (anim_id)
+
+/***************************************************/
+/*                  Timer Interface                */
+/***************************************************/
+#define  HMI_POPUP_START_TIMER(timer_id, timeout, evt)  ( hmi_timer_support_start_timer((timer_id), (timeout), (evt)))
+#define  HMI_POPUP_STOP_TIMER(timer_id)                 ( hmi_timer_support_clear_timer(timer_id))
+#define  HMI_POPUP_CHECK_TIMER(timer_id)                ( hmi_timer_support_check_timer(timer_id))
+
+#define  POPUP_TMR_RUNNING               ( HMI_TIMER_RUNNING)
+#define  POPUP_TMR_EXPIRED               ( HMI_TIMER_EXPIRED)
+#define  POPUP_TMR_CLEARED               ( HMI_TIMER_CLEAR)
+#define  POPUP_MAX_TIMER                 (HMI_NO_OF_TIMERS)
+
+
+/***************************************************/
+/*           Animation Configuration               */
+/***************************************************/
+#define  HMI_DEFAULT_POPUP_CLOSE_ANIM					( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_MINTIMEOUT_ANIM				( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_LOWPRIO_ACTIVE_ANIM			( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_TIMEOUT_ANIM					( ANIM_MAX_ID)
+#define  HMI_POPUP_ADD_MINTIME_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_ADD_TIMEOUT_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_PROG_TIMEOUT_ANIM				( ANIM_MAX_ID)
+#define  HMI_DEFAULT_POPUP_ADD_ANIM						( ANIM_MAX_ID)
+#define  HMI_POPUP_REMOVE_ACK_ANIM						( ANIM_MAX_ID)
+
+#define POPUP_IGNORE_MIN_TIME_ON_HIGH_PRIO_POPUP      (1)
+
+#define POPUP_LSH_ADD_STATE_EXT(state, anim, client)	LSH_ADD_STATE_EXT(state, anim, client)
+#define POPUP_LSH_REM_STATE_EXT(state, anim, client)	LSH_REM_STATE_EXT(state, anim, client)
+
+/************************************************************************
+                      General Key Pad Entry Config                       
+************************************************************************/
+
+
+
+
+
+
+/************************************************************************
+                      General Ack Entry Config                           
+************************************************************************/
+
+
+
+/* Master Popup Data Base Structure */
+
+static UINT8  l_pp_id_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_lsh_sts_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_pp_id_tmr_bit_U8[(L_POPUP_MAX_COUNT+7)/8];
+static UINT8  l_min_tmr_bit_U8_ptr[(L_POPUP_MAX_COUNT+7)/8];
+
+static const POPUP_CONFIG_T lc_popup_config_table[L_POPUP_MAX_COUNT] =
+{
+         /*UI_POPUP_INFO_HDR_GRPICONS_10s*/
+    {
+        POPUP_INFO                              ,              /*PopupType 				*/
+        NO_GROUP_PRIORITY                       ,              /*Popup Group 				*/
+        0                                       ,              /*Type Index 				*/
+        RESTART_TIMER                           ,              /*Timer Type 				*/
+        NO_SELF_DEACTIVATION                    ,              /*Self Deactivate Option 	*/
+        DEACTIVATION_DISABLED                   ,              /*Interruption Option       */
+        GFX_SCR_MAIN                            ,              /*Screen Id 				*/
+        0                                       ,              /*Minimum Time Out          */
+        GUI_POPUP_LAYER1_TMR_ID                 ,              /*Timer Id					*/
+        0                                       ,              /*Popup Timer Out	        */
+        (LSH_EVENT_HANDLER_T *)LSH_NULL_EVENT_HANDLER                  ,              /*Event Handler 			*/
+        (LSH_FOCUS_HANDLER_T *)LSH_NULL_FOCUS_HANDLER                  ,              /*Focus Handler 			*/
+        (LSH_PRESN_HANDLER_T *)LSH_NULL_PRESN_HANDLER                  ,              /*Presentation Handler   	*/
+        POPUP_EVENT_HANDLER_NULL                ,              /*Popup Core Handler 	    */
+    }
+};
+
+/* Macros for the No of Groups available in each Layer */
+
+#define POPUP_Layer1_NUM_GROUPS    (0)
+
+/* Q declaration for the Group Priority Management */
+
+
+
+
+/***************************************************************************
+                           Layer Details
+***************************************************************************/
+
+static const POPUP_LAYER_TYPE l_popup_layer1 = 
+{
+    0,      /* Logic State Priority		*/
+    L_POPUP_LAYER1_ID,    /* Layer ID       */
+    POPUP_MAX_TIMER,           /* Minimum Timeout Timer         */
+    0,       /* Start Index      */
+    1,      /* Total Popup Count     */
+    POPUP_Layer1_NUM_GROUPS,       /* Total Group Prio Count    */
+    NULL
+};
+static POPUP_LAYER_TYPE const * l_layer_table[POPUP_MAX_LAYERS] = 
+{
+    &l_popup_layer1,
+};
+
+#if defined(POPUP_TYPE_KEYPAD) || defined(POPUP_TYPE_PROGRESSBAR) || defined(POPUP_TYPE_ACK) || defined(POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED)
+static const POPUP_TOTAL_POPUPTYPE_COUNT_T l_total_pp_type =
+{
+    1,
+#ifdef POPUP_TYPE_KEYPAD
+    0,
+#endif
+#ifdef POPUP_TYPE_PROGRESSBAR
+    0,
+#endif
+#ifdef POPUP_TYPE_ACK
+    0,
+#endif
+#ifdef POPUP_TYPE_ACK
+    (POPUP_ACK_TYPE *)NULL,                            /* Pointer to Acknowledge Popup Struct                      */
+#endif
+#ifdef POPUP_TYPE_PROGRESSBAR
+    (POPUP_PROGRESSBAR_TYPE *)NULL,                    /* Pointer to Progress Bar Struct                           */
+#endif
+#ifdef POPUP_TYPE_KEYPAD
+    (POPUP_KEYPADENTRY_TYPE *)NULL,                    /* Pointer to Key Pad Struct                                */
+#endif
+#ifdef POPUP_CORE_STATE_CALLBACK_HANDLER_DEFINED
+    POPUP_NOTIFY_CB_NULL_HANDLER_T
+#endif
+};
+#endif
+
+#endif
+
+

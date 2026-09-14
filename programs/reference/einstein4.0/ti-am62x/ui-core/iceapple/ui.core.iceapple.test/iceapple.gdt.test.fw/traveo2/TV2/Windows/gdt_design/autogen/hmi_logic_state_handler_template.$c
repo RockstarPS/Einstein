@@ -1,0 +1,58 @@
+#include "hmi_gfx_mgr02_layout.h"
+#include "hmi_logic_state_handler.h"
+
+UINT8 scr_main_evt_hndlr(LSH_EVENT_HANDLER_STATUS_T * p_event_hndl_status_SP)
+{  
+   return(LSH_STATUS_ABSORBED);
+}
+UINT8 hmi_menu_rx_button_handler(LSH_EVENT_HANDLER_STATUS_T * p_event_hndl_status_SP)
+{  
+   return(LSH_STATUS_ABSORBED);
+}
+void hmi_menu_set_focus_handler(LSH_FOCUS_HANDLER_STATUS_T *p_focus_hndl_status_SP)
+{  
+}
+void scr_main_present_hndlr(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}
+void hmi_menu_presentation_handler(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}
+void scr_presentation_handler(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}
+void sct_txt_automation_pres_handler(LSH_PRESN_HANDLER_STATUS_T *p_presen_hndl_status_SP)
+{  
+   if(p_presen_hndl_status_SP->presentation_status == LSH_DEACTIVATED_STATUS)
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 0);
+   }
+   else
+   {
+      hmi_gfx_mgr02_if_set_screen((GFX_MGR02_SCR_ELEM_ID)p_presen_hndl_status_SP->logic_state_id, 1);
+   }
+}

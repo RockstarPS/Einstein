@@ -1,0 +1,405 @@
+winclear
+; DO ./imxrt1170-evk_sdram_init.cmm
+Dialog
+(
+  HEADER "Main Dialog"
+  POS 0. 0. 60. 1.
+  Line "Select single-core or multi-core option"
+
+  ;choosebox group for single/multi core
+  POS 3. 1. 10. 1.
+  OptionA.1: CHOOSEBOX "Single-core" "GOTO action_singlecore"
+  POS 30. 1. 10. 1.
+  OptionA.2: CHOOSEBOX "Multi-core" "GOTO action_multicore"
+  POS 45. 1. 15. 1.
+  Chck1: CHECKBOX "Start M4 by script" ""
+
+  ;choosebox for RAM/Flash target
+  POS 0. 3. 60. 1.
+  Line "Select RAM or Flash target"
+  POS 3. 4. 10. 1.
+  OptionB.1: CHOOSEBOX "M7 RAM" "GOTO action_M7RAM"
+  POS 30. 4. 10. 1.
+  OptionB.2: CHOOSEBOX "M7 Flash" "GOTO action_M7Flash"
+  POS 3. 5. 10. 1.
+  OptionC.1: CHOOSEBOX "M4 RAM" "GOTO action_M4RAM"
+  POS 30. 5. 10. 1.
+  OptionC.2: CHOOSEBOX "M4 Flash" "GOTO action_M4Flash"
+
+;input fields for M7 binary and M7 symbols
+  POS 3. 7. 40. 1.
+  TEXT "Please insert path to M7 binary image (.bin):"
+  POS 3. 8. 50. 1.
+  TextA:    EDIT "" ""
+  POS 3. 9. 50. 1.
+  TEXT "Please insert the addrress, where M7 binary image will be loaded:"
+  POS 3. 10. 50. 1.
+  TextAddr:    EDIT "" ""
+
+
+  POS 3. 11. 40. 1.
+  TEXT "Please insert path to M7 image with symbols (.out, .axf):"
+  POS 3. 12. 50. 1.
+  TextB:    EDIT "" ""
+
+  ;input fields for M4 binary and M4 symbols
+  POS 3. 14. 50. 1.
+  TEXT "Please insert path to M4 binary image (.bin):"
+  POS 3. 15. 50. 1.
+  TextC:    EDIT "" ""
+
+  POS 3. 16. 50. 1.
+  TEXT "Please insert the addrress, where M4 binary image will be loaded:"
+  POS 3. 17. 50. 1.
+  TextAddrM4:    EDIT "" ""
+
+  POS 3. 18. 40. 1.
+  TEXT "Please insert path to M4 image with symbols (.out, .axf):"
+  POS 3. 19. 50. 1.
+  TextD:    EDIT "" ""
+
+
+  ;buttons OK (Default) and Cancel
+  POS 15. 22. 10. 1.
+  DEFBUTTON "OK" "CONTinue"
+  POS 35. 22. 10. 1.
+  BUTTON    "Cancel" "GOTO cancel"
+;define action when window is closed
+  CLOSE "GOTO cancel"
+
+)
+
+;initial conditions
+  DIALOG.Set OptionA.1
+  DIALOG.Set OptionB.1
+  DIALOG.Set OptionC.1
+  DIALOG.DISABLE OptionC.1
+  DIALOG.DISABLE OptionC.2
+  DIALOG.DISABLE TextA
+  DIALOG.DISABLE TextC
+  DIALOG.DISABLE TextD
+  DIALOG.DISABLE Chck1
+  DIALOG.DISABLE TextADDR
+  DIALOG.DISABLE TextADDRM4
+
+waitforok:
+  STOP
+;script will continue here when "OK" button is clicked
+  GOTO dialog_ok
+
+
+;script continues here when Cancel is clicked"
+cancel:
+  DIALOG.END
+ENDDO
+
+
+action_singlecore:
+DIALOG.Set OptionB.1
+DIALOG.DISABLE OptionC.1
+DIALOG.DISABLE OptionC.2
+DIALOG.Set OptionC.1
+DIALOG.DISABLE TextA
+DIALOG.DISABLE TextAddr
+DIALOG.DISABLE TextAddrM4
+DIALOG.DISABLE TextC
+DIALOG.DISABLE TextD
+DIALOG.DISABLE Chck1
+DIALOG.SET Chck1 False()
+GOTO waitforok
+
+
+action_multicore:
+DIALOG.ENABLE OptionC.1
+DIALOG.ENABLE OptionC.2
+DIALOG.Set OptionB.1
+DIALOG.Set Optionc.1
+DIALOG.DISABLE TextA
+DIALOG.ENABLE TextD
+DIALOG.ENABLE Chck1
+DIALOG.SET Chck1 TRUE()
+DIALOG.DISABLE Chck1
+GOTO waitforok
+
+
+action_M7Flash:
+DIALOG.ENABLE TextA
+DIALOG.ENABLE TextAddr
+DIALOG.ENABLE Chck1
+IF DIALOG.BOOLEAN(OptionA.2)
+(
+  DIALOG.ENABLE Chck1
+)
+ELSE
+(
+  DIALOG.DISABLE Chck1
+)
+
+
+GOTO waitforok
+
+
+action_M7RAM:
+IF DIALOG.BOOLEAN(OptionA.2)&&DIALOG.BOOLEAN(OptionC.2)
+(
+  DIALOG.OK "Please switch M4 core to RAM target"
+  DIALOG.SET OptionB.2
+)
+ELSE
+(
+  DIALOG.DISABLE TextA
+  DIALOG.SET TextA ""
+  DIALOG.SET TextADDR ""
+  DIALOG.DISABLE TextADDR
+  DIALOG.DISABLE Chck1
+  IF DIALOG.BOOLEAN(OptionA.2)
+  (
+    DIALOG.SET Chck1 TRUE()
+  )
+  ELSE
+  (
+    DIALOG.SET Chck1 FALSE()
+  )
+)
+
+GOTO waitforok
+
+
+action_M4Flash:
+IF DIALOG.BOOLEAN(OptionB.1)
+(
+    DIALOG.OK "This combination is not supported. Please switch M7 to Flash target"
+    DIALOG.SET OptionC.1
+)
+ELSE
+(
+  DIALOG.ENABLE TextC
+  DIALOG.ENABLE TextAddrM4
+)
+
+IF DIALOG.BOOLEAN(OptionC.2)&&DIALOG.BOOLEAN(OptionB.2)
+(
+  DIALOG.SET Chck1 FALSE()
+  DIALOG.DISABLE Chck1
+)
+GOTO waitforok
+
+
+action_M4RAM:
+DIALOG.DISABLE TextC
+DIALOG.SET TextC ""
+DIALOG.SET TextADDRM4 ""
+DIALOG.DISABLE TextADDRM4
+DIALOG.ENABLE Chck1
+GOTO waitforok
+
+
+
+
+
+dialog_ok:
+
+  IF DIALOG.BOOLEAN(OptionA.1)
+    &number_of_cores="1"
+  IF DIALOG.BOOLEAN(OptionA.2)
+    &number_of_cores="2"
+
+  IF DIALOG.BOOLEAN(Chck1)
+   &start_m4_by_script="1"
+  ELSE
+   &start_m4_by_script="0"
+
+  IF DIALOG.BOOLEAN(OptionB.1)
+    &target="RAM"
+  IF DIALOG.BOOLEAN(OptionB.2)
+    &target="FLASH"
+
+  IF DIALOG.BOOLEAN(OptionC.1)
+    &targetM4="RAM"
+  IF DIALOG.BOOLEAN(OptionC.2)
+    &targetM4="FLASH"
+
+
+
+
+
+
+  IF ("&number_of_cores"=="1")&&("&target"=="RAM")
+  (
+     &path_M7_symbols=DIALOG.STRING(TextB)
+
+      IF STRING.LEN("&path_M7_symbols")==0
+      (
+        DIALOG.OK "Path to the M7 SRAM image not inserted"
+      )
+      else
+      (
+        DO  ~~/demo/arm/hardware/imxrt/imxrt117x/imxrt1170-evk/general_loading_scripts/imxrt1170-evk_sram_M7 &path_M7_symbols
+      )
+  )
+
+  IF ("&number_of_cores"=="1")&&("&target"=="FLASH")
+  (
+    ;&path_M7_binary=DIALOG.STRING(TextA)
+    ;&path_M7_symbols=DIALOG.STRING(TextB)
+    ;&address=DIALOG.STRING(textAddr)
+    
+	;&path_M7_binary="C:\Users\sjain10\Documents\MCUXpressoIDE_11.3.1_5262\workspace\evkmimxrt1170_iled_blinky_cm7\evkmimxrt1170\demo_apps\led_blinky\cm7\iled_blinky_cm7.bin"
+    ;&path_M7_symbols="C:\Users\sjain10\Documents\MCUXpressoIDE_11.3.1_5262\workspace\evkmimxrt1170_iled_blinky_cm7\Debug\evkmimxrt1170_iled_blinky_cm7.axf"
+    ;&address=0x30000000
+
+    &path_M7_binary="../gui_app/build/flexspi_nor_sdram_debug/pxp_blend_cm7.elf.bin"
+    &path_M7_symbols="../gui_app/build/flexspi_nor_sdram_debug/pxp_blend_cm7.elf"
+    &address=0x30000400
+	
+	
+	
+    IF STRING.LEN("&path_M7_symbols")==0
+    (
+        DIALOG.OK "Path to the M7 image with symbols not inserted. Symbols will not be loaded."
+    )
+
+    IF (STRING.LEN("&path_M7_binary")==0)||(STRING.LEN("&address")==0)
+    (
+        DIALOG.OK "Path to the M7 binary image not inserted or address not inserted"
+    )
+    else
+    (
+        DO  imxrt1170-evk_qspi_flash_M7.cmm &path_M7_binary &address &path_M7_symbols
+    )
+
+  )
+
+  IF ("&number_of_cores"=="2")&&("&target"=="RAM")&&("&targetM4"=="RAM")
+  (
+      &path_M7_symbols=DIALOG.STRING(TextB)
+      &path_M4_symbols=DIALOG.STRING(TextD)
+
+
+      IF (STRING.LEN("&path_M7_symbols")==0)||(STRING.LEN("&path_M4_symbols")==0)
+      (
+          DIALOG.OK "Paths to the SRAM images not inserted"
+      )
+      ELSE
+      (
+        DO  ~~/demo/arm/hardware/imxrt/imxrt117x/imxrt1170-evk/general_loading_scripts/imxrt1170-evk_amp_sram_M7_M4 &path_M7_symbols &path_M4_symbols
+      )
+
+  )
+
+  IF ("&number_of_cores"=="2")&&("&target"=="FLASH")&&("&targetM4"=="RAM")
+  (
+      &path_M7_binary=DIALOG.STRING(TextA)
+      &path_M7_symbols=DIALOG.STRING(TextB)
+      &address=DIALOG.STRING(textAddr)
+      &path_M4_symbols=DIALOG.STRING(TextD)
+
+      IF STRING.LEN("&path_M7_symbols")==0
+      (
+          DIALOG.OK "Path to the M7 image with symbols not inserted. Symbols will not be loaded."
+      )
+
+      IF ("&start_m4_by_script"=="1")
+      (
+          IF (STRING.LEN("&path_M7_binary")==0)||(STRING.LEN("&address")==0)||(STRING.LEN("&targetM4")==0)
+          (
+              DIALOG.OK "Path to the M7 binary image not inserted, address not inserted or path to M4 image not inserted."
+          )
+          else
+          (
+              DO ~~/demo/arm/hardware/imxrt/imxrt117x/imxrt1170-evk/general_loading_scripts/imxrt1170-evk_amp_qspi_flash_M7_sram_M4 &path_M7_symbols &path_M7_binary &address &path_M4_symbols &start_m4_by_script
+          )
+      )
+      else
+      (
+          IF (STRING.LEN("&path_M7_binary")==0)||(STRING.LEN("&address")==0)
+          (
+              DIALOG.OK "Path to the M7 binary image not inserted or address not inserted."
+          )
+          else
+          (
+              IF (STRING.LEN("&targetM4")==0)
+              (
+                DIALOG.OK "Path to the M4 image with symbols not inserted. Symbols will not be loaded."
+              )
+              DO ~~/demo/arm/hardware/imxrt/imxrt117x/imxrt1170-evk/general_loading_scripts/imxrt1170-evk_amp_qspi_flash_M7_sram_M4 &path_M7_symbols &path_M7_binary &address &path_M4_symbols &start_m4_by_script
+
+          )
+
+      )
+
+  )
+
+
+  IF ("&number_of_cores"=="2")&&("&target"=="FLASH")&&("&targetM4"=="FLASH")
+  (
+      &path_M7_binary=DIALOG.STRING(TextA)
+      &path_M7_symbols=DIALOG.STRING(TextB)
+      &address=DIALOG.STRING(textAddr)
+      &address_M4=DIALOG.STRING(textAddrM4)
+      &path_M4_binary=DIALOG.STRING(TextC)
+      &path_M4_symbols=DIALOG.STRING(TextD)
+
+      IF STRING.LEN("&path_M7_symbols")==0
+      (
+          DIALOG.OK "Path to the M7 image with symbols not inserted. Symbols will not be loaded."
+      )
+
+      IF STRING.LEN("&path_M4_symbols")==0
+      (
+          DIALOG.OK "Path to the M4 image with symbols not inserted. Symbols will not be loaded."
+      )
+
+      IF (STRING.LEN("&path_M7_binary")==0)||(STRING.LEN("&address")==0)||(STRING.LEN("&path_M4_binary")==0)||(STRING.LEN("&address_M4")==0)
+      (
+          DIALOG.OK "Path to the binaries or addresses not inserted"
+      )
+      ELSE
+      (
+          DO ~~/demo/arm/hardware/imxrt/imxrt117x/imxrt1170-evk/general_loading_scripts/imxrt1170-evk_amp_qspi_flash_M7_qspi_flash_M4  &path_M7_symbols &path_M7_binary &address &path_M4_symbols &path_M4_binary &address_M4
+
+      )
+
+
+
+
+
+
+
+
+  )
+  
+;  Data.LOAD.S3record "C:\Users\vselvar2\Downloads\kcluster_VP_Platform.elf.srec" 0x400--0x500 /NosYmbol /NoClear /NoRegister
+  
+; Data.LOAD &(ppd)/../../../out/VP_Platform/KCLUSTER_ED1A/debug/kcluster_VP_Platform/kcluster_VP_Platform_TCM_DATA.srec
+; Data.LOAD.Binary &(ppd)/../../../out/VP_Platform/KCLUSTER_ED1A/debug/kcluster_VP_Platform/kcluster_VP_Platform_TCM.bin 0x00000000
+; Data.LOAD.Elf &(ppd)/../../../out/VP_Platform/KCLUSTER_ED1A/debug/kcluster_VP_Platform/kcluster_VP_Platform.elf 0x00000000--0x0007FFFF
+; Data.LOAD.Elf &(ppd)/../../../out/VP_Platform/KCLUSTER_ED1A/debug/kcluster_VP_Platform/kcluster_VP_Platform.elf 0x20000000--0x2007FFFF
+symbol.sourcePATH.Translate "\build\" "..\..\..\..\..\..\"
+sys.Option IMASKHLL ON
+sys.Option IMASKASM ON
+; Register.Set PC __ghs_board_memory_init
+Register.Set PC Reset_Handler
+
+
+
+
+
+  DIALOG.END
+  
+	Mode.Hll
+	WinPOS 0. 0. 116. 26.
+	List.auto
+	WinPOS 120. 0. 100. 8.
+	Frame.view
+	WinPOS 120. 14.
+	Var.Watch
+	Var.AddWatch %SpotLight 
+	WinPOS 120. 25. 50. 14.
+	Register.view /SpotLight
+	WinPOS 0. 32.
+	b.set main
+	WinPos 0. 28
+	AREA
+
+ENDDO

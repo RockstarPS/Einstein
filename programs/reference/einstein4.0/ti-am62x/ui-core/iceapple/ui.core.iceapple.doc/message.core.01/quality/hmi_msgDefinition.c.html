@@ -1,0 +1,155 @@
+<HTML><BODY>
+Licensed To : VisteonCor
+<br>
+(C) Programming Research Ltd 
+<br>
+
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+==== Source listing for file:  c:/ADEVI/RTC_Workspace/UI_CORE_IA/ui.core.iceapple.test/iceapple_build/qac/src/hmi_msgDefinition.c ====
+
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+    1:	/*============================================================================
+    2:	**
+    3:	**                     CONFIDENTIAL VISTEON CORPORATION
+    4:	**
+    5:	** This is an unpublished work of authorship, which contains trade secrets,
+    6:	** created in 2009. Visteon Corporation owns all rights to this work and
+    7:	** intends to maintain it in confidence to preserve its trade secret status.
+    8:	** Visteon Corporation reserves the right, under the copyright laws of the
+    9:	** United States or those of any other country that may have jurisdiction,
+   10:	** to protect this work as an unpublished work, in the event of an
+   11:	** inadvertent or deliberate unauthorized publication. Visteon Corporation
+   12:	** also reserves its rights under all copyright laws to protect this work as
+   13:	** a published work, when appropriate. Those having access to this work may
+   14:	** not copy it, use it, modify it or disclose the information contained in
+   15:	** it without the written authorization of Visteon Corporation.
+   16:	**
+   17:	**============================================================================
+   18:	**
+   19:	** Name:           hmi_msgDefinition.c
+   20:	**
+   21:	** Description:    Application message definitions for the C520 cluster
+   22:	**
+   23:	** Organization:   Driver Information Software Section,
+   24:	**                 DI Core Engineering Department
+   25:	**
+   26:	**==========================================================================*/
+   27:	#define hmi_msgDefinition_C
+   28:	
+   29:	/*==========================================================================*/
+   30:	/*  I N C L U D E   F I L E S                                               */
+   31:	/*==========================================================================*/
+   32:	#include "system.h"
+   33:	#include "hmi_msgDefinition.h"
+   34:	
+   35:	/*==========================================================================*/
+   36:	/* I N T E R N A L   M A C R O   A N D   T Y P E   D E F I N I T I O N S    */
+   37:	/*==========================================================================*/
+   38:	
+   39:	
+   40:	/*==========================================================================*/
+   41:	/* I N T E R N A L   F U N C T I O N   P R O T O T Y P E S                  */
+   42:	/*==========================================================================*/
+   43:	
+   44:	
+   45:	/*==========================================================================*/
+   46:	/* M E M O R Y   A L L O C A T I O N                                        */
+   47:	/*==========================================================================*/
+   48:	
+   49:	const MSG_MESSAGE_STRUCT messageList[MSG_NUM_MESSAGES] =
+   50:	{
+   51:	    MSG_MESSAGE_LIST
+   52:	};
+   53:	
+   54:	
+   55:	
+   56:	
+   57:	/*==========================================================================*/
+   58:	/* E N T R Y   P O I N T S  /  D A T A   A C C E S S   S E R V I C E S      */
+   59:	/*==========================================================================*/
+   60:	
+   61:	UINT16 msg_DefinitionGetDisplayTimeout(eMessageIdentity aMessage)
+   62:	/*============================================================================
+   63:	**  Visibility:     Public (.h)
+   64:	**----------------------------------------------------------------------------
+   65:	**  Description:    Get message display timeout
+   66:	**
+   67:	**  Parameters:     ID of message
+   68:	**
+   69:	**  Returns:        timeout (in TIMER units)
+   70:	**----------------------------------------------------------------------------
+   71:	** Created: AFERRIS2 28/04/2011
+   72:	**==========================================================================*/
+   73:	{
+   74:	    UINT16 ret_value = 0;
+   75:	    if (aMessage &lt; MSG_NUM_MESSAGES)
+   76:	    {
+   77:	        ret_value = messageList[aMessage].DisplayTimeout;
+   78:	    }
+   79:	    return ret_value;
+   80:	}
+   81:	
+   82:	/*==========================================================================*/
+   83:	/* R E V I S I O N    N O T E S                                             */
+   84:	/*==========================================================================*/
+   85:	/* For each change to this file, be sure to record:
+   86:	** 1.  Who made the change and when the change was made.
+   87:	** 2.  Why the change was made and the intended result.
+   88:	**==========================================================================*/
+   89:	
+   90:	/****************************************************************************
+   91:	**  Date  : 07/Apr/2010
+   92:	**  by    : AFERRIS2
+   93:	**  Ref   : None.
+   94:	**  Change: Initial version.
+   95:	**
+   96:	*****************************************************************************/
+   97:	
+   98:	/****************************************************************************
+   99:	**  Date: 28/04/2011     by: AFERRIS2        Ref: DCR 2131
+  100:	**  Change: Add public function msg_DefinitionGetDisplayTimeout()
+  101:	**
+  102:	**  Checks: COMPILER - NOT CHECKED       QAC - NOT CHECKED
+  103:	*****************************************************************************/
+  104:	
+  105:	/****************************************************************************
+  106:	**  Date: 03/05/2011     by: AFERRIS2        Ref:
+  107:	**  Change: 1.  Fixed typo in msg_DefinitionGetDisplayTimeout()
+  108:	**
+  109:	**  Checks: COMPILER - NOT CHECKED       QAC - NOT CHECKED
+  110:	*****************************************************************************/
+  111:	
+  112:	/****************************************************************************
+  113:	**  Date: 29/Jun/2015     by: adevi        Ref: RTC 365702
+  114:	**  Change: QAC warnings resolved for Honda THAA
+  115:	*****************************************************************************/
+  116:	
+  117:	/* end of file =============================================================*/
+</PRE>
+<PRE STYLE="margin-top:0;margin-bottom:0">
+
+----------------------------------------------------
+                   Metrics Summary                    
+----------------------------------------------------
+
+Name of file:  src/hmi_msgDefinition.c (117 Lines)
+
+Error Level     Density      No. of Errors 
+-----------      -------      -------------
+     9           0.0000              0
+     8           0.0000              0
+     7           0.0000              0
+     6           0.0000              0
+     5           0.0000              0
+     4           0.0000              0
+     3           0.0000              0
+     2           0.0000              0
+     1           0.0000              0
+     0           0.0000              0
+-----------      -------      -------------
+Totals           0.0000              0
+</PRE>
+
+</BODY></HTML>
