@@ -90,9 +90,8 @@ include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securityli
 include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securitylib/optee.cmake)
 
 
-# Build Boost 1.90.0 from vendored source instead of using the SDK-prebuilt
-# Boost from the aarch64-oe-linux sysroot; sets Boost_INCLUDE_DIR/Boost_LIBRARY_DIR.
-include(${CMAKE_CURRENT_SOURCE_DIR}/make/cmake/build_boost.cmake)
+set(Boost_LIBRARY_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/lib)
+set(Boost_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/boost)
 set(DRM_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/drm)
 set(WITH_VSOMEIP_V3_DEPEND		 TRUE)
 set(VSOMEIP_INC_DIR ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/vsomeip/interface)
