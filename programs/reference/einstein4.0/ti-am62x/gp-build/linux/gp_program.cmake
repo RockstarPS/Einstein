@@ -90,8 +90,12 @@ include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securityli
 include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securitylib/optee.cmake)
 
 
-set(Boost_LIBRARY_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/lib)
-set(Boost_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/boost)
+#set(Boost_LIBRARY_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/lib)
+#set(Boost_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/boost)
+# Builds Boost from cluster-platform/runtime_infra/external/Boost and points
+# find_package(Boost) at it, replacing the SDK sysroot Boost above. Kept here,
+# ahead of binary_scripts(), because vsomeip resolves Boost during that step.
+include(${CMAKE_SOURCE_DIR}/cluster-platform/runtime_infra/external/Boost/build_boost.cmake)
 set(DRM_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/drm)
 set(WITH_VSOMEIP_V3_DEPEND		 TRUE)
 set(VSOMEIP_INC_DIR ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/vsomeip/interface)
