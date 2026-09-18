@@ -150,3 +150,9 @@ set(CMAKE_PREFIX_PATH ${BOOST_BUILD_DIR} ${CMAKE_PREFIX_PATH})
 # The legacy names the rest of gp_program.cmake and vsomeip already use.
 set(Boost_INCLUDE_DIR ${BOOST_BUILD_DIR}/include)
 set(Boost_LIBRARY_DIR ${BOOST_BUILD_DIR}/lib)
+
+# Stage the runtime libraries into the target filesystem: linking against them
+# is not enough, the board needs the versioned .so (the soname in DT_NEEDED) at
+# runtime. The unversioned symlink is link-time only, so it is not shipped.
+file(GLOB BOOST_RUNTIME_LIBS ${BOOST_BUILD_DIR}/lib/libboost_*.so.${BOOST_VERSION_STRING})
+file(COPY ${BOOST_RUNTIME_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/usr/lib)
