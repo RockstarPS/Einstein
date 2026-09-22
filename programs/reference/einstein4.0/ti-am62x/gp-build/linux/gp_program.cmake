@@ -89,13 +89,34 @@ set(ENV{PYTHON3} "/usr/bin/python3")
 include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securitylib/opteelib.cmake)
 include(${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/libraries/optee-securitylib/optee.cmake)
 
+set(BOOST_PREBUILT    ${CMAKE_SOURCE_DIR}/cluster-platform/runtime_infra/external/Boost-prebuilt-linux-x64)
+set(Boost_INCLUDE_DIR ${BOOST_PREBUILT}/include)
+set(Boost_LIBRARY_DIR ${BOOST_PREBUILT}/lib)
 
-#set(Boost_LIBRARY_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/lib)
-#set(Boost_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/boost)
-# Builds Boost from cluster-platform/runtime_infra/external/Boost and points
-# find_package(Boost) at it, replacing the SDK sysroot Boost above. Kept here,
-# ahead of binary_scripts(), because vsomeip resolves Boost during that step.
-include(${CMAKE_SOURCE_DIR}/cluster-platform/runtime_infra/external/Boost/build_boost.cmake)
+# Never resolve Boost from the SDK sysroot: no CONFIG mode, no system paths.
+set(Boost_NO_BOOST_CMAKE ON)
+set(Boost_NO_SYSTEM_PATHS ON)
+
+# FindBoost looks for libboost_*.so; the prebuilt ships only libboost_*.so.<ver>.
+# Recreated on every configure rather than relied on from git, which stores a
+# symlink as an empty file on a Windows checkout.
+file(GLOB BOOST_VERSIONED_LIBS ${Boost_LIBRARY_DIR}/libboost_*.so.*)
+if(NOT BOOST_VERSIONED_LIBS)
+	message(FATAL_ERROR "No Boost libraries in ${Boost_LIBRARY_DIR}")
+endif()
+foreach(BOOST_LIB ${BOOST_VERSIONED_LIBS})
+	get_filename_component(BOOST_LIB_NAME ${BOOST_LIB} NAME)
+	string(REGEX REPLACE "\\.so\\..*$" ".so" BOOST_LIB_LINK ${BOOST_LIB_NAME})
+	file(REMOVE ${Boost_LIBRARY_DIR}/${BOOST_LIB_LINK})
+	file(CREATE_LINK ${BOOST_LIB_NAME} ${Boost_LIBRARY_DIR}/${BOOST_LIB_LINK} SYMBOLIC)
+endforeach()
+
+# Indirect deps (libvsomeip3 -> libboost_thread) resolve via -rpath-link, not -L.
+string(APPEND CMAKE_EXE_LINKER_FLAGS " -Wl,-rpath-link,${Boost_LIBRARY_DIR}")
+string(APPEND CMAKE_SHARED_LINKER_FLAGS " -Wl,-rpath-link,${Boost_LIBRARY_DIR}")
+
+# Runtime: the board loads the versioned .so named in DT_NEEDED.
+file(COPY ${BOOST_VERSIONED_LIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/usr/lib)
 set(DRM_INCLUDE_DIR ${CONAN_USER_HOME}/sysroots/aarch64-oe-linux/usr/include/drm)
 set(WITH_VSOMEIP_V3_DEPEND		 TRUE)
 set(VSOMEIP_INC_DIR ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/vsomeip/interface)
