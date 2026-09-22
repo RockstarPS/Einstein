@@ -79,6 +79,7 @@ yes | cp -rf $BIN_DIR/aarch64le/usr/lib/libbspal_display.so.0.11.0 $TGT_DIR/usr/
 yes | cp -rf $BIN_DIR/aarch64le/usr/lib/libbspal_sigunit.so        $TGT_DIR/usr/lib/libbspal_sigunit.so
 yes | cp -rf $BIN_DIR/aarch64le/usr/lib/libbspal_deserializer.so   $TGT_DIR/usr/lib/libbspal_deserializer.so
 yes | cp -rf $BIN_DIR/usr/lib/libdw.so                             $TGT_DIR/usr/lib/libdw.so
+yes | cp -rf $BIN_DIR/aarch64le/usr/lib/libboost_*.so.*           $TGT_DIR/usr/lib/
 # Copy TEE-related binaries and libraries
 yes | cp -rf $BIN_DIR/aarch64le/usr/bin/securitymanager_test                   $TGT_DIR/usr/bin/securitymanager_test
 yes | cp -rf $BIN_DIR/../OPTEE/TEE-Supplicant/tee-supplicant                   $TGT_DIR/usr/sbin/tee-supplicant
