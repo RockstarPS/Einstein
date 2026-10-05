@@ -1,0 +1,60 @@
+#ifndef STUB_THREAD
+#define STUB_THREAD
+
+#include <chrono>
+#include <condition_variable>
+#include <unique_ptr>
+
+namespace std
+{
+
+    class thread
+    {
+    public:
+    thread() noexcept = default;
+
+    thread(thread&) = delete;
+    thread(const thread&) = delete;
+
+    thread(thread&& __t);
+
+    template<typename _Callable, typename... _Args>
+    explicit 
+    thread(_Callable&& __f, _Args&&... __args)
+    {
+
+    }
+
+    thread& operator=(const thread&) = delete;
+
+    thread& operator=(thread&& __t) noexcept
+    {
+      //if (joinable())
+      //std::terminate();
+      //swap(__t);
+      return *this;
+    }
+
+    ~thread();
+    void detach();
+
+    bool joinable() const noexcept
+    { return true;}
+
+    void
+    join();
+	
+			//thread(void (*task)());
+			//~thread();
+            //int native_handle();
+	};
+    
+    namespace this_thread
+    {
+		//void sleep_until(std::chrono::steady_clock::time_point& __atime);
+		template<typename _Rep, typename _Period>
+        inline void sleep_for(const chrono::duration<_Rep, _Period>& __rtime) {}
+	}
+}
+
+#endif

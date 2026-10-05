@@ -33,6 +33,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -630,6 +631,11 @@ int main(int argc, char** argv)
     std::vector<uint8_t> vFrame = framer.frame(vParams);
     std::printf("Framed verbose DLT message: %zu bytes, %u argument(s)\n",
                 vFrame.size(), vParams.argCount);
+    for (auto it = vFrame.begin(); it != vFrame.end(); ++it)
+    {
+        std::cout << *it;
+    }
+    std::cout << '\n';
 
     try {
         dlt::SharedMemoryWriter shmWriter(args.physAddr, args.regionSize);

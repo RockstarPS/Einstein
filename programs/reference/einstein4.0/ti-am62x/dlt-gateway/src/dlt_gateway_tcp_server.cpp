@@ -29,7 +29,7 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
-#include <netdb.h>
+//#include <netdb.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -40,7 +40,7 @@ LOG_IMPORT_CONTEXT ( gDLTGWLogContext );
 
 void DltTcpServer::configure(std::string host, int32_t port)
 {
-    mHost = std::move(host);
+    mHost = host;
     mPort = port;
 }
 
@@ -95,6 +95,7 @@ bool DltTcpServer::openSocket()
 
 bool DltTcpServer::connectClient()
 {
+    bool ret = false;
     sockaddr_in clientAddr {};
     socklen_t addrLen = sizeof(clientAddr);
 
@@ -104,14 +105,15 @@ bool DltTcpServer::connectClient()
     {
         LOGI(&gDLTGWLogContext, "Connected to dlt-daemon at ", inet_ntoa(clientAddr.sin_addr), ":", ntohs(clientAddr.sin_port));
         mConnected = true;
+        ret = true;
     }
 
-    return true;
+    return ret;
 }
 
 bool DltTcpServer::isConnected() const
 { 
-    return mConnected.load();
+    return mConnected;
 }
 
 void DltTcpServer::disconnect()
@@ -149,7 +151,7 @@ bool DltTcpServer::sendAll(const void* buf, std::size_t len)
             if (n <= 0)
             {
                 LOGE(&gDLTGWLogContext, "send error", strerror(errno));
-                mConnected = false;
+                disconnectClient();
                 ret = false;
                 break;
             }

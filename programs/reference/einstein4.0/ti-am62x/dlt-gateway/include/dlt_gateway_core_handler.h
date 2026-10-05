@@ -46,7 +46,6 @@
 
 #include <unordered_map>
 #include <functional>
-#include <optional>
 #include <queue>
 #include <chrono>
 #include <thread>

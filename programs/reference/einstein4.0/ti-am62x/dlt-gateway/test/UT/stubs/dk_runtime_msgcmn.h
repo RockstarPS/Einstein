@@ -1,0 +1,48 @@
+//
+// VISTEON CORPORATION CONFIDENTIAL
+// ________________________________
+//
+// [2017] Visteon Corporation
+// All Rights Reserved.
+//
+// NOTICE: This is an unpublished work of authorship, which contains trade secrets.
+// Visteon Corporation owns all rights to this work and intends to maintain it in confidence to preserve
+// its trade secret status. Visteon Corporation reserves the right, under the copyright laws of the United States
+// or those of any other country that may have jurisdiction, to protect this work as an unpublished work,
+// in the event of an inadvertent or deliberate unauthorized publication. Visteon Corporation also reserves its rights
+// under all copyright laws to protect this work as a published work, when appropriate.
+// Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
+// without the written authorization of Visteon Corporation.
+//
+
+#ifndef DK_RUNTIME_MSGCMN_H
+#define DK_RUNTIME_MSGCMN_H
+
+#include <functional>
+#include <map>
+
+#include "dk_runtime_msgserdes.h"
+
+namespace dk
+{
+namespace runtime
+{
+namespace core
+{
+///< Deserializes the message and calls the respective component callback
+typedef std::function<void ( dk::runtime::core::MsgDeserializer &msgDeserializer ) > func_t;
+
+///< Type for the Message List Structure for an component
+struct MsgCmn
+{
+    mid_t msgId;
+    func_t func;
+};
+
+///< Helper function to create the map out of generated message list structure
+std::map<mid_t, func_t> createMap ( uint16_t size, const MsgCmn *msgList );
+}
+}
+}
+
+#endif // DK_RUNTIME_MSGCMN_H

@@ -61,8 +61,10 @@ public:
     DltShmReader(const DltShmReader&)            = delete;
     /// @brief Non-copy-assignable.
     DltShmReader& operator=(const DltShmReader&) = delete;
-    /// @brief Move-constructible so CoreHandler can store it by value.
-    DltShmReader(DltShmReader&&)                 = default;
+    /// @brief Non-moveable.
+    DltShmReader(DltShmReader&&)                 = delete;
+    /// @brief Non-move-assignable.
+    DltShmReader& operator=(DltShmReader&&)      = delete;
 
     /**
      * @brief Unmap the shared-memory window and close the file descriptor.
@@ -76,6 +78,8 @@ public:
 
         if (mMapfd >= 0)
             (void) close(mMapfd);
+
+        mDeviceOpened = false;
     }
 
     /**
@@ -110,9 +114,10 @@ private:
     std::size_t mWindowSize {0};    ///< Total mapped window size in bytes.
     int mMapfd {-1};                ///< File descriptor (/dev/mem or shm fd).
     void* mpMapAddr {nullptr};      ///< Raw pointer returned by mmap().
-    void* mEffectiveBase {nullptr}; ///< map_ptr_ + page_offset_ (points to first byte of core window).
+    const void* mEffectiveBase {nullptr}; ///< map_ptr_ + page_offset_ (points to first byte of core window).
     std::size_t mMapSize {0};       ///< Total mmap size ( includes page_offset_).
     std::size_t mPage_offset {0};   ///< Bytes between page-aligned mmap start and core base.
+    bool mDeviceOpened {false};     ///< Set to true if device opened successfully.
 };
 
 #endif //DLT_GATEWAY_SHM_READER_H

@@ -36,7 +36,7 @@ LOG_DECLARE_CONTEXT(gDLTGWLogContext);
 
 bool DltGatewayComponent::onInit()
 {
-	bool ret = Component::onInit();;
+    bool ret = Component::onInit();;
 
 /// Start of user code : User code for function onInit in file dlt_Gateway_component.cpp
     LOG_REGISTER_CONTEXT(gDLTGWLogContext, "DLTG", "DLT Gateway Component", DLT_LOG_INFO);
@@ -53,23 +53,23 @@ bool DltGatewayComponent::onInit()
     }
 /// End of user code
 
-	return ret;
+    return ret;
 }
 
 bool DltGatewayComponent::onExit()
 {
-	bool ret = Component::onExit();
+    bool ret = Component::onExit();
 
 /// Start of user code : User code for function onExit in file dlt_Gateway_component.cpp
 
 /// End of user code
 
-	return ret;
+    return ret;
 }
 
 bool DltGatewayComponent::onStart()
 {
-	bool ret = Component::onStart();
+    bool ret = Component::onStart();
 
 /// Start of user code : User code for function onStart in file dlt_Gateway_component.cpp
     mReconnectPolicy = ReconnectPolicy(mDltGateWayConfig.ReconnectIntervalMs,
@@ -86,12 +86,12 @@ bool DltGatewayComponent::onStart()
 
 /// End of user code
 
-	return ret;
+    return ret;
 }
 
 bool DltGatewayComponent::onStop()
 {
-	bool ret = Component::onStop();
+    bool ret = Component::onStop();
 
 /// Start of user code : User code for function onStop in file dlt_Gateway_component.cpp
     mRunning = false;
@@ -107,7 +107,7 @@ bool DltGatewayComponent::onStop()
         tcpServer.second->disconnect();
 /// End of user code
 
-	return ret;
+    return ret;
 }
 
 void DltGatewayComponent::worker()
@@ -352,9 +352,6 @@ void DltGatewayComponent::dispatchLoop()
             std::unique_lock<std::mutex> lk(mDispatchMTX);
             mDispatchCV.wait_for(lk, std::chrono::milliseconds(50),
                 [this] {
-                    for (auto& h : mpCorehandler)
-                        if (h->hasMessages())
-                            return true;
                     return !mRunning.load();
                 });
         }
@@ -363,18 +360,22 @@ void DltGatewayComponent::dispatchLoop()
 
         for (auto& handler : mpCorehandler)
         {
-            auto it = mCoreTcpServer.find(handler.get());
-            if(it == mCoreTcpServer.end())
+            if(handler->hasMessages())
             {
-                LOGE(&gDLTGWLogContext, "No server configured for this core ", handler->mCoreConfig.CoreName);
-                continue;
-            }
-            DltTcpServer& coreServer = *it->second;
-            SDltMsg_t msg;
-            while (handler->dequeue(msg, std::chrono::milliseconds(0)))
-            {
-                if (!sendToDltDaemon(msg, coreServer) && !mRunning)
-                    return;
+                auto it = mCoreTcpServer.find(handler.get());
+                if(it == mCoreTcpServer.end())
+                {
+                    LOGE(&gDLTGWLogContext, "No server configured for this core ", handler->mCoreConfig.CoreName);
+                    continue;
+                }
+                DltTcpServer& coreServer = *it->second;
+                SDltMsg_t msg;
+                while (handler->dequeue(msg, std::chrono::milliseconds(0)))
+                {
+                    (void)sendToDltDaemon(msg, coreServer);
+                    if (!mRunning)
+                        return;
+                }
             }
         }
     }

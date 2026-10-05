@@ -25,9 +25,8 @@
  * 
  */
 
-#include "dlt_types.h"
-#include "dlt_gateway_payload_validate.h"
 #include "dk_logger.h"
+#include "dlt_gateway_payload_validate.h"
 
 LOG_IMPORT_CONTEXT ( gDLTGWLogContext );
 
@@ -113,7 +112,7 @@ SValidationResult_t DltValidator::validateFrame(const uint8_t* data, uint32_t le
         {
             result.error = ValidationError::LengthFieldZero;
         }
-        else if(static_cast<std::size_t>(dlt_len) != len)
+        else if(static_cast<uint16_t>(dlt_len) != len)
         {
             result.error = ValidationError::LengthFieldMismatch;
         }
@@ -137,7 +136,7 @@ SValidationResult_t DltValidator::validateFrame(const uint8_t* data, uint32_t le
             {
                 if (htyp & DLT_HTYP_UEH)
                 {
-                    if (static_cast<std::size_t>(header_size) + DLT_EXTENDED_HEADER_LEN > len)
+                    if (static_cast<uint16_t>(header_size) + DLT_EXTENDED_HEADER_LEN > len)
                     {
                         result.error = ValidationError::ExtHeaderMissing;
                     }

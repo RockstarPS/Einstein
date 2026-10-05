@@ -65,7 +65,7 @@ public:
     DltTcpServer& operator=(const DltTcpServer&) = delete;
 
     /// @brief Destructor — closes connection if still open.
-    ~DltTcpServer()
+    ~DltTcpServer() noexcept
     {
         disconnect();
     }
@@ -90,7 +90,7 @@ public:
     bool openSocket();
 
     /**
-     * @brief Establish a TCP connection to dlt-daemon gateway.
+     * @brief TCP server that accepts incoming DLT client connections.
      *
      * @return @c true if the connection was established successfully.
      */
@@ -107,7 +107,6 @@ public:
     /**
      * @brief Return @c true if a live TCP connection is currently open.
      *
-     * Thread-safe (reads an @c atomic<bool>).
      */
     bool isConnected() const;
 
@@ -118,7 +117,7 @@ public:
     void disconnect();
 
     /**
-     * @brief Close the TCP clinet connection if open.
+     * @brief Close the TCP client connection if open.
      *
      */
     void disconnectClient();
@@ -126,9 +125,9 @@ public:
 private:
     std::string  mHost;                   ///< dlt-daemon IP address string.
     int32_t      mPort {3490};            ///< dlt-daemon TCP port.
-    int32_t      mServerfd {-1};          ///< Active client socket file descriptor, or -1.
-    int32_t      mClientFd {-1};          ///< Active client socket file descriptor, or -1.
-    std::atomic<bool> mConnected {false}; ///< Whether a live connection exists.
+    int32_t      mServerfd {-1};          ///< Listening server socket.
+    int32_t      mClientFd {-1};          ///< Connected client socket.
+    bool mConnected {false};              ///< Whether a live connection exists.
     const int32_t mTcpBufSize = 2048;     ///< TCP socket maximum buffer size.
 };
 
@@ -157,7 +156,7 @@ public:
      * @param use_backoff  If @c true, the wait interval doubles after each
      *                     failed attempt (exponential back-off), capped at 30 s.
      */
-    explicit ReconnectPolicy(uint32_t interval_ms  = 2000,
+    explicit ReconnectPolicy(int32_t interval_ms  = 2000,
                              int32_t max_retries  = -1,
                              bool use_backoff = false)
         : base_interval_ms_(interval_ms)

@@ -34,39 +34,47 @@ LOG_IMPORT_CONTEXT ( gDLTGWLogContext );
 
 bool DltShmReader::openDevice(const SCoreConfig_t& core)
 {
-    bool ret = true;
+    bool ret = false;
     if (core.transport == TransportType::SharedMemory)
     {
-        mBaseAddr = core.Shm.ShmAddress;
-        mWindowSize = core.Shm.ShmSize;
-
-        mMapfd = open("/dev/mem", O_RDONLY | O_SYNC);
-        if (mMapfd < 0)
+        // Protect opening device more than one time
+        if(!mDeviceOpened)
         {
-            LOGE(&gDLTGWLogContext, "Failed to open dev/mem()", strerror(errno));
-            ret = false;
-        }
-        else
-        {
-            // mmap offset must be page-aligned
-            const long page   = sysconf(_SC_PAGESIZE);
-            uint64_t aligned  = mBaseAddr & ~static_cast<uint64_t>(page - 1);
-            mPage_offset      = static_cast<std::size_t>(mBaseAddr - aligned);
-            std::size_t msize = mWindowSize + mPage_offset;
+            mBaseAddr = core.Shm.ShmAddress;
+            mWindowSize = core.Shm.ShmSize;
 
-            mpMapAddr = mmap(nullptr, msize, PROT_READ, MAP_SHARED, mMapfd, static_cast<off_t>(aligned));
-            if (mpMapAddr == MAP_FAILED)
+            mMapfd = open("/dev/mem", O_RDONLY | O_SYNC);
+            if (mMapfd < 0)
             {
-                LOGE(&gDLTGWLogContext, "Failed to open mmap()", strerror(errno));
-                close(mMapfd);
-                mMapfd = -1;
-                ret = false;
+                LOGE(&gDLTGWLogContext, "Failed to open /dev/mem()", strerror(errno));
             }
             else
             {
-                mMapSize       = msize;
-                mEffectiveBase = static_cast<uint8_t*>(mpMapAddr) + mPage_offset;
+                // mmap offset must be page-aligned
+                const long page   = sysconf(_SC_PAGESIZE);
+                uint64_t aligned  = mBaseAddr & ~static_cast<uint64_t>(page - 1);
+                mPage_offset      = static_cast<std::size_t>(mBaseAddr - aligned);
+                std::size_t msize = mWindowSize + mPage_offset;
+
+                mpMapAddr = mmap(nullptr, msize, PROT_READ, MAP_SHARED, mMapfd, static_cast<off_t>(aligned));
+                if (mpMapAddr == MAP_FAILED)
+                {
+                    LOGE(&gDLTGWLogContext, "Failed to open mmap()", strerror(errno));
+                    close(mMapfd);
+                    mMapfd = -1;
+                }
+                else
+                {
+                    mMapSize       = msize;
+                    mEffectiveBase = static_cast<uint8_t*>(mpMapAddr) + mPage_offset;
+                    mDeviceOpened = true;
+                    ret = true;
+                }
             }
+        }
+        else
+        {
+            LOGE(&gDLTGWLogContext, "Share memory device already opened");
         }
     }
     return ret;
@@ -75,7 +83,7 @@ bool DltShmReader::openDevice(const SCoreConfig_t& core)
 SDltMsg_t DltShmReader::readBuffer(const SCoreBuffConfig_t& bufConfig,
                         const uint32_t data_len) const
 {
-    if (!mEffectiveBase)
+    if (mEffectiveBase == nullptr)
         return {};
 
     // Byte offset of this buffer within the mapped window
