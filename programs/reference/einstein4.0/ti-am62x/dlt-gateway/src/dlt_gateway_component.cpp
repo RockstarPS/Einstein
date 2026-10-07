@@ -175,8 +175,8 @@ void DltGatewayComponent::sendReadAck(uint8_t bufferMask, uint8_t result)
 {
     std::lock_guard<std::mutex> lk(mReadAckMTX);
     DLTMessageReadAck ack{};
-    ack.status[0] = result;
-    ack.status[1] = bufferMask;
+    ack.status[0] = bufferMask;
+    ack.status[1] = result;
     DK_RTE_Send_DLTMessageReadAck(ack);
 }
 
