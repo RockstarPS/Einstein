@@ -135,26 +135,25 @@ private:
     uint32_t mDroppedInvalid {0};
 
     /**
-     * @brief DLTMessageReadAck result (status[1]): all requested buffers read and validated
+     * @brief DLTMessageReadAck result (status[0]): all requested buffers read and validated
      *
      * DLTMessageReadAck layout
-     * status[0] : buffer mask - echo of DLTMessageReadRequest status[0],
+     * status[0] : result      - DLT_GW_ACK or DLT_GW_NACK. VIP RTE type of the
+     *             status is one byte, so VIP receives this byte only (VIP DLT_BUFF_ACK = 1)
+     * status[1] : buffer mask - echo of DLTMessageReadRequest status[0],
      *             DLT_GW_READY_ACK_MASK for the startup ACK
-     * status[1] : result      - DLT_GW_ACK or DLT_GW_NACK
      *
      */
     static constexpr uint8_t DLT_GW_ACK = 0x01u;
 
     /**
-     * @brief DLTMessageReadAck result (status[1]): failure processing at least one requested buffer
+     * @brief DLTMessageReadAck result (status[0]): failure processing at least one requested buffer
      *
      */
     static constexpr uint8_t DLT_GW_NACK = 0x00u;
 
     /**
-     * @brief Buffer mask of the startup "GIP DLT ready" ACK. No buffer bit is
-     * set, so it is distinguishable from a read ACK, which always echoes the
-     * non-zero buffer mask of the DLTMessageReadRequest.
+     * @brief Buffer mask (status[1]) of the startup "GIP DLT ready" ACK: no buffer read
      *
      */
     static constexpr uint8_t DLT_GW_READY_ACK_MASK = 0x00u;
@@ -177,8 +176,8 @@ private:
     /**
      * @brief Send DLTMessageReadAck to VIP
      *
-     * @param bufferMask : buffer mask (status[0])
-     * @param result     : DLT_GW_ACK or DLT_GW_NACK (status[1])
+     * @param bufferMask : buffer mask (status[1])
+     * @param result     : DLT_GW_ACK or DLT_GW_NACK (status[0])
      */
     void sendReadAck(uint8_t bufferMask, uint8_t result);
 
