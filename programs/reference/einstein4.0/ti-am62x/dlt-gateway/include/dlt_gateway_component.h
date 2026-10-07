@@ -135,14 +135,21 @@ private:
     uint32_t mDroppedInvalid {0};
 
     /**
-     * @brief DLTMessageReadAck layout
+     * @brief DLTMessageReadAck result (status[1]): all requested buffers read and validated
+     *
+     * DLTMessageReadAck layout
      * status[0] : buffer mask - echo of DLTMessageReadRequest status[0],
      *             DLT_GW_READY_ACK_MASK for the startup ACK
      * status[1] : result      - DLT_GW_ACK or DLT_GW_NACK
      *
      */
-    static constexpr uint8_t DLT_GW_ACK  = 0x01U;  ///< All requested buffers read and validated
-    static constexpr uint8_t DLT_GW_NACK = 0x00U;  ///< Failure processing at least one requested buffer
+    static constexpr uint8_t DLT_GW_ACK = 0x01u;
+
+    /**
+     * @brief DLTMessageReadAck result (status[1]): failure processing at least one requested buffer
+     *
+     */
+    static constexpr uint8_t DLT_GW_NACK = 0x00u;
 
     /**
      * @brief Buffer mask of the startup "GIP DLT ready" ACK. No buffer bit is
@@ -150,7 +157,7 @@ private:
      * non-zero buffer mask of the DLTMessageReadRequest.
      *
      */
-    static constexpr uint8_t DLT_GW_READY_ACK_MASK = 0x00U;
+    static constexpr uint8_t DLT_GW_READY_ACK_MASK = 0x00u;
 
     /**
      * @brief Set in onStart() when the gateway is ready to serve read requests;
@@ -161,12 +168,28 @@ private:
     bool mReadyAckPending {false};
 
     /**
+     * @brief Serializes DLTMessageReadAck transmission: the startup ACK is sent
+     * from the main thread (worker), read ACKs from the message pump thread.
+     *
+     */
+    std::mutex mReadAckMTX;
+
+    /**
      * @brief Send DLTMessageReadAck to VIP
      *
      * @param bufferMask : buffer mask (status[0])
      * @param result     : DLT_GW_ACK or DLT_GW_NACK (status[1])
      */
     void sendReadAck(uint8_t bufferMask, uint8_t result);
+
+    /**
+     * @brief Read a string value from the INI file
+     *
+     * @param section : INI section name
+     * @param key : INI key name
+     * @return Value of the key, empty string if the key is missing
+     */
+    std::string getConfigString(const std::string& section, const std::string& key);
 
     /**
      * @brief Load INI file

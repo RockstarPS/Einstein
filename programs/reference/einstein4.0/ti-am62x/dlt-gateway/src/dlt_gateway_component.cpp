@@ -173,10 +173,29 @@ void DltGatewayComponent::onReceiveDLTControlMessageReponse(DLTControlMessageRep
 /// Start of user code : Footer user code for file dlt_Gateway_component.cpp
 void DltGatewayComponent::sendReadAck(uint8_t bufferMask, uint8_t result)
 {
+    std::lock_guard<std::mutex> lk(mReadAckMTX);
     DLTMessageReadAck ack{};
     ack.status[0] = bufferMask;
     ack.status[1] = result;
     DK_RTE_Send_DLTMessageReadAck(ack);
+}
+
+std::string DltGatewayComponent::getConfigString(const std::string& section, const std::string& key)
+{
+    std::string value;
+    const char* pValue = mParserObj.getStringValue(section, key);
+
+    // ParserIf returns NULL for a missing key
+    if (pValue != nullptr)
+    {
+        value = pValue;
+    }
+    else
+    {
+        LOGE(&gDLTGWLogContext, "Missing key: ", key, " in section: ", section);
+    }
+
+    return value;
 }
 
 bool DltGatewayComponent::loadConfiguration()
@@ -208,10 +227,10 @@ bool DltGatewayComponent::parseConfiguration()
     uint8_t numCores = 0;
     std::string sectionName = "DltGatewayConfiguration";
 
-    mDltGateWayConfig.ServerIpAddr = mParserObj.getStringValue(sectionName, "ServerIpAddress");
+    mDltGateWayConfig.ServerIpAddr = getConfigString(sectionName, "ServerIpAddress");
     mDltGateWayConfig.ReconnectIntervalMs = mParserObj.getInt32Value(sectionName, "ReconnectIntervalMS", 0u);
     mDltGateWayConfig.ReconnectMaxRetries = mParserObj.getInt32Value(sectionName, "ReconnectMaxRetries", -1);
-    mDltGateWayConfig.TransportTypeStr = mParserObj.getStringValue(sectionName, "TransportType");
+    mDltGateWayConfig.TransportTypeStr = getConfigString(sectionName, "TransportType");
     mDltGateWayConfig.NumCores = mParserObj.getInt32Value(sectionName, "NumberOfCores", 0u);
 
     LOGI(&gDLTGWLogContext, "Server IP address : ", mDltGateWayConfig.ServerIpAddr);
@@ -241,7 +260,7 @@ bool DltGatewayComponent::parseConfiguration()
         LOGI(&gDLTGWLogContext, "Core_", std::to_string(coreIdx), ": " + coreConfigName);
 
         pCoreConfig = new SCoreConfig_t;
-        pCoreConfig->CoreName = mParserObj.getStringValue(coreConfigName, "Name");
+        pCoreConfig->CoreName = getConfigString(coreConfigName, "Name");
         pCoreConfig->ServerPort = mParserObj.getInt32Value(coreConfigName, "ServerPort", 0u);
         mParserObj.getAllValuesForKey(coreConfigName, "ShmStartAddress", shmAddrNameList);
         mParserObj.getAllValuesForKey(coreConfigName, "ShmSize", shmSizeNameList);
@@ -346,10 +365,10 @@ bool DltGatewayComponent::coreInitialization(void)
             LOGE(&gDLTGWLogContext, "Core: ", cc->CoreName, " Failed to open TCP socket on port ", cc->ServerPort);
         }
 
-        if(!pTcpServer->connectClient())
-        {
-            LOGE(&gDLTGWLogContext, "Core: ", cc->CoreName, " Client connect failed on port ", cc->ServerPort, " - will retry on first message");
-        }
+        // dlt-daemon is accepted by the dispatch thread on the first message (connectTcpClientRetry).
+        // accept() must not block onStart(): the runtime IPC threads, the startup ACK and the
+        // DLTMessageReadRequest handling all wait for onStart() to return. A dlt-daemon that
+        // connects earlier is held in the listen backlog.
 
         // Register every buffer position this core owns in the global position → handler lookup table
         for (const auto& buf : cc->BuffConfig)

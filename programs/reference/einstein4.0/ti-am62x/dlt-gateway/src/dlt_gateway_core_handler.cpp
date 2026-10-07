@@ -91,7 +91,7 @@ bool DltCoreHandler::readShmBuffer(uint8_t position)
 
     // Validate before the ACK/NACK is sent so that the response reflects the buffer content
     const SScanResult_t scanResult = DltValidator::scanBuffer(msg.payload.data(), static_cast<uint32_t>(msg.length));
-    const bool ret = (scanResult.frames_ok > 0U) && (scanResult.frames_bad == 0U);
+    const bool ret = (scanResult.frames_ok > 0u) && (scanResult.frames_bad == 0u);
 
     if (!ret)
     {
@@ -99,11 +99,11 @@ bool DltCoreHandler::readShmBuffer(uint8_t position)
         res.error = scanResult.error;
         LOGE(&gDLTGWLogContext, "BufferError: ", mCoreConfig.CoreName, " ", bufConfig.name, " Position: ", static_cast<uint32_t>(position),
              " Frames ok: ", scanResult.frames_ok, " Frames bad: ", scanResult.frames_bad,
-             " Reason: ", (scanResult.frames_bad > 0U) ? res.reason() : "no DLT frame in buffer");
+             " Reason: ", (scanResult.frames_bad > 0u) ? res.reason() : "no DLT frame in buffer");
     }
 
     // Forward the valid leading frames even if the rest of the buffer is corrupt
-    if (scanResult.valid_bytes > 0U)
+    if (scanResult.valid_bytes > 0u)
     {
         msg.payload.resize(scanResult.valid_bytes);
         msg.length      = scanResult.valid_bytes;
