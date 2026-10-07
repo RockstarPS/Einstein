@@ -27,7 +27,6 @@
 //
 //---------------------------------------------------------------------------------------------------------------------
 #include "dlt_gateway_component.h"
-#include "dlt_gateway_payload_validate.h"
 
 /// Start of user code : Header user code for file dlt_Gateway_component.cpp
 LOG_DECLARE_CONTEXT(gDLTGWLogContext);
@@ -121,10 +120,12 @@ bool DltGatewayComponent::onStop()
 void DltGatewayComponent::worker()
 {
 /// Start of user code : User code for function worker in file dlt_Gateway_component.cpp
+    // Startup sequence: default ACK to VIP as indication that DLT communication is up
     if (mReadyAckPending)
     {
         mReadyAckPending = false;
-        sendDltReadyAck();
+        sendReadAck(DLT_GW_READY_ACK_MASK, DLT_GW_ACK);
+        LOGI(&gDLTGWLogContext, "GIP DLT ready - startup DLTMessageReadAck sent");
     }
 /// End of user code
 }
@@ -133,7 +134,8 @@ void DltGatewayComponent::onReceiveDLTMessageReadRequest(DLTMessageReadRequest c
 {
 /// Start of user code : User code for function onReceiveDLTMessageReadRequest in file dlt_Gateway_component.cpp
     const uint8_t status = static_cast<uint8_t>(msg.status[0]);
-    LOGI(&gDLTGWLogContext, "Received DLTMessageReadRequest status=", status);
+    bool readOk = true;
+    LOGI(&gDLTGWLogContext, "Received DLTMessageReadRequest status=", static_cast<uint32_t>(status));
 
     for (uint8_t bit = 0; bit < 8; ++bit)
     {
@@ -143,16 +145,21 @@ void DltGatewayComponent::onReceiveDLTMessageReadRequest(DLTMessageReadRequest c
         auto it = mPosTable.find(bit);
         if (it == mPosTable.end())
         {
-            LOGE(&gDLTGWLogContext, "status bit: ",bit, " set but no buffer has Position: ", bit, " check INI configuration");
+            LOGE(&gDLTGWLogContext, "BufferError: status bit: ", static_cast<uint32_t>(bit), " set but no buffer has Position: ", static_cast<uint32_t>(bit), " check INI configuration");
+            readOk = false;
             continue;
         }
 
-        it->second->readShmBuffer(bit);
+        if (!it->second->readShmBuffer(bit))
+        {
+            ++mDroppedInvalid;
+            readOk = false;
+        }
     }
-    DLTMessageReadAck ack{};
-    ack.status[0] = msg.status[0];
-    ack.status[1] = msg.status[1];
-    DK_RTE_Send_DLTMessageReadAck(ack);
+
+    // ACK when all requested buffers are processed, NACK on any failure (BufferError already logged)
+    sendReadAck(status, readOk ? DLT_GW_ACK : DLT_GW_NACK);
+    LOGI(&gDLTGWLogContext, "DLTMessageReadAck sent status=", static_cast<uint32_t>(status), (readOk ? " ACK" : " NACK"));
 /// End of user code
 }
 
@@ -164,13 +171,12 @@ void DltGatewayComponent::onReceiveDLTControlMessageReponse(DLTControlMessageRep
 
 
 /// Start of user code : Footer user code for file dlt_Gateway_component.cpp
-void DltGatewayComponent::sendDltReadyAck()
+void DltGatewayComponent::sendReadAck(uint8_t bufferMask, uint8_t result)
 {
     DLTMessageReadAck ack{};
-    ack.status[0] = DLT_GW_READY_ACK_STATUS;
-    ack.status[1] = DLT_GW_READY_ACK_STATUS;
+    ack.status[0] = bufferMask;
+    ack.status[1] = result;
     DK_RTE_Send_DLTMessageReadAck(ack);
-    LOGI(&gDLTGWLogContext, "GIP DLT ready - DLTMessageReadAck sent, status=", static_cast<uint32_t>(DLT_GW_READY_ACK_STATUS));
 }
 
 bool DltGatewayComponent::loadConfiguration()
@@ -297,6 +303,7 @@ bool DltGatewayComponent::parseConfiguration()
             }
 
             std::string BufferStartAddressStr = mParserObj.getStringValue(buffConfigName, "BufferStartAddress");
+            pBuffConfig->name = buffConfigName;
             pBuffConfig->BufStartAddress = std::stoul(BufferStartAddressStr, nullptr, 16);
             pBuffConfig->BufSize = mParserObj.getInt32Value(buffConfigName, "BufferSize", 0u);
             pBuffConfig->Pos = mParserObj.getInt32Value(buffConfigName, "Position", 0u);
@@ -404,28 +411,12 @@ void DltGatewayComponent::dispatchLoop()
 
 bool DltGatewayComponent::sendToDltDaemon(const SDltMsg_t& msg, DltTcpServer& tcpServer)
 {
-    SScanResult_t scanResult = DltValidator::scanBuffer(msg.payload.data(), msg.length);
-
-    if (scanResult.valid_bytes == 0)
+    // Frames were validated by DltCoreHandler::readShmBuffer(); only valid bytes are queued
+    if (msg.length == 0)
     {
-        SValidationResult_t res;
-        res.valid = false;
-        res.error = scanResult.error;
-        LOGE(&gDLTGWLogContext, "contains no valid DLT frames — dropped, error: ", res.reason(), ", bad frames: ",scanResult.frames_bad);
-        /*TODO: Identify core name, buffer name and position */
-        mDroppedInvalid++;
-        return true;   // not a TCP error — don't reconnect
+        return true;   // nothing to send — not a TCP error, don't reconnect
     }
 
-    if (scanResult.frames_bad > 0)
-    {
-        /*  Partial buffer: some frames good, scan stopped at first bad one */
-        SValidationResult_t res;
-        res.valid = false;
-        res.error = scanResult.error;
-        LOGE(&gDLTGWLogContext, "Partial buffer. Sending bytes: ", scanResult.valid_bytes, " Frames ok: ", scanResult.frames_ok," Reason: ",res.reason());
-        /*TODO: Identify core name, buffer name and position */
-    }
     if (!tcpServer.isConnected())
     {
         LOGE(&gDLTGWLogContext, "TCP down — reconnecting ");
@@ -434,7 +425,7 @@ bool DltGatewayComponent::sendToDltDaemon(const SDltMsg_t& msg, DltTcpServer& tc
             return false;
     }
 
-    if(!tcpServer.sendAll(msg.payload.data(), scanResult.valid_bytes))
+    if(!tcpServer.sendAll(msg.payload.data(), msg.length))
     {
         tcpServer.disconnectClient();
         connectTcpClientRetry(tcpServer);

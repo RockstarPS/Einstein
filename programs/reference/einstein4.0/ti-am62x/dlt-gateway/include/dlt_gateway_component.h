@@ -132,29 +132,41 @@ private:
      * @brief  Invalid Frame Drop
      *
      */
-    uint32_t mDroppedInvalid;
+    uint32_t mDroppedInvalid {0};
 
     /**
-     * @brief DLTMessageReadAck status sent at startup to indicate "GIP DLT ready".
-     * No buffer bit is set, so VIP can tell it apart from a read ACK, which
-     * always echoes a non-zero buffer mask of the DLTMessageReadRequest.
+     * @brief DLTMessageReadAck layout
+     * status[0] : buffer mask - echo of DLTMessageReadRequest status[0],
+     *             DLT_GW_READY_ACK_MASK for the startup ACK
+     * status[1] : result      - DLT_GW_ACK or DLT_GW_NACK
      *
      */
-    static constexpr uint8_t DLT_GW_READY_ACK_STATUS = 0x00U;
+    static constexpr uint8_t DLT_GW_ACK  = 0x01U;  ///< All requested buffers read and validated
+    static constexpr uint8_t DLT_GW_NACK = 0x00U;  ///< Failure processing at least one requested buffer
+
+    /**
+     * @brief Buffer mask of the startup "GIP DLT ready" ACK. No buffer bit is
+     * set, so it is distinguishable from a read ACK, which always echoes the
+     * non-zero buffer mask of the DLTMessageReadRequest.
+     *
+     */
+    static constexpr uint8_t DLT_GW_READY_ACK_MASK = 0x00U;
 
     /**
      * @brief Set in onStart() when the gateway is ready to serve read requests;
-     * cleared by worker() once the ready DLTMessageReadAck has been sent.
+     * cleared by worker() once the startup DLTMessageReadAck has been sent.
      * Only accessed from the application main thread (onStart / onRun).
      *
      */
     bool mReadyAckPending {false};
 
     /**
-     * @brief Send the startup "GIP DLT ready" DLTMessageReadAck to VIP
+     * @brief Send DLTMessageReadAck to VIP
      *
+     * @param bufferMask : buffer mask (status[0])
+     * @param result     : DLT_GW_ACK or DLT_GW_NACK (status[1])
      */
-    void sendDltReadyAck();
+    void sendReadAck(uint8_t bufferMask, uint8_t result);
 
     /**
      * @brief Load INI file

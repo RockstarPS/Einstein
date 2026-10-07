@@ -115,19 +115,26 @@ public:
     void stop();
 
     /**
-     * @brief Copy data from one SHM buffer into the message queue.
+     * @brief Copy data from one SHM buffer, validate it and queue the valid frames.
      *
      * Called by @ref DltGateway::onReceiveDLTMessageReadRequest() for each set
      * bit in the IPCL status byte.  Looks up the @ref BufferConfig for @p position,
      * copies the full @c BufferConfig::size bytes from shared memory via
-     * @ref SharedMemoryReader::readBuffer(), and enqueues the result.
+     * @ref SharedMemoryReader::readBuffer(), scans the copy with
+     * @ref DltValidator::scanBuffer() and enqueues the leading valid frames.
+     *
+     * The buffer is fully copied out of shared memory when this function
+     * returns, so the owner may clear it once the ACK/NACK has been sent.
      *
      * This function must not block — it is called from the IPCL callback context.
      *
      * @param position  Bit number from the IPCL status byte; must match a
      *                  @c BufferConfig::position value in this core's buffer list.
+     * @return @c true  if the buffer was read and holds only valid DLT frames (ACK).
+     * @return @c false if the buffer could not be read, holds no DLT frame or
+     *                  holds a corrupt frame (NACK). A BufferError is logged.
      */
-    void readShmBuffer(uint8_t position);
+    bool readShmBuffer(uint8_t position);
 
     /**
      * @brief Dequeue one @ref DltMessage, blocking up to @p timeout.

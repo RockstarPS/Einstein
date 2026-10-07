@@ -26,6 +26,7 @@
  */
 
 #include "dlt_gateway_core_handler.h"
+#include "dlt_gateway_payload_validate.h"
 #include "dk_logger.h"
 
 LOG_IMPORT_CONTEXT ( gDLTGWLogContext );
@@ -64,22 +65,54 @@ void DltCoreHandler::stop()
     mQueCV.notify_all();
 }
 
-void DltCoreHandler::readShmBuffer(uint8_t position)
+bool DltCoreHandler::readShmBuffer(uint8_t position)
 {
     if (!mRunning)
-        return;
+    {
+        LOGE(&gDLTGWLogContext, "BufferError: core ", mCoreConfig.CoreName, " not running, Position: ", static_cast<uint32_t>(position));
+        return false;
+    }
 
     auto it = mPos_to_buffer.find(position);
     if (it == mPos_to_buffer.end())
     {
-        LOGE(&gDLTGWLogContext, "unknown position ", mCoreConfig.CoreName, "Position", position);
-        return;
+        LOGE(&gDLTGWLogContext, "BufferError: unknown position ", mCoreConfig.CoreName, " Position: ", static_cast<uint32_t>(position));
+        return false;
     }
 
     const SCoreBuffConfig_t& bufConfig = *it->second;
 
     SDltMsg_t msg = mShmReader.readBuffer(bufConfig, bufConfig.BufSize);
-    enqueue(std::move(msg));
+    if (msg.length == 0)
+    {
+        LOGE(&gDLTGWLogContext, "BufferError: ", mCoreConfig.CoreName, " ", bufConfig.name, " Position: ", static_cast<uint32_t>(position), " shared memory read failed");
+        return false;
+    }
+
+    // Validate before the ACK/NACK is sent so that the response reflects the buffer content
+    const SScanResult_t scanResult = DltValidator::scanBuffer(msg.payload.data(), static_cast<uint32_t>(msg.length));
+    const bool ret = (scanResult.frames_ok > 0U) && (scanResult.frames_bad == 0U);
+
+    if (!ret)
+    {
+        SValidationResult_t res;
+        res.error = scanResult.error;
+        LOGE(&gDLTGWLogContext, "BufferError: ", mCoreConfig.CoreName, " ", bufConfig.name, " Position: ", static_cast<uint32_t>(position),
+             " Frames ok: ", scanResult.frames_ok, " Frames bad: ", scanResult.frames_bad,
+             " Reason: ", (scanResult.frames_bad > 0U) ? res.reason() : "no DLT frame in buffer");
+    }
+
+    // Forward the valid leading frames even if the rest of the buffer is corrupt
+    if (scanResult.valid_bytes > 0U)
+    {
+        msg.payload.resize(scanResult.valid_bytes);
+        msg.length      = scanResult.valid_bytes;
+        msg.core_name   = mCoreConfig.CoreName;
+        msg.buffer_name = bufConfig.name;
+        enqueue(std::move(msg));
+    }
+
+    return ret;
 }
 
 bool DltCoreHandler::dequeue(SDltMsg_t& msg, std::chrono::milliseconds timeout)
