@@ -135,6 +135,28 @@ private:
     uint32_t mDroppedInvalid;
 
     /**
+     * @brief DLTMessageReadAck status sent at startup to indicate "GIP DLT ready".
+     * No buffer bit is set, so VIP can tell it apart from a read ACK, which
+     * always echoes a non-zero buffer mask of the DLTMessageReadRequest.
+     *
+     */
+    static constexpr uint8_t DLT_GW_READY_ACK_STATUS = 0x00U;
+
+    /**
+     * @brief Set in onStart() when the gateway is ready to serve read requests;
+     * cleared by worker() once the ready DLTMessageReadAck has been sent.
+     * Only accessed from the application main thread (onStart / onRun).
+     *
+     */
+    bool mReadyAckPending {false};
+
+    /**
+     * @brief Send the startup "GIP DLT ready" DLTMessageReadAck to VIP
+     *
+     */
+    void sendDltReadyAck();
+
+    /**
      * @brief Load INI file
      * 
      * @return true 

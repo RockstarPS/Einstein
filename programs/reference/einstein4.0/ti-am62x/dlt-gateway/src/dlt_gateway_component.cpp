@@ -84,6 +84,14 @@ bool DltGatewayComponent::onStart()
         mDispatchThread = std::thread([this]{ dispatchLoop(); });
     }
 
+    // Ready ACK is sent from worker(): the runtime IPC threads are started only
+    // after all component onStart() calls have returned.
+    mReadyAckPending = mRunning && !mPosTable.empty();
+    if (!mReadyAckPending)
+    {
+        LOGE(&gDLTGWLogContext, "No shared memory buffer registered - GIP DLT ready ACK will not be sent");
+    }
+
 /// End of user code
 
     return ret;
@@ -113,7 +121,11 @@ bool DltGatewayComponent::onStop()
 void DltGatewayComponent::worker()
 {
 /// Start of user code : User code for function worker in file dlt_Gateway_component.cpp
-
+    if (mReadyAckPending)
+    {
+        mReadyAckPending = false;
+        sendDltReadyAck();
+    }
 /// End of user code
 }
 
@@ -152,6 +164,15 @@ void DltGatewayComponent::onReceiveDLTControlMessageReponse(DLTControlMessageRep
 
 
 /// Start of user code : Footer user code for file dlt_Gateway_component.cpp
+void DltGatewayComponent::sendDltReadyAck()
+{
+    DLTMessageReadAck ack{};
+    ack.status[0] = DLT_GW_READY_ACK_STATUS;
+    ack.status[1] = DLT_GW_READY_ACK_STATUS;
+    DK_RTE_Send_DLTMessageReadAck(ack);
+    LOGI(&gDLTGWLogContext, "GIP DLT ready - DLTMessageReadAck sent, status=", static_cast<uint32_t>(DLT_GW_READY_ACK_STATUS));
+}
+
 bool DltGatewayComponent::loadConfiguration()
 {
     bool configFound = false;
