@@ -1,0 +1,501 @@
+diff -ruN a/cfg/dlt_gw.ini b/cfg/dlt_gw.ini
+--- a/cfg/dlt_gw.ini	2026-11-11 04:37:42.970022058 +0000
++++ b/cfg/dlt_gw.ini	2026-11-11 04:38:14.969409569 +0000
+@@ -1,125 +1,80 @@
+-; ═══════════════════════════════════════════════════════════════════
+-;  dlt_gateway.ini  –  DLT Gateway configuration
+-; ═══════════════════════════════════════════════════════════════════
++; DLT Gateway configuration
+ 
+ [DltGatewayConfiguration]
+-ServerIpAddress       = 127.0.0.1
+-ReconnectIntervalMS   = 2000
++ServerIpAddress      = 127.0.0.1
++ReconnectIntervalMS  = 2000
+ ; -1 = retry indefinitely
+-ReconnectMaxRetries   = -1
+-TransportType         = SharedMemory
+-NumberOfCores         = 3
+-Core_0                = Core0
+-Core_1                = Core1
+-Core_2                = Core2
++ReconnectMaxRetries  = -1
++StartupAckIntervalMS = 500
++; Keep 1: VIP cannot tell a repeated startup ACK from a buffer ACK
++StartupAckMaxRetries = 1
++TransportType        = SharedMemory
++NumberOfCores        = 3
++Core_0               = Core0
++Core_1               = Core1
++Core_2               = Core2
+ 
+ [Core0]
+-;Core Name
+-Name             = VIP
+-ServerPort       = 5000
+-;TransportType - Shared Memory
+-;Shared memory start address
+-ShmStartAddress  = 0x82385000
+-;Shared memory total size
+-ShmSize          = 8192
+-NumberOfBuffers  = 3
+-Buffer_0 = Core0Buffer0
+-Buffer_1 = Core0Buffer1
+-Buffer_2 = Core0Buffer2
+-
+-;Transport type - UART/SPI
+-;Device ID
+-;DeviceId = "/dev/ser2"
+-;Speed of the device
+-;Speed    = 1000000
+-;Flow control: 0 - disabled, 1 - enabled
+-;FlowCtlr = 0
++Name            = VIP
++ServerPort      = 5000
++ShmStartAddress = 0x82385000
++ShmSize         = 8192
++NumberOfBuffers = 3
++Buffer_0        = Core0Buffer0
++Buffer_1        = Core0Buffer1
++Buffer_2        = Core0Buffer2
+ 
+ [Core1]
+-;Core Name
+-Name             = HSM
+-ServerPort       = 5001
+-;TransportType - Shared Memory
+-;Shared memory start address
+-ShmStartAddress  = 0x82387000
+-;Shared memory total size
+-ShmSize          = 4096
+-NumberOfBuffers  = 2
+-Buffer_0 = Core1Buffer0
+-Buffer_1 = Core1Buffer1
+-
+-;Transport type - UART/SPI
+-;Device ID
+-;DeviceId = "/dev/ser2"
+-;Speed of the device
+-;Speed    = 1000000
+-;Flow control: 0 - disabled, 1 - enabled
+-;FlowCtlr = 0
++Name            = HSM
++ServerPort      = 5001
++ShmStartAddress = 0x82387000
++ShmSize         = 4096
++NumberOfBuffers = 2
++Buffer_0        = Core1Buffer0
++Buffer_1        = Core1Buffer1
+ 
+ [Core2]
+-;Core Name
+-Name             = DM
+-ServerPort       = 5002
+-;TransportType - Shared Memory
+-;Shared memory start address
+-ShmStartAddress  = 0x82388000
+-;Shared memory total size
+-ShmSize          = 4096
+-NumberOfBuffers  = 2
+-Buffer_0 = Core2Buffer0
+-Buffer_1 = Core2Buffer1
+-
+-;Transport type - UART/SPI
+-;Device ID
+-;DeviceId = "/dev/ser2"
+-;Speed of the device
+-;Speed    = 1000000
+-;Flow control: 0 - disabled, 1 - enabled
+-;FlowCtlr = 0
+-
+-;Shared memory based buffers start address, size and position (UCL message)
+-;
++Name            = DM
++ServerPort      = 5002
++ShmStartAddress = 0x82388000
++ShmSize         = 4096
++NumberOfBuffers = 2
++Buffer_0        = Core2Buffer0
++Buffer_1        = Core2Buffer1
+ 
++; Position = bit in DLTMessageReadRequest status[0]
+ 
+ [Core0Buffer0]
+-BufferStartAddress=0x82385000
+-BufferSize=2048
+-; DLTEXT_VIP_SHAREMEMBUF1 = 0x01 -> bit 0
+-Position            = 0
++BufferStartAddress = 0x82385000
++BufferSize         = 2048
++Position           = 0
+ 
+ [Core0Buffer1]
+-BufferStartAddress=0x82385800
+-BufferSize=2048
+-; DLTEXT_VIP_SHAREMEMBUF2 = 0x02 -> bit 1
+-Position            = 1
++BufferStartAddress = 0x82385800
++BufferSize         = 2048
++Position           = 1
+ 
+ [Core0Buffer2]
+-BufferStartAddress=0x82386000
+-BufferSize=4096
+-; DLTEXT_SHAREMEMRESETBUF = 0x04 -> bit 2
+-Position            = 2
+-
++BufferStartAddress = 0x82386000
++BufferSize         = 4096
++Position           = 2
+ 
+ [Core1Buffer0]
+-BufferStartAddress=0x82387000
+-BufferSize=2048
+-; DLTEXT_HSM_BUFFER1 = 0x08 -> bit 3
+-Position            = 3
++BufferStartAddress = 0x82387000
++BufferSize         = 2048
++Position           = 3
+ 
+ [Core1Buffer1]
+-BufferStartAddress=0x82387800
+-BufferSize=2048
+-; DLTEXT_HSM_BUFFER2 = 0x10 -> bit 4
+-Position            = 4
++BufferStartAddress = 0x82387800
++BufferSize         = 2048
++Position           = 4
+ 
+ [Core2Buffer0]
+-BufferStartAddress=0x82388000
+-BufferSize=2048
+-; DLTEXT_DM_BUFFER1 = 0x20 -> bit 5
+-Position            = 5
++BufferStartAddress = 0x82388000
++BufferSize         = 2048
++Position           = 5
+ 
+ [Core2Buffer1]
+-BufferStartAddress=0x82388800
+-BufferSize=2048
+-; DLTEXT_DM_BUFFER2 = 0x40 -> bit 6
+-Position            = 6
++BufferStartAddress = 0x82388800
++BufferSize         = 2048
++Position           = 6
+diff -ruN a/include/dlt_gateway_component.h b/include/dlt_gateway_component.h
+--- a/include/dlt_gateway_component.h	2026-11-11 04:37:42.979356598 +0000
++++ b/include/dlt_gateway_component.h	2026-11-11 04:38:15.010502403 +0000
+@@ -117,56 +117,41 @@
+      * 
+      */
+     std::thread             mDispatchThread;
+-    std::thread             mStartupAckThread;
+-    std::atomic<bool>       mVipResponded {false};
+-    std::mutex              mAckMTX;
+-
+-    /**
+-     * @brief Dispatch thread Mutex
+-     * 
+-     */
+-    mutable std::mutex      mDispatchMTX;
+ 
+     /**
+-     * @brief  Dispatch thread condition variable
+-     * 
+-     */
+-    std::condition_variable mDispatchCV;
+-    /**
+-     * @brief  Invalid Frame Drop
++     * @brief Startup ACK thread
+      *
+      */
+-    uint32_t mDroppedInvalid {0};
++    std::thread             mStartupAckThread;
+ 
+     /**
+-     * @brief Startup ready ACK thread, runs startupAckLoop()
++     * @brief Set by the first DLTMessageReadRequest
+      *
+      */
++    std::atomic<bool>       mVipResponded {false};
+ 
+     /**
+-     * @brief Set by the first DLTMessageReadRequest: VIP answered the startup
+-     * ready ACK, so startupAckLoop() stops repeating it
++     * @brief DLTMessageReadAck send Mutex
+      *
+      */
++    std::mutex              mAckMTX;
+ 
+     /**
+-     * @brief Serializes DLTMessageReadAck transmission: startup ACK thread and
+-     * message pump thread both send it
+-     *
++     * @brief Dispatch thread Mutex
++     * 
+      */
++    mutable std::mutex      mDispatchMTX;
+ 
+     /**
+-     * @brief Send DLTMessageReadAck to VIP
+-     *
+-     * @param status0 : status[0]
+-     * @param status1 : status[1]
++     * @brief  Dispatch thread condition variable
++     * 
+      */
+-
++    std::condition_variable mDispatchCV;
+     /**
+-     * @brief Send the startup ready ACK until VIP sends its first
+-     * DLTMessageReadRequest or StartupAckMaxRetries is reached
++     * @brief  Invalid Frame Drop
+      *
+      */
++    uint32_t mDroppedInvalid {0};
+ 
+     /**
+      * @brief Load INI file
+@@ -199,17 +184,26 @@
+      * 
+      */
+     void dispatchLoop();
++
++    /**
++     * @brief Send DLTMessageReadAck to VIP
++     *
++     * @param status0 : status[0]
++     * @param status1 : status[1]
++     */
+     void sendAck(uint8_t status0, uint8_t status1);
+-    void startupAckLoop();
+ 
+     /**
+-     * @brief Make one non-blocking attempt to accept dlt-daemon for this core.
++     * @brief Send the startup ACK (StartupAckMaxRetries times)
+      *
+-     * Never blocks and never stops the component. The dispatch thread drains
+-     * every core, so a core whose dlt-daemon is absent must not hold it up.
++     */
++    void startupAckLoop();
++
++    /**
++     * @brief Non-blocking accept of dlt-daemon
+      *
+-     * @param tcpServer : TCP server instance for this core
+-     * @return true if a client is connected after the attempt
++     * @param tcpServer : TCP server instance
++     * @return true if connected
+      */
+     bool tryConnectTcpClient(DltTcpServer& tcpServer);
+ 
+diff -ruN a/include/dlt_gateway_types.h b/include/dlt_gateway_types.h
+--- a/include/dlt_gateway_types.h	2026-11-11 04:37:42.979714353 +0000
++++ b/include/dlt_gateway_types.h	2026-11-11 04:38:15.009888204 +0000
+@@ -26,29 +26,10 @@
+ #include <atomic>
+ 
+ /**
+- * @brief Status byte of the startup "GIP / DLT ready" acknowledgement.
+- *
+- * Sent by the gateway once its own configuration, shared-memory transports and
+- * IPC link are up, before any @c DLTMessageReadRequest has been received.  VIP
+- * treats it as the trigger to release its own logging and to propagate the
+- * ready indication to HSM and DM.
+- *
+- * By architectural decision the startup indication is an ordinary
+- * @c DLTMessageReadAck carrying the default status - VIP, HSM and DM handle it
+- * exactly like a buffer acknowledgement and no distinct encoding is used.  The
+- * value is therefore @c DLTEXT_IPC_BUFFER_MASK_NONE: no buffer bits set, which
+- * is what VIP already sees for an acknowledgement that releases no buffer.
+- *
+- * @note Because it is indistinguishable from a buffer acknowledgement, the
+- *       startup indication must be sent exactly once per GIP start-up.  A repeat
+- *       would complete whatever transfer VIP has in flight and release a buffer
+- *       GIP never read.  See @c StartupAckMaxRetries.
+- *
+- * @note Only @c status[0] is carried to VIP.  The GIP-side message models
+- *       @c status as @c uint8[2] while the VIP-side @c SDLTMessageReadAck
+- *       models it as a scalar @c uint8, so @c status[1] must not be relied on.
++ * @brief DLTMessageReadAck status of the startup "DLT ready" ACK (default status)
+  */
+ static const uint8_t DLT_GW_STARTUP_ACK_STATUS     = 0x00u;
++
+ /**
+  * @brief Identifies the physical transport used by a remote core.
+  *
+@@ -174,8 +155,8 @@
+     std::string  ServerIpAddr        {"127.0.0.1"};   ///< Server IP Address.
+     int          ReconnectIntervalMs {2000};          ///< Base reconnect wait in ms (ReconnectIntervalMS).
+     int          ReconnectMaxRetries {-1};            ///< Max reconnect attempts; -1 = unlimited (ReconnectMaxRetries).
+-    int          StartupAckIntervalMs {500};          ///< Repeat interval of the startup ready ACK in ms (StartupAckIntervalMS).
+-    int          StartupAckMaxRetries {1};            ///< Max startup ACK transmissions; keep at 1 - a repeat is indistinguishable from a buffer ACK (StartupAckMaxRetries).
++    int          StartupAckIntervalMs {500};          ///< Startup ACK repeat interval in ms (StartupAckIntervalMS).
++    int          StartupAckMaxRetries {1};            ///< Max startup ACK transmissions (StartupAckMaxRetries).
+     std::string  TransportTypeStr;
+     TransportType transport {TransportType::Unknown}; ///< Global default transport (TransportType).
+     std::vector<SCoreConfig_t *> CoreConfig;          ///< Ordered list of cores (Core_0 … Core_N).
+diff -ruN a/src/dlt_gateway_component.cpp b/src/dlt_gateway_component.cpp
+--- a/src/dlt_gateway_component.cpp	2026-11-11 04:37:42.982124171 +0000
++++ b/src/dlt_gateway_component.cpp	2026-11-11 04:38:15.013264191 +0000
+@@ -83,9 +83,7 @@
+         mRunning = true;
+         mDispatchThread = std::thread([this]{ dispatchLoop(); });
+ 
+-        // GIP owns the startup handshake: announce "DLT ready" to VIP, which in
+-        // turn releases HSM and DM. Runs on its own thread so that neither the
+-        // runtime start-up path nor the dlt-daemon TCP link can hold it up.
++        // Startup "DLT ready" ACK to VIP
+         mStartupAckThread = std::thread([this]{ startupAckLoop(); });
+     }
+ 
+@@ -131,8 +129,7 @@
+     const uint8_t status = static_cast<uint8_t>(msg.status[0]);
+     LOGI(&gDLTGWLogContext, "Received DLTMessageReadRequest status=", status);
+ 
+-    // First read request proves VIP acted on the startup ready indication.
+-    // Stops startupAckLoop() from repeating it.
++    // First read request: VIP received the startup ACK
+     if (!mVipResponded.exchange(true))
+     {
+         LOGI(&gDLTGWLogContext, "VIP answered the startup ready ACK - startup handshake complete");
+@@ -153,9 +150,7 @@
+         it->second->readShmBuffer(bit);
+     }
+ 
+-    // Sent only after the buffers have been copied out of shared memory: VIP
+-    // clears the buffer on receipt of the ACK, so acknowledging earlier would
+-    // race the copy and lose log data.
++    // ACK after the buffers are copied - VIP clears them on ACK
+     sendAck(static_cast<uint8_t>(msg.status[0]), static_cast<uint8_t>(msg.status[1]));
+ /// End of user code
+ }
+@@ -203,12 +198,9 @@
+     mDltGateWayConfig.TransportTypeStr = mParserObj.getStringValue(sectionName, "TransportType");
+     mDltGateWayConfig.NumCores = mParserObj.getInt32Value(sectionName, "NumberOfCores", 0u);
+     mDltGateWayConfig.StartupAckIntervalMs = mParserObj.getInt32Value(sectionName, "StartupAckIntervalMS", 500);
+-    // Single transmission by design: the startup indication is an ordinary ACK,
+-    // so VIP cannot tell a repeat apart from a buffer ACK and would complete
+-    // whatever transfer is in flight. See StartupAckMaxRetries in dlt_gw.ini.
+     mDltGateWayConfig.StartupAckMaxRetries = mParserObj.getInt32Value(sectionName, "StartupAckMaxRetries", 1);
+ 
+-    // A zero interval would turn the startup thread into a busy loop flooding VMF.
++    // Avoid a busy loop
+     if (mDltGateWayConfig.StartupAckIntervalMs <= 0)
+     {
+         LOGW(&gDLTGWLogContext, "StartupAckIntervalMS invalid - falling back to 500 ms");
+@@ -345,19 +337,11 @@
+     
+         if(!pTcpServer->openSocket())
+         {
+-            // Registering the core anyway would announce DLT ready for a core
+-            // that can never deliver, and leave accept() failing on a closed
+-            // descriptor on every dispatch pass.
+             LOGE(&gDLTGWLogContext, "Core: ", cc->CoreName, " Failed to open TCP socket on port ", cc->ServerPort, " - skipping core");
+             continue;
+         }
+ 
+-        // Deliberately no connectClient() here. coreInitialization() runs on the
+-        // runtime start-up path, before the IPC and container message pumps are
+-        // started, so a blocking accept() would stall the whole component until
+-        // dlt-daemon connects - no startup ready ACK and no response to any
+-        // DLTMessageReadRequest. The dispatch thread accepts lazily instead,
+-        // via tryConnectTcpClient() on the first frame for this core.
++        // No accept() here - dispatch thread connects dlt-daemon on the first frame
+ 
+         // Register every buffer position this core owns in the global position → handler lookup table
+         for (const auto& buf : cc->BuffConfig)
+@@ -378,11 +362,7 @@
+         ++coresReady;
+     }
+ 
+-    // The startup ready ACK tells VIP that GIP can service read requests, and VIP
+-    // releases HSM and DM on the strength of it. Announcing readiness with a core
+-    // missing means every request for that core's buffers is answered "no buffer
+-    // has Position N" and still ACKed, so the owner clears a buffer GIP never
+-    // read. Fail the start-up instead and let the service be restarted.
++    // Announce DLT ready only if all cores are up
+     const bool allCoresReady = (coresReady == mDltGateWayConfig.CoreConfig.size()) && (coresReady > 0u);
+ 
+     if (!allCoresReady)
+@@ -417,16 +397,12 @@
+         if ((mDltGateWayConfig.StartupAckMaxRetries > 0) &&
+             (sent >= mDltGateWayConfig.StartupAckMaxRetries))
+         {
+-            // Not an error. The startup indication is an ordinary ACK, so it is
+-            // sent a fixed number of times and the first DLTMessageReadRequest
+-            // is the only confirmation GIP ever gets that VIP acted on it.
+             LOGI(&gDLTGWLogContext, "Startup ready ACK sent ", sent,
+                  " time(s) - not repeating, waiting for first DLTMessageReadRequest");
+             break;
+         }
+ 
+-        // Sleep in slices so shutdown and the VIP response are both picked up
+-        // promptly instead of after a full interval.
++        // Sleep in slices to react quickly to stop / VIP response
+         const auto deadline = std::chrono::steady_clock::now() +
+                               std::chrono::milliseconds(mDltGateWayConfig.StartupAckIntervalMs);
+         while (mRunning && !mVipResponded && (std::chrono::steady_clock::now() < deadline))
+@@ -499,19 +475,14 @@
+     }
+     if (!tcpServer.isConnected())
+     {
+-        // One non-blocking attempt only. This frame is lost if dlt-daemon is not
+-        // waiting, which is preferable to parking the dispatch thread: it drains
+-        // every core, so blocking here stops logging for the cores whose daemon
+-        // is up as well. The next dispatch pass retries 50 ms later.
++        // Non-blocking, retried on the next dispatch pass
+         if (!tryConnectTcpClient(tcpServer))
+             return false;
+     }
+ 
+     if(!tcpServer.sendAll(msg.payload.data(), scanResult.valid_bytes))
+     {
+-        // sendAll() has already closed the client socket. Re-accepting is left to
+-        // the next dispatch pass; this frame is lost. Logged once per connection
+-        // loss, because every later frame takes the quiet !isConnected() path.
++        // Client socket closed by sendAll(), re-accept on the next dispatch pass
+         LOGE(&gDLTGWLogContext, "Send to dlt-daemon failed - frame dropped, will re-accept on next dispatch pass");
+         return false;
+     }
+@@ -521,10 +492,7 @@
+ 
+ bool DltGatewayComponent::tryConnectTcpClient(DltTcpServer& tcpServer)
+ {
+-    // openSocket() put the listener in O_NONBLOCK, so accept() returns at once
+-    // whether or not dlt-daemon is waiting. No sleep, no retry loop and no
+-    // global shutdown here: a core whose daemon is absent must degrade on its
+-    // own and leave the other cores running.
++    // Listener is O_NONBLOCK - returns immediately
+     return tcpServer.connectClient();
+ }
+ 
+diff -ruN a/src/dlt_gateway_tcp_server.cpp b/src/dlt_gateway_tcp_server.cpp
+--- a/src/dlt_gateway_tcp_server.cpp	2026-11-11 04:37:42.982328125 +0000
++++ b/src/dlt_gateway_tcp_server.cpp	2026-11-11 04:38:15.013671332 +0000
+@@ -93,9 +93,7 @@
+         return false;
+     }
+ 
+-    // Non-blocking listener: no caller may ever park in accept(). The accepted
+-    // client socket does not inherit O_NONBLOCK on Linux, so sendAll() keeps its
+-    // blocking-send behaviour.
++    // Non-blocking listener, accept() never blocks
+     const int flags = fcntl(mServerfd, F_GETFL, 0);
+     if ((flags < 0) || (fcntl(mServerfd, F_SETFL, flags | O_NONBLOCK) < 0))
+     {
+@@ -124,12 +122,11 @@
+     }
+     else if ((errno != EAGAIN) && (errno != EWOULDBLOCK) && (errno != EINTR))
+     {
+-        // EAGAIN/EWOULDBLOCK simply mean dlt-daemon has not connected yet.
+         LOGE(&gDLTGWLogContext, "accept() error : ", strerror(errno));
+     }
+     else
+     {
+-        // No pending connection - caller retries via ReconnectPolicy.
++        // dlt-daemon not connected yet
+     }
+ 
+     return ret;
