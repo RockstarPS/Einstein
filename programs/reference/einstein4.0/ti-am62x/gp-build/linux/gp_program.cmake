@@ -156,7 +156,7 @@ binary_scripts(
 	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/safehmi-app/build/build_safeHmi.cmake
 	${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/abstraction/bspal/dio/build_dio_bspal.cmake
 	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/bl-app-gp/bl_app_gp.cmake
-	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/fota-app-gp/fota_app.cmake
+	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/fota-app-gp/fota_app_gp.cmake
 	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/gp-build/linux/boot-kpi/boot_kpi.cmake
 	${CMAKE_SOURCE_DIR}/programs/reference/einstein4.0/ti-am62x/gp-build/linux/boot-kpi/boot-kpi-logger/boot_kpi_logger.cmake
 	${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/abstraction/bspal/display/build_display_bspal.cmake

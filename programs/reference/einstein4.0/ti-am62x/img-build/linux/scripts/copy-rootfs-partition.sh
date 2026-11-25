@@ -221,7 +221,7 @@ ln -sf /lib/systemd/system/health_mgr.service        $TGT_DIR/etc/systemd/system
 ln -sf /lib/systemd/system/meet_app.service          $TGT_DIR/etc/systemd/system/multi-user.target.wants/meet_app.service
 ln -sf /lib/systemd/system/diag_app_gp.service       $TGT_DIR/etc/systemd/system/multi-user.target.wants/diag_app_gp.service
 ln -sf /lib/systemd/system/network_mgr.service       $TGT_DIR/etc/systemd/system/multi-user.target.wants/network_mgr.service
-ln -sf /lib/systemd/system/fota_app.service	     	 $TGT_DIR/etc/systemd/system/multi-user.target.wants/fota_app.service
+ln -sf /lib/systemd/system/fota_app_gp.service	     	 $TGT_DIR/etc/systemd/system/multi-user.target.wants/fota_app_gp.service
 ln -sf /lib/systemd/system/bl_app_gp.service         $TGT_DIR/etc/systemd/system/multi-user.target.wants/bl_app_gp.service
 ln -sf /lib/systemd/system/bl_ucl_proxy_vmf.service  $TGT_DIR/etc/systemd/system/multi-user.target.wants/bl_ucl_proxy_vmf.service
 ln -sf /dev/null $TGT_DIR/etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service

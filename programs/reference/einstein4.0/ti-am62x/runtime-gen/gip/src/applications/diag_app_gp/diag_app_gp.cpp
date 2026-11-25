@@ -34,8 +34,6 @@
 #include "uds_core_component.h"
 #include "eins_uds_appl_component.h"
 #include "doip_component.h"
-#include "upd_ucl_adapter_component.h"
-#include "upd_doip_adapter_component.h"
 
 using namespace dk::runtime::core;
 using namespace dk::srvc::udscore;
@@ -44,8 +42,6 @@ using namespace dk::app::udsblservices;
 extern UdsCoreComponent oUdsCoreComponent;
 extern EinsUdsApplComponent oEinsUdsApplComponent;
 extern DoipComponent oDoipComponent;
-extern UpdUclAdapterComponent oUpdUclAdapterComponent;
-extern UpdDoipAdapterComponent oUpdDoipAdapterComponent;
 
 bool diag_app_gp::onInit()
 {
@@ -91,8 +87,6 @@ int32_t diag_app_gp::onRun()
         oUdsCoreComponent.worker();
         oEinsUdsApplComponent.worker();
         oDoipComponent.worker();
-        oUpdUclAdapterComponent.worker();
-        oUpdDoipAdapterComponent.worker();
 
         //TODO: Make this configurable
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -296,22 +290,22 @@ void diag_app_gp::sendDoIPDownloadRequest(DoIPDownloadRequest const & msg)
     static uint8_t msgCnt = 0U;
     msgCnt++;
 
-    //Local Routing. Generated if an component inside the application is expecting this message
-    MsgSerializer * const pMsgSer = new MsgSerializer(DK_MSG_DOIPDOWNLOADREQUEST, COMPID_OEINSUDSAPPLCOMPONENT, msgCnt);
+
+    //IPC Routing. Generated if an component outside the application is expecting this message
+    std::shared_ptr<MsgSerializer> pMsgSerIpc = std::make_shared<MsgSerializer>(DK_MSG_DOIPDOWNLOADREQUEST, COMPID_OEINSUDSAPPLCOMPONENT, msgCnt);
 
 
-    ( void ) pMsgSer->serialize(msg.serviceId);
-    ( void ) pMsgSer->serialize(msg.blkaddress);
-    ( void ) pMsgSer->serialize(msg.blklength);
-    ( void ) pMsgSer->serialize(msg.formatId);
-    ( void ) pMsgSer->serialize(msg.CompEncId);
-    ( void ) pMsgSer->serialize(msg.dataLen);
+    ( void ) pMsgSerIpc->serialize(msg.serviceId);
+    ( void ) pMsgSerIpc->serialize(msg.blkaddress);
+    ( void ) pMsgSerIpc->serialize(msg.blklength);
+    ( void ) pMsgSerIpc->serialize(msg.formatId);
+    ( void ) pMsgSerIpc->serialize(msg.CompEncId);
+    ( void ) pMsgSerIpc->serialize(msg.dataLen);
     for (uint16_t i0 = 0U; i0 < 7168U; i0++)
     {
-        ( void ) pMsgSer->serialize(msg.data[i0]);
+        ( void ) pMsgSerIpc->serialize(msg.data[i0]);
     }
-    gApp.sendMsgToDisplatchQueue(pMsgSer);
-
+    gApp.sendMsgToIpc(pMsgSerIpc);
 }
 
 void diag_app_gp::sendDoipDiagDataIndication(DoipDiagDataIndication const & msg)
@@ -348,49 +342,6 @@ void diag_app_gp::sendDoipDiagDataConfirmation(DoipDiagDataConfirmation const & 
     ( void ) pMsgSer->serialize(msg.targetAddress);
     ( void ) pMsgSer->serialize(msg.sourceAddress);
     ( void ) pMsgSer->serialize(msg.targetAddressType);
-    ( void ) pMsgSer->serialize(msg.result);
-    gApp.sendMsgToDisplatchQueue(pMsgSer);
-
-}
-
-void diag_app_gp::sendUpdateShortServiceResp(UpdateShortServiceResp const & msg)
-{
-    static uint8_t msgCnt = 0U;
-    msgCnt++;
-
-
-    //IPC Routing. Generated if an component outside the application is expecting this message
-    std::shared_ptr<MsgSerializer> pMsgSerIpc = std::make_shared<MsgSerializer>(DK_MSG_UPDATESHORTSERVICERESP, COMPID_OUPDUCLADAPTERCOMPONENT, msgCnt);
-
-
-    ( void ) pMsgSerIpc->serialize(msg.msgId);
-    ( void ) pMsgSerIpc->serialize(msg.msgSize);
-    ( void ) pMsgSerIpc->serialize(msg.sid);
-    ( void ) pMsgSerIpc->serialize(msg.length);
-    ( void ) pMsgSerIpc->serialize(msg.responseCode);
-    ( void ) pMsgSerIpc->serialize(msg.NRC);
-    for (uint16_t i0 = 0U; i0 < 64U; i0++)
-    {
-        ( void ) pMsgSerIpc->serialize(msg.data[i0]);
-    }
-    gApp.sendMsgToIpc(pMsgSerIpc);
-}
-
-void diag_app_gp::sendDoIPDownloadResponse(DoIPDownloadResponse const & msg)
-{
-    static uint8_t msgCnt = 0U;
-    msgCnt++;
-
-    //Local Routing. Generated if an component inside the application is expecting this message
-    MsgSerializer * const pMsgSer = new MsgSerializer(DK_MSG_DOIPDOWNLOADRESPONSE, COMPID_OUPDDOIPADAPTERCOMPONENT, msgCnt);
-
-
-    ( void ) pMsgSer->serialize(msg.serviceId);
-    ( void ) pMsgSer->serialize(msg.dataLen);
-    for (uint16_t i0 = 0U; i0 < 7168U; i0++)
-    {
-        ( void ) pMsgSer->serialize(msg.data[i0]);
-    }
     ( void ) pMsgSer->serialize(msg.result);
     gApp.sendMsgToDisplatchQueue(pMsgSer);
 

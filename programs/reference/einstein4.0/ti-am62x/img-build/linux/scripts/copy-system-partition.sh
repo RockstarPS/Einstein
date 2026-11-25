@@ -14,7 +14,7 @@ mkdir -p $TGT_DIR/usr/sbin/
 #yes | cp -rf $BIN_DIR/aarch64le/bin/early_startup.sh						$TGT_DIR/bin/
 #yes | cp -rf $BIN_DIR/aarch64le/bin/late_startup.sh							$TGT_DIR/bin/
 
-yes | cp -rf $BIN_DIR/aarch64le/usr/bin/fota_app                $TGT_DIR/usr/bin/
+yes | cp -rf $BIN_DIR/aarch64le/usr/bin/fota_app_gp              $TGT_DIR/usr/bin/
 
 yes | cp -rf $BIN_DIR/aarch64le/usr/bin/boot_kpi        				    $TGT_DIR/usr/bin/
 

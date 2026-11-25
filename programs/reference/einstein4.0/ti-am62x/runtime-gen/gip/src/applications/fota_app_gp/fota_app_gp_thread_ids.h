@@ -3,7 +3,7 @@
 // VISTEON CORPORATION CONFIDENTIAL
 // ________________________________
 //
-// [2023] Visteon Corporation
+// [2022] Visteon Corporation
 // All Rights Reserved.
 //
 // NOTICE: This is an unpublished work of authorship, which contains trade secrets.
@@ -15,37 +15,27 @@
 // Those having access to this work may not copy it, use it, modify it, or disclose the information contained in it
 // without the written authorization of Visteon Corporation.
 //
-//=============================================================================
-// @file        UpdUtils.hpp
-// @brief       
+//---------------------------------------------------------------------------------------------------------------------
+//
+// File generated automatically using Visteon VMF & Dijkstra Runtime configuration generator 1.2.1
+// Date: Thu Mar 12 18:15:54 IST 2026
+// User: KRAMESH5
+// System: GIP
+// Configuration: Platform
+// Project: Einstein4_Platform
+// Message Catalogue version : 1.0.8
 //
 //---------------------------------------------------------------------------------------------------------------------
+#ifndef FOTA_APP_GP_THREAD_IDS_H
+#define FOTA_APP_GP_THREAD_IDS_H
 
-#ifndef __UPD_UTILS_HPP__
-#define __UPD_UTILS_HPP__
-
-#include <string>
-#include <cstdint>
-
-#define UPD_DEFAULT_FILE_EXTN		"raw"
-#define UPD_LIB_VERSION				"v00.05.70"
-#define UPD_STATUS_CHECK_DELAY		100
-
-
-namespace Visteon
+enum TID : unsigned
 {
-namespace Update
-{
+#define PTH_ID
+#include "fota_app_gp_threads.h"
+#undef PTH_ID
+	TID_COUNT
+};
 
-std::string getTargetFileName(const std::string& targetName, const std::string& fileName);
+#endif //FOTA_APP_GP_THREAD_IDS_H
 
-std::string bytesToHexString(const uint8_t* bytes, size_t len);
-
-bool hexStringToBytes(const std::string& hashString, uint8_t* hashBytes);
-
-bool cstrcpy(char* dest, const char* source, int32_t dest_size, int32_t src_len = -1);
-
-} // namespace Visteon
-} // namespace Update
-
-#endif //__UPD_UTILS_HPP__

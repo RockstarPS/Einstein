@@ -31,7 +31,7 @@
 
 #include "dk_runtime_messages.h"
 #include "dk_runtime_component.h"
-#include "diag_app_gp.h"
+#include "fota_app_gp.h"
 
 #ifdef __cplusplus
 namespace dk

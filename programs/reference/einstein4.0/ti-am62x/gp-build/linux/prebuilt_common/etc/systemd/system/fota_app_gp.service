@@ -1,15 +1,16 @@
 [Unit]
-Description=FOTA Application
-After=mainHmi.service,ucl_proxy_vmf.service,vmf.service
+Description=fota_app_gp (UPD UCL/DoIP adapters)
+After=vmf.service ucl_proxy_vmf.service health_mgr.service
+Requires=vmf.service ucl_proxy_vmf.service
 ConditionKernelCommandLine=|BOOT_MODE=PRI
 
 [Service]
 Type=simple
 Environment="LD_LIBRARY_PATH=/system/usr/lib:$LD_LIBRARY_PATH"
-ExecStart=/system/usr/bin/fota_app
+ExecStart=/system/usr/bin/fota_app_gp
 Restart=always
-StartLimitInterval=5min
-StartLimitBurst=4
+StartLimitInterval=10min
+StartLimitBurst=10
 
 StandardOutput=journal
 StandardError=journal

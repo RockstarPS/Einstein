@@ -29,15 +29,6 @@ add_executable(${BINARY_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/src/dk_srvc_uds_service_download_handler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/src/dk_srvc_uds_service_data_identifier_handler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/src/dk_srvc_uds_service_ecu_reset_handler.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/upd_ucl_adapter_component/src/upd_ucl_adapter_component.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/upd_ucl_adapter_component/src/SharedMem.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/upd_doip_adapter_component/src/upd_doip_adapter_component.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/FlashHandler.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/PartitionHandler.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/UpdateHandler.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/updLocalUpdater.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/UPDd.c
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/src/UPDd_BootControl.c
     ${GP_RTE_DIR}/gip/src/applications/diag_app_gp/diag_app_gp.cpp
     ${GP_RTE_DIR}/gip/src/applications/diag_app_gp/main.cpp
     ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/doip/src/doip_component.cpp
@@ -62,22 +53,9 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/src/uds_security/
     ${CMAKE_CURRENT_SOURCE_DIR}/eins-uds-appl_component/src/uds_udsmgr/ 
-	${CMAKE_CURRENT_SOURCE_DIR}/upd_doip_adapter_component/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/upd_ucl_adapter_component/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/update_handler/include/
     ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/doip/src/
     ${CMAKE_SOURCE_DIR}/cluster-platform/dijkstra/diagnostics/uds-core/src/
   )
-
-# Add the OpenSSL package
-find_package(OpenSSL REQUIRED)
-
-target_link_libraries(${BINARY_NAME} PRIVATE
-   OpenSSL::Crypto
-   ${OPTEE_SECURITYMANAGER}/SecurityManager/out/lib/libopteesecurity.a
-   ${OPTEE_SECURITYMANAGER}/Prebuilt_client/out/export/usr/lib/libteec.a
-
-)
 
 # Add dependency libraries
 target_add_dependencies(${BINARY_NAME}
@@ -86,8 +64,6 @@ target_add_dependencies(${BINARY_NAME}
     dk_logger
     dk_runtime
     uds_core.a
-	GpUpdateCdd 
-    metadata
 )
 
  # Install the binary
@@ -101,4 +77,6 @@ install(
 #    Date     |   User   |   Task    |                                     Description
 #-------------------------------------------------------------------------------------------------------------------
 #  9/8/2020  | rkrishn8 |  475480   | Created initial file
+#-------------------------------------------------------------------------------------------------------------------
+# 25/11/2026  |          |           | UpdUclAdapter/UpdDoipAdapter components + update_handler moved to fota_app_gp
 #-------------------------------------------------------------------------------------------------------------------

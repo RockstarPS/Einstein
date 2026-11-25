@@ -69,8 +69,6 @@ public:
     void sendDoIPDownloadRequest(DoIPDownloadRequest const & msg);
     void sendDoipDiagDataIndication(DoipDiagDataIndication const & msg);
     void sendDoipDiagDataConfirmation(DoipDiagDataConfirmation const & msg);
-    void sendUpdateShortServiceResp(UpdateShortServiceResp const & msg);
-    void sendDoIPDownloadResponse(DoIPDownloadResponse const & msg);
 };
 
 extern diag_app_gp gApp;

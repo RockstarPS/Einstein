@@ -18,32 +18,16 @@
 //---------------------------------------------------------------------------------------------------------------------
 //
 // File generated automatically using Visteon VMF & Dijkstra Runtime configuration generator 1.2.1
-// Date: Thu Feb 29 13:30:55 IST 2024
+// Date: Thu Mar 12 18:15:54 IST 2026
 // User: KRAMESH5
 // System: GIP
-// Configuration: Platform_Recovery
-// Project: EU_BMW_MIC
-// Message Catalogue version : 1.0.3
+// Configuration: Platform
+// Project: Einstein4_Platform
+// Message Catalogue version : 1.0.8
 //
 //---------------------------------------------------------------------------------------------------------------------
-#ifndef BL_FLAHSHHANDLER_COMPONENT_H
-#define BL_FLAHSHHANDLER_COMPONENT_H
+#include "dk_runtime_thread_decl.h"
 
-#include <stdint.h>
-#include <string.h>
-#include <thread>
-#include <map>
-#include "Std_Types.h"
-#include "dk_logger.h"
-
-class FlashHandler
-{
-    public:
-        int32_t programEmmcPartition(std::string partition, std::string file);
-        int32_t programNORPartition(std::string partition, std::string file);
-        int32_t programCompEmmcPartition(std::string partition, std::string file);
-		uint8_t NorErase(std::string PackagePath);
-		uint8_t EMMCErase(std::string PackagePath, uint32_t size);
-    private:
-};
-#endif
+PTH_DECL( TID_gApp_runDispatchQueue, gApp, runDispatchQueue )
+PTH_DECL( TID_gApp_runIpcMessagePump, gApp, runIpcMessagePump )
+PTH_DECL( TID_FotaAppGpCon_runMessagePump, FotaAppGpCon, runMessagePump )

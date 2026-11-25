@@ -34,8 +34,6 @@
 #include "uds_core_component.h"
 #include "eins_uds_appl_component.h"
 #include "doip_component.h"
-#include "upd_ucl_adapter_component.h"
-#include "upd_doip_adapter_component.h"
 
 LOG_DECLARE_CONTEXT ( gRTELogContext );
 
@@ -47,15 +45,11 @@ using namespace dk::app::udsblservices;
 extern std::map<mid_t, func_t> oUdsCoreComponentMessageMap;
 extern std::map<mid_t, func_t> oEinsUdsApplComponentMessageMap;
 extern std::map<mid_t, func_t> oDoipComponentMessageMap;
-extern std::map<mid_t, func_t> oUpdUclAdapterComponentMessageMap;
-extern std::map<mid_t, func_t> oUpdDoipAdapterComponentMessageMap;
 
 //Instantiate Software Components
 UdsCoreComponent oUdsCoreComponent(&oUdsCoreComponentMessageMap, COMPID_OUDSCORECOMPONENT_STR);
 EinsUdsApplComponent oEinsUdsApplComponent(&oEinsUdsApplComponentMessageMap, COMPID_OEINSUDSAPPLCOMPONENT_STR);
 DoipComponent oDoipComponent(&oDoipComponentMessageMap, COMPID_ODOIPCOMPONENT_STR);
-UpdUclAdapterComponent oUpdUclAdapterComponent(&oUpdUclAdapterComponentMessageMap, COMPID_OUPDUCLADAPTERCOMPONENT_STR);
-UpdDoipAdapterComponent oUpdDoipAdapterComponent(&oUpdDoipAdapterComponentMessageMap, COMPID_OUPDDOIPADAPTERCOMPONENT_STR);
 
 //Define Messages
 static const uint16_t oUdsCoreComponentMessageArraySize = 4U;
@@ -295,88 +289,13 @@ const MsgCmn oDoipComponentMessageArray[oDoipComponentMessageArraySize] =
     }
 };
 
-static const uint16_t oUpdUclAdapterComponentMessageArraySize = 2U;
-const MsgCmn oUpdUclAdapterComponentMessageArray[oUpdUclAdapterComponentMessageArraySize] =
-{
-    {
-        DK_MSG_UPDATESHORTSERVICEREQ,
-         [](dk::runtime::core::MsgDeserializer &msgDes) {
-            UpdateShortServiceReq msg = {0};
-            msg.base.compId = msgDes.mSenderId;
-            msg.base.msgCnt = msgDes.mMsgCnt;
-
-
-            ( void ) msgDes.deserialize(msg.msgId);
-            ( void ) msgDes.deserialize(msg.msgSize);
-            ( void ) msgDes.deserialize(msg.memoryType);
-            ( void ) msgDes.deserialize(msg.memoryCmd);
-            ( void ) msgDes.deserialize(msg.sid);
-            ( void ) msgDes.deserialize(msg.length);
-            for (uint16_t i0 = 0U; i0 < 64U; i0++)
-            {
-                ( void ) msgDes.deserialize(msg.data[i0]);
-            }
-            oUpdUclAdapterComponent.onReceiveUpdateShortServiceReq(msg);
-        }
-    },
-    {
-        DK_MSG_UPDATELONGSERVICEREQ,
-         [](dk::runtime::core::MsgDeserializer &msgDes) {
-            UpdateLongServiceReq msg = {0};
-            msg.base.compId = msgDes.mSenderId;
-            msg.base.msgCnt = msgDes.mMsgCnt;
-
-
-            ( void ) msgDes.deserialize(msg.msgId);
-            ( void ) msgDes.deserialize(msg.msgSize);
-            ( void ) msgDes.deserialize(msg.memoryType);
-            ( void ) msgDes.deserialize(msg.memoryCmd);
-            ( void ) msgDes.deserialize(msg.sid);
-            ( void ) msgDes.deserialize(msg.length);
-            for (uint16_t i0 = 0U; i0 < 2048U; i0++)
-            {
-                ( void ) msgDes.deserialize(msg.data[i0]);
-            }
-            oUpdUclAdapterComponent.onReceiveUpdateLongServiceReq(msg);
-        }
-    }
-};
-
-static const uint16_t oUpdDoipAdapterComponentMessageArraySize = 1U;
-const MsgCmn oUpdDoipAdapterComponentMessageArray[oUpdDoipAdapterComponentMessageArraySize] =
-{
-    {
-        DK_MSG_DOIPDOWNLOADREQUEST,
-         [](dk::runtime::core::MsgDeserializer &msgDes) {
-            DoIPDownloadRequest msg = {0};
-            msg.base.compId = msgDes.mSenderId;
-            msg.base.msgCnt = msgDes.mMsgCnt;
-
-
-            ( void ) msgDes.deserialize(msg.serviceId);
-            ( void ) msgDes.deserialize(msg.blkaddress);
-            ( void ) msgDes.deserialize(msg.blklength);
-            ( void ) msgDes.deserialize(msg.formatId);
-            ( void ) msgDes.deserialize(msg.CompEncId);
-            ( void ) msgDes.deserialize(msg.dataLen);
-            for (uint16_t i0 = 0U; i0 < 7168U; i0++)
-            {
-                ( void ) msgDes.deserialize(msg.data[i0]);
-            }
-            oUpdDoipAdapterComponent.onReceiveDoIPDownloadRequest(msg);
-        }
-    }
-};
-
 //Define Message Map for Components
 std::map<mid_t, func_t> oUdsCoreComponentMessageMap = createMap(oUdsCoreComponentMessageArraySize, oUdsCoreComponentMessageArray);
 std::map<mid_t, func_t> oEinsUdsApplComponentMessageMap = createMap(oEinsUdsApplComponentMessageArraySize, oEinsUdsApplComponentMessageArray);
 std::map<mid_t, func_t> oDoipComponentMessageMap = createMap(oDoipComponentMessageArraySize, oDoipComponentMessageArray);
-std::map<mid_t, func_t> oUpdUclAdapterComponentMessageMap = createMap(oUpdUclAdapterComponentMessageArraySize, oUpdUclAdapterComponentMessageArray);
-std::map<mid_t, func_t> oUpdDoipAdapterComponentMessageMap = createMap(oUpdDoipAdapterComponentMessageArraySize, oUpdDoipAdapterComponentMessageArray);
 
 //Instantiate Containter
-Container DiagAppGpCon(&oUdsCoreComponent, &oEinsUdsApplComponent, &oDoipComponent, &oUpdUclAdapterComponent, &oUpdDoipAdapterComponent);
+Container DiagAppGpCon(&oUdsCoreComponent, &oEinsUdsApplComponent, &oDoipComponent);
 
 //Instantiate Application
 diag_app_gp gApp("diag_app_gp", &DiagAppGpCon);
